@@ -5,9 +5,7 @@
       "commonName": "Mango",
       "scientificName": "Mangifera indica",
       "category": "Fruit Trees",
-      "categories": [
-        "Fruit Trees"
-      ],
+      "categories": ["Fruit Trees"],
       "shortSummary": "South Asia's iconic evergreen drupe tree prized for aromatic golden-orange fruit, panicle inflorescences, and centuries of cultivar selection.",
       "leadOverview": "Mango (Mangifera indica) is one of the most culturally revered and economically vital tropical fruit trees in the world. Native to the Indo-Burma region, this long-lived evergreen canopy species produces fragrant terminal panicles and fleshy, nutrient-dense drupes cultivated across more than one hundred tropical and subtropical nations.",
       "heroImage": {
@@ -180,10 +178,7 @@
       "commonName": "Rose",
       "scientificName": "Rosa",
       "category": "Flowers",
-      "categories": [
-        "Flowers",
-        "Shrubs & Herbs"
-      ],
+      "categories": ["Flowers", "Shrubs & Herbs"],
       "shortSummary": "Perennial woody shrubs of the Rosaceae family celebrated worldwide for layered fragrant petals, curved prickles, and rosehip fruits.",
       "leadOverview": "The rose (genus Rosa) encompasses more than 300 wild species and tens of thousands of garden cultivars prized across five millennia of horticulture. Distinguished by compound imparipinnate leaves, thorny stems, and spirally arranged petals, roses bridge ornamental floriculture, perfumery, and traditional pharmacopeias.",
       "heroImage": {
@@ -351,9 +346,7 @@
       "commonName": "Sunflower",
       "scientificName": "Helianthus annuus",
       "category": "Flowers",
-      "categories": [
-        "Flowers"
-      ],
+      "categories": ["Flowers"],
       "shortSummary": "Heliotropic annual composite bearing golden ray florets, Fibonacci-spiralled disc seeds, and high-oleic culinary oil.",
       "leadOverview": "The common sunflower (Helianthus annuus) is a fast-growing annual herb of the daisy family Asteraceae, immediately recognizable by its towering rough stems and radiant flower heads. Domesticated in North America over 4,000 years ago, it serves today as both a premier oilseed crop and an emblem of solar tracking.",
       "heroImage": {
@@ -526,11 +519,7 @@
       "commonName": "Madagascar Periwinkle",
       "scientificName": "Catharanthus roseus",
       "category": "Medicinal",
-      "categories": [
-        "Medicinal",
-        "Flowers",
-        "Shrubs & Herbs"
-      ],
+      "categories": ["Medicinal", "Flowers", "Shrubs & Herbs"],
       "shortSummary": "Evergreen tropical subshrub famous for year-round five-petalled blooms and life-saving vinca alkaloid oncology compounds.",
       "leadOverview": "Madagascar periwinkle (Catharanthus roseus), widely known across South Asia as Nayantara or Sadabahar ('always blooming'), is a resilient perennial subshrub in the dogbane family Apocynaceae. Celebrated in gardens for effortless continuous colour, it also transformed modern oncology through the discovery of vinblastine and vincristine.",
       "heroImage": {
@@ -698,10 +687,7 @@
       "commonName": "Marigold",
       "scientificName": "Tagetes erecta",
       "category": "Flowers",
-      "categories": [
-        "Flowers",
-        "Medicinal"
-      ],
+      "categories": ["Flowers", "Medicinal"],
       "shortSummary": "Aromatic golden-orange Asteraceae annual prized for festive garlands, lutein carotenoids, and nematode-suppressing roots.",
       "leadOverview": "African or Aztec marigold (Tagetes erecta) is a vigorous, sun-loving annual renowned for dense pompom flower heads glowing in shades of saffron, amber, and lemon yellow. Native to Mexico and Central America, marigold has become deeply woven into South Asian festivals, companion gardening, and natural carotenoid production.",
       "heroImage": {
@@ -869,10 +855,7 @@
       "commonName": "Ixora",
       "scientificName": "Ixora coccinea",
       "category": "Shrubs & Herbs",
-      "categories": [
-        "Shrubs & Herbs",
-        "Flowers"
-      ],
+      "categories": ["Shrubs & Herbs", "Flowers"],
       "shortSummary": "Evergreen tropical shrub producing hemispherical corymbs of star-shaped scarlet flowers and leathery opposite leaves throughout warm seasons.",
       "leadOverview": "Ixora coccinea—widely known across South Asia as Rangan or Jungle Flame—is a dense evergreen flowering shrub of the coffee family (Rubiaceae). Celebrated for long-lasting terminal clusters of tubular four-lobed blossoms, it thrives in acid-rich tropical soils and serves as both a vibrant garden hedge and a classical medicinal shrub.",
       "heroImage": {
@@ -1040,10 +1023,7 @@
       "commonName": "Water Lily",
       "scientificName": "Nymphaea nouchali",
       "category": "Flowers",
-      "categories": [
-        "Flowers",
-        "Medicinal"
-      ],
+      "categories": ["Flowers", "Medicinal"],
       "shortSummary": "Aquatic rhizomatous macrophyte famed for floating circular pads with aerenchyma tissue and star-like blooms—national flower of Bangladesh.",
       "leadOverview": "The Blue and White Water Lily (Nymphaea nouchali), revered in Bangladesh as Shapla, is an ancient basal angiosperm anchoring freshwater wetlands across South and Southeast Asia. Floating on slender flexible petioles above submerged muddy rhizomes, its fragrant star-shaped blooms symbolize aquatic biodiversity and national cultural heritage.",
       "heroImage": {
@@ -1211,10 +1191,7 @@
       "commonName": "Banyan",
       "scientificName": "Ficus benghalensis",
       "category": "Shrubs & Herbs",
-      "categories": [
-        "Shrubs & Herbs",
-        "Medicinal"
-      ],
+      "categories": ["Shrubs & Herbs", "Medicinal"],
       "shortSummary": "Monumental hemiepiphytic fig tree capable of forming multi-trunk cathedral canopies through descending aerial prop roots.",
       "leadOverview": "The Indian Banyan (Ficus benghalensis) is one of the largest canopy-forming trees on Earth in horizontal crown spread. Starting life either terrestrially or as a bird-sown epiphyte high in another tree's fork, this keystone fig drops curtain-like aerial roots that thicken into secondary pillar trunks across centuries.",
       "heroImage": {
@@ -1382,10 +1359,7 @@
       "commonName": "Neem",
       "scientificName": "Azadirachta indica",
       "category": "Medicinal",
-      "categories": [
-        "Medicinal",
-        "Shrubs & Herbs"
-      ],
+      "categories": ["Medicinal", "Shrubs & Herbs"],
       "shortSummary": "Drought-hardy evergreen mahogany tree revered across South Asia as a botanical pharmacy and natural azadirachtin biopesticide.",
       "leadOverview": "Neem (Azadirachta indica), affectionately titled 'the village pharmacy' across the Indian subcontinent, is a fast-growing evergreen tree of the mahogany family (Meliaceae). Every tissue—from bitter serrated leaflets to oil-rich drupe kernels—synthesizes complex limonoid triterpenoids that protect crops naturally and anchor traditional hygiene.",
       "heroImage": {
@@ -1553,10 +1527,7 @@
       "commonName": "Tulsi (Holy Basil)",
       "scientificName": "Ocimum tenuiflorum",
       "category": "Medicinal",
-      "categories": [
-        "Medicinal",
-        "Shrubs & Herbs"
-      ],
+      "categories": ["Medicinal", "Shrubs & Herbs"],
       "shortSummary": "Aromatic square-stemmed subshrub of the mint family revered as an adaptogenic medicinal herb across South Asian courtyards.",
       "leadOverview": "Tulsi or Holy Basil (Ocimum tenuiflorum, synonym O. sanctum) is an intensely aromatic perennial subshrub of the Lamiaceae family. Distinguished by eugenol-rich glandular foliage, purplish-green square stems, and verticillaster flower spikes, Tulsi bridges sacred domestic architecture with modern adaptogenic phytotherapy.",
       "heroImage": {
@@ -1724,10 +1695,7 @@
       "commonName": "Hibiscus",
       "scientificName": "Hibiscus rosa-sinensis",
       "category": "Flowers",
-      "categories": [
-        "Flowers",
-        "Shrubs & Herbs"
-      ],
+      "categories": ["Flowers", "Shrubs & Herbs"],
       "shortSummary": "Tropical evergreen mallow shrub famed for large trumpet blossoms featuring an elongated staminal column and mucilaginous foliage.",
       "leadOverview": "Hibiscus rosa-sinensis—cherished across South Asia as Joba—is an iconic evergreen flowering shrub of the mallow family (Malvaceae). Recognized instantly by its vivid five-petalled funnels and protruding stamen column tipped with five velvety stigma pads, this sun-loving species links tropical floriculture with hair-care ethnobotany.",
       "heroImage": {
@@ -1895,10 +1863,7 @@
       "commonName": "Jasmine (Beli)",
       "scientificName": "Jasminum sambac",
       "category": "Flowers",
-      "categories": [
-        "Flowers",
-        "Shrubs & Herbs"
-      ],
+      "categories": ["Flowers", "Shrubs & Herbs"],
       "shortSummary": "Fragrant night-opening white vine-shrub of the olive family celebrated for jasmine tea scenting, attar perfumery, and ceremonial garlands.",
       "leadOverview": "Arabian Jasmine (Jasminum sambac)—beloved across Bengal and South Asia as Beli or Bela—is a compact scrambling shrub in the olive family (Oleaceae). Opening waxy star-like white blossoms at dusk that release an intoxicating indole-linalool perfume, it anchors Asia's luxury floral perfumery and traditional jasmine tea harvests.",
       "heroImage": {
@@ -2066,10 +2031,7 @@
       "commonName": "Sacred Lotus",
       "scientificName": "Nelumbo nucifera",
       "category": "Flowers",
-      "categories": [
-        "Flowers",
-        "Medicinal"
-      ],
+      "categories": ["Flowers", "Medicinal"],
       "shortSummary": "Emergent aquatic eudicot famed for superhydrophobic self-cleaning peltate leaves, thermogenic blossoms, and millennia-viable seeds.",
       "leadOverview": "The Sacred Lotus (Nelumbo nucifera)—known across South Asia as Padma—is a remarkable aquatic perennial whose leaves and flowers rise cleanly above wetland waters on stout spiny petioles. Renowned for the nano-textured 'lotus effect', thermogenic flower warming, and 1,300-year seed longevity, it unites evolutionary marvels with ancient culinary and spiritual heritage.",
       "heroImage": {
@@ -2237,9 +2199,7 @@
       "commonName": "Jackfruit",
       "scientificName": "Artocarpus heterophyllus",
       "category": "Fruit Trees",
-      "categories": [
-        "Fruit Trees"
-      ],
+      "categories": ["Fruit Trees"],
       "shortSummary": "Cauliflorous tropical evergreen bearing the largest tree-borne syncarp fruit in the world—celebrated as Bangladesh's national fruit.",
       "leadOverview": "Jackfruit (Artocarpus heterophyllus), known affectionately across Bengal as Kathal and honoured as the national fruit of Bangladesh, is a stout evergreen tree in the mulberry-fig family (Moraceae). Capable of yielding massive cauliflorous compound fruits weighing over 35 kilograms straight off sturdy trunks, it delivers both sweet golden arils and high-protein young vegetable flesh.",
       "heroImage": {
@@ -2407,9 +2367,7 @@
       "commonName": "Coconut",
       "scientificName": "Cocos nucifera",
       "category": "Fruit Trees",
-      "categories": [
-        "Fruit Trees"
-      ],
+      "categories": ["Fruit Trees"],
       "shortSummary": "Coastal monocot palm revered as the 'Tree of Life' for hydrating endosperm water, copra oil, coir fibre, and ocean-drifting seeds.",
       "leadOverview": "The Coconut Palm (Cocos nucifera) is the quintessential coastal monocot of the tropical world. Rising up to 30 metres on flexible ringed trunks crowned with feather-like pinnate fronds, this single-species genus sustains island and delta economies with electrolyte-rich coconut water, culinary milk, coir cordage, and architectural timber.",
       "heroImage": {
@@ -2577,9 +2535,7 @@
       "commonName": "Bamboo",
       "scientificName": "Bambusa vulgaris",
       "category": "Shrubs & Herbs",
-      "categories": [
-        "Shrubs & Herbs"
-      ],
+      "categories": ["Shrubs & Herbs"],
       "shortSummary": "Giant woody monocot grass exhibiting the fastest terrestrial shoot elongation, silica-armoured hollow culms, and clumping rhizomes.",
       "leadOverview": "Golden Bamboo (Bambusa vulgaris)—locally cherished across Bengal as Bash—is an evergreen clumping giant grass belonging to family Poaceae. Achieving full 20-metre height within a single monsoon growing season through pre-formed telescoped internodes, its silica-reinforced hollow culms power sustainable architecture, soil conservation, and traditional rural crafts.",
       "heroImage": {
@@ -2747,10 +2703,7 @@
       "commonName": "Aloe Vera",
       "scientificName": "Aloe vera",
       "category": "Medicinal",
-      "categories": [
-        "Medicinal",
-        "Shrubs & Herbs"
-      ],
+      "categories": ["Medicinal", "Shrubs & Herbs"],
       "shortSummary": "CAM-photosynthetic succulent rosette famous for hydrating acemannan inner leaf gel, yellow anthraquinone latex, and burn skincare.",
       "leadOverview": "Aloe vera (synonym Aloe barbadensis)—known in South Asia as Ghritakumari—is a stemless succulent perennial in the family Asphodelaceae. Adapted to arid sun via Crassulacean Acid Metabolism (CAM) and water-storing parenchyma rosettes, its inner translucent gel ranks among the most widely cultivated botanical skincare and cosmetic ingredients worldwide.",
       "heroImage": {
@@ -2918,9 +2871,7 @@
       "commonName": "Orchid",
       "scientificName": "Phalaenopsis & Orchidaceae",
       "category": "Flowers",
-      "categories": [
-        "Flowers"
-      ],
+      "categories": ["Flowers"],
       "shortSummary": "Hyper-diverse epiphytic monocot family featuring bilateral zygomorphic blooms, specialized labellum petals, and spongy velamen roots.",
       "leadOverview": "Orchids (family Orchidaceae, exemplified in horticulture by the Moth Orchid Phalaenopsis and native Vanda/Dendrobium species) represent one of the two largest flowering plant families on Earth with over 28,000 species. Distinguished by symmetrical three-petalled blooms bearing a modified landing-platform lip (labellum) and fused reproductive column, epiphytic orchids thrive suspended on monsoon tree bark.",
       "heroImage": {
@@ -3088,10 +3039,7 @@
       "commonName": "Bougainvillea",
       "scientificName": "Bougainvillea spectabilis",
       "category": "Shrubs & Herbs",
-      "categories": [
-        "Shrubs & Herbs",
-        "Flowers"
-      ],
+      "categories": ["Shrubs & Herbs", "Flowers"],
       "shortSummary": "Thorny Neotropical scrambling vine renowned for papery magenta-to-coral petaloid bracts surrounding inconspicuous creamy true flowers.",
       "leadOverview": "Bougainvillea (Bougainvillea spectabilis and B. glabra)—universally known in Bangladesh as Baganbilas—is a rugged, drought-defying thorny shrub-vine of the four-o'clock family (Nyctaginaceae). What appear to be paper-thin neon petals are actually modified colour-drenched leaf bracts framing clusters of three tiny tubular cream blossoms.",
       "heroImage": {
@@ -3259,10 +3207,7 @@
       "commonName": "Tea Plant",
       "scientificName": "Camellia sinensis",
       "category": "Shrubs & Herbs",
-      "categories": [
-        "Shrubs & Herbs",
-        "Medicinal"
-      ],
+      "categories": ["Shrubs & Herbs", "Medicinal"],
       "shortSummary": "Acid-loving evergreen mountain camellia whose tender apical 'two leaves and a bud' yield black, green, oolong, and white teas.",
       "leadOverview": "The Tea Plant (Camellia sinensis) is a long-lived evergreen shrub of the family Theaceae whose young vegetative flush has shaped global trade, social rituals, and pharmacology for millennia. Grown in terraced hillside estates from Sylhet and Sreemangal to Yunnan and Uji, one single species produces green, white, oolong, and black teas strictly through post-harvest oxidation.",
       "heroImage": {

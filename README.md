@@ -23,6 +23,16 @@
 
 ---
 
+<p align="center">
+  <strong>Explore the green world, one species at a time.</strong>
+</p>
+
+<p align="center">
+  <a href="https://shahjahankabir22459-ship-it.github.io/plantipedia/" target="_blank">
+    <img src="https://img.shields.io/badge/🌿_Explore_Plantipedia-2E7D32?style=for-the-badge&logo=leaflet&logoColor=white" alt="Visit Plantipedia">
+  </a>
+</p>
+
 ## 📖 Executive Overview
 
 **Plantipedia** is a modern, scholarly botanical encyclopedia and digital flora archive built to make plant science accessible, visual, and rigorously organized. Originally conceived as a static multi-page collection of hand-coded species articles, the platform has evolved into a **blazing-fast, 3-page + JSON-driven web architecture** documenting **20 curated plant species**.
@@ -44,16 +54,16 @@ With deep botanical representation of **South Asian and Bangladeshi flora** alon
 
 Every species rendered via `plant.html?species=<slug>` follows a standardized 8-part botanical structure:
 
-| Chapter | Title | Scope |
-| :--- | :--- | :--- |
-| **00** | **Botanical Overview & Classification** | Hero photographic specimen plate and taxonomic rank summary (`Plant Group`, `Family`, `Genus`, `Species`, `Growth Form`, `Native Origin`, `Uses`). |
-| **01** | **Morphological Description** | Detailed anatomical subblocks covering stems/bark, leaf venation, floral architecture, fruits/seeds, and root systems. |
-| **02** | **Taxonomy & Botanical Classification** | Linnaean placement, phylogenetic lineage, and diagnostic family characteristics. |
-| **03** | **Natural Habitat & Global Distribution** | Native ecological zones, climatic preferences, and global/South Asian distribution. |
-| **04** | **Ecological Role & Pollinator Interactions** | Pollinator guilds, nectar rewards, seed dispersal vectors, and trophic relationships. |
-| **05** | **Economic, Culinary & Cultural Importance** | Agricultural commerce, gastronomy, timber/fiber craft, and heritage symbolism. |
-| **06** | **Traditional & Scientific Medicinal Properties** | Key phytochemicals, ethnobotanical history, and evidence-based safety precautions. |
-| **07** | **Comprehensive Cultivation & Care Guide** | Sunlight, soil pH, propagation methods, irrigation cycles, pruning, and pest management. |
+| Chapter | Title                                             | Scope                                                                                                                                              |
+| :------ | :------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **00**  | **Botanical Overview & Classification**           | Hero photographic specimen plate and taxonomic rank summary (`Plant Group`, `Family`, `Genus`, `Species`, `Growth Form`, `Native Origin`, `Uses`). |
+| **01**  | **Morphological Description**                     | Detailed anatomical subblocks covering stems/bark, leaf venation, floral architecture, fruits/seeds, and root systems.                             |
+| **02**  | **Taxonomy & Botanical Classification**           | Linnaean placement, phylogenetic lineage, and diagnostic family characteristics.                                                                   |
+| **03**  | **Natural Habitat & Global Distribution**         | Native ecological zones, climatic preferences, and global/South Asian distribution.                                                                |
+| **04**  | **Ecological Role & Pollinator Interactions**     | Pollinator guilds, nectar rewards, seed dispersal vectors, and trophic relationships.                                                              |
+| **05**  | **Economic, Culinary & Cultural Importance**      | Agricultural commerce, gastronomy, timber/fiber craft, and heritage symbolism.                                                                     |
+| **06**  | **Traditional & Scientific Medicinal Properties** | Key phytochemicals, ethnobotanical history, and evidence-based safety precautions.                                                                 |
+| **07**  | **Comprehensive Cultivation & Care Guide**        | Sunlight, soil pH, propagation methods, irrigation cycles, pruning, and pest management.                                                           |
 
 ---
 
@@ -112,11 +122,11 @@ Choose any lightweight static HTTP server:
 
 ## 🤝 Authorization, Collaboration & Ecosystem Credits
 
-| Role | Attribution |
-| :--- | :--- |
-| **Chief Patron & Authorization** | **Jalees Habib** |
-| **Lead Architecture, UI & UX Collaboration** | **Rayaan Tasnim** |
-| **Ecosystem & Platform Credits** | Special Thanks to **IDAI Universe** \| Powered by **Olympiad Edge** |
+| Role                                         | Attribution                                                         |
+| :------------------------------------------- | :------------------------------------------------------------------ |
+| **Chief Patron & Authorization**             | **Jalees Habib**                                                    |
+| **Lead Architecture, UI & UX Collaboration** | **Rayaan Tasnim**                                                   |
+| **Ecosystem & Platform Credits**             | Special Thanks to **IDAI Universe** \| Powered by **Olympiad Edge** |
 
 ---
 
@@ -128,7 +138,7 @@ Plantipedia is an educational botanical archive created for scientific learning,
 
 <br/>
 
-🌺 **Plantipedia** — *Exploring the fascinating world of plants, one species at a time.*
+🌺 **Plantipedia** — _Exploring the fascinating world of plants, one species at a time._
 
 **© 2026 Plantipedia. All rights reserved.**
 
