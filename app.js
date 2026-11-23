@@ -107,13 +107,24 @@
     return plant.category === category;
   }
 
-  /* ================= SCROLL-REVEAL STAGGER OBSERVER ================= */
-  let revealObserver = null;
+  /* ================= GSAP 3 + SCROLLTRIGGER CHOREOGRAPHY ENGINE ================= */
+  let gsapPluginRegistered = false;
+  let activeGsapMatchMedia = null;
+  let fallbackRevealObserver = null;
 
-  function initScrollReveal(rootScope) {
+  function ensureGsapRegistered() {
+    if (typeof window.gsap === 'undefined') return false;
+    if (!gsapPluginRegistered && typeof window.ScrollTrigger !== 'undefined') {
+      window.gsap.registerPlugin(window.ScrollTrigger);
+      gsapPluginRegistered = true;
+    }
+    return true;
+  }
+
+  function initOfflineCssRevealFallback(rootScope) {
     const scope = rootScope || document;
     const targets = scope.querySelectorAll(
-      '.mission-stat-card, .highlight-card, .domain-card, .spotlight-glass-card, .species-card, .chapter-card, .pager-link'
+      '.mission-stat-card, .highlight-card, .domain-card, .curiosity-strip, .species-card, .chapter-card, .pager-link'
     );
     if (!targets.length) return;
 
@@ -121,16 +132,13 @@
       window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (prefersReduced || typeof IntersectionObserver === 'undefined') {
-      targets.forEach(function (el) {
-        el.classList.add('is-revealed');
-      });
+      targets.forEach(function (el) { el.classList.add('is-revealed'); });
       return;
     }
 
-    document.documentElement.classList.add('reveal-ready');
-
-    if (!revealObserver) {
-      revealObserver = new IntersectionObserver(
+    document.documentElement.classList.add('css-reveal-fallback');
+    if (!fallbackRevealObserver) {
+      fallbackRevealObserver = new IntersectionObserver(
         function (entries, observer) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
@@ -147,15 +155,262 @@
       if (el.classList.contains('is-revealed')) return;
       el.classList.add('reveal-on-scroll');
       el.style.setProperty('--reveal-delay', ((idx % 3) * 65) + 'ms');
-
       const rect = el.getBoundingClientRect();
       if (rect.top < window.innerHeight * 0.96) {
-        requestAnimationFrame(function () {
-          el.classList.add('is-revealed');
-        });
+        requestAnimationFrame(function () { el.classList.add('is-revealed'); });
       } else {
-        revealObserver.observe(el);
+        fallbackRevealObserver.observe(el);
       }
+    });
+  }
+
+  function animateDynamicSpeciesGrid(gridScope) {
+    if (!gridScope) return;
+    if (!ensureGsapRegistered()) {
+      initOfflineCssRevealFallback(gridScope);
+      return;
+    }
+    const gsap = window.gsap;
+    const prefersReduced =
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const cards = gridScope.querySelectorAll('.species-card');
+    if (prefersReduced || !cards.length) {
+      if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+      return;
+    }
+
+    gsap.killTweensOf(cards);
+    gsap.from(cards, {
+      y: 26,
+      opacity: 0,
+      duration: 0.62,
+      ease: 'power3.out',
+      stagger: 0.06,
+      clearProps: 'transform,opacity',
+      overwrite: true
+    });
+    if (window.ScrollTrigger) {
+      window.ScrollTrigger.refresh();
+    }
+  }
+
+  function initGsapExperience(pageType) {
+    if (!ensureGsapRegistered() || typeof window.ScrollTrigger === 'undefined') {
+      initOfflineCssRevealFallback(document);
+      return;
+    }
+
+    const gsap = window.gsap;
+    const ScrollTrigger = window.ScrollTrigger;
+
+    if (activeGsapMatchMedia) {
+      activeGsapMatchMedia.revert();
+    }
+
+    activeGsapMatchMedia = gsap.matchMedia();
+
+    activeGsapMatchMedia.add('(prefers-reduced-motion: no-preference)', function () {
+      // 1. Top Reading Progress Indicator (all pages)
+      const progressBar = document.getElementById('scrollProgressBar');
+      if (progressBar) {
+        gsap.to(progressBar, {
+          scaleX: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: document.documentElement,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.2
+          }
+        });
+      }
+
+      // Helper for staggered ScrollTrigger card batches
+      function revealStaggered(containerSelector, itemSelector) {
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+        const items = container.querySelectorAll(itemSelector);
+        if (!items.length) return;
+
+        gsap.from(items, {
+          y: 28,
+          opacity: 0,
+          duration: 0.72,
+          ease: 'power3.out',
+          stagger: 0.1,
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: container,
+            start: 'top 86%',
+            once: true
+          }
+        });
+      }
+
+      function revealHeading(selector) {
+        document.querySelectorAll(selector).forEach(function (el) {
+          gsap.from(el, {
+            y: 24,
+            opacity: 0,
+            duration: 0.7,
+            ease: 'power3.out',
+            clearProps: 'transform,opacity',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 86%',
+              once: true
+            }
+          });
+        });
+      }
+
+      if (pageType === 'home') {
+        // Hero Entrance Timeline
+        const heroEls = document.querySelectorAll(
+          '.home-hero .hero-kicker, .home-hero .hero-headline, .home-hero .hero-subcopy, .home-hero .home-search-shell, .home-hero .hero-summary-strip'
+        );
+        if (heroEls.length) {
+          gsap.from(heroEls, {
+            y: 28,
+            opacity: 0,
+            duration: 0.75,
+            ease: 'power3.out',
+            stagger: 0.1,
+            clearProps: 'transform,opacity'
+          });
+        }
+
+        // Subtle Hero Vertical Parallax Scrub
+        const heroSection = document.querySelector('.home-hero');
+        const heroInner = document.querySelector('.home-hero-inner');
+        if (heroSection && heroInner) {
+          gsap.fromTo(
+            heroInner,
+            { yPercent: -2 },
+            {
+              yPercent: 6,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: heroSection,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 0.4
+              }
+            }
+          );
+        }
+
+        revealHeading('.mission-copy-col, .showcase-header, .domains-header, .curiosities-header, .highlights-header');
+        revealStaggered('.mission-stats-col', '.mission-stat-card');
+        revealStaggered('#featuredSpeciesGrid', '.species-card');
+        revealStaggered('.domains-grid', '.domain-card');
+        revealStaggered('.curiosities-list', '.curiosity-strip');
+        revealStaggered('.highlights-grid', '.highlight-card');
+      } else if (pageType === 'species') {
+        const dirEls = document.querySelectorAll(
+          '.directory-banner .breadcrumb-bar, .directory-banner .section-eyebrow, .directory-headline, .directory-subcopy, .directory-stat-pill, .directory-filter-panel'
+        );
+        if (dirEls.length) {
+          gsap.from(dirEls, {
+            y: 24,
+            opacity: 0,
+            duration: 0.68,
+            ease: 'power3.out',
+            stagger: 0.08,
+            clearProps: 'transform,opacity'
+          });
+        }
+        revealStaggered('#directorySpeciesGrid', '.species-card');
+      } else if (pageType === 'plant') {
+        const detailHeroEls = document.querySelectorAll(
+          '.detail-breadcrumb-row, .overview-title-block > *, .overview-hero-figure, .classification-table-wrap'
+        );
+        if (detailHeroEls.length) {
+          gsap.from(detailHeroEls, {
+            y: 26,
+            opacity: 0,
+            duration: 0.72,
+            ease: 'power3.out',
+            stagger: 0.09,
+            clearProps: 'transform,opacity'
+          });
+        }
+
+        // Hero Plate Vertical Parallax Scrub
+        const overviewHeroCard = document.querySelector('.overview-hero-card');
+        const heroPlateImg = document.querySelector('.overview-hero-media img');
+        if (overviewHeroCard && heroPlateImg) {
+          gsap.set(heroPlateImg, { scale: 1.12 });
+          gsap.fromTo(
+            heroPlateImg,
+            { yPercent: -6 },
+            {
+              yPercent: 6,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: overviewHeroCard,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 0.35
+              }
+            }
+          );
+        }
+
+        // Chapters 01–07 Scroll-Triggered Reveals
+        document.querySelectorAll('.chapter-card').forEach(function (card) {
+          gsap.from(card, {
+            y: 28,
+            opacity: 0,
+            duration: 0.74,
+            ease: 'power3.out',
+            clearProps: 'transform,opacity',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 86%',
+              once: true
+            }
+          });
+
+          const figures = card.querySelectorAll('.chapter-figure-single, .gallery-figure');
+          if (figures.length) {
+            gsap.from(figures, {
+              scale: 0.95,
+              opacity: 0,
+              duration: 0.75,
+              ease: 'power3.out',
+              stagger: 0.1,
+              clearProps: 'transform,opacity',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 84%',
+                once: true
+              }
+            });
+          }
+
+          const subblocks = card.querySelectorAll('.subblock-item');
+          if (subblocks.length) {
+            gsap.from(subblocks, {
+              y: 20,
+              opacity: 0,
+              duration: 0.65,
+              ease: 'power3.out',
+              stagger: 0.08,
+              clearProps: 'transform,opacity',
+              scrollTrigger: {
+                trigger: card.querySelector('.chapter-subblocks') || card,
+                start: 'top 86%',
+                once: true
+              }
+            });
+          }
+        });
+
+        revealStaggered('.species-pager', '.pager-link');
+      }
+
+      ScrollTrigger.refresh();
     });
   }
 
@@ -416,45 +671,17 @@
 
     const featuredPlants = allPlants.filter(function (p) {
       return p.featured === true;
-    }).slice(0, 10);
+    }).slice(0, 3);
 
-    const flagshipList = featuredPlants.length > 0 ? featuredPlants : allPlants.slice(0, 10);
+    const flagshipList = featuredPlants.length > 0 ? featuredPlants : allPlants.slice(0, 3);
 
     if (featuredCountEl) {
       featuredCountEl.textContent =
-        'Showing ' + flagshipList.length + ' curated flagship monographs of ' + allPlants.length + ' indexed species';
+        'Showing ' + flagshipList.length + ' flagship monographs of ' + allPlants.length + ' indexed species';
     }
 
     if (featuredGridEl) {
       featuredGridEl.innerHTML = flagshipList.map(renderSpeciesCard).join('');
-      initScrollReveal(featuredGridEl);
-    }
-
-    // Hydrate Monograph Spotlight with Sacred Lotus (or first featured)
-    const spotlightPlant =
-      allPlants.find(function (p) { return p.slug === 'lotus'; }) || flagshipList[0];
-
-    if (spotlightPlant) {
-      const spImg = document.getElementById('spotlightImg');
-      const spTitle = document.getElementById('spotlightTitle');
-      const spSci = document.getElementById('spotlightSci');
-      const spSummary = document.getElementById('spotlightSummary');
-      const spFamily = document.getElementById('spotlightFamily');
-      const spForm = document.getElementById('spotlightForm');
-      const spOrigin = document.getElementById('spotlightOrigin');
-      const spCta = document.getElementById('spotlightCta');
-
-      if (spImg && spotlightPlant.heroImage) {
-        spImg.src = spotlightPlant.heroImage.url;
-        spImg.alt = spotlightPlant.heroImage.alt || spotlightPlant.commonName;
-      }
-      if (spTitle) spTitle.textContent = spotlightPlant.commonName;
-      if (spSci) spSci.textContent = spotlightPlant.scientificName;
-      if (spSummary) spSummary.textContent = spotlightPlant.leadOverview || spotlightPlant.shortSummary;
-      if (spFamily && spotlightPlant.overview) spFamily.textContent = spotlightPlant.overview.family;
-      if (spForm && spotlightPlant.overview) spForm.textContent = spotlightPlant.overview.growthForm;
-      if (spOrigin && spotlightPlant.overview) spOrigin.textContent = spotlightPlant.overview.nativeOrigin;
-      if (spCta) spCta.href = 'plant.html?species=' + encodeURIComponent(spotlightPlant.slug);
     }
 
     function updateSuggestions(query) {
@@ -688,7 +915,9 @@
       }
 
       gridEl.innerHTML = sliced.map(renderSpeciesCard).join('');
-      initScrollReveal(gridEl);
+      if (isUserInteraction) {
+        animateDynamicSpeciesGrid(gridEl);
+      }
 
       if (loadMoreWrap && loadMoreLabel) {
         const remaining = totalMatched - sliced.length;
@@ -702,12 +931,15 @@
       }
     }
 
+    let isUserInteraction = false;
+
     if (categoryTabsEl) {
       categoryTabsEl.addEventListener('click', function (e) {
         const tab = e.target.closest('[data-category]');
         if (!tab) return;
         activeCategory = tab.getAttribute('data-category');
         visibleLimit = BATCH_SIZE;
+        isUserInteraction = true;
         syncCategoryTabs();
         renderDirectory();
       });
@@ -719,6 +951,7 @@
         if (!btn || btn.disabled) return;
         activeLetter = btn.getAttribute('data-letter');
         visibleLimit = BATCH_SIZE;
+        isUserInteraction = true;
         renderAzStrip();
         renderDirectory();
       });
@@ -728,6 +961,7 @@
       searchInput.addEventListener('input', function () {
         activeQuery = searchInput.value.trim();
         visibleLimit = BATCH_SIZE;
+        isUserInteraction = true;
         if (searchClear) searchClear.hidden = activeQuery.length === 0;
         renderDirectory();
       });
@@ -738,6 +972,7 @@
         searchInput.value = '';
         activeQuery = '';
         visibleLimit = BATCH_SIZE;
+        isUserInteraction = true;
         searchClear.hidden = true;
         renderDirectory();
         searchInput.focus();
@@ -747,6 +982,7 @@
     if (searchForm) {
       searchForm.addEventListener('submit', function (e) {
         e.preventDefault();
+        isUserInteraction = true;
         renderDirectory();
       });
     }
@@ -755,17 +991,22 @@
       sortSelect.addEventListener('change', function () {
         activeSort = sortSelect.value;
         visibleLimit = BATCH_SIZE;
+        isUserInteraction = true;
         renderDirectory();
       });
     }
 
     if (resetAllBtn) {
-      resetAllBtn.addEventListener('click', resetAllFilters);
+      resetAllBtn.addEventListener('click', function () {
+        isUserInteraction = true;
+        resetAllFilters();
+      });
     }
 
     if (loadMoreBtn) {
       loadMoreBtn.addEventListener('click', function () {
         visibleLimit += BATCH_SIZE;
+        isUserInteraction = true;
         renderDirectory();
       });
     }
@@ -774,6 +1015,7 @@
       if (!CATEGORIES.includes(category)) return;
       activeCategory = category;
       visibleLimit = BATCH_SIZE;
+      isUserInteraction = true;
       syncCategoryTabs();
       renderDirectory();
     };
@@ -917,22 +1159,8 @@
     return allPlants.length > 0 ? allPlants[0].slug : '';
   }
 
-  function renderTextbookChapter(section, indexNum) {
+  function renderTextbookChapter(section) {
     const images = Array.isArray(section.images) ? section.images : [];
-    const floatImg = images[0];
-    const galleryImgs = images.slice(1);
-    const floatDir = indexNum % 2 === 1 ? 'float-right' : 'float-left';
-
-    let floatHtml = '';
-    if (floatImg) {
-      floatHtml =
-        '<figure class="textbook-figure ' + floatDir + '">' +
-        '<div class="figure-media-box">' +
-        renderImgTag(floatImg.url, floatImg.alt || floatImg.caption, floatImg.caption, false) +
-        '</div>' +
-        '<figcaption><span class="figcaption-fig">Fig. ' + section.number + '.1</span>' + escapeHtml(floatImg.caption) + '</figcaption>' +
-        '</figure>';
-    }
 
     const paragraphsHtml = (section.paragraphs || []).map(function (p) {
       return '<p>' + escapeHtml(p) + '</p>';
@@ -962,22 +1190,50 @@
         '</div>';
     }
 
-    let galleryHtml = '';
-    if (galleryImgs.length > 0) {
-      galleryHtml =
-        '<div class="section-mini-gallery">' +
-        galleryImgs.map(function (img, idx) {
-          const figCode = 'Fig. ' + section.number + '.' + (idx + 2);
+    let bodyContentHtml = '';
+
+    if (images.length === 1) {
+      const fig = images[0];
+      bodyContentHtml =
+        '<div class="chapter-split-grid">' +
+        '<div class="chapter-prose-col">' +
+        paragraphsHtml +
+        safetyHtml +
+        '</div>' +
+        '<figure class="chapter-figure-single">' +
+        '<div class="figure-media-box">' +
+        renderImgTag(fig.url, fig.alt || fig.caption, fig.caption, false) +
+        '</div>' +
+        '<figcaption><span class="figcaption-fig">Fig. ' + escapeHtml(section.number) + '.1</span>' + escapeHtml(fig.caption) + '</figcaption>' +
+        '</figure>' +
+        '</div>' +
+        subblocksHtml;
+    } else if (images.length >= 2) {
+      const galleryHtml =
+        '<div class="chapter-gallery-two">' +
+        images.map(function (img, idx) {
+          const figCode = 'Fig. ' + section.number + '.' + (idx + 1);
           return (
             '<figure class="gallery-figure">' +
             '<div class="figure-media-box">' +
             renderImgTag(img.url, img.alt || img.caption, img.caption, false) +
             '</div>' +
-            '<figcaption><span class="figcaption-fig">' + figCode + '</span>' + escapeHtml(img.caption) + '</figcaption>' +
+            '<figcaption><span class="figcaption-fig">' + escapeHtml(figCode) + '</span>' + escapeHtml(img.caption) + '</figcaption>' +
             '</figure>'
           );
         }).join('') +
         '</div>';
+
+      bodyContentHtml =
+        paragraphsHtml +
+        galleryHtml +
+        subblocksHtml +
+        safetyHtml;
+    } else {
+      bodyContentHtml =
+        paragraphsHtml +
+        subblocksHtml +
+        safetyHtml;
     }
 
     return (
@@ -990,11 +1246,7 @@
       '<span class="chapter-subtitle">' + escapeHtml(section.subtitle || '') + '</span>' +
       '</header>' +
       '<div class="chapter-body">' +
-      floatHtml +
-      paragraphsHtml +
-      subblocksHtml +
-      safetyHtml +
-      galleryHtml +
+      bodyContentHtml +
       '</div>' +
       '</article>'
     );
@@ -1206,12 +1458,11 @@
       '</div>';
 
     initSectionMapOverlay(plant);
-    initScrollReveal(root);
   }
 
   /* ================= BOOTSTRAP ================= */
   async function bootstrap() {
-    const pageType = document.body.getAttribute('data-page');
+    const pageType = document.body.getAttribute('data-page') || 'home';
     try {
       const response = await fetch('plants.json', { cache: 'no-cache' });
       if (!response.ok) {
@@ -1229,8 +1480,9 @@
         initSpeciesDirectoryPage();
       } else {
         initHomePage();
-        initScrollReveal(document);
       }
+
+      initGsapExperience(pageType);
     } catch (err) {
       const target =
         document.getElementById('featuredSpeciesGrid') ||
@@ -1243,8 +1495,14 @@
           '<p>' + escapeHtml(err.message) + '</p>' +
           '</div>';
       }
+      initGsapExperience(pageType);
     }
   }
 
   document.addEventListener('DOMContentLoaded', bootstrap);
+  window.addEventListener('load', function () {
+    if (window.ScrollTrigger) {
+      window.ScrollTrigger.refresh();
+    }
+  });
 })();

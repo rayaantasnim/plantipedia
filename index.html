@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plantipedia — Dark Botanical Luxury Encyclopedia &amp; Flora Archive</title>
-  <meta name="description" content="Explore Plantipedia, a scholarly digital botanical archive scaling across 200+ plant species with 8-chapter monographs, taxonomy, ecology, and field photography.">
-  <meta name="keywords" content="plantipedia, plant encyclopedia, botanical archive, taxonomy, plant morphology, South Asian flora, medicinal plants, fruit trees, horticulture">
+  <title>Plantipedia — Dark Botanical Luxury Encyclopedia &amp; Flora Archive (20 Species)</title>
+  <meta name="description" content="Explore Plantipedia, a scholarly digital botanical archive documenting 20 curated plant species with 8-chapter monographs, taxonomy, ecology, and field photography.">
+  <meta name="keywords" content="plantipedia, plant encyclopedia, botanical archive, 20 curated plant species, taxonomy, plant morphology, South Asian flora, medicinal plants, fruit trees, horticulture">
   <meta name="author" content="Jalees Habib, Rayaan Tasnim">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#04140c">
@@ -14,16 +14,16 @@
   <!-- Open Graph Social Card -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Plantipedia">
-  <meta property="og:title" content="Plantipedia — Dark Botanical Luxury Encyclopedia &amp; Flora Archive">
-  <meta property="og:description" content="Explore detailed botanical monographs spanning morphology, taxonomy, ecology, medicinal properties, and cultivation guides.">
+  <meta property="og:title" content="Plantipedia — 20 Curated Botanical Monographs &amp; Flora Archive">
+  <meta property="og:description" content="Explore Plantipedia's 20 curated botanical monographs spanning morphology, taxonomy, ecology, medicinal properties, and cultivation guides.">
   <meta property="og:url" content="https://plantipedia.archive/">
   <meta property="og:image" content="https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200">
   <meta property="og:image:alt" content="Lush tropical botanical foliage featured in the Plantipedia Flora Archive">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Plantipedia — Dark Botanical Luxury Encyclopedia &amp; Flora Archive">
-  <meta name="twitter:description" content="Explore detailed botanical monographs spanning morphology, taxonomy, ecology, medicinal properties, and cultivation guides.">
+  <meta name="twitter:title" content="Plantipedia — 20 Curated Botanical Monographs &amp; Flora Archive">
+  <meta name="twitter:description" content="Explore Plantipedia's 20 curated botanical monographs spanning morphology, taxonomy, ecology, medicinal properties, and cultivation guides.">
   <meta name="twitter:image" content="https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200">
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23022c22'/%3E%3Cg transform='translate(32 34)'%3E%3Cpath d='M0 14 C-16 14 -24 2 -22 -8 C-12 -6 -4 2 0 14 Z' fill='%2310b981'/%3E%3Cpath d='M0 14 C16 14 24 2 22 -8 C12 -6 4 2 0 14 Z' fill='%23059669'/%3E%3Cpath d='M0 10 C-14 4 -18 -12 -8 -20 C-2 -14 0 -2 0 10 Z' fill='%23f43f5e'/%3E%3Cpath d='M0 10 C14 4 18 -12 8 -20 C2 -14 0 -2 0 10 Z' fill='%23fb7185'/%3E%3Cpath d='M0 10 C-9 -4 -7 -21 0 -25 C7 -21 9 -4 0 10 Z' fill='%23fda4af'/%3E%3Ccircle cx='0' cy='-5' r='3.5' fill='%23fde68a'/%3E%3Cpath d='M0 -5 L0 -15 M-3 -12 L0 -15 L3 -12' stroke='%23fde68a' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3C/g%3E%3C/svg%3E">
@@ -41,7 +41,7 @@
         "@type": "EducationalOrganization",
         "@id": "https://plantipedia.archive/#organization",
         "name": "Plantipedia",
-        "description": "An educational botanical encyclopedia scaling across 200+ global and South Asian plant species with taxonomic precision, anatomical descriptions, ecological roles, and horticultural care guides.",
+        "description": "An educational botanical encyclopedia documenting 20 curated global and South Asian plant species with taxonomic precision, anatomical descriptions, ecological roles, and horticultural care guides.",
         "url": "https://plantipedia.archive/",
         "founder": [
           { "@type": "Person", "name": "Jalees Habib" },
@@ -53,7 +53,7 @@
         "@id": "https://plantipedia.archive/#website",
         "name": "Plantipedia",
         "url": "https://plantipedia.archive/",
-        "description": "Botanical luxury encyclopedia documenting plant species with 8-chapter monographs covering morphology, taxonomy, ecology, medicinal properties, and cultivation.",
+        "description": "Botanical luxury encyclopedia documenting 20 curated plant species with 8-chapter monographs covering morphology, taxonomy, ecology, medicinal properties, and cultivation.",
         "publisher": { "@id": "https://plantipedia.archive/#organization" },
         "author": [
           { "@type": "Person", "name": "Jalees Habib" },
@@ -73,6 +73,10 @@
   </script>
 </head>
 <body data-page="home">
+  <!-- Top Reading Progress Indicator -->
+  <div class="scroll-progress-track" aria-hidden="true">
+    <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+  </div>
   <!-- Global Fixed Glassmorphism Navbar -->
   <header class="global-navbar" id="globalNavbar">
     <div class="navbar-inner">
@@ -107,7 +111,7 @@
           <input
             type="search"
             id="navbarSearchInput"
-            placeholder="Search 200+ species..."
+            placeholder="Search 20 species..."
             autocomplete="off"
             aria-label="Quick search plant species"
           >
@@ -169,7 +173,7 @@
             <input
               type="search"
               id="mobileSearchInput"
-              placeholder="Search 200+ species..."
+              placeholder="Search 20 species..."
               autocomplete="off"
               aria-label="Search plant species"
             >
@@ -210,7 +214,7 @@
           <span class="mobile-nav-badge">03</span>
           <span class="mobile-nav-card-text">
             <span class="mobile-nav-card-title">Available Species</span>
-            <span class="mobile-nav-card-sub">Full 200+ Flora Directory</span>
+            <span class="mobile-nav-card-sub">Full 20-Species Flora Directory</span>
           </span>
           <span class="mobile-nav-arrow" aria-hidden="true">&rarr;</span>
         </a>
@@ -261,7 +265,7 @@
             <input
               type="search"
               id="homeSearchInput"
-              placeholder="Search 200+ species by common name, scientific name, or family..."
+              placeholder="Search 20 species by common name, scientific name, or family..."
               autocomplete="off"
               aria-label="Search botanical species"
             >
@@ -272,7 +276,7 @@
         </div>
 
         <div class="hero-summary-strip">
-          <span>200+ Botanical Monographs</span>
+          <span>20 Curated Monographs</span>
           <span class="hero-summary-sep" aria-hidden="true">&bull;</span>
           <span>8 Structured Chapters</span>
           <span class="hero-summary-sep" aria-hidden="true">&bull;</span>
@@ -292,16 +296,16 @@
               Plantipedia transforms botanical reference literature into a structured, high-contrast digital museum. Every entry in the archive pairs classical taxonomic rigor—from family lineage and floral morphology to pollination syndromes—with practical agronomic guidance rooted in South Asian, tropical, and global growing traditions.
             </p>
             <p class="justified-prose">
-              Engineered to scale smoothly across more than 200 documented species, the archive delivers eight-chapter monographs backed by verified field photography and structured classification tables. Explore our curated flagship specimens below or open the complete A–Z botanical directory.
+              Curated cleanly across 20 documented plant species, the archive delivers eight-chapter monographs backed by verified field photography and structured classification tables. Explore our top 3 flagship specimens below or open the complete A–Z botanical directory.
             </p>
           </div>
 
           <div class="mission-stats-col">
             <article class="mission-stat-card">
-              <span class="mission-stat-number" id="homeStatSpeciesCount">35</span>
+              <span class="mission-stat-number" id="homeStatSpeciesCount">20</span>
               <div>
                 <h3 class="mission-stat-title">Indexed Archive Monographs</h3>
-                <p class="mission-stat-desc">Growing toward 200+ full entries across fruit trees, sacred herbs, ornamentals, palms, and aquatic flora.</p>
+                <p class="mission-stat-desc">20 complete, deeply researched entries across fruit trees, sacred herbs, ornamentals, palms, and aquatic flora.</p>
               </div>
             </article>
             <article class="mission-stat-card">
@@ -323,15 +327,15 @@
       </div>
     </section>
 
-    <!-- Section 03: Top 10 Curated Featured Species -->
+    <!-- Section 03: Top 3 Curated Featured Species -->
     <section class="explorer-section" id="featured-species">
       <div class="section-container">
         <div class="showcase-header">
           <div>
             <span class="section-eyebrow">02. Flagship Archive Selection</span>
-            <h2 class="section-heading">Top 10 Curated Featured Species</h2>
+            <h2 class="section-heading">Top 3 Curated Featured Species</h2>
           </div>
-          <p class="explorer-count" id="featuredCount">Showing 10 curated flagship monographs</p>
+          <p class="explorer-count" id="featuredCount">Showing 3 flagship monographs of 20 indexed species</p>
         </div>
 
         <div class="species-grid" id="featuredSpeciesGrid">
@@ -343,7 +347,7 @@
 
         <div class="featured-cta-wrap">
           <a href="species.html" class="cta-glow-button">
-            <span>Explore All 200+ Available Species</span>
+            <span>Explore All 20 Available Species</span>
             <span class="cta-glow-arrow" aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -401,58 +405,83 @@
       </div>
     </section>
 
-    <!-- Section 05: Monograph Spotlight ("Species of the Archive") -->
-    <section class="spotlight-section" id="archive-spotlight">
+    <!-- Section 04: Botanical Curiosities — Did You Know? -->
+    <section class="curiosities-section" id="did-you-know">
       <div class="section-container">
-        <article class="spotlight-glass-card" id="spotlightCard">
-          <div class="spotlight-media-col">
-            <div class="spotlight-media-frame">
-              <img
-                id="spotlightImg"
-                src="https://images.pexels.com/photos/36868557/pexels-photo-36868557.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                alt="Sacred Lotus (Nelumbo nucifera) blossom emerging above wetland foliage"
-                loading="lazy"
-                referrerpolicy="no-referrer"
-                onerror="window.__plantipediaImgFallback(this, 'Nelumbo nucifera — Sacred Lotus')"
-              >
-            </div>
-          </div>
+        <div class="curiosities-header">
+          <span class="section-eyebrow">04. Botanical Curiosities</span>
+          <h2 class="section-heading">Did You Know?</h2>
+          <p class="justified-prose curiosities-intro">
+            Five remarkable physiological and evolutionary adaptations documented across our curated flora archive—from thermogenic blossoms and millennial seed dormancy to geometric phyllotaxis.
+          </p>
+        </div>
 
-          <div class="spotlight-copy-col">
-            <span class="section-eyebrow">04. Species of the Archive</span>
-            <h2 class="spotlight-title" id="spotlightTitle">Sacred Lotus</h2>
-            <p class="spotlight-sci" id="spotlightSci">Nelumbo nucifera Gaertn.</p>
-            <p class="justified-prose" id="spotlightSummary">
-              Rising unstained from silt-rich monsoon wetlands, the Sacred Lotus exemplifies botanical engineering: superhydrophobic leaf papillae repel water droplets via the Lotus Effect, while thermogenic receptacles maintain internal floral warmth during nocturnal beetle pollination.
-            </p>
-
-            <div class="spotlight-facts-grid">
-              <div class="spotlight-fact">
-                <span class="spotlight-fact-label">Family</span>
-                <span class="spotlight-fact-value" id="spotlightFamily">Nelumbonaceae</span>
+        <div class="curiosities-list">
+          <article class="curiosity-strip">
+            <span class="curiosity-num" aria-hidden="true">01</span>
+            <div class="curiosity-body">
+              <div class="curiosity-title-row">
+                <h3 class="curiosity-title">Thermogenic Blossom Heating &amp; 1,300-Year Dormancy</h3>
+                <a href="plant.html?species=lotus" class="curiosity-taxon">Nelumbo nucifera &middot; Sacred Lotus &rarr;</a>
               </div>
-              <div class="spotlight-fact">
-                <span class="spotlight-fact-label">Habit</span>
-                <span class="spotlight-fact-value" id="spotlightForm">Rhizomatous hydrophyte</span>
-              </div>
-              <div class="spotlight-fact">
-                <span class="spotlight-fact-label">Origin</span>
-                <span class="spotlight-fact-value" id="spotlightOrigin">South &amp; East Asia</span>
-              </div>
-              <div class="spotlight-fact">
-                <span class="spotlight-fact-label">Status</span>
-                <span class="spotlight-fact-value">National Flower of India &amp; Vietnam</span>
-              </div>
+              <p class="curiosity-desc">
+                Sacred Lotus flowers actively regulate their receptacle temperature between 30&deg;C and 35&deg;C using cyanide-resistant respiration to volatilize floral scents for nocturnal pollinators, while its hard-coated nutlets have successfully germinated after more than 1,300 years of dormancy in ancient lake sediments.
+              </p>
             </div>
+          </article>
 
-            <div class="spotlight-actions">
-              <a href="plant.html?species=lotus" id="spotlightCta" class="cta-glow-button cta-glow-button--compact">
-                <span>Read Full Monograph</span>
-                <span class="cta-glow-arrow" aria-hidden="true">&rarr;</span>
-              </a>
+          <article class="curiosity-strip">
+            <span class="curiosity-num" aria-hidden="true">02</span>
+            <div class="curiosity-body">
+              <div class="curiosity-title-row">
+                <h3 class="curiosity-title">40+ cm Daily Intercalary Culm Elongation</h3>
+                <a href="plant.html?species=bamboo" class="curiosity-taxon">Bambusoideae &middot; Bamboo &rarr;</a>
+              </div>
+              <p class="curiosity-desc">
+                Unlike dicotyledonous trees that grow strictly from terminal tips and vascular cambium, woody bamboos retain active intercalary meristems at the base of every internode—allowing multiple culm joints to expand simultaneously and surge skyward by over 40 centimetres in a single monsoon day.
+              </p>
             </div>
-          </div>
-        </article>
+          </article>
+
+          <article class="curiosity-strip">
+            <span class="curiosity-num" aria-hidden="true">03</span>
+            <div class="curiosity-body">
+              <div class="curiosity-title-row">
+                <h3 class="curiosity-title">Self-Supporting Aerial Prop-Root Clonal Architecture</h3>
+                <a href="plant.html?species=banyan" class="curiosity-taxon">Ficus benghalensis &middot; Banyan &rarr;</a>
+              </div>
+              <p class="curiosity-desc">
+                Spreading horizontal boughs of the Banyan drop slender aerial adventitious roots toward the soil; once anchored, they undergo rapid secondary thickening into lignified pillar trunks indistinguishable from the primary stem, enabling one genetic individual to span several hectares as a living forest.
+              </p>
+            </div>
+          </article>
+
+          <article class="curiosity-strip">
+            <span class="curiosity-num" aria-hidden="true">04</span>
+            <div class="curiosity-body">
+              <div class="curiosity-title-row">
+                <h3 class="curiosity-title">Protogynous Floral Timing &amp; Botanical Beetle Traps</h3>
+                <a href="plant.html?species=water-lily" class="curiosity-taxon">Nymphaea &middot; Water Lily &rarr;</a>
+              </div>
+              <p class="curiosity-desc">
+                Tropical water lilies open on day one in a female-receptive phase filled with nectar-rich stigmatic fluid that lures and briefly detains pollen-dusted beetles overnight; on day two, the flower reopens in its male phase with erect pollen-shedding stamens, enforcing cross-pollination.
+              </p>
+            </div>
+          </article>
+
+          <article class="curiosity-strip">
+            <span class="curiosity-num" aria-hidden="true">05</span>
+            <div class="curiosity-body">
+              <div class="curiosity-title-row">
+                <h3 class="curiosity-title">Fibonacci Golden-Angle Phyllotaxis Spirals</h3>
+                <a href="plant.html?species=sunflower" class="curiosity-taxon">Helianthus annuus &middot; Sunflower &rarr;</a>
+              </div>
+              <p class="curiosity-desc">
+                Developing disc florets in a sunflower capitulum emerge sequentially rotated by the botanical golden angle of roughly 137.5 degrees, automatically organizing mature achenes into interlocking clockwise and counter-clockwise spiral parastichies matching Fibonacci pairs (34/55 or 55/89) for maximum packing efficiency.
+              </p>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -541,6 +570,8 @@
     </div>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="app.js" defer></script>
 </body>
 </html>
