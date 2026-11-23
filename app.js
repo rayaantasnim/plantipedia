@@ -650,9 +650,13 @@
 
     function openOverlay() {
       overlay.hidden = false;
+      overlay.scrollTop = 0;
+      const overlayBody = overlay.querySelector(".mobile-overlay-body");
+      if (overlayBody) overlayBody.scrollTop = 0;
       toggleBtn.classList.add("is-open");
       toggleBtn.setAttribute("aria-expanded", "true");
       toggleBtn.setAttribute("aria-label", "Close navigation menu");
+      document.documentElement.classList.add("overlay-locked");
       document.body.classList.add("overlay-locked");
       if (searchInput) {
         setTimeout(function () {
@@ -667,6 +671,7 @@
       toggleBtn.classList.remove("is-open");
       toggleBtn.setAttribute("aria-expanded", "false");
       toggleBtn.setAttribute("aria-label", "Open navigation menu");
+      document.documentElement.classList.remove("overlay-locked");
       document.body.classList.remove("overlay-locked");
       if (restoreFocus) {
         toggleBtn.focus();
