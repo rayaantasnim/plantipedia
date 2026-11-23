@@ -1,99 +1,399 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plantipedia — Botanical Encyclopedia &amp; Flora Archive</title>
+  <meta name="description" content="Explore 20 detailed botanical monographs covering morphology, taxonomy, ecology, medicinal properties, and cultivation guides with Plantipedia.">
+  <meta name="keywords" content="plantipedia, plant encyclopedia, botanical archive, taxonomy, plant morphology, flora of Bangladesh, medicinal plants, fruit trees, horticulture">
+  <meta name="author" content="Jalees Habib, Rayaan Tasnim">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://plantipedia.archive/">
 
-    <head>
-        <title>Plantipedia - Explore the World of Plants</title>
+  <!-- Open Graph Social Card -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Plantipedia">
+  <meta property="og:title" content="Plantipedia — Botanical Encyclopedia &amp; Flora Archive">
+  <meta property="og:description" content="Explore 20 detailed botanical monographs covering morphology, taxonomy, ecology, medicinal properties, and cultivation guides with Plantipedia.">
+  <meta property="og:url" content="https://plantipedia.archive/">
+  <meta property="og:image" content="https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200">
+  <meta property="og:image:alt" content="Lush tropical botanical foliage featured in the Plantipedia Flora Archive">
 
-        <meta name="description"
-            content="Explore Plantipedia, an online plant encyclopedia featuring detailed information about flowers, trees, herbs, plant classification, habitats, cultivation and more.">
-        <meta name="keywords"
-            content="plants, plant encyclopedia, flowers, trees, botanical information, plant classification, plant cultivation">
-        <meta name="author" content="Plantipedia">
-        <meta name="robots" content="index, follow">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="canonical"
-            href="https://shahjahankabir22459-ship-it.github.io/plantipedia/">
-        <meta property="og:title"
-            content="Plantipedia - Explore the World of Plants">
-        <meta property="og:description"
-            content="Discover the fascinating world of plants with Plantipedia.">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Plantipedia — Botanical Encyclopedia &amp; Flora Archive">
+  <meta name="twitter:description" content="Explore 20 detailed botanical monographs covering morphology, taxonomy, ecology, medicinal properties, and cultivation guides with Plantipedia.">
+  <meta name="twitter:image" content="https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200">
 
-        <meta property="og:url"
-            content="https://shahjahankabir22459-ship-it.github.io/plantipedia/">
-        <meta property="og:type" content="website">
-        <link rel="stylesheet" href="style.css">
-        <style>
-        body {
-            background: linear-gradient(rgba(5, 35, 20, 0.78), rgba(0, 116, 58, 0.85)), url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e") center/cover;
-            text-align: center;
-            align-items: center;
-            margin: 0;
-            padding: 0;
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23022c22'/%3E%3Cg transform='translate(32 34)'%3E%3Cpath d='M0 14 C-16 14 -24 2 -22 -8 C-12 -6 -4 2 0 14 Z' fill='%2310b981'/%3E%3Cpath d='M0 14 C16 14 24 2 22 -8 C12 -6 4 2 0 14 Z' fill='%23059669'/%3E%3Cpath d='M0 10 C-14 4 -18 -12 -8 -20 C-2 -14 0 -2 0 10 Z' fill='%23f43f5e'/%3E%3Cpath d='M0 10 C14 4 18 -12 8 -20 C2 -14 0 -2 0 10 Z' fill='%23fb7185'/%3E%3Cpath d='M0 10 C-9 -4 -7 -21 0 -25 C7 -21 9 -4 0 10 Z' fill='%23fda4af'/%3E%3Ccircle cx='0' cy='-5' r='3.5' fill='%23fde68a'/%3E%3Cpath d='M0 -5 L0 -15 M-3 -12 L0 -15 L3 -12' stroke='%23fde68a' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
+  <!-- Schema.org Structured Data: WebSite & EducationalOrganization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "EducationalOrganization",
+        "@id": "https://plantipedia.archive/#organization",
+        "name": "Plantipedia",
+        "description": "An educational botanical encyclopedia documenting global and South Asian flora with taxonomic precision, anatomical descriptions, ecological roles, and horticultural care guides.",
+        "url": "https://plantipedia.archive/",
+        "founder": [
+          {
+            "@type": "Person",
+            "name": "Jalees Habib"
+          },
+          {
+            "@type": "Person",
+            "name": "Rayaan Tasnim"
+          }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://plantipedia.archive/#website",
+        "name": "Plantipedia",
+        "url": "https://plantipedia.archive/",
+        "description": "Explore 20 detailed botanical monographs covering morphology, taxonomy, ecology, medicinal properties, and cultivation guides.",
+        "publisher": {
+          "@id": "https://plantipedia.archive/#organization"
+        },
+        "author": [
+          {
+            "@type": "Person",
+            "name": "Jalees Habib"
+          },
+          {
+            "@type": "Person",
+            "name": "Rayaan Tasnim"
+          }
+        ],
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "plant.html?species={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
         }
-    </style>
-    </head>
-    <body>
-        <nav>
-            <div class="logo"><span>plant</span>ipedia 🌺</div>
-        </nav>
-        <header class="hero fade-in">
-            <h1><b>Discover The Diversity of the Plants Around You.</b></h1>
-            <p>Explore the incredible diversity of the plant kingdom. Learn
-                about flowers, trees, herbs, habitats,</p>
-            <p>and the science behind the green world around us.</p>
-            <br>
-            <div class="search-container">
+      }
+    ]
+  }
+  </script>
+</head>
+<body data-page="home">
+  <!-- Global Fixed Glassmorphism Navbar -->
+  <header class="global-navbar" id="globalNavbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="brand-logo" aria-label="Plantipedia Home">
+        <svg class="brand-flower-svg" viewBox="0 0 48 48" width="32" height="32" aria-hidden="true">
+          <g transform="translate(24 26)">
+            <path d="M0 11 C-12 11 -19 2 -17 -6 C-9 -4 -3 2 0 11 Z" fill="#10b981"/>
+            <path d="M0 11 C12 11 19 2 17 -6 C9 -4 3 2 0 11 Z" fill="#34d399"/>
+            <path d="M0 8 C-11 3 -14 -9 -6 -16 C-2 -11 0 -2 0 8 Z" fill="#f43f5e"/>
+            <path d="M0 8 C11 3 14 -9 6 -16 C2 -11 0 -2 0 8 Z" fill="#fb7185"/>
+            <path d="M0 8 C-7 -3 -5 -17 0 -20 C5 -17 7 -3 0 8 Z" fill="#fda4af"/>
+            <circle cx="0" cy="-4" r="2.8" fill="#fde68a"/>
+            <path d="M0 -4 L0 -12 M-2.5 -10 L0 -12.5 L2.5 -10" stroke="#fde68a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </g>
+        </svg>
+        <span class="brand-wordmark"><span class="brand-accent">Plant</span>ipedia</span>
+      </a>
 
-                <form id="search-form">
-                    <input type="text" id="search-input"
-                        placeholder="Search plants..." autocomplete="off">
+      <nav class="navbar-links" aria-label="Primary navigation">
+        <a href="#hero-search" class="nav-text-link">Home</a>
+        <a href="#about-plantipedia" class="nav-text-link">About</a>
+        <a href="#species-showcase" class="nav-text-link">All Species</a>
+        <a href="#botanical-highlights" class="nav-text-link">Ecology</a>
+      </nav>
 
-                    <button type="submit">Search</button>
-                </form>
+      <div class="navbar-search-wrap" id="navbarSearchWrap">
+        <form class="navbar-search-form" id="navbarSearchForm" role="search">
+          <svg class="navbar-search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            type="search"
+            id="navbarSearchInput"
+            placeholder="Search species..."
+            autocomplete="off"
+            aria-label="Quick search plant species"
+          >
+          <button type="button" class="navbar-search-clear" id="navbarSearchClear" aria-label="Clear navbar search" hidden>&times;</button>
+        </form>
+        <div class="navbar-suggestions" id="navbarSuggestions" role="listbox" aria-label="Matching plant species" hidden></div>
+      </div>
+      <button
+        type="button"
+        class="mobile-menu-toggle"
+        id="mobileMenuToggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mobileNavOverlay"
+      >
+        <span class="hamburger-box" aria-hidden="true">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </span>
+      </button>
+    </div>
+  </header>
 
-                <div id="suggestions"></div>
+  <!-- Full-Screen Mobile Overlay Menu (<= 768px) -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Mobile navigation and search" hidden>
+    <div class="mobile-overlay-header">
+      <a href="index.html" class="brand-logo mobile-overlay-brand" aria-label="Plantipedia Home">
+        <svg class="brand-flower-svg" viewBox="0 0 48 48" width="30" height="30" aria-hidden="true">
+          <g transform="translate(24 26)">
+            <path d="M0 11 C-12 11 -19 2 -17 -6 C-9 -4 -3 2 0 11 Z" fill="#10b981"/>
+            <path d="M0 11 C12 11 19 2 17 -6 C9 -4 3 2 0 11 Z" fill="#34d399"/>
+            <path d="M0 8 C-11 3 -14 -9 -6 -16 C-2 -11 0 -2 0 8 Z" fill="#f43f5e"/>
+            <path d="M0 8 C11 3 14 -9 6 -16 C2 -11 0 -2 0 8 Z" fill="#fb7185"/>
+            <path d="M0 8 C-7 -3 -5 -17 0 -20 C5 -17 7 -3 0 8 Z" fill="#fda4af"/>
+            <circle cx="0" cy="-4" r="2.8" fill="#fde68a"/>
+            <path d="M0 -4 L0 -12 M-2.5 -10 L0 -12.5 L2.5 -10" stroke="#fde68a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </g>
+        </svg>
+        <span class="brand-wordmark"><span class="brand-accent">Plant</span>ipedia</span>
+      </a>
+      <button type="button" class="mobile-overlay-close" id="mobileMenuClose" aria-label="Close navigation menu">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
 
-                <div id="search-message"></div>
+    <div class="mobile-overlay-body">
+      <div class="mobile-search-wrap" id="mobileSearchWrap">
+        <form class="mobile-search-form" id="mobileSearchForm" role="search">
+          <svg class="navbar-search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            type="search"
+            id="mobileSearchInput"
+            placeholder="Search species..."
+            autocomplete="off"
+            aria-label="Search plant species"
+          >
+          <button type="button" class="navbar-search-clear" id="mobileSearchClear" aria-label="Clear mobile search" hidden>&times;</button>
+        </form>
+        <div class="mobile-suggestions" id="mobileSuggestions" role="listbox" aria-label="Matching plant species" hidden></div>
+      </div>
 
-            </div>
-        </header>
-        <script src="script.js"></script>
-        <footer class="site-footer">
+      <nav class="mobile-overlay-links" aria-label="Mobile navigation">
+        <a href="#hero-search" class="mobile-overlay-link">Home</a>
+        <a href="#about-plantipedia" class="mobile-overlay-link">About</a>
+        <a href="#species-showcase" class="mobile-overlay-link">All Species</a>
+        <a href="#botanical-highlights" class="mobile-overlay-link">Ecology</a>
+      </nav>
+    </div>
+  </div>
 
-            <div class="footer-content">
+  <main class="page-main">
+    <!-- Section 01: Hero & Live Autocomplete Search -->
+    <section class="home-hero" id="hero-search">
+      <div class="home-hero-inner">
+        <span class="hero-kicker">Botanical Encyclopedia &amp; Flora Archive</span>
+        <h1 class="hero-headline">Discover The Diversity of the Plants Around You.</h1>
+        <p class="hero-subcopy">
+          Explore authoritative botanical monographs spanning flowering ornamentals, tropical fruit trees, sacred medicinal herbs, and aquatic flora—compiled with morphology, taxonomy, ecology, and cultivation protocols.
+        </p>
 
-                <h2>🌺 Plantipedia</h2>
+        <div class="home-search-shell">
+          <form class="home-search-form" id="homeSearchForm" role="search">
+            <svg class="home-search-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input
+              type="search"
+              id="homeSearchInput"
+              placeholder="Search by common name, scientific name, or plant family..."
+              autocomplete="off"
+              aria-label="Search botanical species"
+            >
+            <button type="button" class="home-search-clear" id="homeSearchClear" hidden>Clear</button>
+            <button type="submit" class="home-search-submit">Search</button>
+          </form>
+          <div class="home-suggestions" id="homeSuggestions" role="listbox" aria-label="Matching plant species" hidden></div>
+        </div>
 
-                <p class="footer-description">
-                    Exploring the fascinating world of plants, one species at a
-                    time.
-                </p>
+        <div class="hero-summary-strip">
+          <span>20 Curated Monographs</span>
+          <span class="hero-summary-sep" aria-hidden="true">·</span>
+          <span>8 Structured Chapters per Entry</span>
+          <span class="hero-summary-sep" aria-hidden="true">·</span>
+          <span>South Asian &amp; Global Flora</span>
+        </div>
+      </div>
+    </section>
 
-                <div class="footer-divider"></div>
+    <!-- Section 02: Site Overview & Botanical Mission ("About Plantipedia") -->
+    <section class="overview-section" id="about-plantipedia">
+      <div class="section-container">
+        <div class="mission-grid">
+          <div class="mission-copy-col">
+            <span class="section-eyebrow">01. About Plantipedia</span>
+            <h2 class="section-heading">An Academic Reference Built for Curious Botanists and Growers</h2>
+            <p class="justified-prose">
+              Plantipedia transforms botanical reference literature into a structured, readable digital atlas. Every entry in the archive pairs classical taxonomic rigor—from family lineage and floral morphology to pollination syndromes—with practical agronomic guidance rooted in tropical, subtropical, and South Asian growing traditions.
+            </p>
+            <p class="justified-prose">
+              Rather than brief summaries, each species opens as a complete eight-part monograph backed by curated photography and structured classification tables. Use the live search above or browse the catalog below to inspect stems, venation, root architecture, ethnobotany, and seasonal care.
+            </p>
+          </div>
 
-                <div class="disclaimer">
-                    <h3>Disclaimer</h3>
+          <div class="mission-stats-col">
+            <article class="mission-stat-card">
+              <span class="mission-stat-number">20</span>
+              <div>
+                <h3 class="mission-stat-title">Detailed Species Monographs</h3>
+                <p class="mission-stat-desc">Covering tropical fruit trees, sacred herbs, ornamental shrubs, aquatic blooms, and industrial flora.</p>
+              </div>
+            </article>
+            <article class="mission-stat-card">
+              <span class="mission-stat-number">07+</span>
+              <div>
+                <h3 class="mission-stat-title">Botanical Chapters per Plant</h3>
+                <p class="mission-stat-desc">Classification overview, morphology, taxonomy, habitat, ecology, ethnobotany, medicine, and cultivation.</p>
+              </div>
+            </article>
+            <article class="mission-stat-card">
+              <span class="mission-stat-number">160+</span>
+              <div>
+                <h3 class="mission-stat-title">Curated High-Res Plates</h3>
+                <p class="mission-stat-desc">Multi-angle botanical figures illustrating petals, foliage, bark, fruits, pollinators, and natural habitats.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                    <p>
-                        The copyright of this website applies to its original
-                        design, layout, styling and code. The information
-                        presented on this website is provided for educational
-                        and informational purposes only. Plantipedia does not
-                        claim ownership of third-party information or content.
-                        All rights to such materials belong to their respective
-                        authors and owners.
-                    </p>
-                </div>
+    <!-- Section 03: Available Plants Showcase (Responsive 3-Column Grid) -->
+    <section class="explorer-section" id="species-showcase">
+      <div class="section-container">
+        <div class="showcase-header">
+          <div>
+            <span class="section-eyebrow">02. Botanical Collection</span>
+            <h2 class="section-heading">Available Plants Showcase</h2>
+          </div>
+          <p class="explorer-count" id="explorerCount" aria-live="polite">Showing 20 of 20 documented species</p>
+        </div>
 
-                <div class="copyright">
-                    &copy; 2026 Plantipedia. All rights reserved.
-                </div>
+        <div class="explorer-toolbar">
+          <div class="category-tabs" id="homeCategoryTabs" role="tablist" aria-label="Filter plants by category">
+            <button type="button" class="category-tab active" data-category="All" role="tab" aria-selected="true">All</button>
+            <button type="button" class="category-tab" data-category="Flowers" role="tab" aria-selected="false">Flowers</button>
+            <button type="button" class="category-tab" data-category="Fruit Trees" role="tab" aria-selected="false">Fruit Trees</button>
+            <button type="button" class="category-tab" data-category="Medicinal" role="tab" aria-selected="false">Medicinal</button>
+            <button type="button" class="category-tab" data-category="Shrubs & Herbs" role="tab" aria-selected="false">Shrubs &amp; Herbs</button>
+          </div>
+        </div>
 
-            </div>
+        <div class="species-grid" id="speciesGrid">
+          <div class="app-loading-state">
+            <div class="loading-spinner" aria-hidden="true"></div>
+            <p>Loading botanical species archive...</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        </footer>
-    </body>
+    <!-- Section 04: Botanical Highlights / Quick Care & Ecology Tips -->
+    <section class="highlights-section" id="botanical-highlights">
+      <div class="section-container">
+        <div class="highlights-header">
+          <span class="section-eyebrow">03. Field Notes &amp; Ecology</span>
+          <h2 class="section-heading">Botanical Highlights &amp; Stewardship Principles</h2>
+        </div>
+
+        <div class="highlights-grid">
+          <article class="highlight-card">
+            <span class="highlight-index">01</span>
+            <h3 class="highlight-title">Plant Conservation &amp; Native Genetic Diversity</h3>
+            <p class="justified-prose">
+              Preserving heirloom cultivars—from landrace mango orchards in Rajshahi to wild wetland stands of sacred lotus—safeguards resilience against shifting monsoon patterns, salinity, and emerging crop pathogens.
+            </p>
+          </article>
+          <article class="highlight-card">
+            <span class="highlight-index">02</span>
+            <h3 class="highlight-title">Pollination Guilds &amp; Co-Evolved Mutualisms</h3>
+            <p class="justified-prose">
+              Floral architecture directly reflects pollinator ecology: night-blooming jasmine attracts crepuscular moths via volatile terpenoids, while open sunflower capitula sustain native solitary bees and syrphid flies.
+            </p>
+          </article>
+          <article class="highlight-card">
+            <span class="highlight-index">03</span>
+            <h3 class="highlight-title">Tropical &amp; Subtropical Flora Adaptations</h3>
+            <p class="justified-prose">
+              Across humid river deltas and monsoon plains, plants exhibit remarkable adaptations—aerial prop roots in banyans, waxy aerenchyma leaves in water lilies, and nitrogen-efficient bamboo rhizome networks.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Global Single-Column Centered Footer -->
+  <footer class="site-footer" id="globalFooter">
+    <div class="footer-container">
+      <!-- Part 1: Brand Overview & Disclaimer -->
+      <div class="footer-overview-block">
+        <a href="index.html" class="footer-brand" aria-label="Plantipedia Home">
+          <svg class="brand-flower-svg" viewBox="0 0 48 48" width="30" height="30" aria-hidden="true">
+            <g transform="translate(24 26)">
+              <path d="M0 11 C-12 11 -19 2 -17 -6 C-9 -4 -3 2 0 11 Z" fill="#10b981"/>
+              <path d="M0 11 C12 11 19 2 17 -6 C9 -4 3 2 0 11 Z" fill="#34d399"/>
+              <path d="M0 8 C-11 3 -14 -9 -6 -16 C-2 -11 0 -2 0 8 Z" fill="#f43f5e"/>
+              <path d="M0 8 C11 3 14 -9 6 -16 C2 -11 0 -2 0 8 Z" fill="#fb7185"/>
+              <path d="M0 8 C-7 -3 -5 -17 0 -20 C5 -17 7 -3 0 8 Z" fill="#fda4af"/>
+              <circle cx="0" cy="-4" r="2.8" fill="#fde68a"/>
+              <path d="M0 -4 L0 -12 M-2.5 -10 L0 -12.5 L2.5 -10" stroke="#fde68a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            </g>
+          </svg>
+          <span class="footer-brand-name"><span class="brand-accent">Plant</span>ipedia</span>
+        </a>
+        <p class="footer-overview-copy">
+          Exploring the fascinating world of plants, one species at a time. Plantipedia is an educational botanical archive dedicated to documenting global flora with scientific accuracy. All original interface architecture, visual design systems, and source code are protected under copyright law, while botanical references and third-party imagery remain the property of their respective owners and are curated strictly for educational purposes.
+        </p>
+      </div>
+
+      <div class="footer-divider" aria-hidden="true"></div>
+
+      <!-- Part 2: Styled Credits & Copyright -->
+      <div class="footer-credits-bar">
+        <div class="footer-credit-row">
+          <p class="footer-credit-line">
+            <span class="credit-label">Chief Patron &amp; Authorization</span>
+            <span class="credit-sep" aria-hidden="true">·</span>
+            <span class="credit-name">JALEES HABIB</span>
+          </p>
+          <p class="footer-credit-line">
+            <span class="credit-label">Lead Design &amp; UX Collaboration</span>
+            <span class="credit-sep" aria-hidden="true">·</span>
+            <span class="credit-name">RAYAAN TASNIM</span>
+          </p>
+        </div>
+        <div class="footer-partner-pill">
+          <span class="partner-muted">Thanks to</span> <strong class="partner-highlight">IDAI Universe</strong>
+          <span class="partner-pipe" aria-hidden="true">|</span>
+          <span class="partner-muted">Powered by</span> <strong class="partner-highlight">Olympiad Edge</strong>
+        </div>
+        <p class="footer-copyright">&copy; 2026 Plantipedia. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
 </html>
