@@ -29,11 +29,11 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23022c22'/%3E%3Cg transform='translate(32 34)'%3E%3Cpath d='M0 14 C-16 14 -24 2 -22 -8 C-12 -6 -4 2 0 14 Z' fill='%2310b981'/%3E%3Cpath d='M0 14 C16 14 24 2 22 -8 C12 -6 4 2 0 14 Z' fill='%23059669'/%3E%3Cpath d='M0 10 C-14 4 -18 -12 -8 -20 C-2 -14 0 -2 0 10 Z' fill='%23f43f5e'/%3E%3Cpath d='M0 10 C14 4 18 -12 8 -20 C2 -14 0 -2 0 10 Z' fill='%23fb7185'/%3E%3Cpath d='M0 10 C-9 -4 -7 -21 0 -25 C7 -21 9 -4 0 10 Z' fill='%23fda4af'/%3E%3Ccircle cx='0' cy='-5' r='3.5' fill='%23fde68a'/%3E%3Cpath d='M0 -5 L0 -15 M-3 -12 L0 -15 L3 -12' stroke='%23fde68a' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3C/g%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-page="plant">
-  <!-- Global Fixed Glassmorphism Navbar (Identical across index.html & plant.html) -->
+  <!-- Global Fixed Glassmorphism Navbar -->
   <header class="global-navbar" id="globalNavbar">
     <div class="navbar-inner">
       <a href="index.html" class="brand-logo" aria-label="Plantipedia Home">
@@ -54,7 +54,7 @@
       <nav class="navbar-links" aria-label="Primary navigation">
         <a href="index.html" class="nav-text-link">Home</a>
         <a href="index.html#about-plantipedia" class="nav-text-link">About</a>
-        <a href="index.html#species-showcase" class="nav-text-link">All Species</a>
+        <a href="species.html" class="nav-text-link">Available Species</a>
         <a href="index.html#botanical-highlights" class="nav-text-link">Ecology</a>
       </nav>
 
@@ -67,7 +67,7 @@
           <input
             type="search"
             id="navbarSearchInput"
-            placeholder="Search species..."
+            placeholder="Search 200+ species..."
             autocomplete="off"
             aria-label="Quick search plant species"
           >
@@ -75,6 +75,7 @@
         </form>
         <div class="navbar-suggestions" id="navbarSuggestions" role="listbox" aria-label="Matching plant species" hidden></div>
       </div>
+
       <button
         type="button"
         class="mobile-menu-toggle"
@@ -128,7 +129,7 @@
             <input
               type="search"
               id="mobileSearchInput"
-              placeholder="Search species..."
+              placeholder="Search 200+ species..."
               autocomplete="off"
               aria-label="Search plant species"
             >
@@ -165,11 +166,11 @@
           </span>
           <span class="mobile-nav-arrow" aria-hidden="true">&rarr;</span>
         </a>
-        <a href="index.html#species-showcase" class="mobile-nav-card">
+        <a href="species.html" class="mobile-nav-card">
           <span class="mobile-nav-badge">03</span>
           <span class="mobile-nav-card-text">
-            <span class="mobile-nav-card-title">All Species</span>
-            <span class="mobile-nav-card-sub">20 Curated Monographs</span>
+            <span class="mobile-nav-card-title">Available Species</span>
+            <span class="mobile-nav-card-sub">Full 200+ Flora Directory</span>
           </span>
           <span class="mobile-nav-arrow" aria-hidden="true">&rarr;</span>
         </a>
@@ -186,10 +187,12 @@
       <div class="mobile-category-explore">
         <span class="mobile-section-kicker">Explore by Category</span>
         <div class="mobile-category-pills">
-          <a href="index.html?category=Flowers#species-showcase" class="mobile-category-pill" data-mobile-category="Flowers">Flowers</a>
-          <a href="index.html?category=Fruit%20Trees#species-showcase" class="mobile-category-pill" data-mobile-category="Fruit Trees">Fruit Trees</a>
-          <a href="index.html?category=Medicinal#species-showcase" class="mobile-category-pill" data-mobile-category="Medicinal">Medicinal</a>
-          <a href="index.html?category=Shrubs%20%26%20Herbs#species-showcase" class="mobile-category-pill" data-mobile-category="Shrubs &amp; Herbs">Shrubs &amp; Herbs</a>
+          <a href="species.html?category=Flowers" class="mobile-category-pill">Flowers</a>
+          <a href="species.html?category=Fruit%20Trees" class="mobile-category-pill">Fruit Trees</a>
+          <a href="species.html?category=Medicinal" class="mobile-category-pill">Medicinal</a>
+          <a href="species.html?category=Shrubs%20%26%20Herbs" class="mobile-category-pill">Shrubs &amp; Herbs</a>
+          <a href="species.html?category=Trees%20%26%20Palms" class="mobile-category-pill">Trees &amp; Palms</a>
+          <a href="species.html?category=Aquatic" class="mobile-category-pill">Aquatic</a>
         </div>
       </div>
 
@@ -245,7 +248,6 @@
   <!-- Compact Single-Column Centered Footer -->
   <footer class="site-footer site-footer--compact" id="globalFooter">
     <div class="footer-container">
-      <!-- Part 1: Brand Tagline -->
       <div class="footer-overview-block">
         <a href="index.html" class="footer-brand" aria-label="Plantipedia Home">
           <svg class="brand-flower-svg" viewBox="0 0 48 48" width="30" height="30" aria-hidden="true">
@@ -268,17 +270,16 @@
 
       <div class="footer-divider" aria-hidden="true"></div>
 
-      <!-- Part 2: Styled Credits & Copyright -->
       <div class="footer-credits-bar">
         <div class="footer-credit-row">
           <p class="footer-credit-line">
             <span class="credit-label">Chief Patron &amp; Authorization</span>
-            <span class="credit-sep" aria-hidden="true">·</span>
+            <span class="credit-sep" aria-hidden="true">&middot;</span>
             <span class="credit-name">JALEES HABIB</span>
           </p>
           <p class="footer-credit-line">
             <span class="credit-label">Lead Design &amp; UX Collaboration</span>
-            <span class="credit-sep" aria-hidden="true">·</span>
+            <span class="credit-sep" aria-hidden="true">&middot;</span>
             <span class="credit-name">RAYAAN TASNIM</span>
           </p>
         </div>

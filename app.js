@@ -1,7 +1,17 @@
 (function () {
   'use strict';
 
-  const CATEGORIES = ['All', 'Flowers', 'Fruit Trees', 'Medicinal', 'Shrubs & Herbs'];
+  const CATEGORIES = [
+    'All',
+    'Flowers',
+    'Fruit Trees',
+    'Medicinal',
+    'Shrubs & Herbs',
+    'Trees & Palms',
+    'Aquatic'
+  ];
+
+  const BATCH_SIZE = 24;
 
   const SECTION_MAP_DESCRIPTIONS = {
     '00': 'Botanical overview card, hero plate, and structured classification table',
@@ -15,8 +25,6 @@
   };
 
   let allPlants = [];
-  let activeHomeCategory = 'All';
-  let activeSearchQuery = '';
 
   /* ================= ESCAPING & SAFE HELPERS ================= */
   function escapeHtml(str) {
@@ -29,7 +37,6 @@
       .replace(/'/g, '&#39;');
   }
 
-  // Global resilient fallback for broken/blocked images (Zero-Broken-Image Policy)
   window.__plantipediaImgFallback = function (imgEl, label) {
     if (!imgEl || !imgEl.parentNode) return;
     const plate = document.createElement('div');
@@ -52,6 +59,31 @@
       '<img src="' + safeSrc + '" alt="' + safeAlt + '" loading="' + loadingAttr + '" ' +
       'referrerpolicy="no-referrer" ' +
       'onerror="window.__plantipediaImgFallback(this, \'' + safeLabel + '\')">'
+    );
+  }
+
+  function renderSpeciesCard(plant) {
+    const href = 'plant.html?species=' + encodeURIComponent(plant.slug);
+    return (
+      '<a href="' + href + '" class="species-card" aria-label="Read monograph for ' + escapeHtml(plant.commonName) + '">' +
+      '<div class="species-card-media">' +
+      renderImgTag(plant.heroImage.url, plant.heroImage.alt, plant.commonName + ' — ' + plant.scientificName, false) +
+      '</div>' +
+      '<div class="species-card-body">' +
+      '<div class="species-card-meta">' +
+      '<span>' + escapeHtml(plant.category) + '</span>' +
+      '<span class="meta-sep" aria-hidden="true">&middot;</span>' +
+      '<span>' + escapeHtml(plant.overview.family) + '</span>' +
+      '</div>' +
+      '<h3 class="species-card-title">' + escapeHtml(plant.commonName) + '</h3>' +
+      '<p class="species-card-sci">' + escapeHtml(plant.scientificName) + '</p>' +
+      '<p class="species-card-excerpt">' + escapeHtml(plant.shortSummary) + '</p>' +
+      '<div class="species-card-cta">' +
+      '<span>Explore Monograph</span>' +
+      '<span class="species-card-cta-arrow" aria-hidden="true">&rarr;</span>' +
+      '</div>' +
+      '</div>' +
+      '</a>'
     );
   }
 
@@ -81,7 +113,7 @@
   function initScrollReveal(rootScope) {
     const scope = rootScope || document;
     const targets = scope.querySelectorAll(
-      '.mission-stat-card, .highlight-card, .species-card, .chapter-card, .pager-link'
+      '.mission-stat-card, .highlight-card, .domain-card, .spotlight-glass-card, .species-card, .chapter-card, .pager-link'
     );
     if (!targets.length) return;
 
@@ -107,18 +139,14 @@
             }
           });
         },
-        {
-          threshold: 0.08,
-          rootMargin: '0px 0px -32px 0px'
-        }
+        { threshold: 0.08, rootMargin: '0px 0px -28px 0px' }
       );
     }
 
     targets.forEach(function (el, idx) {
       if (el.classList.contains('is-revealed')) return;
       el.classList.add('reveal-on-scroll');
-      const staggerMs = (idx % 3) * 75;
-      el.style.setProperty('--reveal-delay', staggerMs + 'ms');
+      el.style.setProperty('--reveal-delay', ((idx % 3) * 65) + 'ms');
 
       const rect = el.getBoundingClientRect();
       if (rect.top < window.innerHeight * 0.96) {
@@ -257,8 +285,16 @@
         navigateToSpecies(currentMatches[activeIndex].slug);
         return;
       }
-      if (currentMatches.length > 0) {
+      if (currentMatches.length === 1) {
         navigateToSpecies(currentMatches[0].slug);
+        return;
+      }
+      const q = input.value.trim();
+      if (q) {
+        if (typeof config.onNavigate === 'function') {
+          config.onNavigate();
+        }
+        window.location.href = 'species.html?q=' + encodeURIComponent(q);
       }
     });
 
@@ -324,19 +360,13 @@
       closeOverlay(true);
     });
 
-    overlay.querySelectorAll('.mobile-nav-card, .mobile-overlay-brand, .mobile-quick-chip').forEach(function (link) {
-      link.addEventListener('click', function () {
+    overlay.querySelectorAll('.mobile-nav-card, .mobile-overlay-brand, .mobile-quick-chip, .mobile-category-pill').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        const dirCat = link.getAttribute('data-directory-category');
         closeOverlay(false);
-      });
-    });
-
-    overlay.querySelectorAll('[data-mobile-category]').forEach(function (pill) {
-      pill.addEventListener('click', function (e) {
-        const cat = pill.getAttribute('data-mobile-category');
-        closeOverlay(false);
-        if (typeof window.__plantipediaSelectCategory === 'function' && cat) {
+        if (dirCat && typeof window.__plantipediaSelectDirectoryCategory === 'function') {
           e.preventDefault();
-          window.__plantipediaSelectCategory(cat);
+          window.__plantipediaSelectDirectoryCategory(dirCat);
         }
       });
     });
@@ -371,92 +401,60 @@
     const searchInput = document.getElementById('homeSearchInput');
     const searchClear = document.getElementById('homeSearchClear');
     const suggestionsBox = document.getElementById('homeSuggestions');
-    const categoryTabsEl = document.getElementById('homeCategoryTabs');
-    const speciesGridEl = document.getElementById('speciesGrid');
-    const countEl = document.getElementById('explorerCount');
+    const featuredGridEl = document.getElementById('featuredSpeciesGrid');
+    const featuredCountEl = document.getElementById('featuredCount');
+    const totalStatEl = document.getElementById('homeStatSpeciesCount');
 
     const homeCanonicalUrl = window.location.origin + window.location.pathname;
     const homeCanonicalEl = document.head.querySelector('link[rel="canonical"]');
     if (homeCanonicalEl) homeCanonicalEl.setAttribute('href', homeCanonicalUrl);
     setMetaTag('property', 'og:url', homeCanonicalUrl);
 
-    const homeParams = new URLSearchParams(window.location.search);
-    const initialCat = homeParams.get('category');
-    if (initialCat && CATEGORIES.includes(initialCat)) {
-      activeHomeCategory = initialCat;
+    if (totalStatEl) {
+      totalStatEl.textContent = String(allPlants.length);
     }
 
-    function renderGrid() {
-      const filtered = allPlants.filter(function (plant) {
-        return (
-          plantMatchesCategory(plant, activeHomeCategory) &&
-          plantMatchesQuery(plant, activeSearchQuery)
-        );
-      });
+    const featuredPlants = allPlants.filter(function (p) {
+      return p.featured === true;
+    }).slice(0, 10);
 
-      if (countEl) {
-        countEl.textContent =
-          'Showing ' + filtered.length + ' of ' + allPlants.length + ' documented species';
-      }
+    const flagshipList = featuredPlants.length > 0 ? featuredPlants : allPlants.slice(0, 10);
 
-      if (!speciesGridEl) return;
-
-      if (filtered.length === 0) {
-        speciesGridEl.innerHTML =
-          '<div class="empty-search-state">' +
-          '<h3>No matching botanical species found</h3>' +
-          '<p>Try searching by common name (e.g., Mango, Lotus), scientific name (e.g., Rosa, Nelumbo), or reset the active category filter.</p>' +
-          '<button type="button" class="empty-reset-btn" id="resetFiltersBtn">Reset Search &amp; Filters</button>' +
-          '</div>';
-        const resetBtn = document.getElementById('resetFiltersBtn');
-        if (resetBtn) {
-          resetBtn.addEventListener('click', function () {
-            activeHomeCategory = 'All';
-            activeSearchQuery = '';
-            if (searchInput) searchInput.value = '';
-            if (searchClear) searchClear.hidden = true;
-            syncCategoryTabs();
-            renderGrid();
-          });
-        }
-        return;
-      }
-
-      speciesGridEl.innerHTML = filtered.map(function (plant) {
-        const href = 'plant.html?species=' + encodeURIComponent(plant.slug);
-        return (
-          '<a href="' + href + '" class="species-card" aria-label="Read monograph for ' + escapeHtml(plant.commonName) + '">' +
-          '<div class="species-card-media">' +
-          renderImgTag(plant.heroImage.url, plant.heroImage.alt, plant.commonName + ' — ' + plant.scientificName, false) +
-          '</div>' +
-          '<div class="species-card-body">' +
-          '<div class="species-card-meta">' +
-          '<span>' + escapeHtml(plant.category) + '</span>' +
-          '<span class="meta-sep" aria-hidden="true">·</span>' +
-          '<span>' + escapeHtml(plant.overview.family) + '</span>' +
-          '</div>' +
-          '<h3 class="species-card-title">' + escapeHtml(plant.commonName) + '</h3>' +
-          '<p class="species-card-sci">' + escapeHtml(plant.scientificName) + '</p>' +
-          '<p class="species-card-excerpt">' + escapeHtml(plant.shortSummary) + '</p>' +
-          '<div class="species-card-cta">' +
-          '<span>Explore Monograph</span>' +
-          '<span class="species-card-cta-arrow" aria-hidden="true">→</span>' +
-          '</div>' +
-          '</div>' +
-          '</a>'
-        );
-      }).join('');
-
-      initScrollReveal(speciesGridEl);
+    if (featuredCountEl) {
+      featuredCountEl.textContent =
+        'Showing ' + flagshipList.length + ' curated flagship monographs of ' + allPlants.length + ' indexed species';
     }
 
-    function syncCategoryTabs() {
-      if (!categoryTabsEl) return;
-      categoryTabsEl.querySelectorAll('[data-category]').forEach(function (tab) {
-        const isActive = tab.getAttribute('data-category') === activeHomeCategory;
-        tab.classList.toggle('active', isActive);
-        tab.setAttribute('aria-selected', String(isActive));
-      });
+    if (featuredGridEl) {
+      featuredGridEl.innerHTML = flagshipList.map(renderSpeciesCard).join('');
+      initScrollReveal(featuredGridEl);
+    }
+
+    // Hydrate Monograph Spotlight with Sacred Lotus (or first featured)
+    const spotlightPlant =
+      allPlants.find(function (p) { return p.slug === 'lotus'; }) || flagshipList[0];
+
+    if (spotlightPlant) {
+      const spImg = document.getElementById('spotlightImg');
+      const spTitle = document.getElementById('spotlightTitle');
+      const spSci = document.getElementById('spotlightSci');
+      const spSummary = document.getElementById('spotlightSummary');
+      const spFamily = document.getElementById('spotlightFamily');
+      const spForm = document.getElementById('spotlightForm');
+      const spOrigin = document.getElementById('spotlightOrigin');
+      const spCta = document.getElementById('spotlightCta');
+
+      if (spImg && spotlightPlant.heroImage) {
+        spImg.src = spotlightPlant.heroImage.url;
+        spImg.alt = spotlightPlant.heroImage.alt || spotlightPlant.commonName;
+      }
+      if (spTitle) spTitle.textContent = spotlightPlant.commonName;
+      if (spSci) spSci.textContent = spotlightPlant.scientificName;
+      if (spSummary) spSummary.textContent = spotlightPlant.leadOverview || spotlightPlant.shortSummary;
+      if (spFamily && spotlightPlant.overview) spFamily.textContent = spotlightPlant.overview.family;
+      if (spForm && spotlightPlant.overview) spForm.textContent = spotlightPlant.overview.growthForm;
+      if (spOrigin && spotlightPlant.overview) spOrigin.textContent = spotlightPlant.overview.nativeOrigin;
+      if (spCta) spCta.href = 'plant.html?species=' + encodeURIComponent(spotlightPlant.slug);
     }
 
     function updateSuggestions(query) {
@@ -493,22 +491,11 @@
       suggestionsBox.hidden = false;
     }
 
-    if (categoryTabsEl) {
-      categoryTabsEl.addEventListener('click', function (e) {
-        const tab = e.target.closest('[data-category]');
-        if (!tab) return;
-        activeHomeCategory = tab.getAttribute('data-category');
-        syncCategoryTabs();
-        renderGrid();
-      });
-    }
-
     if (searchInput) {
       searchInput.addEventListener('input', function () {
-        activeSearchQuery = searchInput.value.trim();
-        if (searchClear) searchClear.hidden = activeSearchQuery.length === 0;
-        updateSuggestions(activeSearchQuery);
-        renderGrid();
+        const q = searchInput.value.trim();
+        if (searchClear) searchClear.hidden = q.length === 0;
+        updateSuggestions(q);
       });
 
       searchInput.addEventListener('focus', function () {
@@ -521,10 +508,8 @@
     if (searchClear && searchInput) {
       searchClear.addEventListener('click', function () {
         searchInput.value = '';
-        activeSearchQuery = '';
         searchClear.hidden = true;
         if (suggestionsBox) suggestionsBox.hidden = true;
-        renderGrid();
         searchInput.focus();
       });
     }
@@ -533,6 +518,10 @@
       searchForm.addEventListener('submit', function (e) {
         e.preventDefault();
         const q = searchInput.value.trim();
+        if (!q) {
+          window.location.href = 'species.html';
+          return;
+        }
         const matches = allPlants.filter(function (p) {
           return plantMatchesQuery(p, q);
         });
@@ -540,9 +529,7 @@
           window.location.href = 'plant.html?species=' + encodeURIComponent(matches[0].slug);
           return;
         }
-        if (suggestionsBox) suggestionsBox.hidden = true;
-        const showcase = document.getElementById('species-showcase');
-        if (showcase) showcase.scrollIntoView({ behavior: 'smooth' });
+        window.location.href = 'species.html?q=' + encodeURIComponent(q);
       });
     }
 
@@ -551,20 +538,249 @@
         suggestionsBox.hidden = true;
       }
     });
+  }
 
-    window.__plantipediaSelectCategory = function (category) {
-      if (!CATEGORIES.includes(category)) return;
-      activeHomeCategory = category;
+  /* ================= SPECIES DIRECTORY CONTROLLER (species.html) ================= */
+  function initSpeciesDirectoryPage() {
+    const searchForm = document.getElementById('directorySearchForm');
+    const searchInput = document.getElementById('directorySearchInput');
+    const searchClear = document.getElementById('directorySearchClear');
+    const sortSelect = document.getElementById('directorySortSelect');
+    const categoryTabsEl = document.getElementById('directoryCategoryTabs');
+    const azStripEl = document.getElementById('directoryAzStrip');
+    const gridEl = document.getElementById('directorySpeciesGrid');
+    const countEl = document.getElementById('directoryExplorerCount');
+    const totalStatEl = document.getElementById('directoryTotalCount');
+    const filteredNumEl = document.getElementById('directoryFilteredNum');
+    const resetAllBtn = document.getElementById('directoryResetAllBtn');
+    const loadMoreWrap = document.getElementById('directoryLoadMoreWrap');
+    const loadMoreBtn = document.getElementById('directoryLoadMoreBtn');
+    const loadMoreLabel = document.getElementById('directoryLoadMoreLabel');
+
+    const dirCanonicalUrl = window.location.origin + window.location.pathname;
+    const dirCanonicalEl = document.head.querySelector('link[rel="canonical"]');
+    if (dirCanonicalEl) dirCanonicalEl.setAttribute('href', dirCanonicalUrl);
+    setMetaTag('property', 'og:url', dirCanonicalUrl);
+
+    if (totalStatEl) {
+      totalStatEl.textContent = String(allPlants.length);
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const paramCat = params.get('category');
+    const paramQuery = params.get('q');
+    const paramLetter = params.get('letter');
+
+    let activeCategory = paramCat && CATEGORIES.includes(paramCat) ? paramCat : 'All';
+    let activeQuery = paramQuery ? paramQuery.trim() : '';
+    let activeLetter =
+      paramLetter && /^[A-Z]$/i.test(paramLetter.trim()) ? paramLetter.trim().toUpperCase() : 'All';
+    let activeSort = 'az';
+    let visibleLimit = BATCH_SIZE;
+
+    if (searchInput && activeQuery) {
+      searchInput.value = activeQuery;
+      if (searchClear) searchClear.hidden = false;
+    }
+
+    const availableLetters = new Set(
+      allPlants.map(function (p) {
+        return p.commonName ? p.commonName.charAt(0).toUpperCase() : '';
+      })
+    );
+
+    function renderAzStrip() {
+      if (!azStripEl) return;
+      const letters = ['All'].concat('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
+      azStripEl.innerHTML = letters.map(function (ltr) {
+        const isAll = ltr === 'All';
+        const hasEntries = isAll || availableLetters.has(ltr);
+        const isActive = activeLetter === ltr;
+        return (
+          '<button type="button" class="az-letter-btn' + (isActive ? ' active' : '') + '" ' +
+          'data-letter="' + ltr + '" ' + (!hasEntries ? 'disabled aria-disabled="true"' : '') + '>' +
+          ltr +
+          '</button>'
+        );
+      }).join('');
+    }
+
+    function syncCategoryTabs() {
+      if (!categoryTabsEl) return;
+      categoryTabsEl.querySelectorAll('[data-category]').forEach(function (tab) {
+        const isActive = tab.getAttribute('data-category') === activeCategory;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', String(isActive));
+      });
+    }
+
+    function getFilteredAndSorted() {
+      const filtered = allPlants.filter(function (plant) {
+        const matchesCat = plantMatchesCategory(plant, activeCategory);
+        const matchesQ = plantMatchesQuery(plant, activeQuery);
+        const matchesLtr =
+          activeLetter === 'All' ||
+          (plant.commonName && plant.commonName.charAt(0).toUpperCase() === activeLetter);
+        return matchesCat && matchesQ && matchesLtr;
+      });
+
+      return filtered.slice().sort(function (a, b) {
+        if (activeSort === 'za') {
+          return b.commonName.localeCompare(a.commonName);
+        }
+        if (activeSort === 'family') {
+          const famCmp = (a.overview.family || '').localeCompare(b.overview.family || '');
+          return famCmp !== 0 ? famCmp : a.commonName.localeCompare(b.commonName);
+        }
+        return a.commonName.localeCompare(b.commonName);
+      });
+    }
+
+    function resetAllFilters() {
+      activeCategory = 'All';
+      activeQuery = '';
+      activeLetter = 'All';
+      activeSort = 'az';
+      visibleLimit = BATCH_SIZE;
+      if (searchInput) searchInput.value = '';
+      if (searchClear) searchClear.hidden = true;
+      if (sortSelect) sortSelect.value = 'az';
       syncCategoryTabs();
-      renderGrid();
-      const showcase = document.getElementById('species-showcase');
-      if (showcase) {
-        showcase.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      renderAzStrip();
+      renderDirectory();
+    }
+
+    function renderDirectory() {
+      const sorted = getFilteredAndSorted();
+      const totalMatched = sorted.length;
+      const sliced = sorted.slice(0, visibleLimit);
+      const hasFilters = activeCategory !== 'All' || activeQuery !== '' || activeLetter !== 'All';
+
+      if (filteredNumEl) {
+        filteredNumEl.textContent = String(totalMatched);
       }
+
+      if (countEl) {
+        countEl.textContent =
+          'Displaying ' + sliced.length + ' of ' + totalMatched + ' matching species (' + allPlants.length + ' total in archive)';
+      }
+
+      if (resetAllBtn) {
+        resetAllBtn.hidden = !hasFilters;
+      }
+
+      if (!gridEl) return;
+
+      if (totalMatched === 0) {
+        gridEl.innerHTML =
+          '<div class="empty-search-state">' +
+          '<h3>No matching botanical species found</h3>' +
+          '<p>Try clearing the letter filter, selecting a broader taxonomic category, or searching another plant name.</p>' +
+          '<button type="button" class="empty-reset-btn" id="dirEmptyResetBtn">Reset All Filters</button>' +
+          '</div>';
+        if (loadMoreWrap) loadMoreWrap.hidden = true;
+
+        const emptyBtn = document.getElementById('dirEmptyResetBtn');
+        if (emptyBtn) {
+          emptyBtn.addEventListener('click', resetAllFilters);
+        }
+        return;
+      }
+
+      gridEl.innerHTML = sliced.map(renderSpeciesCard).join('');
+      initScrollReveal(gridEl);
+
+      if (loadMoreWrap && loadMoreLabel) {
+        const remaining = totalMatched - sliced.length;
+        if (remaining > 0) {
+          loadMoreWrap.hidden = false;
+          loadMoreLabel.textContent =
+            'Load More Species (' + Math.min(BATCH_SIZE, remaining) + ' more of ' + remaining + ' remaining)';
+        } else {
+          loadMoreWrap.hidden = true;
+        }
+      }
+    }
+
+    if (categoryTabsEl) {
+      categoryTabsEl.addEventListener('click', function (e) {
+        const tab = e.target.closest('[data-category]');
+        if (!tab) return;
+        activeCategory = tab.getAttribute('data-category');
+        visibleLimit = BATCH_SIZE;
+        syncCategoryTabs();
+        renderDirectory();
+      });
+    }
+
+    if (azStripEl) {
+      azStripEl.addEventListener('click', function (e) {
+        const btn = e.target.closest('[data-letter]');
+        if (!btn || btn.disabled) return;
+        activeLetter = btn.getAttribute('data-letter');
+        visibleLimit = BATCH_SIZE;
+        renderAzStrip();
+        renderDirectory();
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        activeQuery = searchInput.value.trim();
+        visibleLimit = BATCH_SIZE;
+        if (searchClear) searchClear.hidden = activeQuery.length === 0;
+        renderDirectory();
+      });
+    }
+
+    if (searchClear && searchInput) {
+      searchClear.addEventListener('click', function () {
+        searchInput.value = '';
+        activeQuery = '';
+        visibleLimit = BATCH_SIZE;
+        searchClear.hidden = true;
+        renderDirectory();
+        searchInput.focus();
+      });
+    }
+
+    if (searchForm) {
+      searchForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        renderDirectory();
+      });
+    }
+
+    if (sortSelect) {
+      sortSelect.addEventListener('change', function () {
+        activeSort = sortSelect.value;
+        visibleLimit = BATCH_SIZE;
+        renderDirectory();
+      });
+    }
+
+    if (resetAllBtn) {
+      resetAllBtn.addEventListener('click', resetAllFilters);
+    }
+
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', function () {
+        visibleLimit += BATCH_SIZE;
+        renderDirectory();
+      });
+    }
+
+    window.__plantipediaSelectDirectoryCategory = function (category) {
+      if (!CATEGORIES.includes(category)) return;
+      activeCategory = category;
+      visibleLimit = BATCH_SIZE;
+      syncCategoryTabs();
+      renderDirectory();
     };
 
     syncCategoryTabs();
-    renderGrid();
+    renderAzStrip();
+    renderDirectory();
   }
 
   /* ================= DYNAMIC SEO, JSON-LD & BREADCRUMB HELPER ================= */
@@ -583,8 +799,8 @@
     const basePath = window.location.pathname.replace(/[^/]*$/, '');
     const baseUrl = origin + basePath;
     const homeUrl = baseUrl + 'index.html';
-    const showcaseUrl = homeUrl + '#species-showcase';
-    const categoryUrl = homeUrl + '?category=' + encodeURIComponent(plant.category) + '#species-showcase';
+    const directoryUrl = baseUrl + 'species.html';
+    const categoryUrl = baseUrl + 'species.html?category=' + encodeURIComponent(plant.category);
     const pageUrl = window.location.origin + window.location.pathname + '?species=' + encodeURIComponent(plant.slug);
 
     const seoTitle = plant.commonName + ' (' + plant.scientificName + ') | Plantipedia';
@@ -643,9 +859,7 @@
             name: 'Plantipedia',
             url: homeUrl
           },
-          about: {
-            '@id': pageUrl + '#taxon'
-          }
+          about: { '@id': pageUrl + '#taxon' }
         },
         {
           '@type': 'Taxon',
@@ -671,30 +885,10 @@
           '@type': 'BreadcrumbList',
           '@id': pageUrl + '#breadcrumb',
           itemListElement: [
-            {
-              '@type': 'ListItem',
-              position: 1,
-              name: 'Home',
-              item: homeUrl
-            },
-            {
-              '@type': 'ListItem',
-              position: 2,
-              name: 'All Species',
-              item: showcaseUrl
-            },
-            {
-              '@type': 'ListItem',
-              position: 3,
-              name: plant.category,
-              item: categoryUrl
-            },
-            {
-              '@type': 'ListItem',
-              position: 4,
-              name: plant.commonName,
-              item: pageUrl
-            }
+            { '@type': 'ListItem', position: 1, name: 'Home', item: homeUrl },
+            { '@type': 'ListItem', position: 2, name: 'Available Species', item: directoryUrl },
+            { '@type': 'ListItem', position: 3, name: plant.category, item: categoryUrl },
+            { '@type': 'ListItem', position: 4, name: plant.commonName, item: pageUrl }
           ]
         }
       ]
@@ -842,7 +1036,7 @@
         '<button type="button" class="section-map-card" data-jump-target="' + escapeHtml(item.targetId) + '">' +
         '<div class="section-map-card-top">' +
         '<span class="section-map-badge">' + escapeHtml(item.number) + '</span>' +
-        '<span class="section-map-arrow" aria-hidden="true">→</span>' +
+        '<span class="section-map-arrow" aria-hidden="true">&rarr;</span>' +
         '</div>' +
         '<div>' +
         '<h3 class="section-map-card-title">' + escapeHtml(item.title) + '</h3>' +
@@ -911,8 +1105,8 @@
         '<div class="detail-container">' +
         '<div class="app-error-state">' +
         '<h1>Species Monograph Not Found</h1>' +
-        '<p>No plant entry matched the requested species identifier. Browse all 20 documented monographs on the home atlas.</p>' +
-        '<a href="index.html" class="empty-reset-btn empty-reset-link">Return to Plantipedia Home</a>' +
+        '<p>No plant entry matched the requested species identifier. Browse all documented monographs in the directory.</p>' +
+        '<a href="species.html" class="empty-reset-btn empty-reset-link">Browse Available Species</a>' +
         '</div>' +
         '</div>';
       const dock = document.getElementById('sectionMapDock');
@@ -951,7 +1145,7 @@
       return renderTextbookChapter(sec, idx + 1);
     }).join('');
 
-    const categoryHref = 'index.html?category=' + encodeURIComponent(plant.category) + '#species-showcase';
+    const categoryHref = 'species.html?category=' + encodeURIComponent(plant.category);
 
     root.innerHTML =
       '<div class="detail-container">' +
@@ -959,21 +1153,20 @@
       '<nav class="breadcrumb-bar" aria-label="Breadcrumb">' +
       '<ol class="breadcrumb-list">' +
       '<li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>' +
-      '<li class="breadcrumb-item"><span class="breadcrumb-sep" aria-hidden="true">/</span><a href="index.html#species-showcase" class="breadcrumb-link">All Species</a></li>' +
+      '<li class="breadcrumb-item"><span class="breadcrumb-sep" aria-hidden="true">/</span><a href="species.html" class="breadcrumb-link">Available Species</a></li>' +
       '<li class="breadcrumb-item"><span class="breadcrumb-sep" aria-hidden="true">/</span><a href="' + categoryHref + '" class="breadcrumb-link">' + escapeHtml(plant.category) + '</a></li>' +
       '<li class="breadcrumb-item"><span class="breadcrumb-sep" aria-hidden="true">/</span><span class="breadcrumb-current" aria-current="page">' + escapeHtml(plant.commonName) + '</span></li>' +
       '</ol>' +
       '</nav>' +
       '<div class="detail-taxonomy-trail">' +
-      escapeHtml(ov.family) + ' · <em>' + escapeHtml(plant.scientificName) + '</em>' +
+      escapeHtml(ov.family) + ' &middot; <em>' + escapeHtml(plant.scientificName) + '</em>' +
       '</div>' +
       '</div>' +
 
-      '<!-- Section 00: Hero & Botanical Classification Overview Card -->' +
       '<section class="overview-hero-card" id="section-00">' +
       '<div class="overview-header-grid">' +
       '<div class="overview-title-block">' +
-      '<span class="section-index-label">SECTION 00 · BOTANICAL PROFILE</span>' +
+      '<span class="section-index-label">SECTION 00 &middot; BOTANICAL PROFILE</span>' +
       '<h1 class="overview-plant-title">' + escapeHtml(plant.commonName) + '</h1>' +
       '<p class="overview-scientific-name">' + escapeHtml(plant.scientificName) + '</p>' +
       '<p class="overview-lead-summary">' + escapeHtml(plant.leadOverview) + '</p>' +
@@ -982,7 +1175,7 @@
       '<div class="overview-hero-media">' +
       renderImgTag(plant.heroImage.url, plant.heroImage.alt, plant.commonName + ' Botanical Plate', true) +
       '</div>' +
-      '<figcaption>Plate 00 — ' + escapeHtml(plant.heroImage.caption) + '</figcaption>' +
+      '<figcaption>Plate 00 &mdash; ' + escapeHtml(plant.heroImage.caption) + '</figcaption>' +
       '</figure>' +
       '</div>' +
 
@@ -994,52 +1187,55 @@
       '</div>' +
       '</section>' +
 
-      '<!-- Sections 01 - 07 -->' +
       '<div class="encyclopedia-chapters">' +
       chaptersHtml +
       '</div>' +
 
-      '<!-- Adjacent Species Navigation -->' +
       '<nav class="species-pager" aria-label="Adjacent plant species">' +
       '<a href="plant.html?species=' + encodeURIComponent(prevPlant.slug) + '" class="pager-link prev">' +
-      '<span class="pager-direction">← Previous Monograph</span>' +
+      '<span class="pager-direction">&larr; Previous Monograph</span>' +
       '<span class="pager-species-name">' + escapeHtml(prevPlant.commonName) + '</span>' +
       '<span class="pager-species-sci">' + escapeHtml(prevPlant.scientificName) + '</span>' +
       '</a>' +
       '<a href="plant.html?species=' + encodeURIComponent(nextPlant.slug) + '" class="pager-link next">' +
-      '<span class="pager-direction">Next Monograph →</span>' +
+      '<span class="pager-direction">Next Monograph &rarr;</span>' +
       '<span class="pager-species-name">' + escapeHtml(nextPlant.commonName) + '</span>' +
       '<span class="pager-species-sci">' + escapeHtml(nextPlant.scientificName) + '</span>' +
       '</a>' +
       '</nav>' +
       '</div>';
 
-      initSectionMapOverlay(plant);
-      initScrollReveal(root);
-    }
+    initSectionMapOverlay(plant);
+    initScrollReveal(root);
+  }
 
-    /* ================= BOOTSTRAP ================= */
-    async function bootstrap() {
-      const pageType = document.body.getAttribute('data-page');
-      try {
-        const response = await fetch('plants.json', { cache: 'no-cache' });
-        if (!response.ok) {
-          throw new Error('Failed to load plants.json (HTTP ' + response.status + ')');
-        }
-        const payload = await response.json();
-        allPlants = Array.isArray(payload.species) ? payload.species : [];
+  /* ================= BOOTSTRAP ================= */
+  async function bootstrap() {
+    const pageType = document.body.getAttribute('data-page');
+    try {
+      const response = await fetch('plants.json', { cache: 'no-cache' });
+      if (!response.ok) {
+        throw new Error('Failed to load plants.json (HTTP ' + response.status + ')');
+      }
+      const payload = await response.json();
+      allPlants = Array.isArray(payload.species) ? payload.species : [];
 
-        initNavbarSearch();
-        initMobileNavOverlay();
+      initNavbarSearch();
+      initMobileNavOverlay();
 
-        if (pageType === 'plant') {
-          initPlantDetailPage();
-        } else {
-          initHomePage();
-          initScrollReveal(document);
-        }
-      } catch (err) {
-      const target = document.getElementById('speciesGrid') || document.getElementById('plantDetailRoot');
+      if (pageType === 'plant') {
+        initPlantDetailPage();
+      } else if (pageType === 'species') {
+        initSpeciesDirectoryPage();
+      } else {
+        initHomePage();
+        initScrollReveal(document);
+      }
+    } catch (err) {
+      const target =
+        document.getElementById('featuredSpeciesGrid') ||
+        document.getElementById('directorySpeciesGrid') ||
+        document.getElementById('plantDetailRoot');
       if (target) {
         target.innerHTML =
           '<div class="app-error-state">' +
