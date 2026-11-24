@@ -1714,6 +1714,8 @@
   .species-pagination,
   .compare-focus-bar,
   .compare-loader-overlay,
+  .compare-synthesis-overlay,
+  #compare-synthesis-overlay,
   .compare-floating-mode-btn,
   #compareModeToggleBtn,
   .compare-submit-btn,
