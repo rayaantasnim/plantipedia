@@ -324,45 +324,216 @@ function verifyBotanicalSubject(page, taxobox) {
   return score >= 3;
 }
 
+function normalizeDedupKey(text) {
+  return sanitizeBotanicalText(String(text || ""))
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 80);
+}
+
+function splitIntoCleanParagraphs(rawText) {
+  return String(rawText || "")
+    .replace(/\r\n/g, "\n")
+    .split(/\n+/)
+    .map((chunk) => sanitizeBotanicalText(chunk))
+    .filter((chunk) => chunk.length > 20);
+}
+
+function splitIntoSentences(text) {
+  const cleaned = sanitizeBotanicalText(text);
+  if (!cleaned) return [];
+  return cleaned
+    .split(/(?<=[.!?।])\s+/)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 15);
+}
+
 function splitSectionsFromExtract(extract) {
-  const clean = sanitizeBotanicalText(String(extract || "").replace(/\r\n/g, "\n"));
   const rawParagraphs = String(extract || "")
+    .replace(/\r\n/g, "\n")
     .split(/\n==+\s*([^=\n]+?)\s*==+\n/)
     .map((chunk) => chunk.trim());
 
-  const leadRaw = rawParagraphs[0] || clean;
+  const leadRaw = rawParagraphs[0] || String(extract || "");
+  const leadParagraphs = splitIntoCleanParagraphs(leadRaw);
+  const lead = leadParagraphs.join(" ") || sanitizeBotanicalText(leadRaw);
+
   const namedSections = [];
   for (let i = 1; i < rawParagraphs.length; i += 2) {
     const heading = sanitizeBotanicalText(rawParagraphs[i] || "");
-    const body = sanitizeBotanicalText(rawParagraphs[i + 1] || "");
+    const rawBody = rawParagraphs[i + 1] || "";
+    const paragraphs = splitIntoCleanParagraphs(rawBody);
+    const body = paragraphs.join(" ") || sanitizeBotanicalText(rawBody);
     if (!heading || !body) continue;
     if (/^(see also|references|external links|further reading|notes|bibliography|sources|gallery|আরও দেখুন|তথ্যসূত্র|বহিঃসংযোগ)/i.test(heading)) {
       continue;
     }
-    namedSections.push({ heading, body });
+    namedSections.push({ heading, body, paragraphs: paragraphs.length ? paragraphs : [body] });
   }
 
   return {
-    lead: sanitizeBotanicalText(leadRaw),
+    lead,
+    leadParagraphs,
     namedSections
   };
 }
 
 function extractSentences(text, maxSentences = 3) {
-  const cleaned = sanitizeBotanicalText(text);
-  if (!cleaned) return "";
-  const parts = cleaned.split(/(?<=[.!?।])\s+/).filter(Boolean);
-  return parts.slice(0, maxSentences).join(" ");
+  return splitIntoSentences(text).slice(0, maxSentences).join(" ");
 }
 
-function findSectionByKeywords(namedSections, patterns) {
+function findSectionsByKeywords(namedSections, patterns) {
+  const matched = [];
   for (const sec of namedSections) {
     const h = sec.heading.toLowerCase();
     if (patterns.some((p) => h.includes(p))) {
-      return sec;
+      matched.push(sec);
     }
   }
-  return null;
+  return matched;
+}
+
+function findSectionByKeywords(namedSections, patterns) {
+  return findSectionsByKeywords(namedSections, patterns)[0] || null;
+}
+
+function extractBotanicalFamily(taxobox, lead, extract, wikitext, categoriesText) {
+  const rawTaxoboxFamily = sanitizeBotanicalText(taxobox.familia || taxobox.family || taxobox.গোত্র || "");
+  const taxoboxAceae = rawTaxoboxFamily.match(/\b([A-Z][a-z]+aceae)\b/);
+  if (taxoboxAceae) {
+    return taxoboxAceae[1];
+  }
+  if (rawTaxoboxFamily && hasBengaliScript(rawTaxoboxFamily)) {
+    return rawTaxoboxFamily;
+  }
+
+  const sources = [lead, extract, wikitext, categoriesText].filter(Boolean);
+  for (const src of sources) {
+    const explicitMatch = String(src).match(/\bfamily\s+(?:of\s+)?([A-Z][a-z]+aceae)\b|\b([A-Z][a-z]+aceae)\s+family\b/);
+    if (explicitMatch) {
+      return explicitMatch[1] || explicitMatch[2];
+    }
+  }
+
+  for (const src of sources) {
+    const genericMatch = String(src).match(/\b([A-Z][a-z]+aceae)\b/);
+    if (genericMatch) {
+      return genericMatch[1];
+    }
+  }
+
+  return "";
+}
+
+function extractBotanicalOrder(taxobox, lead, extract, wikitext, categoriesText) {
+  const rawTaxoboxOrder = sanitizeBotanicalText(taxobox.ordo || taxobox.order || taxobox.বর্গ || "");
+  const taxoboxAles = rawTaxoboxOrder.match(/\b([A-Z][a-z]+ales)\b/);
+  if (taxoboxAles) {
+    return taxoboxAles[1];
+  }
+  if (rawTaxoboxOrder && hasBengaliScript(rawTaxoboxOrder)) {
+    return rawTaxoboxOrder;
+  }
+
+  const sources = [lead, wikitext, extract, categoriesText].filter(Boolean);
+  for (const src of sources) {
+    const explicitMatch = String(src).match(/\border\s+(?:of\s+)?([A-Z][a-z]+ales)\b|\b([A-Z][a-z]+ales)\s+order\b/);
+    if (explicitMatch) {
+      return explicitMatch[1] || explicitMatch[2];
+    }
+  }
+
+  for (const src of sources) {
+    const genericMatch = String(src).match(/\b([A-Z][a-z]+ales)\b/);
+    if (genericMatch) {
+      return genericMatch[1];
+    }
+  }
+
+  return "";
+}
+
+function inferPlantGroupAndClade(taxobox, leadLower, categoriesLower, extractLower) {
+  const taxoboxCladeText = [
+    taxobox.cladus,
+    taxobox.divisio,
+    taxobox.phylum,
+    taxobox.classis,
+    taxobox.ordo,
+    taxobox.order,
+    taxobox.subregnum,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  const primaryBlob = `${taxoboxCladeText} ${categoriesLower} ${leadLower}`;
+
+  if (/\b(bryophyta|bryophyte|bryophytes|marchantiophyta|anthocerotophyta|liverwort|hornwort|moss|mosses)\b|মস/.test(primaryBlob)) {
+    return { plantGroup: "Bryophyte", cladeLabel: "Bryophyta" };
+  }
+
+  if (
+    /\b(pteridophyte|pteridophytes|pteridophyta|polypodiophyta|polypodiopsida|lycopodiophyta|fern|ferns)\b|ফার্ন/.test(primaryBlob) &&
+    !/\bfern-like\b/.test(leadLower)
+  ) {
+    return { plantGroup: "Fern / Pteridophyte", cladeLabel: "Pteridophyta" };
+  }
+
+  if (
+    /\b(gymnosperm|gymnosperms|gymnospermae|gnetophyta|ginkgophyta|cycadophyta|pinophyta|coniferophyta|conifer|conifers|welwitschiales|ginkgoales|cycadales|pinales|ephedrales|gnetales)\b/.test(
+      `${primaryBlob} ${extractLower.slice(0, 1500)}`,
+    )
+  ) {
+    return { plantGroup: "Gymnosperm", cladeLabel: "Gymnospermae" };
+  }
+
+  return { plantGroup: "Angiosperm (Flowering Plant)", cladeLabel: "Angiospermae" };
+}
+
+function inferGrowthForm(leadLower, categoriesLower, extractLower, plantGroup) {
+  const primaryText = `${leadLower.slice(0, 750)} ${categoriesLower}`;
+  const detectFromText = (blob) => {
+    if (/\b(aquatic|hydrophyte|water plant|submerged|floating)\b|জলজ/.test(blob)) {
+      return "Hydrophytic Aquatic Macrophyte";
+    }
+    if (/\b(succulent|cactus|cacti|xerophyte|caudex|caudiciform)\b/.test(blob)) {
+      return "Perennial Succulent / Xerophyte";
+    }
+    if (/\b(palm|palms)\b|তাল/.test(blob)) {
+      return "Arborescent Palm";
+    }
+    if (/\b(vine|climber|climbing|liana|twining)\b|লতা/.test(blob)) {
+      return "Twining Vine / Climber";
+    }
+    if (/\b(shrub|shrubs|subshrub|bush)\b|গুল্ম/.test(blob)) {
+      return "Woody Shrub / Subshrub";
+    }
+    if (/\b(herb|herbs|herbaceous|forb)\b|ভেষজ|বীরুৎ/.test(blob)) {
+      return "Herbaceous Plant";
+    }
+    if (/\b(tree|trees|arborescent)\b|বৃক্ষ/.test(blob)) {
+      return "Perennial Woody Tree";
+    }
+    if (/\bmonotypic genus\b|\bmonotypic\b/.test(blob)) {
+      return plantGroup === "Gymnosperm"
+        ? "Monotypic Gymnosperm Taxon"
+        : "Monotypic Botanical Taxon";
+    }
+    return "";
+  };
+
+  const primaryHabit = detectFromText(primaryText);
+  if (primaryHabit) return primaryHabit;
+
+  const secondaryHabit = detectFromText(extractLower.slice(0, 2200));
+  if (secondaryHabit) return secondaryHabit;
+
+  if (plantGroup === "Bryophyte") return "Non-Vascular Bryophyte";
+  if (plantGroup === "Fern / Pteridophyte") return "Vascular Fern";
+  if (plantGroup === "Gymnosperm") return "Gymnosperm Taxon";
+  return "Vascular Botanical Taxon";
 }
 
 function inferCategoryFromData(taxobox, extractLower, categoriesLower) {
@@ -398,13 +569,18 @@ function buildPlantipediaMonograph(page, lang, originalQuery) {
   }
 
   const title = sanitizeBotanicalText(page.title || originalQuery);
-  const { lead, namedSections } = splitSectionsFromExtract(page.extract || "");
-  const extractLower = String(page.extract || "").toLowerCase();
-  const categoriesLower = (page.categories || []).map((c) => c.title || "").join(" ").toLowerCase();
+  const { lead, leadParagraphs, namedSections } = splitSectionsFromExtract(page.extract || "");
+  const extractFull = sanitizeBotanicalText(page.extract || "");
+  const extractLower = extractFull.toLowerCase();
+  const leadLower = lead.toLowerCase();
+  const categoriesText = (page.categories || []).map((c) => c.title || "").join(" ");
+  const categoriesLower = categoriesText.toLowerCase();
 
   const scientificName = extractBinomial(taxobox, title, lead) || sanitizeBotanicalText(taxobox.binomial || taxobox.taxon || title);
-  const familyName = sanitizeBotanicalText(taxobox.familia || taxobox.family || taxobox.গোত্র || "");
-  const orderName = sanitizeBotanicalText(taxobox.ordo || taxobox.order || taxobox.বর্গ || "");
+  const familyName = extractBotanicalFamily(taxobox, lead, extractFull, wikitext, categoriesText);
+  const orderName = extractBotanicalOrder(taxobox, lead, extractFull, wikitext, categoriesText);
+  const displayFamily = familyName || "Botanical Taxon (Global Registry)";
+
   const genusName = sanitizeBotanicalText(
     taxobox.genus || taxobox.গণ || (scientificName.includes(" ") ? scientificName.split(" ")[0] : title),
   );
@@ -426,48 +602,50 @@ function buildPlantipediaMonograph(page, lang, originalQuery) {
   const leadOverview = extractSentences(lead, 3) || `${commonName} is a documented botanical taxon indexed via the Global Botanical Server.`;
   const shortSummary = extractSentences(lead, 2) || leadOverview;
 
-  const secMorphology = findSectionByKeywords(namedSections, ["description", "morphology", "botany", "characteristics", "anatomy", "বিবরণ", "গঠন"]);
-  const secHabitat = findSectionByKeywords(namedSections, ["distribution", "habitat", "ecology", "range", "origin", "বিস্তৃতি", "আবাসস্থল"]);
-  const secCultivation = findSectionByKeywords(namedSections, ["cultivation", "propagation", "growing", "horticulture", "soil", "চাষাবাদ"]);
-  const secUses = findSectionByKeywords(namedSections, ["use", "medicinal", "culinary", "phytochemistry", "chemistry", "ethnobotany", "economic", "ব্যবহার", "উপকারিতা"]);
-  const secTaxonomy = findSectionByKeywords(namedSections, ["taxonomy", "etymology", "classification", "nomenclature", "শ্রেণিবিন্যাস"]);
-  const secCulture = findSectionByKeywords(namedSections, ["culture", "symbol", "history", "significance", "folklore", "সাহিত্য", "ইতিহাস"]);
+  const { plantGroup: inferredGroup, cladeLabel } = inferPlantGroupAndClade(
+    taxobox,
+    leadLower,
+    categoriesLower,
+    extractLower,
+  );
+  const inferredHabit = inferGrowthForm(leadLower, categoriesLower, extractLower, inferredGroup);
 
-  const inferredHabit = /tree|বৃক্ষ/.test(extractLower)
-    ? "Perennial Woody Tree (5–25 m)"
-    : /shrub|গুল্ম/.test(extractLower)
-      ? "Branching Perennial Shrub (1–4 m)"
-      : /vine|climber|লতা/.test(extractLower)
-        ? "Twining Perennial Climber (2–8 m)"
-        : /aquatic|water|জলজ/.test(extractLower)
-          ? "Hydrophytic Aquatic Macrophyte (0.5–2 m)"
-          : "Vascular Botanical Taxon (0.5–3 m)";
+  const secTaxonomyList = findSectionsByKeywords(namedSections, ["taxonomy", "etymology", "naming", "classification", "nomenclature", "phylogeny", "evolution", "শ্রেণিবিন্যাস"]);
+  const secMorphologyList = findSectionsByKeywords(namedSections, ["description", "morphology", "botany", "biology", "characteristics", "anatomy", "physiology", "বিবরণ", "গঠন"]);
+  const secHabitatList = findSectionsByKeywords(namedSections, ["distribution", "habitat", "ecology", "range", "origin", "conservation", "বিস্তৃতি", "আবাসস্থল"]);
+  const secCultureList = findSectionsByKeywords(namedSections, ["culture", "symbol", "history", "significance", "folklore", "culinary", "সাহিত্য", "ইতিহাস"]);
+  const secUsesList = findSectionsByKeywords(namedSections, ["use", "medicinal", "phytochemistry", "chemistry", "toxicity", "ethnobotany", "economic", "ব্যবহার", "উপকারিতা"]);
+  const secCultivationList = findSectionsByKeywords(namedSections, ["cultivation", "propagation", "growing", "horticulture", "soil", "care", "চাষাবাদ"]);
 
-  const inferredGroup = /fern|pteridophyte/.test(extractLower)
-    ? "Vascular Pteridophyte"
-    : /gymnosperm|conifer|pine/.test(extractLower)
-      ? "Gymnosperm"
-      : "Angiosperm (Flowering Plant)";
+  const secHabitat = secHabitatList[0] || null;
+  const secUses = secUsesList[0] || null;
 
-  const inferredLifespan = /annual/.test(extractLower) ? "Annual" : "Perennial";
+  const inferredLifespan = /\bannual\b/.test(leadLower) ? "Annual" : "Perennial";
   const phRangeMatch = extractLower.match(/\bpH\s*(\d+(?:\.\d+)?)\s*(?:-|–|to)\s*(\d+(?:\.\d+)?)/i);
   const phMin = phRangeMatch ? Math.max(4.0, Math.min(8.5, parseFloat(phRangeMatch[1]))) : 6.0;
   const phMax = phRangeMatch ? Math.max(phMin, Math.min(9.0, parseFloat(phRangeMatch[2]))) : 7.2;
   const inferredPh = `pH ${phMin.toFixed(1)}–${phMax.toFixed(1)}`;
   const inferredTemp = inferNumericAttribute(extractLower, /\d{1,2}\s*[–-]\s*\d{1,2}\s*°C/i, "18–32 °C");
-  const isShade = /shade|understory/.test(extractLower) && !/full sun/.test(extractLower);
-  const isAquatic = /aquatic|hydrophyte|submerged|wetland/.test(extractLower);
-  const isDrought = /drought-tolerant|arid|xerophyte|succulent/.test(extractLower);
+  const isShade = /\b(shade|understory)\b/.test(extractLower) && !/\bfull sun\b/.test(extractLower);
+  const isAquatic = /\b(aquatic|hydrophyte|submerged|wetland)\b/.test(leadLower);
+  const isDrought = /\b(drought-tolerant|arid|xerophyte|succulent|desert)\b/.test(extractLower);
   const inferredLight = isShade
     ? "Partial Shade to Filtered Light (4–6 hours)"
     : "Full Sun to Bright Light (6–8 hours daily)";
 
   const classificationString = [
     "Kingdom: Plantae",
+    `Group: ${inferredGroup}`,
     orderName ? `Order: ${orderName}` : null,
     familyName ? `Family: ${familyName}` : null,
     genusName ? `Genus: ${genusName}` : null,
     scientificName ? `Binomial: ${scientificName}` : null
+  ].filter(Boolean).join(" · ");
+
+  const taxonomicFamilyOrderText = [
+    familyName || "Botanical Taxon (Global Registry)",
+    orderName || null,
+    cladeLabel
   ].filter(Boolean).join(" · ");
 
   const nativeOriginText = secHabitat
@@ -477,19 +655,181 @@ function buildPlantipediaMonograph(page, lang, originalQuery) {
     ? extractSentences(secUses.body, 1)
     : `${category} horticulture, biodiversity support & ethnobotanical study`;
 
-  const sections = [
+  // Paragraph & sentence deduplication tracking across Chapters 01–07
+  const usedParagraphKeys = new Set();
+  const usedSentenceKeys = new Set();
+  const allSentencePool = [
+    ...leadParagraphs.flatMap((p) => splitIntoSentences(p)),
+    ...namedSections.flatMap((sec) => sec.paragraphs.flatMap((p) => splitIntoSentences(p)))
+  ];
+
+  const isTextUnused = (text) => {
+    const key = normalizeDedupKey(text);
+    if (!key || usedParagraphKeys.has(key)) return false;
+    const sentences = splitIntoSentences(text);
+    if (sentences.length > 0 && sentences.every((s) => usedSentenceKeys.has(normalizeDedupKey(s)))) {
+      return false;
+    }
+    if (sentences.length > 0 && usedSentenceKeys.has(normalizeDedupKey(sentences[0]))) {
+      return false;
+    }
+    return true;
+  };
+
+  const markTextUsed = (text) => {
+    const key = normalizeDedupKey(text);
+    if (key) usedParagraphKeys.add(key);
+    splitIntoSentences(text).forEach((s) => {
+      const sk = normalizeDedupKey(s);
+      if (sk) usedSentenceKeys.add(sk);
+    });
+  };
+
+  const claimParagraphs = (candidates, maxCount = 3) => {
+    const claimed = [];
+    for (const raw of candidates) {
+      const clean = sanitizeBotanicalText(raw);
+      if (!clean || clean.length < 20) continue;
+      if (!isTextUnused(clean)) continue;
+      markTextUsed(clean);
+      claimed.push(clean);
+      if (claimed.length >= maxCount) break;
+    }
+    return claimed;
+  };
+
+  const pullUnusedSentences = (keywords = [], maxSentences = 3) => {
+    const remaining = allSentencePool.filter((s) => {
+      const sk = normalizeDedupKey(s);
+      return sk && !usedSentenceKeys.has(sk) && !usedParagraphKeys.has(sk);
+    });
+    if (!remaining.length) return "";
+
+    const kwMatches = keywords.length
+      ? remaining.filter((s) => {
+          const lower = s.toLowerCase();
+          return keywords.some((kw) => lower.includes(kw));
+        })
+      : [];
+
+    const chosen = (kwMatches.length ? kwMatches : remaining).slice(0, maxSentences);
+    const combined = sanitizeBotanicalText(chosen.join(" "));
+    if (!combined || !isTextUnused(combined)) return "";
+    markTextUsed(combined);
+    return combined;
+  };
+
+  const assignChapterParagraphs = ({
+    primary = [],
+    secondary = [],
+    sentenceKeywords = [],
+    fallbacks = [],
+    maxPrimary = 3
+  }) => {
+    const out = claimParagraphs(primary, maxPrimary);
+    if (out.length === 0 && secondary.length > 0) {
+      out.push(...claimParagraphs(secondary, 2));
+    }
+    if (out.length === 0) {
+      const synthesized = pullUnusedSentences(sentenceKeywords, 3);
+      if (synthesized) {
+        out.push(synthesized);
+      }
+    }
+    if (out.length === 0 && fallbacks.length > 0) {
+      out.push(...claimParagraphs(fallbacks, 2));
+    } else if (out.length === 1 && out[0].length < 180) {
+      const supplemental = pullUnusedSentences(sentenceKeywords, 2) || claimParagraphs(fallbacks.slice(-1), 1)[0];
+      if (supplemental) {
+        out.push(supplemental);
+      }
+    }
+    return out;
+  };
+
+  const collectSectionParagraphs = (sectionList) =>
+    sectionList.flatMap((sec) => sec.paragraphs || []);
+
+  const ch1Paragraphs = assignChapterParagraphs({
+    primary: [...leadParagraphs.slice(0, 2), ...collectSectionParagraphs(secTaxonomyList)],
+    sentenceKeywords: ["species", "genus", "family", "order", "named", "taxon", "classif", "binomial"],
+    fallbacks: [
+      `Taxonomically cataloged under ${classificationString}. Verified through the Global Flora Index botanical taxonomy registry for standardized Plantipedia comparative inspection.`
+    ],
+    maxPrimary: 3
+  });
+
+  const ch2Paragraphs = assignChapterParagraphs({
+    primary: collectSectionParagraphs(secMorphologyList),
+    secondary: leadParagraphs.slice(2),
+    sentenceKeywords: ["leaf", "leaves", "stem", "trunk", "bark", "flower", "petal", "fruit", "seed", "cone", "root", "height", "cm", "m", "grow", "foliage", "গঠন", "পাতা", "ফুল"],
+    fallbacks: [
+      `Morphological records retrieved from the Global Botanical Server classify ${commonName} as a ${inferredHabit.toLowerCase()} within ${displayFamily}, exhibiting structural anatomy adapted to its native ecological guild.`
+    ],
+    maxPrimary: 3
+  });
+
+  const ch3Paragraphs = assignChapterParagraphs({
+    primary: collectSectionParagraphs(secHabitatList),
+    sentenceKeywords: ["native", "endemic", "habitat", "region", "climate", "desert", "forest", "soil", "rain", "pollinat", "ecology", "distribution", "elevation", "আবাস", "অঞ্চল"],
+    fallbacks: [
+      `Ecological records indicate ${commonName} establishes across natural habitats aligned with its physiological moisture and solar envelope, contributing to regional biodiversity and trophic networks.`,
+      `Adapted to ambient thermal conditions around ${inferredTemp} within structured mineral or organic substrates.`
+    ],
+    maxPrimary: 3
+  });
+
+  const ch4Paragraphs = assignChapterParagraphs({
+    primary: collectSectionParagraphs(secCultureList),
+    secondary: collectSectionParagraphs(secUsesList).slice(0, 1),
+    sentenceKeywords: ["cultur", "tradition", "history", "symbol", "ornamental", "food", "garden", "heritage", "ইতিহাস", "সাহিত্য"],
+    fallbacks: [
+      `${commonName} carries documented ecological, horticultural, or cultural interest across regional floras indexed in the Global Botanical Server.`,
+      `Cross-referenced under Plantipedia's standardized monograph framework for side-by-side comparative inspection.`
+    ],
+    maxPrimary: 3
+  });
+
+  const ch5Paragraphs = assignChapterParagraphs({
+    primary: collectSectionParagraphs(secUsesList),
+    sentenceKeywords: ["chemical", "compound", "oil", "acid", "alkaloid", "medic", "toxic", "extract", "vitamin", "resin", "phytochem", "ভেষজ"],
+    fallbacks: [
+      `Phytochemical and ethnobotanical records note secondary metabolites, polyphenols, or structural biopolymers typical of ${displayFamily}, supporting traditional and modern botanical inquiry.`,
+      `Detailed biochemical profiling should reference peer-reviewed botanical pharmacopoeias alongside Global Flora Index taxon records.`
+    ],
+    maxPrimary: 3
+  });
+
+  const ch6Paragraphs = assignChapterParagraphs({
+    primary: collectSectionParagraphs(secCultivationList),
+    sentenceKeywords: ["propagat", "seed", "cutting", "cultivat", "soil", "water", "prune", "germinat", "pot", "চাষ"],
+    fallbacks: [
+      `Propagation and field establishment for ${commonName} follow protocols tuned to ${inferredHabit.toLowerCase()} physiology, prioritizing root-zone aeration and seasonal moisture balance.`,
+      `Lifecycle classification: ${inferredLifespan} ${inferredGroup.toLowerCase()} indexed under ${category}.`
+    ],
+    maxPrimary: 3
+  });
+
+  const ch7Paragraphs = assignChapterParagraphs({
+    primary: [],
+    sentenceKeywords: ["ph", "temperature", "°c", "sunlight", "moisture", "drought", "humidity", "frost"],
+    fallbacks: [
+      `Calibrated physiological telemetry estimates for ${commonName} synthesized from Global Flora Index taxon descriptors.`,
+      `Abiotic profile summarizes solar irradiance preference (${inferredLight}), edaphic reaction (${inferredPh}), and thermal operating window (${inferredTemp}).`
+    ],
+    maxPrimary: 2
+  });
+
+  const rawSections = [
     {
       number: "01",
       title: "Botanical Identity & Classification",
       subtitle: "Global Flora Index Nomenclature & Taxonomic Hierarchy",
       summary: "Taxonomic placement, Linnaean binomial authority, and vernacular cross-referencing.",
-      paragraphs: [
-        lead,
-        secTaxonomy?.body || `Taxonomically cataloged under ${classificationString}. Verified through the Global Flora Index botanical taxonomy registry for standardized Plantipedia comparative inspection.`
-      ].filter(Boolean),
+      paragraphs: ch1Paragraphs,
       subblocks: [
         { heading: "Scientific Binomial", text: scientificName || commonName },
-        { heading: "Taxonomic Family & Order", text: [familyName || "Angiospermae", orderName].filter(Boolean).join(" · ") }
+        { heading: "Taxonomic Family & Order", text: taxonomicFamilyOrderText }
       ]
     },
     {
@@ -497,66 +837,66 @@ function buildPlantipediaMonograph(page, lang, originalQuery) {
       title: "Morphological Architecture",
       subtitle: "Foliar, Vascular & Floral Anatomy",
       summary: "Vegetative habit, structural anatomy, and diagnostic morphological characteristics.",
-      paragraphs: [
-        secMorphology?.body || `Morphological records retrieved from the Global Botanical Server describe ${commonName} as a ${inferredHabit.toLowerCase()} exhibiting characteristic foliar, vascular, and floral structures consistent with ${familyName || "its botanical lineage"}.`,
-        extractSentences(namedSections[0]?.body || lead, 3)
-      ].filter(Boolean)
+      paragraphs: ch2Paragraphs
     },
     {
       number: "03",
       title: "Native Distribution & Ecology",
       subtitle: "Biogeographic Range & Habitat Interactions",
       summary: "Endemic ecological range, climate envelope, and trophic community interactions.",
-      paragraphs: [
-        secHabitat?.body || `Ecological records indicate ${commonName} establishes across natural habitats aligned with its physiological moisture and solar envelope, contributing to local biodiversity and pollinator networks.`,
-        `Adapted to ambient thermal conditions around ${inferredTemp} within well-structured substrates.`
-      ].filter(Boolean)
+      paragraphs: ch3Paragraphs
     },
     {
       number: "04",
       title: "Ethnobotanical Uses & Cultural Significance",
       subtitle: "Horticultural, Culinary & Heritage Value",
       summary: "Documented human cultivation history, culinary applications, and cultural significance.",
-      paragraphs: [
-        secCulture?.body || secUses?.body || `${commonName} carries documented ecological, horticultural, or cultural utility across regional floras indexed in the Global Botanical Server.`,
-        `Cross-referenced under Plantipedia's standardized eight-chapter monograph template for side-by-side comparative inspection.`
-      ].filter(Boolean)
+      paragraphs: ch4Paragraphs
     },
     {
       number: "05",
       title: "Phytochemistry & Bioactive Compounds",
       subtitle: "Secondary Metabolites & Medicinal Profile",
       summary: "Bioactive constituents, aromatic compounds, and pharmacognostic context.",
-      paragraphs: [
-        secUses?.body || `Phytochemical and ethnobotanical records note secondary metabolites, polyphenols, or structural biopolymers typical of ${familyName || commonName}, supporting traditional and modern botanical inquiry.`,
-        `Detailed chemical profiling should reference peer-reviewed botanical pharmacopoeias alongside Global Flora Index taxon records.`
-      ].filter(Boolean)
+      paragraphs: ch5Paragraphs
     },
     {
       number: "06",
       title: "Propagation & Field Husbandry",
       subtitle: "Germination, Clonal & Canopy Management",
       summary: "Practical propagation pathways, seasonal pruning, and establishment milestones.",
-      paragraphs: [
-        secCultivation?.body || `Propagation and field establishment for ${commonName} follow protocols tuned to ${inferredHabit.toLowerCase()} physiology, prioritizing root-zone oxygenation and seasonal moisture balance.`,
-        `Lifecycle classification: ${inferredLifespan} taxon indexed under ${category}.`
-      ].filter(Boolean)
+      paragraphs: ch6Paragraphs
     },
     {
       number: "07",
       title: "Physiological Telemetry & Cultivation Profile",
       subtitle: "Soil pH, Solar Irradiance & Moisture Thresholds",
       summary: "Synthesized abiotic operating thresholds for soil chemistry, sunlight, and hydration.",
-      paragraphs: [
-        `Calibrated physiological telemetry estimates for ${commonName} synthesized from Global Flora Index taxon descriptors.`,
-        `Values summarize solar irradiance preference (${inferredLight}), edaphic reaction (${inferredPh}), and thermal operating window (${inferredTemp}).`
-      ],
+      paragraphs: ch7Paragraphs,
       subblocks: [
         { heading: "Substrate Reaction", text: `Optimal soil tolerance spans ${inferredPh} across well-aerated substrates.` },
         { heading: "Solar & Thermal Window", text: `${inferredLight} with optimal canopy temperatures near ${inferredTemp}.` }
       ]
     }
   ];
+
+  // Final defensive pass: enforce global uniqueness across all chapters 01–07
+  const finalSeenParagraphKeys = new Set();
+  const sections = rawSections.map((sec) => {
+    const uniqueParagraphs = [];
+    for (const p of sec.paragraphs) {
+      const k = normalizeDedupKey(p);
+      if (!k || finalSeenParagraphKeys.has(k)) continue;
+      finalSeenParagraphKeys.add(k);
+      uniqueParagraphs.push(p);
+    }
+    return {
+      ...sec,
+      paragraphs: uniqueParagraphs.length
+        ? uniqueParagraphs
+        : [`Chapter ${sec.number} summary for ${commonName} (${scientificName || commonName}) indexed via Global Flora Index.`]
+    };
+  });
 
   const monograph = {
     isGlobalLive: true,
@@ -587,7 +927,7 @@ function buildPlantipediaMonograph(page, lang, originalQuery) {
     },
     overview: {
       plantGroup: inferredGroup,
-      family: familyName || "Plantae (Indexed Family)",
+      family: displayFamily,
       genus: genusName || "Indexed Genus",
       species: speciesEpithet || scientificName || commonName,
       growthForm: inferredHabit,

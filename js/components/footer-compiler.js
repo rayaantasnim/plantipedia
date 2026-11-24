@@ -119,7 +119,18 @@ function createArchitectSparkIconSvg() {
   return svg;
 }
 
+function isFooterExcludedRoute() {
+  try {
+    const pathname = window.location?.pathname || "";
+    if (pathname.includes("/compare/result")) return true;
+  } catch {
+    // Ignore window.location access edge cases
+  }
+  return document.body?.dataset?.page === "compare-result";
+}
+
 function buildFooterDom(host, config) {
+  if (!host || isFooterExcludedRoute()) return;
   const brand = config.brand || FALLBACK_FOOTER_CONFIG.brand;
   const bodyPage = document.body?.dataset?.page || "";
   const isHomePage =
@@ -459,9 +470,11 @@ export function initGlobalBackToTopButton() {
 let compiledFooterPromise = null;
 
 export function compileFooter() {
+  if (isFooterExcludedRoute()) return Promise.resolve(null);
   if (compiledFooterPromise) return compiledFooterPromise;
 
   compiledFooterPromise = (async () => {
+    if (isFooterExcludedRoute()) return null;
     const host =
       document.getElementById("global-footer") ||
       document.querySelector('[data-shell="footer"]') ||
@@ -507,8 +520,10 @@ export function compileFooter() {
   return compiledFooterPromise;
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", compileFooter);
-} else {
-  compileFooter();
+if (!isFooterExcludedRoute()) {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", compileFooter);
+  } else {
+    compileFooter();
+  }
 }

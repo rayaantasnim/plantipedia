@@ -3,25 +3,45 @@
   "page": "services",
   "seo": {
     "title": "Digital Botanical Research Suite & Services | Plantipedia",
-    "description": "Explore Plantipedia's interactive botanical tools—bilingual EN/বাংলা instant search, split-screen species comparator, 6-season phenology calendar, APA/MLA/BibTeX citation engine, and live taxonomic telemetry.",
-    "keywords": "Plantipedia services, botanical research suite, bilingual plant search, species comparison tool, Bengali 6-season phenology calendar, plant citation generator, taxonomic analytics",
+    "description": "Explore Plantipedia's 10-section botanical research suite—Global Botanical Server Engine, bilingual search, split comparator, 6-season calendar, and citation sandbox.",
+    "keywords": "Plantipedia services, botanical research suite, Global Botanical Server, bilingual plant search, species comparison tool, Bengali 6-season calendar, plant citation generator",
     "author": "Jalees Habib, Rayaan Tasnim",
     "canonicalFile": "services/",
     "ogType": "website",
     "ogTitle": "Digital Botanical Research Suite & Services | Plantipedia",
-    "ogDescription": "Compare traditional plant blogs against Plantipedia's bilingual botanical archive, explore live taxonomic visualizations, and test our citation and glossary engines live.",
+    "ogDescription": "Explore Plantipedia's 10-section botanical research suite, Global Botanical Server Engine, live SVG visualizations, and citation/glossary sandboxes.",
     "ogImage": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
     "ogImageAlt": "Plantipedia Digital Botanical Research Suite",
     "jsonLd": {
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "WebPage",
-          "@id": "https://rayaantasnim.github.io/plantipedia/services/#webpage",
-          "name": "Digital Botanical Research Suite & Services | Plantipedia",
-          "description": "Interactive suite of bilingual botanical tools, live ecological telemetry, and academic research utilities powered by Plantipedia.",
+          "@type": ["WebApplication", "SoftwareApplication"],
+          "@id": "https://rayaantasnim.github.io/plantipedia/services/#webapp",
+          "name": "Plantipedia Digital Botanical Research Suite",
+          "applicationCategory": "EducationalApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires modern ES6+ web browser",
           "url": "https://rayaantasnim.github.io/plantipedia/services/",
-          "inLanguage": ["en", "bn"]
+          "inLanguage": ["en", "bn"],
+          "description": "10-section botanical research suite combining 50 curated 8-chapter monographs, the Zero-Key Global Botanical Server Engine, bilingual EN/বাংলা search, split comparator, and academic citation tools.",
+          "featureList": [
+            "Zero-Key Global Botanical Server Engine",
+            "Bilingual EN / বাংলা Instant Search",
+            "Side-by-Side Split Specimen Comparator",
+            "6-Season Bengali Phenology Calendar",
+            "APA 7th, MLA 9th & BibTeX Citation Generator",
+            "Interactive Data Synthesis Pipeline & Print Field-Sheet Studio"
+          ],
+          "author": [
+            { "@type": "Person", "name": "Jalees Habib" },
+            { "@type": "Person", "name": "Rayaan Tasnim" }
+          ],
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
         },
         {
           "@type": "BreadcrumbList",

@@ -60,13 +60,16 @@ function setCanonicalHref(href) {
 
 function setJsonLdScript(id, schemaData) {
   if (!schemaData) return;
-  let ldScript = document.getElementById(id);
+  let ldScript =
+    document.getElementById(id) ||
+    document.getElementById("page-jsonld") ||
+    document.head.querySelector('script[type="application/ld+json"]');
   if (!ldScript) {
     ldScript = document.createElement("script");
     ldScript.type = "application/ld+json";
-    ldScript.id = id;
     document.head.appendChild(ldScript);
   }
+  ldScript.id = id;
   ldScript.textContent = JSON.stringify(schemaData, null, 2);
 }
 
@@ -152,7 +155,7 @@ export function applyPageSeo(seoConfig) {
             ],
           }
         : seoConfig.jsonLd;
-    setJsonLdScript("dynamic-page-jsonld", enriched);
+    setJsonLdScript("page-jsonld", enriched);
   }
 }
 
@@ -234,7 +237,7 @@ export function applySpeciesDirectorySeo({ pageData, speciesList }) {
     ],
   };
 
-  setJsonLdScript("dynamic-page-jsonld", schemaData);
+  setJsonLdScript("page-jsonld", schemaData);
 }
 
 export function applyTaxonomySeo({ pageData, families, activeFamily }) {
@@ -370,7 +373,7 @@ export function applyTaxonomySeo({ pageData, families, activeFamily }) {
     });
   }
 
-  setJsonLdScript("dynamic-page-jsonld", {
+  setJsonLdScript("page-jsonld", {
     "@context": "https://schema.org",
     "@graph": graph,
   });
@@ -509,7 +512,7 @@ export function applySeasonsSeo({
     ],
   };
 
-  setJsonLdScript("dynamic-page-jsonld", schemaData);
+  setJsonLdScript("page-jsonld", schemaData);
 }
 
 export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
@@ -630,7 +633,7 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
     });
   }
 
-  setJsonLdScript("dynamic-page-jsonld", {
+  setJsonLdScript("page-jsonld", {
     "@context": "https://schema.org",
     "@graph": graph,
   });
@@ -641,6 +644,7 @@ export function applyPlantMonographSeo(plant) {
 
   const isGlobal = Boolean(plant.isGlobalLive);
   const category = plant.category || "Global Flora";
+  const bengaliName = plant.commonNameBn || plant.localName || "";
   const homeUrl = resolveCanonicalPageUrl("");
   const directoryUrl = resolveCanonicalPageUrl("species/");
   const categoryUrl = resolveCanonicalPageUrl(
@@ -651,24 +655,38 @@ export function applyPlantMonographSeo(plant) {
     ? resolveCanonicalPageUrl("plant/live/", `?q=${encodeURIComponent(plant.query || plant.commonName || "")}`)
     : resolveCanonicalPageUrl("plant/", `?species=${encodeURIComponent(plant.slug || "")}`);
 
+  const displayName = bengaliName
+    ? `${plant.commonName} · ${bengaliName}`
+    : plant.commonName;
   const seoTitle = isGlobal
-    ? `${plant.commonName} (${plant.scientificName}) — Global Flora Index | Plantipedia`
-    : `${plant.commonName} (${plant.scientificName}) | Plantipedia`;
-  const seoDesc = plant.shortSummary || plant.leadOverview || "";
-  const heroImgUrl = plant.heroImage?.url || DEFAULT_OG_IMAGE;
-  const heroImgAlt = plant.heroImage?.alt || plant.commonName;
+    ? `${displayName} (${plant.scientificName}) — Global Flora Index | Plantipedia`
+    : `${displayName} (${plant.scientificName}) | Plantipedia`;
+
   const ov = plant.overview || {};
+  const familySuffix = ov.family ? ` Family: ${ov.family}.` : "";
+  const baseSummary = plant.shortSummary || plant.leadOverview || "";
+  const seoDesc =
+    baseSummary && !baseSummary.includes(plant.scientificName || "")
+      ? `${displayName} (${plant.scientificName}).${familySuffix} ${baseSummary}`
+      : baseSummary || `${displayName} (${plant.scientificName}).${familySuffix}`;
+
+  const rawHeroUrl = plant.heroImage?.url || DEFAULT_OG_IMAGE;
+  const heroImgUrl =
+    /^https?:/i.test(rawHeroUrl) ? rawHeroUrl : DEFAULT_OG_IMAGE;
+  const heroImgAlt = plant.heroImage?.alt || displayName;
 
   document.title = seoTitle;
   setCanonicalHref(pageUrl);
 
   setMetaTag("name", "description", seoDesc);
+  setMetaTag("name", "author", "Jalees Habib, Rayaan Tasnim");
   setMetaTag("name", "robots", "index, follow");
   setMetaTag(
     "name",
     "keywords",
     [
       plant.commonName,
+      bengaliName,
       plant.scientificName,
       ov.family,
       ov.genus,
@@ -694,16 +712,26 @@ export function applyPlantMonographSeo(plant) {
   setMetaTag("name", "twitter:image", heroImgUrl);
   setMetaTag("name", "twitter:image:alt", heroImgAlt);
 
+  const alternateNames = Array.from(
+    new Set(
+      [plant.schemaOrg?.alternateName, plant.commonName, bengaliName].filter(
+        Boolean,
+      ),
+    ),
+  );
+
   const schemaData = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Article",
+        "@type": ["ScholarlyArticle", "Article"],
         "@id": `${pageUrl}#article`,
         headline: seoTitle,
+        name: displayName,
         description: seoDesc,
         image: heroImgUrl,
         url: pageUrl,
+        inLanguage: bengaliName ? ["en", "bn"] : "en",
         mainEntityOfPage: pageUrl,
         author: AUTHOR_ENTITIES,
         publisher: getPublisherOrg(homeUrl),
@@ -713,7 +741,7 @@ export function applyPlantMonographSeo(plant) {
         "@type": "Taxon",
         "@id": `${pageUrl}#taxon`,
         name: plant.schemaOrg?.name || plant.scientificName || plant.commonName,
-        alternateName: plant.schemaOrg?.alternateName || plant.commonName,
+        alternateName: alternateNames.length > 1 ? alternateNames : alternateNames[0] || plant.commonName,
         taxonRank: plant.schemaOrg?.taxonRank || "Species",
         description: plant.leadOverview || seoDesc,
         image: heroImgUrl,
@@ -737,8 +765,8 @@ export function applyPlantMonographSeo(plant) {
           {
             "@type": "ListItem",
             position: 2,
-            name: "Available Species",
-            item: directoryUrl,
+            name: isGlobal ? "Global Flora Index" : "Available Species",
+            item: isGlobal ? resolveCanonicalPageUrl("plant/live/") : directoryUrl,
           },
           {
             "@type": "ListItem",
@@ -749,7 +777,7 @@ export function applyPlantMonographSeo(plant) {
           {
             "@type": "ListItem",
             position: 4,
-            name: plant.commonName,
+            name: displayName,
             item: pageUrl,
           },
         ],
@@ -757,7 +785,7 @@ export function applyPlantMonographSeo(plant) {
     ],
   };
 
-  setJsonLdScript("dynamic-plant-jsonld", schemaData);
+  setJsonLdScript("page-jsonld", schemaData);
 }
 
 export function applyNotFoundSeo({ requestedSlug = "", reason = "", query = "" } = {}) {

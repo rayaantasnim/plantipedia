@@ -6,11 +6,11 @@
     <title>Plantipedia — Digital Botanical Encyclopedia & Flora Archive</title>
     <meta
       name="description"
-      content="Explore Plantipedia, a scholarly digital botanical archive documenting 50 curated plant species with 8-chapter monographs, taxonomy, ecology, and field photography."
+      content="Explore Plantipedia, a scholarly digital botanical archive documenting 50 curated plant species alongside a Worldwide Botanical Server Gateway for live global flora monographs."
     />
     <meta
       name="keywords"
-      content="plantipedia, botanical encyclopedia, 50 plant species, plant taxonomy, morphology, South Asian flora, medicinal herbs, horticulture"
+      content="plantipedia, botanical encyclopedia, 50 plant species, Worldwide Botanical Server, Global Flora Index, plant taxonomy, morphology, South Asian flora, medicinal herbs, horticulture"
     />
     <meta name="author" content="Jalees Habib, Rayaan Tasnim" />
     <meta name="robots" content="index, follow" />
@@ -21,7 +21,7 @@
     <meta property="og:title" content="Plantipedia — Digital Botanical Encyclopedia & Flora Archive" />
     <meta
       property="og:description"
-      content="Explore 50 curated botanical monographs spanning morphology, taxonomy, ecology, medicinal properties, and cultivation guides."
+      content="Explore 50 curated botanical monographs and query live global species via Plantipedia's Worldwide Botanical Server Gateway."
     />
     <meta property="og:url" content="https://rayaantasnim.github.io/plantipedia/" />
     <meta
@@ -33,13 +33,46 @@
     <meta name="twitter:title" content="Plantipedia — Digital Botanical Encyclopedia & Flora Archive" />
     <meta
       name="twitter:description"
-      content="Explore 50 curated botanical monographs spanning morphology, taxonomy, ecology, and horticultural care."
+      content="Explore 50 curated botanical monographs and query live global species via Plantipedia's Worldwide Botanical Server Gateway."
     />
     <meta
       name="twitter:image"
       content="https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200"
     />
     <meta name="twitter:image:alt" content="Plantipedia Flora Archive" />
+    <script type="application/ld+json" id="page-jsonld">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "EducationalOrganization",
+            "@id": "https://rayaantasnim.github.io/plantipedia/#organization",
+            "name": "Plantipedia",
+            "url": "https://rayaantasnim.github.io/plantipedia/",
+            "description": "Educational digital botanical archive documenting 50 curated species with 8-chapter monographs and live Global Botanical Server exploration.",
+            "founder": [
+              { "@type": "Person", "name": "Jalees Habib" },
+              { "@type": "Person", "name": "Rayaan Tasnim" }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://rayaantasnim.github.io/plantipedia/#website",
+            "name": "Plantipedia",
+            "url": "https://rayaantasnim.github.io/plantipedia/",
+            "publisher": { "@id": "https://rayaantasnim.github.io/plantipedia/#organization" },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://rayaantasnim.github.io/plantipedia/species/?q={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          }
+        ]
+      }
+    </script>
 
     <link
       rel="icon"
