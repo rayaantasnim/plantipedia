@@ -45,9 +45,10 @@
   "explorer": {
     "pageSize": 10,
     "batchSize": 10,
-    "searchPlaceholder": "Filter by common name, Latin binomial, local name, or plant family...",
-    "searchAriaLabel": "Filter available plant species",
+    "searchPlaceholder": "Search species (EN / বাংলা / Latin / Family)...",
+    "searchAriaLabel": "Filter available plant species in English or Bengali",
     "clearLabel": "Clear",
+    "savedOnlyLabel": "Saved Only",
     "sortLabel": "Sort",
     "sortAriaLabel": "Sort species",
     "sortOptions": [

@@ -4,7 +4,7 @@
  */
 
 const SITE_ROOT_URL = new URL("../", import.meta.url);
-const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v1.1.0";
+const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v1.2.0";
 const KEBAB_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const DATASET_ENDPOINTS = Object.freeze({
@@ -13,9 +13,13 @@ export const DATASET_ENDPOINTS = Object.freeze({
   siteShell: "./data/site-shell.json",
   speciesIndex: "./data/species-index.json",
   catalog: "./data/species-index.json",
+  glossary: "./data/glossary.json",
   "page:home": "./data/pages/home.json",
   "page:species": "./data/pages/species.json",
   "page:plant": "./data/pages/plant.json",
+  "page:taxonomy": "./data/pages/taxonomy.json",
+  "page:seasons": "./data/pages/seasons.json",
+  "page:compare": "./data/pages/compare.json",
   featured: "./data/featured-species.json",
   taxonomy: "./data/taxonomy.json",
   trivia: "./data/trivia.json",
@@ -148,6 +152,39 @@ function validatePlantPagePayload(payload) {
   return payload;
 }
 
+function validateTaxonomyPagePayload(payload) {
+  assertObject(payload, "pages/taxonomy");
+  assertObject(payload.banner, "pages/taxonomy.banner");
+  assertObject(payload.families, "pages/taxonomy.families");
+  return payload;
+}
+
+function validateSeasonsPagePayload(payload) {
+  assertObject(payload, "pages/seasons");
+  assertObject(payload.banner, "pages/seasons.banner");
+  if (!Array.isArray(payload.seasons)) {
+    throw new Error('Malformed pages/seasons payload: "seasons" must be an array.');
+  }
+  return payload;
+}
+
+function validateComparePagePayload(payload) {
+  assertObject(payload, "pages/compare");
+  assertObject(payload.selector, "pages/compare.selector");
+  if (!Array.isArray(payload.loaderStages)) {
+    throw new Error('Malformed pages/compare payload: "loaderStages" must be an array.');
+  }
+  return payload;
+}
+
+function validateGlossaryPayload(payload) {
+  assertObject(payload, "glossary");
+  if (!Array.isArray(payload.terms)) {
+    throw new Error('Malformed glossary.json payload: "terms" must be an array.');
+  }
+  return payload;
+}
+
 function validateFeaturedPayload(payload) {
   assertObject(payload, "featured-species");
   if (!Array.isArray(payload.items)) {
@@ -225,9 +262,13 @@ const VALIDATORS = {
   siteShell: validateSiteShellPayload,
   speciesIndex: validateSpeciesIndexPayload,
   catalog: validateSpeciesIndexPayload,
+  glossary: validateGlossaryPayload,
   "page:home": validateHomePagePayload,
   "page:species": validateSpeciesPagePayload,
   "page:plant": validatePlantPagePayload,
+  "page:taxonomy": validateTaxonomyPagePayload,
+  "page:seasons": validateSeasonsPagePayload,
+  "page:compare": validateComparePagePayload,
   featured: validateFeaturedPayload,
   taxonomy: validateTaxonomyPayload,
   trivia: validateTriviaPayload,

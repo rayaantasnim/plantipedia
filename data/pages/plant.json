@@ -49,6 +49,27 @@
       "commonUses": "Common Uses"
     },
     "safetyTitle": "Botanical & Clinical Safety Advisory",
+    "printButtonLabel": "Export Field Sheet (PDF)",
+    "specimenPlate": {
+      "collectionLabel": "PLANTIPEDIA DIGITAL HERBARIUM",
+      "rankLabel": "Taxonomic Rank",
+      "originLabel": "Biogeographic Origin",
+      "attributionPrefix": "Photographic Plate"
+    },
+    "telemetry": {
+      "heading": "Ecological & Cultivation Telemetry",
+      "phLabel": "Optimal Soil pH Spectrum (4.0 – 9.0)",
+      "sunlightLabel": "Sunlight Intensity",
+      "irrigationLabel": "Irrigation Frequency"
+    },
+    "citation": {
+      "eyebrow": "Academic Reference",
+      "heading": "Cite This Monograph",
+      "institution": "Plantipedia Botanical Archive",
+      "year": 2026,
+      "copyLabel": "Copy Citation",
+      "copiedLabel": "Copied ✓"
+    },
     "previousLabel": "← Previous Monograph",
     "nextLabel": "Next Monograph →",
     "notFound": {

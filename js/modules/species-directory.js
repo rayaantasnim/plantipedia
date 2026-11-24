@@ -13,19 +13,26 @@ import {
   sanitizeUrl,
 } from "../templates.js";
 import { animateDynamicSpeciesGrid } from "../animations.js";
+import { createBookmarkSvg, getSavedSlugs } from "./herbarium.js";
 
 function plantMatchesQuery(plant, query) {
   if (!query) return true;
-  const q = query.toLowerCase();
+  const q = query.trim().toLowerCase();
   const family = plant.family || plant.overview?.family || "";
+  const familyBn = plant.familyBn || "";
   const plantGroup = plant.plantGroup || plant.overview?.plantGroup || "";
   const localName = plant.localName || "";
+  const commonNameBn = plant.commonNameBn || "";
+  const summaryBn = plant.summaryBn || "";
   const domain = plant.taxonomicDomain || "";
   return (
     plant.commonName.toLowerCase().includes(q) ||
     plant.scientificName.toLowerCase().includes(q) ||
     localName.toLowerCase().includes(q) ||
+    commonNameBn.toLowerCase().includes(q) ||
     family.toLowerCase().includes(q) ||
+    familyBn.toLowerCase().includes(q) ||
+    summaryBn.toLowerCase().includes(q) ||
     (plant.category || "").toLowerCase().includes(q) ||
     domain.toLowerCase().includes(q) ||
     plantGroup.toLowerCase().includes(q)
@@ -197,9 +204,22 @@ export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
     sortSelect.appendChild(opt);
   });
 
+  const savedToggleBtn = createEl("button", "directory-saved-toggle");
+  savedToggleBtn.type = "button";
+  savedToggleBtn.id = "directorySavedOnlyBtn";
+  savedToggleBtn.setAttribute("aria-pressed", "false");
+  savedToggleBtn.appendChild(createBookmarkSvg(false, 15));
+  savedToggleBtn.appendChild(
+    createEl("span", "", explorer.savedOnlyLabel || "Saved Only"),
+  );
+  const savedCountBadge = createEl("span", "directory-saved-count", "0");
+  savedCountBadge.setAttribute("data-herbarium-count", "true");
+  savedToggleBtn.appendChild(savedCountBadge);
+
   sortWrap.appendChild(sortLabel);
   sortWrap.appendChild(sortSelect);
   searchSortRow.appendChild(searchForm);
+  searchSortRow.appendChild(savedToggleBtn);
   searchSortRow.appendChild(sortWrap);
   filterPanel.appendChild(searchSortRow);
 
@@ -282,6 +302,7 @@ export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
   const paramCat = params.get("category");
   const paramQuery = params.get("q");
   const paramLetter = params.get("letter");
+  const paramSaved = params.get("saved") === "true";
 
   let activeCategory =
     paramCat && categories.includes(paramCat) ? paramCat : "All";
@@ -290,9 +311,14 @@ export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
     paramLetter && /^[A-Z]$/i.test(paramLetter.trim())
       ? paramLetter.trim().toUpperCase()
       : "All";
+  let savedOnly = paramSaved;
   let activeSort = "az";
   let currentPage = 1;
   let isUserInteraction = false;
+
+  savedToggleBtn.classList.toggle("is-active", savedOnly);
+  savedToggleBtn.setAttribute("aria-pressed", String(savedOnly));
+  savedCountBadge.textContent = String(getSavedSlugs().length);
 
   if (activeQuery) {
     searchInput.value = activeQuery;
@@ -335,13 +361,15 @@ export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
   }
 
   function getFilteredAndSorted() {
+    const savedSet = savedOnly ? new Set(getSavedSlugs()) : null;
     const filtered = allPlants.filter((plant) => {
+      const matchesSaved = !savedSet || savedSet.has(plant.slug);
       const matchesCat = plantMatchesCategory(plant, activeCategory);
       const matchesQ = plantMatchesQuery(plant, activeQuery);
       const matchesLtr =
         activeLetter === "All" ||
         (plant.commonName && plant.commonName.charAt(0).toUpperCase() === activeLetter);
-      return matchesCat && matchesQ && matchesLtr;
+      return matchesSaved && matchesCat && matchesQ && matchesLtr;
     });
 
     return filtered.slice().sort((a, b) => {
@@ -436,11 +464,14 @@ export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
     activeCategory = "All";
     activeQuery = "";
     activeLetter = "All";
+    savedOnly = false;
     activeSort = "az";
     currentPage = 1;
     searchInput.value = "";
     searchClear.hidden = true;
     sortSelect.value = "az";
+    savedToggleBtn.classList.remove("is-active");
+    savedToggleBtn.setAttribute("aria-pressed", "false");
     syncCategoryTabs();
     renderAzStrip();
     renderDirectory();
@@ -455,7 +486,10 @@ export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
     const startIdx = (currentPage - 1) * pageSize;
     const sliced = sorted.slice(startIdx, startIdx + pageSize);
     const hasFilters =
-      activeCategory !== "All" || activeQuery !== "" || activeLetter !== "All";
+      savedOnly ||
+      activeCategory !== "All" ||
+      activeQuery !== "" ||
+      activeLetter !== "All";
 
     const filteredNumEl = document.getElementById("directoryFilteredNum");
     if (filteredNumEl) {
@@ -576,6 +610,23 @@ export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
     currentPage = 1;
     isUserInteraction = true;
     renderDirectory();
+  });
+
+  savedToggleBtn.addEventListener("click", () => {
+    savedOnly = !savedOnly;
+    currentPage = 1;
+    isUserInteraction = true;
+    savedToggleBtn.classList.toggle("is-active", savedOnly);
+    savedToggleBtn.setAttribute("aria-pressed", String(savedOnly));
+    renderDirectory();
+  });
+
+  document.addEventListener("plantipedia:herbarium-changed", () => {
+    savedCountBadge.textContent = String(getSavedSlugs().length);
+    if (savedOnly) {
+      isUserInteraction = false;
+      renderDirectory();
+    }
   });
 
   resetAllBtn.addEventListener("click", () => {

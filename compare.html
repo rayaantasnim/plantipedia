@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compare Split View | Plantipedia</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#04140c" />
+    <link rel="canonical" href="./compare.html" />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23022c22'/%3E%3Cg transform='translate(32 34)'%3E%3Cpath d='M0 14 C-16 14 -24 2 -22 -8 C-12 -6 -4 2 0 14 Z' fill='%2310b981'/%3E%3Cpath d='M0 14 C16 14 24 2 22 -8 C12 -6 4 2 0 14 Z' fill='%23059669'/%3E%3Cpath d='M0 10 C-14 4 -18 -12 -8 -20 C-2 -14 0 -2 0 10 Z' fill='%23f43f5e'/%3E%3Cpath d='M0 10 C14 4 18 -12 8 -20 C2 -14 0 -2 0 10 Z' fill='%23fb7185'/%3E%3Cpath d='M0 10 C-9 -4 -7 -21 0 -25 C7 -21 9 -4 0 10 Z' fill='%23fda4af'/%3E%3Ccircle cx='0' cy='-5' r='3.5' fill='%23fde68a'/%3E%3Cpath d='M0 -5 L0 -15 M-3 -12 L0 -15 L3 -12' stroke='%23fde68a' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3C/g%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/variables.css" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/sections.css" />
+    <link rel="stylesheet" href="./css/components.css" />
+    <link rel="stylesheet" href="./css/pages-responsive.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./css/tailwind/tailwind.config.js"></script>
+    <script src="./css/tailwind/load-tailwind-layers.js" defer></script>
+  </head>
+  <body data-page="compare" class="compare-body">
+    <header id="global-navbar" class="global-navbar"></header>
+
+    <main id="compare-workspace" class="compare-workspace" data-page="compare">
+      <section
+        id="mount-compare-workspace"
+        data-section="compare-workspace"
+        data-mount="compare-workspace"
+      ></section>
+    </main>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+      defer
+    ></script>
+    <script type="module" src="./js/navbar-compiler.js"></script>
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>

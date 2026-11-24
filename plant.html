@@ -33,6 +33,11 @@
     <script src="./css/tailwind/load-tailwind-layers.js" defer></script>
   </head>
   <body data-page="plant">
+    <script>
+      if (new URLSearchParams(window.location.search).get("embed") === "true") {
+        document.body.classList.add("is-embed");
+      }
+    </script>
     <div class="scroll-progress-track" aria-hidden="true">
       <div class="scroll-progress-bar" id="scrollProgressBar"></div>
     </div>

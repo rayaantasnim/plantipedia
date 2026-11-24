@@ -179,10 +179,10 @@
   position: absolute;
   top: calc(100% + 12px);
   left: 0;
-  min-width: 230px;
-  padding: 6px;
+  min-width: 260px;
+  padding: 8px;
   border-radius: 14px;
-  background: rgba(4, 22, 14, 0.96);
+  background: rgba(4, 22, 14, 0.97);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(110, 231, 183, 0.28);
@@ -199,9 +199,25 @@
   display: none;
 }
 
+.nav-dropdown-section-label {
+  padding: 6px 12px 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-mint);
+}
+
+.nav-dropdown-divider {
+  height: 1px;
+  margin: 6px 8px;
+  background: rgba(110, 231, 183, 0.14);
+}
+
 .nav-dropdown-item {
   display: block;
-  padding: 9px 12px;
+  padding: 8px 12px;
   border-radius: 9px;
   font-size: 0.85rem;
   font-weight: 500;
@@ -214,16 +230,60 @@
 }
 
 .nav-dropdown-item:hover,
-.nav-dropdown-item:focus-visible {
+.nav-dropdown-item:focus-visible,
+.nav-dropdown-item.is-current-route {
   background: rgba(16, 185, 129, 0.2);
   color: var(--ink-primary);
   transform: translateX(2px);
 }
 
+/* Right Utility Cluster: Search + Herbarium Pill + Mobile Controls */
+.navbar-utility-cluster {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.navbar-herbarium-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 13px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(110, 231, 183, 0.28);
+  color: var(--ink-primary);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    transform 0.18s var(--ease-settle),
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.navbar-herbarium-pill:hover {
+  transform: translateY(-1px);
+  background: rgba(16, 185, 129, 0.24);
+  border-color: var(--accent-mint);
+}
+
+.navbar-herbarium-pill svg {
+  color: var(--accent-mint);
+}
+
+.navbar-herbarium-pill.is-mobile-pill,
+.mobile-quick-search-btn {
+  display: none;
+}
+
 /* Inline Live Navbar Search Bar */
 .navbar-search-wrap {
   position: relative;
-  width: clamp(200px, 22vw, 290px);
+  width: clamp(190px, 20vw, 270px);
   flex-shrink: 0;
 }
 
@@ -344,16 +404,34 @@
   background: rgba(16, 185, 129, 0.2);
 }
 
+.nav-suggestion-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.nav-suggestion-thumb,
+.suggestion-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(110, 231, 183, 0.24);
+  background: #062115;
+}
+
 .nav-suggestion-title {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--ink-primary);
 }
 
 .nav-suggestion-sci {
   display: block;
-  font-size: 0.77rem;
+  font-size: 0.76rem;
   font-style: italic;
   color: var(--ink-secondary);
 }
@@ -633,22 +711,31 @@
   background: rgba(16, 185, 129, 0.18);
 }
 
+.suggestion-left-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
 .suggestion-main {
+  display: block;
   font-weight: 600;
   color: var(--ink-primary);
 }
 
 .suggestion-sci {
+  display: block;
   font-style: italic;
   color: var(--ink-secondary);
-  font-size: 0.88rem;
-  margin-left: 8px;
+  font-size: 0.85rem;
 }
 
 .suggestion-family {
   font-size: 0.78rem;
   font-family: var(--font-mono);
   color: var(--accent-gold-soft);
+  white-space: nowrap;
 }
 
 .hero-summary-strip {
@@ -875,4 +962,253 @@
   transform: translateY(-2px);
   background: rgba(16, 185, 129, 0.2);
   border-color: var(--accent-mint);
+}
+
+/* ================= PERSONAL HERBARIUM SLIDE-OVER DRAWER ================= */
+.herbarium-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2600;
+  background: rgba(2, 12, 7, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.herbarium-drawer-backdrop[hidden] {
+  display: none;
+}
+
+.herbarium-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(440px, 100vw);
+  z-index: 2650;
+  display: flex;
+  flex-direction: column;
+  background: rgba(4, 22, 14, 0.97);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-left: 1px solid rgba(110, 231, 183, 0.28);
+  box-shadow: -24px 0 60px rgba(0, 0, 0, 0.65);
+  color: var(--ink-primary);
+}
+
+.herbarium-drawer[hidden] {
+  display: none;
+}
+
+.herbarium-drawer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid rgba(110, 231, 183, 0.16);
+}
+
+.herbarium-drawer-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-mint);
+  margin-bottom: 4px;
+}
+
+.herbarium-drawer-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.herbarium-drawer-sub {
+  margin: 4px 0 0;
+  font-size: 0.84rem;
+  color: var(--ink-secondary);
+}
+
+.herbarium-drawer-close {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(110, 231, 183, 0.28);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:
+    transform 0.2s var(--ease-settle),
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.herbarium-drawer-close:hover {
+  transform: rotate(90deg);
+  background: rgba(16, 185, 129, 0.24);
+  border-color: var(--accent-mint);
+}
+
+.herbarium-drawer-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px 20px;
+}
+
+.herbarium-drawer-empty {
+  padding: 36px 20px;
+  text-align: center;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(110, 231, 183, 0.24);
+}
+
+.herbarium-drawer-empty h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--ink-primary);
+}
+
+.herbarium-drawer-empty p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--ink-secondary);
+  line-height: 1.6;
+}
+
+.herbarium-drawer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.herbarium-drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(110, 231, 183, 0.16);
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.herbarium-drawer-item:hover {
+  border-color: rgba(110, 231, 183, 0.42);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.herbarium-item-link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.herbarium-item-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(110, 231, 183, 0.22);
+  background: #062115;
+}
+
+.herbarium-item-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.herbarium-item-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.herbarium-item-title {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--ink-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.herbarium-item-sci {
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--accent-gold-soft);
+}
+
+.herbarium-item-meta {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+}
+
+.herbarium-item-remove {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(110, 231, 183, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.herbarium-item-remove:hover {
+  background: rgba(244, 63, 94, 0.22);
+  border-color: rgba(251, 113, 133, 0.55);
+  color: #ffe4e6;
+}
+
+.herbarium-drawer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid rgba(110, 231, 183, 0.16);
+  background: rgba(2, 14, 9, 0.9);
+}
+
+.herbarium-footer-cta {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-mint);
+}
+
+.herbarium-footer-cta:hover {
+  text-decoration: underline;
+}
+
+.herbarium-clear-btn {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 113, 133, 0.35);
+  background: rgba(244, 63, 94, 0.12);
+  color: #fecdd3;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.herbarium-clear-btn:hover {
+  background: rgba(244, 63, 94, 0.24);
 }

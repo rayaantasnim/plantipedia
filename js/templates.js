@@ -4,6 +4,8 @@
  * Zero inline HTML templates or innerHTML interpolation.
  */
 
+import { createBookmarkButton } from "./modules/herbarium.js";
+
 const SAFE_PROTOCOL_RE = /^(https?:|\.{0,2}\/|#)/i;
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -144,6 +146,7 @@ export function createSpeciesCardElement(plant, ctaLabel = "Explore Monograph") 
     img.setAttribute("data-photographer", imgConfig.photographer);
   }
   mediaBox.appendChild(img);
+  mediaBox.appendChild(createBookmarkButton({ ...plant, slug }, "card"));
 
   const body = createEl("div", "species-card-body");
 
@@ -157,8 +160,11 @@ export function createSpeciesCardElement(plant, ctaLabel = "Explore Monograph") 
   );
 
   const title = createEl("h3", "species-card-title", plant.commonName);
-  const sciText = plant.localName
-    ? `${plant.scientificName} · ${plant.localName}`
+  const bnSuffix = plant.localName
+    ? plant.localName
+    : plant.commonNameBn || "";
+  const sciText = bnSuffix
+    ? `${plant.scientificName} · ${bnSuffix}`
     : plant.scientificName;
   const sci = createEl("p", "species-card-sci", sciText);
   const excerpt = createEl("p", "species-card-excerpt", plant.shortSummary || "");
@@ -199,7 +205,7 @@ export function renderMountSkeleton(mountEl, sectionKey) {
     return;
   }
 
-  if (sectionKey === "directory-banner") {
+  if (sectionKey === "directory-banner" || sectionKey === "page-banner") {
     const band = createEl("div", "skeleton-section-band");
     band.setAttribute("aria-hidden", "true");
     const stack = createEl("div", "skeleton-header-stack");
@@ -259,12 +265,16 @@ export function renderMountSkeleton(mountEl, sectionKey) {
   const useTwoCol =
     sectionKey === "taxonomy" ||
     sectionKey === "about" ||
-    sectionKey === "directory-explorer";
+    sectionKey === "directory-explorer" ||
+    sectionKey === "taxonomy-explorer" ||
+    sectionKey === "compare-workspace";
   const count =
-    sectionKey === "featured-species" || sectionKey === "highlights"
+    sectionKey === "featured-species" ||
+    sectionKey === "highlights" ||
+    sectionKey === "seasons-calendar"
       ? 3
-      : sectionKey === "directory-explorer"
-        ? 4
+      : sectionKey === "compare-workspace"
+        ? 2
         : 4;
   const grid = createEl("div", useTwoCol ? "skeleton-grid-2" : "skeleton-grid-3");
 
@@ -757,22 +767,44 @@ export function renderSearchSuggestionNodes(container, matches, emptyQuery, item
     link.href = `./plant.html?species=${encodeURIComponent(plant.slug)}`;
     link.setAttribute("role", "option");
 
+    const commonLabel = plant.commonNameBn
+      ? `${plant.commonName} (${plant.commonNameBn})`
+      : plant.commonName;
+
     if (itemVariant === "home") {
       link.className = "suggestion-row";
+      const leftWrap = createEl("div", "suggestion-left-wrap");
+      const thumb = buildImageElement(
+        plant.thumbnailUrl || plant.image?.imageUrl,
+        plant.commonName,
+        plant.commonName,
+      );
+      thumb.className = "suggestion-thumb";
       const left = document.createElement("div");
-      left.appendChild(createEl("span", "suggestion-main", plant.commonName));
+      left.appendChild(createEl("span", "suggestion-main", commonLabel));
       left.appendChild(createEl("span", "suggestion-sci", plant.scientificName));
-      link.appendChild(left);
+      leftWrap.appendChild(thumb);
+      leftWrap.appendChild(left);
+      link.appendChild(leftWrap);
       link.appendChild(
         createEl("span", "suggestion-family", plant.overview?.family || plant.family || ""),
       );
     } else {
       link.className = "nav-suggestion-item";
       link.setAttribute("data-nav-idx", String(idx));
+      const leftWrap = createEl("div", "nav-suggestion-left");
+      const thumb = buildImageElement(
+        plant.thumbnailUrl || plant.image?.imageUrl,
+        plant.commonName,
+        plant.commonName,
+      );
+      thumb.className = "nav-suggestion-thumb";
       const left = document.createElement("div");
-      left.appendChild(createEl("span", "nav-suggestion-title", plant.commonName));
+      left.appendChild(createEl("span", "nav-suggestion-title", commonLabel));
       left.appendChild(createEl("span", "nav-suggestion-sci", plant.scientificName));
-      link.appendChild(left);
+      leftWrap.appendChild(thumb);
+      leftWrap.appendChild(left);
+      link.appendChild(leftWrap);
       link.appendChild(
         createEl("span", "nav-suggestion-family", plant.overview?.family || plant.family || ""),
       );

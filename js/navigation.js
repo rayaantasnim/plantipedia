@@ -9,16 +9,22 @@ import { bindGlobalImageFallbackHandler } from "./navbar-compiler.js";
 
 function plantMatchesQuery(plant, query) {
   if (!query) return true;
-  const q = query.toLowerCase();
+  const q = query.trim().toLowerCase();
   const family = plant.family || plant.overview?.family || "";
+  const familyBn = plant.familyBn || "";
   const plantGroup = plant.plantGroup || plant.overview?.plantGroup || "";
   const localName = plant.localName || "";
+  const commonNameBn = plant.commonNameBn || "";
+  const summaryBn = plant.summaryBn || "";
   const domain = plant.taxonomicDomain || "";
   return (
     plant.commonName.toLowerCase().includes(q) ||
     plant.scientificName.toLowerCase().includes(q) ||
     localName.toLowerCase().includes(q) ||
+    commonNameBn.toLowerCase().includes(q) ||
     family.toLowerCase().includes(q) ||
+    familyBn.toLowerCase().includes(q) ||
+    summaryBn.toLowerCase().includes(q) ||
     (plant.category || "").toLowerCase().includes(q) ||
     domain.toLowerCase().includes(q) ||
     plantGroup.toLowerCase().includes(q)

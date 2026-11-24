@@ -1,17 +1,32 @@
 /**
  * Independent Global Navbar Compiler (/data/navbar.json + /data/species-index.json)
  * - Targets #global-navbar (or [data-shell="navbar"]) automatically on page load
- * - Fetches ./data/navbar.json concurrently with ./data/species-index.json via Promise.allSettled()
- * - Compiles Dark Botanical Luxury glassmorphism header + mobile full-screen overlay
- * - Auto-detects window.location.pathname & hash for active-page styling (aria-current="page")
- * - Binds live autocomplete search, dropdowns, mobile menu toggle, Escape & click-outside dismissal
+ * - Respects ?embed=true on plant.html by adding body.is-embed and skipping chrome
+ * - Supports 5 balanced desktop links with grouped Explore Flora dropdown sections
+ * - Bilingual (English + বাংলা Unicode) autocomplete search with thumbnail previews
+ * - Personal Herbarium trigger badge (🔖 0) synced with localStorage + My Herbarium drawer
+ * - Luxury full-screen mobile overlay drawer with quick search, Herbarium shortcut & core routes
  */
 
 import { fetchDatasetsConcurrently } from "./api.js";
 import { getSpeciesIndex, setSpeciesIndex } from "./state.js";
+import {
+  createBookmarkSvg,
+  getSavedCount,
+  initHerbariumSystem,
+  openHerbariumDrawer,
+} from "./modules/herbarium.js";
 
 const SITE_ROOT_URL = new URL("../", import.meta.url);
 const PLACEHOLDER_SVG_PATH = "./assets/images/placeholder-botanical.svg";
+
+function isEmbedMode() {
+  try {
+    return new URLSearchParams(window.location.search).get("embed") === "true";
+  } catch {
+    return false;
+  }
+}
 
 const FALLBACK_NAVBAR_CONFIG = {
   brand: {
@@ -39,11 +54,38 @@ const FALLBACK_NAVBAR_CONFIG = {
       sublabel: "Mission & Archive",
     },
     {
-      id: "nav-species",
-      label: "Available Species",
+      id: "nav-explore",
+      label: "Explore Flora",
       href: "./species.html",
-      matchPaths: ["/species.html", "/plant.html"],
-      sublabel: "Full 20-Species Flora Directory",
+      matchPaths: ["/species.html", "/plant.html", "/taxonomy.html", "/seasons.html"],
+      sublabel: "Atlas, Taxonomy & 6-Season Calendar",
+      dropdownSections: [
+        {
+          title: "Archive Views",
+          items: [
+            { id: "nav-archive-species", label: "All Species Atlas", href: "./species.html" },
+            { id: "nav-archive-taxonomy", label: "Taxonomic Lineage", href: "./taxonomy.html" },
+            { id: "nav-archive-seasons", label: "6-Season Calendar", href: "./seasons.html" },
+          ],
+        },
+        {
+          title: "Quick Categories",
+          items: [
+            { id: "nav-species-flowers", label: "Flowers & Ornamentals", href: "./species.html?category=Flowers" },
+            { id: "nav-species-fruit", label: "Fruit Trees & Palms", href: "./species.html?category=Fruit%20Trees" },
+            { id: "nav-species-medicinal", label: "Medicinal Herbs", href: "./species.html?category=Medicinal" },
+            { id: "nav-species-shrubs", label: "Shrubs & Herbs", href: "./species.html?category=Shrubs%20%26%20Herbs" },
+            { id: "nav-species-aquatic", label: "Aquatic & Wetland Flora", href: "./species.html?category=Aquatic" },
+          ],
+        },
+      ],
+    },
+    {
+      id: "nav-compare",
+      label: "Compare",
+      href: "./compare.html",
+      matchPaths: ["/compare.html"],
+      sublabel: "Side-by-Side Split View",
     },
     {
       id: "nav-ecology",
@@ -54,10 +96,14 @@ const FALLBACK_NAVBAR_CONFIG = {
     },
   ],
   search: {
-    placeholder: "Search 20 species...",
-    ariaLabel: "Quick search plant species",
+    placeholder: "Search species (EN / বাংলা)...",
+    ariaLabel: "Quick search plant species in English or Bengali",
     clearLabel: "Clear search",
     minQueryLength: 1,
+  },
+  herbarium: {
+    label: "My Herbarium",
+    ariaLabel: "Open My Herbarium saved species drawer",
   },
   mobile: {
     openLabel: "Open navigation menu",
@@ -65,10 +111,17 @@ const FALLBACK_NAVBAR_CONFIG = {
     dialogLabel: "Mobile navigation and search",
     quickTryTitle: "Quick Try",
     quickTry: [
-      { label: "Mango", href: "./plant.html?species=mango" },
-      { label: "Rose", href: "./plant.html?species=rose" },
-      { label: "Sacred Lotus", href: "./plant.html?species=lotus" },
-      { label: "Tulsi", href: "./plant.html?species=tulsi" },
+      { label: "Mango · আম", href: "./plant.html?species=mango" },
+      { label: "Water Lily · শাপলা", href: "./plant.html?species=water-lily" },
+      { label: "Sacred Lotus · পদ্ম", href: "./plant.html?species=lotus" },
+      { label: "Tulsi · তুলসী", href: "./plant.html?species=tulsi" },
+    ],
+    corePages: [
+      { id: "m-home", label: "Home", href: "./index.html", matchPaths: ["/", "/index.html"], sublabel: "Botanical Gateway" },
+      { id: "m-species", label: "All Species Atlas", href: "./species.html", matchPaths: ["/species.html", "/plant.html"], sublabel: "20 Curated Flora Monographs" },
+      { id: "m-taxonomy", label: "Taxonomic Lineage", href: "./taxonomy.html", matchPaths: ["/taxonomy.html"], sublabel: "Botanical Families & Diagnostic Traits" },
+      { id: "m-seasons", label: "6-Season Calendar", href: "./seasons.html", matchPaths: ["/seasons.html"], sublabel: "Bangladeshi Shororitu Phenology" },
+      { id: "m-compare", label: "Compare Split View", href: "./compare.html", matchPaths: ["/compare.html"], sublabel: "Dual-Pane Monograph Comparison" },
     ],
     categoriesTitle: "Explore by Category",
     categories: [
@@ -79,8 +132,7 @@ const FALLBACK_NAVBAR_CONFIG = {
       { label: "Trees & Palms", category: "Trees & Palms", href: "./species.html?category=Trees%20%26%20Palms" },
       { label: "Aquatic", category: "Aquatic", href: "./species.html?category=Aquatic" },
     ],
-    signature:
-      "Plantipedia Botanical Archive · Authorized by Jalees Habib & Rayaan Tasnim",
+    signature: "Plantipedia Botanical Archive · Authorized by Jalees Habib & Rayaan Tasnim",
   },
 };
 
@@ -121,20 +173,18 @@ export function resolveSitePath(rawPath) {
       common += 1;
     }
 
-    const upSegments = new Array(fromParts.length - common).fill("..");
-    const downSegments = toParts.slice(common);
-    const relPath =
-      [...upSegments, ...downSegments].join("/") || "index.html";
-    const prefixed = relPath.startsWith("..") ? relPath : `./${relPath}`;
-    return `${prefixed}${targetUrl.search}${targetUrl.hash}`;
+    const ups = "../".repeat(Math.max(0, fromParts.length - common));
+    const rem = toParts.slice(common).join("/");
+    const rel = `${ups || "./"}${rem}`;
+    return `${rel}${targetUrl.search}${targetUrl.hash}`;
   } catch {
     return clean;
   }
 }
 
 export function bindGlobalImageFallbackHandler() {
-  if (window.__plantipediaImgErrorBound) return;
-  window.__plantipediaImgErrorBound = true;
+  if (window.__plantipediaImageFallbackBound) return;
+  window.__plantipediaImageFallbackBound = true;
 
   const placeholderHref = resolveSitePath(PLACEHOLDER_SVG_PATH);
 
@@ -324,6 +374,76 @@ function createChevronDownSvg() {
   return svg;
 }
 
+function createHerbariumPillButton(herbariumCfg, extraClass = "") {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = `navbar-herbarium-pill ${extraClass}`.trim();
+  btn.setAttribute(
+    "aria-label",
+    herbariumCfg?.ariaLabel || "Open My Herbarium saved species drawer",
+  );
+  btn.title = herbariumCfg?.label || "My Herbarium";
+
+  const icon = createBookmarkSvg(false, 15);
+  const countBadge = document.createElement("span");
+  countBadge.className = "herbarium-pill-count";
+  countBadge.setAttribute("data-herbarium-count", "true");
+  countBadge.textContent = String(getSavedCount());
+
+  btn.appendChild(icon);
+  btn.appendChild(countBadge);
+  btn.addEventListener("click", () => {
+    closeMobileOverlayIfOpen();
+    openHerbariumDrawer();
+  });
+  return btn;
+}
+
+function buildDropdownMenuNodes(menuEl, item) {
+  const currentRoute = normalizeRoutePath(window.location.pathname);
+
+  if (Array.isArray(item.dropdownSections) && item.dropdownSections.length > 0) {
+    item.dropdownSections.forEach((sec, secIdx) => {
+      if (secIdx > 0) {
+        const div = document.createElement("div");
+        div.className = "nav-dropdown-divider";
+        div.setAttribute("role", "separator");
+        menuEl.appendChild(div);
+      }
+      if (sec.title) {
+        const heading = document.createElement("div");
+        heading.className = "nav-dropdown-section-label";
+        heading.textContent = sec.title;
+        menuEl.appendChild(heading);
+      }
+      (sec.items || []).forEach((child) => {
+        const childLink = document.createElement("a");
+        childLink.href = resolveSitePath(child.href);
+        childLink.className = "nav-dropdown-item";
+        childLink.setAttribute("role", "menuitem");
+        childLink.textContent = child.label;
+
+        const cleanTarget = String(child.href || "").replace(/^\.\//, "");
+        if (cleanTarget === currentRoute && !window.location.search) {
+          childLink.classList.add("is-current-route");
+          childLink.setAttribute("aria-current", "page");
+        }
+        menuEl.appendChild(childLink);
+      });
+    });
+    return;
+  }
+
+  (item.children || []).forEach((child) => {
+    const childLink = document.createElement("a");
+    childLink.href = resolveSitePath(child.href);
+    childLink.className = "nav-dropdown-item";
+    childLink.setAttribute("role", "menuitem");
+    childLink.textContent = child.label;
+    menuEl.appendChild(childLink);
+  });
+}
+
 function buildNavbarDom(host, config) {
   const inner = document.createElement("div");
   inner.className = "navbar-inner";
@@ -331,6 +451,7 @@ function buildNavbarDom(host, config) {
   const brand = config.brand || FALLBACK_NAVBAR_CONFIG.brand;
   const links = config.links || FALLBACK_NAVBAR_CONFIG.links;
   const searchCfg = config.search || FALLBACK_NAVBAR_CONFIG.search;
+  const herbariumCfg = config.herbarium || FALLBACK_NAVBAR_CONFIG.herbarium;
   const mobileCfg = config.mobile || FALLBACK_NAVBAR_CONFIG.mobile;
 
   inner.appendChild(createBrandLogo(brand, "brand-logo", 32));
@@ -341,9 +462,11 @@ function buildNavbarDom(host, config) {
 
   links.forEach((item) => {
     const active = isNavItemActive(item);
-    const hasChildren = Array.isArray(item.children) && item.children.length > 0;
+    const hasDropdown =
+      (Array.isArray(item.dropdownSections) && item.dropdownSections.length > 0) ||
+      (Array.isArray(item.children) && item.children.length > 0);
 
-    if (!hasChildren) {
+    if (!hasDropdown) {
       const a = document.createElement("a");
       a.href = resolveSitePath(item.href);
       a.className = active ? "nav-text-link active" : "nav-text-link";
@@ -369,22 +492,14 @@ function buildNavbarDom(host, config) {
     toggle.className = "nav-dropdown-trigger";
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-haspopup", "true");
-    toggle.setAttribute("aria-label", `${item.label} categories`);
+    toggle.setAttribute("aria-label", `${item.label} menu`);
     toggle.appendChild(createChevronDownSvg());
 
     const menu = document.createElement("div");
     menu.className = "nav-dropdown-menu";
     menu.setAttribute("role", "menu");
     menu.hidden = true;
-
-    item.children.forEach((child) => {
-      const childLink = document.createElement("a");
-      childLink.href = resolveSitePath(child.href);
-      childLink.className = "nav-dropdown-item";
-      childLink.setAttribute("role", "menuitem");
-      childLink.textContent = child.label;
-      menu.appendChild(childLink);
-    });
+    buildDropdownMenuNodes(menu, item);
 
     group.appendChild(a);
     group.appendChild(toggle);
@@ -394,7 +509,10 @@ function buildNavbarDom(host, config) {
 
   inner.appendChild(navEl);
 
-  // Inline instant autocomplete search
+  // Right Utility Cluster: Bilingual Instant Search + Herbarium Trigger + Mobile Controls
+  const utilityCluster = document.createElement("div");
+  utilityCluster.className = "navbar-utility-cluster";
+
   const searchWrap = document.createElement("div");
   searchWrap.className = "navbar-search-wrap";
   searchWrap.id = "navbarSearchWrap";
@@ -408,11 +526,11 @@ function buildNavbarDom(host, config) {
   const input = document.createElement("input");
   input.type = "search";
   input.id = "navbarSearchInput";
-  input.placeholder = searchCfg.placeholder || "Search 20 species...";
+  input.placeholder = searchCfg.placeholder || "Search species (EN / বাংলা)...";
   input.autocomplete = "off";
   input.setAttribute(
     "aria-label",
-    searchCfg.ariaLabel || "Quick search plant species",
+    searchCfg.ariaLabel || "Quick search plant species in English or Bengali",
   );
 
   const clearBtn = document.createElement("button");
@@ -435,9 +553,22 @@ function buildNavbarDom(host, config) {
 
   searchWrap.appendChild(form);
   searchWrap.appendChild(suggestions);
-  inner.appendChild(searchWrap);
+  utilityCluster.appendChild(searchWrap);
 
-  // Mobile hamburger trigger
+  // Personal Herbarium Pill (Desktop & Mobile)
+  utilityCluster.appendChild(createHerbariumPillButton(herbariumCfg, "is-desktop-pill"));
+
+  // Mobile Quick-Search Trigger + Herbarium Pill + Hamburger
+  const mobileQuickSearch = document.createElement("button");
+  mobileQuickSearch.type = "button";
+  mobileQuickSearch.className = "mobile-quick-search-btn";
+  mobileQuickSearch.id = "mobileQuickSearchBtn";
+  mobileQuickSearch.setAttribute("aria-label", "Open mobile search");
+  mobileQuickSearch.appendChild(createSearchIconSvg(17));
+  utilityCluster.appendChild(mobileQuickSearch);
+
+  utilityCluster.appendChild(createHerbariumPillButton(herbariumCfg, "is-mobile-pill"));
+
   const mobileBtn = document.createElement("button");
   mobileBtn.type = "button";
   mobileBtn.className = "mobile-menu-toggle";
@@ -458,7 +589,9 @@ function buildNavbarDom(host, config) {
     hamburgerBox.appendChild(line);
   }
   mobileBtn.appendChild(hamburgerBox);
-  inner.appendChild(mobileBtn);
+  utilityCluster.appendChild(mobileBtn);
+
+  inner.appendChild(utilityCluster);
 
   host.classList.add("global-navbar");
   host.replaceChildren(inner);
@@ -469,9 +602,9 @@ function buildMobileOverlayDom(navbarHost, config) {
   if (existing) existing.remove();
 
   const brand = config.brand || FALLBACK_NAVBAR_CONFIG.brand;
-  const links = config.links || FALLBACK_NAVBAR_CONFIG.links;
   const searchCfg = config.search || FALLBACK_NAVBAR_CONFIG.search;
   const mobileCfg = config.mobile || FALLBACK_NAVBAR_CONFIG.mobile;
+  const corePages = mobileCfg.corePages || config.links || FALLBACK_NAVBAR_CONFIG.mobile.corePages;
 
   const overlay = document.createElement("div");
   overlay.className = "mobile-nav-overlay";
@@ -521,7 +654,7 @@ function buildMobileOverlayDom(navbarHost, config) {
   const input = document.createElement("input");
   input.type = "search";
   input.id = "mobileSearchInput";
-  input.placeholder = searchCfg.placeholder || "Search 20 species...";
+  input.placeholder = searchCfg.placeholder || "Search species (EN / বাংলা)...";
   input.autocomplete = "off";
   input.setAttribute("aria-label", "Search plant species");
 
@@ -572,11 +705,31 @@ function buildMobileOverlayDom(navbarHost, config) {
 
   overlayBody.appendChild(searchSection);
 
+  // My Herbarium direct shortcut card
+  const herbariumShortcut = document.createElement("button");
+  herbariumShortcut.type = "button";
+  herbariumShortcut.className = "mobile-herbarium-shortcut";
+  const hsLeft = document.createElement("span");
+  hsLeft.className = "mobile-herbarium-shortcut-left";
+  hsLeft.appendChild(createBookmarkSvg(true, 17));
+  hsLeft.appendChild(document.createTextNode("My Herbarium Collection"));
+  const hsBadge = document.createElement("span");
+  hsBadge.className = "mobile-nav-badge";
+  hsBadge.setAttribute("data-herbarium-count", "true");
+  hsBadge.textContent = String(getSavedCount());
+  herbariumShortcut.appendChild(hsLeft);
+  herbariumShortcut.appendChild(hsBadge);
+  herbariumShortcut.addEventListener("click", () => {
+    closeMobileOverlayIfOpen();
+    openHerbariumDrawer();
+  });
+  overlayBody.appendChild(herbariumShortcut);
+
   const mobileNav = document.createElement("nav");
   mobileNav.className = "mobile-overlay-cards";
-  mobileNav.setAttribute("aria-label", "Mobile navigation");
+  mobileNav.setAttribute("aria-label", "Core pages navigation");
 
-  links.forEach((item, idx) => {
+  corePages.forEach((item, idx) => {
     const card = document.createElement("a");
     card.href = resolveSitePath(item.href);
     card.className = "mobile-nav-card";
@@ -707,6 +860,7 @@ function bindNavbarShellInteractions(config) {
   }
 
   const toggleBtn = document.getElementById("mobileMenuToggle");
+  const quickSearchBtn = document.getElementById("mobileQuickSearchBtn");
   const overlay = document.getElementById("mobileNavOverlay");
   const closeBtn = document.getElementById("mobileMenuClose");
   const searchInput = document.getElementById("mobileSearchInput");
@@ -748,6 +902,12 @@ function bindNavbarShellInteractions(config) {
       closeOverlay(true);
     }
   });
+
+  if (quickSearchBtn) {
+    quickSearchBtn.addEventListener("click", () => {
+      openOverlay();
+    });
+  }
 
   closeBtn.addEventListener("click", () => closeOverlay(true));
 
@@ -820,15 +980,21 @@ function bindNavbarShellInteractions(config) {
 
 function plantMatchesSearchQuery(plant, query) {
   if (!query) return true;
-  const q = query.toLowerCase();
+  const q = query.trim().toLowerCase();
   const family = plant.family || plant.overview?.family || "";
+  const familyBn = plant.familyBn || "";
   const plantGroup = plant.plantGroup || plant.overview?.plantGroup || "";
   const localName = plant.localName || "";
+  const commonNameBn = plant.commonNameBn || "";
+  const summaryBn = plant.summaryBn || "";
   return (
     plant.commonName.toLowerCase().includes(q) ||
     plant.scientificName.toLowerCase().includes(q) ||
     localName.toLowerCase().includes(q) ||
+    commonNameBn.toLowerCase().includes(q) ||
     family.toLowerCase().includes(q) ||
+    familyBn.toLowerCase().includes(q) ||
+    summaryBn.toLowerCase().includes(q) ||
     (plant.category || "").toLowerCase().includes(q) ||
     plantGroup.toLowerCase().includes(q)
   );
@@ -853,21 +1019,36 @@ function renderNavSuggestionNodes(container, matches, query) {
     link.setAttribute("role", "option");
     link.setAttribute("data-nav-idx", String(idx));
 
-    const left = document.createElement("div");
+    const leftWrap = document.createElement("div");
+    leftWrap.className = "nav-suggestion-left";
+
+    const thumb = document.createElement("img");
+    thumb.className = "nav-suggestion-thumb";
+    thumb.src = plant.thumbnailUrl || resolveSitePath(PLACEHOLDER_SVG_PATH);
+    thumb.alt = plant.commonName;
+    thumb.loading = "lazy";
+    thumb.setAttribute("referrerpolicy", "no-referrer");
+
+    const textCol = document.createElement("div");
     const title = document.createElement("span");
     title.className = "nav-suggestion-title";
-    title.textContent = plant.commonName;
+    title.textContent = plant.commonNameBn
+      ? `${plant.commonName} (${plant.commonNameBn})`
+      : plant.commonName;
     const sci = document.createElement("span");
     sci.className = "nav-suggestion-sci";
     sci.textContent = plant.scientificName;
-    left.appendChild(title);
-    left.appendChild(sci);
+    textCol.appendChild(title);
+    textCol.appendChild(sci);
+
+    leftWrap.appendChild(thumb);
+    leftWrap.appendChild(textCol);
 
     const fam = document.createElement("span");
     fam.className = "nav-suggestion-family";
     fam.textContent = plant.family || plant.overview?.family || "";
 
-    link.appendChild(left);
+    link.appendChild(leftWrap);
     link.appendChild(fam);
     frag.appendChild(link);
   });
@@ -1023,6 +1204,22 @@ export function compileNavbar() {
 
   compiledNavbarPromise = (async () => {
     bindGlobalImageFallbackHandler();
+
+    if (isEmbedMode()) {
+      document.body.classList.add("is-embed");
+      const host =
+        document.getElementById("global-navbar") ||
+        document.querySelector('[data-shell="navbar"]') ||
+        document.getElementById("app-navbar");
+      if (host) {
+        host.replaceChildren();
+        host.hidden = true;
+      }
+      return null;
+    }
+
+    initHerbariumSystem();
+
     const host =
       document.getElementById("global-navbar") ||
       document.querySelector('[data-shell="navbar"]') ||

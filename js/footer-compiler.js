@@ -217,6 +217,19 @@ export function compileFooter() {
       document.querySelector('[data-shell="footer"]') ||
       document.getElementById("app-footer");
 
+    try {
+      if (new URLSearchParams(window.location.search).get("embed") === "true") {
+        document.body.classList.add("is-embed");
+        if (host) {
+          host.replaceChildren();
+          host.hidden = true;
+        }
+        return null;
+      }
+    } catch {
+      // Ignore query parse failures
+    }
+
     if (!host) return null;
 
     let config = FALLBACK_FOOTER_CONFIG;

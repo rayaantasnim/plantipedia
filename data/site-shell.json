@@ -28,43 +28,38 @@
         "sublabel": "Mission & Archive"
       },
       {
-        "id": "nav-species",
-        "label": "Available Species",
+        "id": "nav-explore",
+        "label": "Explore Flora",
         "href": "./species.html",
-        "matchPaths": ["/species.html", "/plant.html"],
-        "sublabel": "Full 20-Species Flora Directory",
-        "children": [
+        "matchPaths": ["/species.html", "/plant.html", "/taxonomy.html", "/seasons.html"],
+        "sublabel": "Atlas, Taxonomy & 6-Season Calendar",
+        "dropdownSections": [
           {
-            "id": "nav-species-all",
-            "label": "All 20 Species",
-            "href": "./species.html"
+            "title": "Archive Views",
+            "items": [
+              { "id": "nav-archive-species", "label": "All Species Atlas", "href": "./species.html" },
+              { "id": "nav-archive-taxonomy", "label": "Taxonomic Lineage", "href": "./taxonomy.html" },
+              { "id": "nav-archive-seasons", "label": "6-Season Calendar", "href": "./seasons.html" }
+            ]
           },
           {
-            "id": "nav-species-flowers",
-            "label": "Flowers & Ornamentals",
-            "href": "./species.html?category=Flowers"
-          },
-          {
-            "id": "nav-species-fruit",
-            "label": "Fruit Trees & Palms",
-            "href": "./species.html?category=Fruit%20Trees"
-          },
-          {
-            "id": "nav-species-medicinal",
-            "label": "Medicinal Herbs",
-            "href": "./species.html?category=Medicinal"
-          },
-          {
-            "id": "nav-species-shrubs",
-            "label": "Shrubs & Herbs",
-            "href": "./species.html?category=Shrubs%20%26%20Herbs"
-          },
-          {
-            "id": "nav-species-aquatic",
-            "label": "Aquatic & Wetland Flora",
-            "href": "./species.html?category=Aquatic"
+            "title": "Quick Categories",
+            "items": [
+              { "id": "nav-species-flowers", "label": "Flowers & Ornamentals", "href": "./species.html?category=Flowers" },
+              { "id": "nav-species-fruit", "label": "Fruit Trees & Palms", "href": "./species.html?category=Fruit%20Trees" },
+              { "id": "nav-species-medicinal", "label": "Medicinal Herbs", "href": "./species.html?category=Medicinal" },
+              { "id": "nav-species-shrubs", "label": "Shrubs & Herbs", "href": "./species.html?category=Shrubs%20%26%20Herbs" },
+              { "id": "nav-species-aquatic", "label": "Aquatic & Wetland Flora", "href": "./species.html?category=Aquatic" }
+            ]
           }
         ]
+      },
+      {
+        "id": "nav-compare",
+        "label": "Compare",
+        "href": "./compare.html",
+        "matchPaths": ["/compare.html"],
+        "sublabel": "Side-by-Side Split View"
       },
       {
         "id": "nav-ecology",
@@ -75,8 +70,8 @@
       }
     ],
     "search": {
-      "placeholder": "Search 20 species...",
-      "ariaLabel": "Quick search plant species",
+      "placeholder": "Search species (EN / বাংলা)...",
+      "ariaLabel": "Quick search plant species in English or Bengali",
       "clearLabel": "Clear search"
     },
     "mobile": {

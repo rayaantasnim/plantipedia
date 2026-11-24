@@ -32,6 +32,9 @@ import {
   renderDirectoryExplorer,
 } from "./modules/species-directory.js";
 import { renderPlantMonograph } from "./modules/plant-monograph.js";
+import { renderTaxonomyExplorer } from "./modules/taxonomy-view.js";
+import { renderSeasonsCalendar } from "./modules/seasons-view.js";
+import { renderCompareWorkspace } from "./modules/compare-view.js";
 import { animateHydratedSection, refreshScrollTriggers } from "./animations.js";
 import { initNavigationInteractions } from "./navigation.js";
 
@@ -125,6 +128,7 @@ const SECTION_REGISTRY = {
   },
   "plant-monograph": {
     datasets: ["page:plant", "speciesIndex"],
+    optionalDatasets: ["glossary"],
     getDynamicDatasets: () => {
       const slug = resolveRequestedSpeciesSlug();
       return isValidSpeciesSlug(slug) ? [`species:${slug}`] : [];
@@ -140,6 +144,34 @@ const SECTION_REGISTRY = {
         speciesIndex: dataMap.get("speciesIndex")?.data || [],
         plant,
         requestedSlug,
+        glossaryData: dataMap.get("glossary")?.data || null,
+      });
+    },
+  },
+  "taxonomy-explorer": {
+    datasets: ["page:taxonomy", "speciesIndex"],
+    render: (el, dataMap) => {
+      renderTaxonomyExplorer(el, {
+        pageData: dataMap.get("page:taxonomy")?.data,
+        speciesIndex: dataMap.get("speciesIndex")?.data || [],
+      });
+    },
+  },
+  "seasons-calendar": {
+    datasets: ["page:seasons", "speciesIndex"],
+    render: (el, dataMap) => {
+      renderSeasonsCalendar(el, {
+        pageData: dataMap.get("page:seasons")?.data,
+        speciesIndex: dataMap.get("speciesIndex")?.data || [],
+      });
+    },
+  },
+  "compare-workspace": {
+    datasets: ["page:compare", "speciesIndex"],
+    render: (el, dataMap) => {
+      renderCompareWorkspace(el, {
+        pageData: dataMap.get("page:compare")?.data,
+        speciesIndex: dataMap.get("speciesIndex")?.data || [],
       });
     },
   },
@@ -152,7 +184,7 @@ const SECTION_REGISTRY = {
 };
 
 function resolveActivePageKey() {
-  const mainEl = document.getElementById("app-main");
+  const mainEl = document.getElementById("app-main") || document.getElementById("compare-workspace");
   const pageName =
     mainEl?.getAttribute("data-page") ||
     document.body.getAttribute("data-page") ||
@@ -161,6 +193,9 @@ function resolveActivePageKey() {
     home: "page:home",
     species: "page:species",
     plant: "page:plant",
+    taxonomy: "page:taxonomy",
+    seasons: "page:seasons",
+    compare: "page:compare",
   };
   return pageKeyMap[pageName] || null;
 }

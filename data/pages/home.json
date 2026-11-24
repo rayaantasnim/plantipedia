@@ -55,7 +55,7 @@
     "headline": "Discover The Living Architecture of the Plant Kingdom.",
     "subcopy": "Explore authoritative botanical monographs spanning flowering ornamentals, tropical fruit trees, sacred medicinal herbs, canopy giants, and wetland flora—engineered with Linnaean taxonomy, morphology, ecology, and horticultural care.",
     "search": {
-      "placeholder": "Search 20 species by common name, scientific name, or family...",
+      "placeholder": "Search species (EN / বাংলা / Latin / Family)...",
       "ariaLabel": "Search botanical species",
       "clearLabel": "Clear",
       "submitLabel": "Search",

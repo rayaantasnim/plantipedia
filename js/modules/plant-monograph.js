@@ -1,7 +1,11 @@
 /**
- * Plant Monograph Detail Page Renderer & Section Map Overlay Controller (plant.html)
- * - Renders the active species from on-demand ./data/species/<slug>.json
- * - Uses lightweight ./data/species-index.json for Previous/Next Pager, Related Species, and Not Found suggestions
+ * Plant Monograph Detail Page Renderer & Scholarly Tools Controller (plant.html)
+ * - Renders active species from on-demand ./data/species/<slug>.json
+ * - Digital Herbarium Specimen Plate Frame (Chapter 00) with SPECIMEN ID & corner registration ticks
+ * - Herbarium Bookmark Toggle + Export Field Sheet (PDF) print action
+ * - Visual Cultivation Telemetry Meters (Chapter 07)
+ * - Institutional Citation Generator (APA | MLA | BibTeX)
+ * - Interactive Botanical Glossary Auto-Tooltips (/data/glossary.json)
  */
 
 import {
@@ -12,6 +16,10 @@ import {
   sanitizeUrl,
 } from "../templates.js";
 import { applyPlantMonographSeo } from "./seo.js";
+import { createBookmarkButton } from "./herbarium.js";
+import { renderCultivationTelemetry } from "./telemetry-meters.js";
+import { renderCitationGenerator } from "./citation-generator.js";
+import { applyGlossaryTooltips } from "./glossary-tooltips.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -46,6 +54,34 @@ function createSectionMapIconSvg() {
   return svg;
 }
 
+function createPrintIconSvg() {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", "16");
+  svg.setAttribute("height", "16");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "2");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+
+  const p1 = document.createElementNS(SVG_NS, "polyline");
+  p1.setAttribute("points", "6 9 6 2 18 2 18 9");
+  const p2 = document.createElementNS(SVG_NS, "path");
+  p2.setAttribute("d", "M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2");
+  const r = document.createElementNS(SVG_NS, "rect");
+  r.setAttribute("x", "6");
+  r.setAttribute("y", "14");
+  r.setAttribute("width", "12");
+  r.setAttribute("height", "8");
+
+  svg.appendChild(p1);
+  svg.appendChild(p2);
+  svg.appendChild(r);
+  return svg;
+}
+
 function buildFigureElement(fig, figCode, className) {
   const figure = createEl("figure", className);
   const mediaBox = createEl("div", "figure-media-box");
@@ -65,7 +101,8 @@ function buildFigureElement(fig, figCode, className) {
   return figure;
 }
 
-function renderTextbookChapter(section, safetyTitle) {
+function renderTextbookChapter(section, plant, monographCfg) {
+  const safetyTitle = monographCfg.safetyTitle;
   const article = createEl("article", "chapter-card");
   article.id = `section-${section.number}`;
 
@@ -113,7 +150,11 @@ function renderTextbookChapter(section, safetyTitle) {
   if (images.length === 1) {
     const splitGrid = createEl("div", "chapter-split-grid");
     const proseCol = createEl("div", "chapter-prose-col");
-    paragraphs.forEach((p) => proseCol.appendChild(createEl("p", "", p)));
+    paragraphs.forEach((p) => {
+      const pEl = createEl("p", "", p);
+      pEl.dataset.secNum = section.number;
+      proseCol.appendChild(pEl);
+    });
     const safetyEl = createSafetyNotice();
     if (safetyEl) proseCol.appendChild(safetyEl);
 
@@ -130,7 +171,11 @@ function renderTextbookChapter(section, safetyTitle) {
     const subblocks = createSubblocks();
     if (subblocks) body.appendChild(subblocks);
   } else if (images.length >= 2) {
-    paragraphs.forEach((p) => body.appendChild(createEl("p", "", p)));
+    paragraphs.forEach((p) => {
+      const pEl = createEl("p", "", p);
+      pEl.dataset.secNum = section.number;
+      body.appendChild(pEl);
+    });
 
     const gallery = createEl("div", "chapter-gallery-two");
     images.forEach((img, idx) => {
@@ -145,11 +190,20 @@ function renderTextbookChapter(section, safetyTitle) {
     const safetyEl = createSafetyNotice();
     if (safetyEl) body.appendChild(safetyEl);
   } else {
-    paragraphs.forEach((p) => body.appendChild(createEl("p", "", p)));
+    paragraphs.forEach((p) => {
+      const pEl = createEl("p", "", p);
+      pEl.dataset.secNum = section.number;
+      body.appendChild(pEl);
+    });
     const subblocks = createSubblocks();
     if (subblocks) body.appendChild(subblocks);
     const safetyEl = createSafetyNotice();
     if (safetyEl) body.appendChild(safetyEl);
+  }
+
+  // Chapter 07: Visual Cultivation & Ecological Telemetry Meters
+  if (section.number === "07") {
+    body.appendChild(renderCultivationTelemetry(plant, monographCfg.telemetry));
   }
 
   article.appendChild(body);
@@ -340,9 +394,88 @@ function getRelatedSpecies(plant, indexList) {
     .map((item) => item.entry);
 }
 
+function buildSpecimenPlateFigure(plant, plateCfg = {}) {
+  const meta = plant.specimenMetadata || {};
+  const ov = plant.overview || {};
+  const specimenId = plant.specimenId || meta.specimenId || "PLT-BD-001";
+  const rank = meta.taxonRank || "Species";
+  const zone = meta.collectionZone || ov.nativeOrigin || "Global Flora";
+  const photographer = meta.photographer || "Pexels Botanical Archive Contributor";
+
+  const figure = createEl("figure", "overview-hero-figure herbarium-specimen-plate");
+
+  // Top specimen registration bar
+  const plateTop = createEl("div", "specimen-plate-topbar");
+  plateTop.appendChild(
+    createEl(
+      "span",
+      "specimen-plate-id",
+      `SPECIMEN ID: ${specimenId}`,
+    ),
+  );
+  plateTop.appendChild(
+    createEl(
+      "span",
+      "specimen-plate-rank",
+      `${plateCfg.rankLabel || "Rank"}: ${rank}`,
+    ),
+  );
+  figure.appendChild(plateTop);
+
+  // Media box with 4 corner registration ticks
+  const heroMedia = createEl("div", "overview-hero-media specimen-plate-media");
+  ["tl", "tr", "bl", "br"].forEach((corner) => {
+    const tick = createEl("span", `plate-corner-tick is-${corner}`);
+    tick.setAttribute("aria-hidden", "true");
+    heroMedia.appendChild(tick);
+  });
+
+  heroMedia.appendChild(
+    buildImageElement(
+      plant.heroImage?.url,
+      plant.heroImage?.alt || plant.commonName,
+      `${plant.commonName} Botanical Plate`,
+      { eager: true },
+    ),
+  );
+
+  // Bottom native biogeographic zone overlay
+  const zoneBadge = createEl("div", "specimen-plate-zone");
+  zoneBadge.appendChild(
+    createEl(
+      "span",
+      "specimen-zone-label",
+      `${plateCfg.originLabel || "Biogeographic Origin"}: ${zone}`,
+    ),
+  );
+  heroMedia.appendChild(zoneBadge);
+
+  figure.appendChild(heroMedia);
+
+  // Attribution & caption bar beneath the plate
+  const footer = createEl("figcaption", "specimen-plate-caption");
+  footer.appendChild(
+    createEl(
+      "span",
+      "specimen-plate-caption-text",
+      `${plant.heroImage?.caption || ""}`,
+    ),
+  );
+  footer.appendChild(
+    createEl(
+      "span",
+      "specimen-plate-attribution",
+      `${plateCfg.attributionPrefix || "Photographic Plate"}: ${photographer} · ${meta.archiveCollection || "Plantipedia Digital Herbarium"}`,
+    ),
+  );
+  figure.appendChild(footer);
+
+  return figure;
+}
+
 export function renderPlantMonograph(
   mountEl,
-  { pageData, speciesIndex, plant, requestedSlug },
+  { pageData, speciesIndex, plant, requestedSlug, glossaryData },
 ) {
   if (!mountEl || !pageData) return;
 
@@ -454,7 +587,7 @@ export function renderPlantMonograph(
   breadcrumbRow.appendChild(trail);
   detailContainer.appendChild(breadcrumbRow);
 
-  // 2. Section 00: Hero Overview Card & Classification Table
+  // 2. Section 00: Hero Overview Card, Scholarly Actions & Digital Herbarium Specimen Plate
   const heroCard = createEl("section", "overview-hero-card");
   heroCard.id = "section-00";
 
@@ -468,35 +601,35 @@ export function renderPlantMonograph(
     ),
   );
   titleBlock.appendChild(createEl("h1", "overview-plant-title", plant.commonName));
-  titleBlock.appendChild(
-    createEl(
-      "p",
-      "overview-scientific-name",
-      plant.localName
-        ? `${plant.scientificName} · ${plant.localName}`
-        : plant.scientificName,
-    ),
-  );
-  titleBlock.appendChild(createEl("p", "overview-lead-summary", plant.leadOverview));
 
-  const heroFigure = createEl("figure", "overview-hero-figure");
-  const heroMedia = createEl("div", "overview-hero-media");
-  heroMedia.appendChild(
-    buildImageElement(
-      plant.heroImage?.url,
-      plant.heroImage?.alt || plant.commonName,
-      `${plant.commonName} Botanical Plate`,
-      { eager: true },
-    ),
+  const sciLabel = plant.localName
+    ? `${plant.scientificName} · ${plant.localName}`
+    : plant.commonNameBn
+      ? `${plant.scientificName} · ${plant.commonNameBn}`
+      : plant.scientificName;
+  titleBlock.appendChild(createEl("p", "overview-scientific-name", sciLabel));
+
+  // Header Action Bar: Bookmark + Export Field Sheet (PDF)
+  const actionBar = createEl("div", "monograph-header-actions");
+  actionBar.appendChild(createBookmarkButton(plant, "monograph"));
+
+  const printBtn = createEl("button", "monograph-action-btn monograph-print-btn");
+  printBtn.type = "button";
+  printBtn.appendChild(createPrintIconSvg());
+  printBtn.appendChild(
+    createEl("span", "", monographCfg.printButtonLabel || "Export Field Sheet (PDF)"),
   );
-  heroFigure.appendChild(heroMedia);
-  heroFigure.appendChild(
-    createEl(
-      "figcaption",
-      "",
-      `${monographCfg.platePrefix || "Plate 00"} — ${plant.heroImage?.caption || ""}`,
-    ),
-  );
+  printBtn.addEventListener("click", () => {
+    window.print();
+  });
+  actionBar.appendChild(printBtn);
+  titleBlock.appendChild(actionBar);
+
+  const leadEl = createEl("p", "overview-lead-summary", plant.leadOverview);
+  leadEl.dataset.secNum = "00";
+  titleBlock.appendChild(leadEl);
+
+  const heroFigure = buildSpecimenPlateFigure(plant, monographCfg.specimenPlate);
 
   headerGrid.appendChild(titleBlock);
   headerGrid.appendChild(heroFigure);
@@ -518,7 +651,11 @@ export function renderPlantMonograph(
   const overviewRows = [
     { key: labels.scientificName || "Scientific Name", val: plant.scientificName, italic: true },
     { key: labels.plantGroup || "Plant Group", val: ov.plantGroup, italic: false },
-    { key: labels.family || "Plant Family", val: ov.family, italic: false },
+    {
+      key: labels.family || "Plant Family",
+      val: plant.familyBn ? `${ov.family} · ${plant.familyBn}` : ov.family,
+      italic: false,
+    },
     { key: labels.genus || "Genus", val: ov.genus, italic: true },
     { key: labels.species || "Species", val: ov.species, italic: true },
     { key: labels.growthForm || "Growth Form", val: ov.growthForm, italic: false },
@@ -546,11 +683,16 @@ export function renderPlantMonograph(
   // 3. Chapters 01–07
   const chaptersWrap = createEl("div", "encyclopedia-chapters");
   (plant.sections || []).forEach((sec) => {
-    chaptersWrap.appendChild(renderTextbookChapter(sec, monographCfg.safetyTitle));
+    chaptersWrap.appendChild(renderTextbookChapter(sec, plant, monographCfg));
   });
   detailContainer.appendChild(chaptersWrap);
 
-  // 4. Related Species Strip (powered by species-index.json)
+  // 4. Institutional Academic Citation Generator (APA, MLA, BibTeX)
+  detailContainer.appendChild(
+    renderCitationGenerator(plant, monographCfg.citation),
+  );
+
+  // 5. Related Species Strip (powered by species-index.json)
   const related = getRelatedSpecies(plant, indexList);
   if (related.length > 0) {
     const relatedSection = createEl("section", "related-species-section");
@@ -569,7 +711,7 @@ export function renderPlantMonograph(
     detailContainer.appendChild(relatedSection);
   }
 
-  // 5. Previous / Next Pager (powered by species-index.json)
+  // 6. Previous / Next Pager (powered by species-index.json)
   if (prevPlant && nextPlant) {
     const pagerNav = createEl("nav", "species-pager");
     pagerNav.setAttribute("aria-label", "Adjacent plant species");
@@ -578,7 +720,15 @@ export function renderPlantMonograph(
       const a = createEl("a", `pager-link ${directionClass}`);
       a.href = `./plant.html?species=${encodeURIComponent(targetPlant.slug)}`;
       a.appendChild(createEl("span", "pager-direction", directionLabel));
-      a.appendChild(createEl("span", "pager-species-name", targetPlant.commonName));
+      a.appendChild(
+        createEl(
+          "span",
+          "pager-species-name",
+          targetPlant.commonNameBn
+            ? `${targetPlant.commonName} (${targetPlant.commonNameBn})`
+            : targetPlant.commonName,
+        ),
+      );
       a.appendChild(
         createEl("span", "pager-species-sci", targetPlant.scientificName),
       );
@@ -604,4 +754,9 @@ export function renderPlantMonograph(
 
   mountEl.replaceChildren(detailContainer);
   mountAndBindSectionMap(sectionMapCfg, plant);
+
+  // 7. Apply Botanical Glossary Auto-Tooltips across prose
+  if (glossaryData) {
+    applyGlossaryTooltips(detailContainer, glossaryData);
+  }
 }
