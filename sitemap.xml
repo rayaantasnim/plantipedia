@@ -27,8 +27,8 @@
   </url>
   <url>
     <loc>https://rayaantasnim.github.io/plantipedia/services/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=mango</loc>
@@ -127,6 +127,56 @@
   </url>
   <url>
     <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=tea-plant</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=krishnochura</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=kadamba</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=shimul</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=palmyra-palm</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=guava</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=lychee</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=turmeric</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=ashwagandha</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=shiuli</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=water-hyacinth</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

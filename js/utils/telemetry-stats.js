@@ -336,7 +336,7 @@ export function createTelemetryStatsGrid(
 /* ==================== PAGE-SPECIFIC TELEMETRY MAPPINGS ==================== */
 
 export function buildHomeTelemetryStats(speciesIndex = []) {
-  const count = Array.isArray(speciesIndex) && speciesIndex.length > 0 ? speciesIndex.length : 20;
+  const count = Array.isArray(speciesIndex) && speciesIndex.length > 0 ? speciesIndex.length : 30;
   return [
     {
       value: count,
@@ -365,7 +365,7 @@ export function buildHomeTelemetryStats(speciesIndex = []) {
 
 export function buildSpeciesAtlasTelemetryStats(speciesIndex = []) {
   const list = Array.isArray(speciesIndex) ? speciesIndex : [];
-  const totalSpecies = list.length > 0 ? list.length : 20;
+  const totalSpecies = list.length > 0 ? list.length : 30;
 
   const domainSet = new Set();
   let bilingualCount = 0;
@@ -438,7 +438,7 @@ export function buildServicesTelemetryStats() {
 
 export function buildNotFoundTelemetryStats(speciesIndex = []) {
   const list = Array.isArray(speciesIndex) ? speciesIndex : [];
-  const total = list.length > 0 ? list.length : 20;
+  const total = list.length > 0 ? list.length : 30;
   const domainSet = new Set();
   list.forEach((sp) => {
     if (Array.isArray(sp.categories) && sp.categories.length > 0) {
@@ -597,6 +597,66 @@ const PLANT_TRAIT_PROFILES = {
     ph: { value: 6.8, decimals: 1, label: "OPTIMAL POND pH", subtext: "Neutral flooded alluvial silt" },
     vitality: { value: 40, suffix: "+", label: "TUBER PERSISTENCE (YRS)", subtext: "Bangladesh national flower" },
     climate: { value: 6, suffix: "hrs", label: "DIRECT POND SUNLIGHT", subtext: "Monsoon & autumn wetland peak" },
+  },
+  ashwagandha: {
+    height: { value: 1.5, decimals: 1, suffix: "m", label: "SUBSHRUB STATURE", subtext: "Velvety tomentose perennial" },
+    ph: { value: 7.6, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Dry calcareous sandy loam" },
+    vitality: { value: 180, suffix: "d", label: "ROOT HARVEST CYCLE", subtext: "Withanolide-rich winter taproot" },
+    climate: { value: 38, suffix: "°C", label: "ARID HEAT TOLERANCE", subtext: "Drought-hardy upland herb" },
+  },
+  guava: {
+    height: { value: 10, suffix: "m", label: "MATURE CANOPY HEIGHT", subtext: "Spreading mottled-bark tree" },
+    ph: { value: 6.3, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Fertile well-drained loam" },
+    vitality: { value: 40, suffix: "+", label: "ORCHARD LIFESPAN (YRS)", subtext: "Dual monsoon-winter fruiting" },
+    climate: { value: 7, suffix: "hrs", label: "DAILY SOLAR EXPOSURE", subtext: "Sweetens winter Brix sugar" },
+  },
+  kadamba: {
+    height: { value: 45, suffix: "m", label: "MAXIMUM CANOPY HEIGHT", subtext: "Horizontal tiered monsoon tree" },
+    ph: { value: 6.5, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Moist deep alluvial loam" },
+    vitality: { value: 80, suffix: "+", label: "TREE LONGEVITY (YRS)", subtext: "Iconic Borsha pincushion blooms" },
+    climate: { value: 34, suffix: "°C", label: "MONSOON GROWTH OPTIMUM", subtext: "Humid riverbank & floodplain" },
+  },
+  krishnochura: {
+    height: { value: 18, suffix: "m", label: "UMBRELLA CANOPY SPAN", subtext: "Feathery bipinnate avenue tree" },
+    ph: { value: 6.9, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Well-drained neutral sandy loam" },
+    vitality: { value: 60, suffix: "+", label: "CANOPY LIFESPAN (YRS)", subtext: "Fiery Grishmo scarlet racemes" },
+    climate: { value: 38, suffix: "°C", label: "SUMMER BLOOM OPTIMUM", subtext: "Full unobstructed tropical sun" },
+  },
+  lychee: {
+    height: { value: 20, suffix: "m", label: "EVERGREEN CROWN HEIGHT", subtext: "Dense rounded soapberry tree" },
+    ph: { value: 6.2, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Humus-rich mildly acidic loam" },
+    vitality: { value: 100, suffix: "+", label: "ORCHARD LONGEVITY (YRS)", subtext: "Prized Madhumas crimson arils" },
+    climate: { value: 34, suffix: "°C", label: "RIPENING SUMMER HEAT", subtext: "Cool winter floral induction" },
+  },
+  "palmyra-palm": {
+    height: { value: 30, suffix: "m", label: "PALM TRUNK HEIGHT", subtext: "Solitary lightning-resilient crown" },
+    ph: { value: 6.8, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Alluvial bunds & clay loam" },
+    vitality: { value: 100, suffix: "+", label: "PALM LIFESPAN (YRS)", subtext: "Translucent Taal-shash & Bhadro pulp" },
+    climate: { value: 40, suffix: "°C", label: "TROPICAL HEAT TOLERANCE", subtext: "Deep-rooted drought resilience" },
+  },
+  shimul: {
+    height: { value: 40, suffix: "m", label: "EMERGENT CANOPY HEIGHT", subtext: "Buttressed kapok silk giant" },
+    ph: { value: 6.5, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Deep sandy or alluvial loam" },
+    vitality: { value: 120, suffix: "+", label: "TREE LONGEVITY (YRS)", subtext: "Winter-deciduous scarlet chalices" },
+    climate: { value: 36, suffix: "°C", label: "SUBTROPICAL OPTIMUM", subtext: "Sunlit spring nectar beacon" },
+  },
+  shiuli: {
+    height: { value: 10, suffix: "m", label: "SHRUB & SMALL TREE SPAN", subtext: "Scabrous courtyard ornamental" },
+    ph: { value: 6.7, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Humus-rich well-drained loam" },
+    vitality: { value: 30, suffix: "+", label: "TREE LIFESPAN (YRS)", subtext: "Coral-tubed dawn autumn stars" },
+    climate: { value: 28, suffix: "°C", label: "SHOROT BLOOM OPTIMUM", subtext: "Crisp early-autumn dew nights" },
+  },
+  turmeric: {
+    height: { value: 1.2, decimals: 1, suffix: "m", label: "PLEATED PSEUDOSTEM", subtext: "Broad upright paddle foliage" },
+    ph: { value: 6.3, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Friable raised sandy loam" },
+    vitality: { value: 270, suffix: "d", label: "RHIZOME CROP CYCLE", subtext: "Curcumin-rich saffron tubers" },
+    climate: { value: 32, suffix: "°C", label: "MONSOON GROWTH TEMP", subtext: "Warm humid tropical beds" },
+  },
+  "water-hyacinth": {
+    height: { value: 1, suffix: "m", label: "FLOATING ROSETTE SPAN", subtext: "Buoyant spongy petiole mats" },
+    ph: { value: 6.8, decimals: 1, label: "OPTIMAL WATER pH", subtext: "Nutrient-rich still freshwater" },
+    vitality: { value: 12, suffix: "d", label: "BIOMASS DOUBLING TIME", subtext: "Rapid wetland & dhap colonizer" },
+    climate: { value: 34, suffix: "°C", label: "AQUATIC WARMTH OPTIMUM", subtext: "Sunlit monsoon & autumn beels" },
   },
 };
 

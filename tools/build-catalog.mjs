@@ -23,6 +23,7 @@ const STATIC_ROUTES = [
   { loc: `${SITE_BASE}/taxonomy/`, changefreq: "weekly", priority: "0.9" },
   { loc: `${SITE_BASE}/seasons/`, changefreq: "weekly", priority: "0.9" },
   { loc: `${SITE_BASE}/compare/`, changefreq: "monthly", priority: "0.8" },
+  { loc: `${SITE_BASE}/services/`, changefreq: "weekly", priority: "0.9" },
 ];
 
 function main() {

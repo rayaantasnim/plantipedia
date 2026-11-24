@@ -4,7 +4,7 @@
  * resolved safely against self.location (compatible with both / and /plantipedia/ GitHub Pages).
  */
 
-const CACHE_VERSION = "plantipedia-v2.5.0";
+const CACHE_VERSION = "plantipedia-v2.7.0";
 
 const CORE_SHELL_PATHS = [
   "./",
@@ -39,10 +39,10 @@ const CORE_SHELL_PATHS = [
   "./js/components/navbar-compiler.js",
   "./js/components/footer-compiler.js",
   "./js/components/specimen-not-found.js",
-  "./data/config/navbar.json",
-  "./data/config/footer.json",
-  "./data/catalog/species-index.json",
-  "./data/pages/services.json",
+  "./data/config/navbar.json?v=30",
+  "./data/config/footer.json?v=30",
+  "./data/catalog/species-index.json?v=30",
+  "./data/pages/services.json?v=30",
 ];
 
 self.addEventListener("install", (event) => {
@@ -82,10 +82,13 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Network-first for HTML pages and JSON data, cache-first for static assets
+  // Network-first for HTML, JSON data, JS modules, and CSS; cache-first for static media
   const isDataOrNav =
     request.mode === "navigate" ||
     url.pathname.endsWith(".json") ||
+    url.pathname.endsWith(".js") ||
+    url.pathname.endsWith(".css") ||
+    url.pathname.endsWith(".html") ||
     url.pathname.endsWith("/");
 
   if (isDataOrNav) {

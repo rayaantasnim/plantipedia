@@ -46,6 +46,16 @@ export const SPECIES_THEME_MAP = {
   coconut: "sapphire",
   orchid: "amber",
   "tea-plant": "crimson",
+  ashwagandha: "violet",
+  guava: "lime",
+  kadamba: "crimson",
+  krishnochura: "cyan",
+  lychee: "magenta",
+  "palmyra-palm": "cyan",
+  shimul: "sapphire",
+  shiuli: "lime",
+  turmeric: "emerald",
+  "water-hyacinth": "crimson",
 };
 
 export function resolveBotanicalTheme(plantOrTheme, fallbackIdx = 0) {

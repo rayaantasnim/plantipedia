@@ -6,27 +6,34 @@
 import { resolveRootPath } from "../core/router.js";
 
 const SITE_ROOT_URL = new URL("../../", import.meta.url);
-const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v1.3.0";
+const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v30";
+const LEGACY_SPECIES_INDEX_KEYS = [
+  "plantipedia:species-index:v1.0.0",
+  "plantipedia:species-index:v1.1.0",
+  "plantipedia:species-index:v1.2.0",
+  "plantipedia:species-index:v1.3.0",
+];
 const KEBAB_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const DATA_CACHE_BUST = "v=30";
 
 export const DATASET_ENDPOINTS = Object.freeze({
-  navbar: "./data/config/navbar.json",
-  footer: "./data/config/footer.json",
-  siteShell: "./data/config/site-shell.json",
-  speciesIndex: "./data/catalog/species-index.json",
-  catalog: "./data/catalog/species-index.json",
-  glossary: "./data/catalog/glossary.json",
-  "page:home": "./data/pages/home.json",
-  "page:species": "./data/pages/species.json",
-  "page:plant": "./data/pages/plant.json",
-  "page:taxonomy": "./data/pages/taxonomy.json",
-  "page:seasons": "./data/pages/seasons.json",
-  "page:compare": "./data/pages/compare.json",
-  "page:services": "./data/pages/services.json",
-  featured: "./data/catalog/featured-species.json",
-  taxonomy: "./data/catalog/taxonomy.json",
-  trivia: "./data/catalog/trivia.json",
-  highlights: "./data/catalog/highlights.json",
+  navbar: `./data/config/navbar.json?${DATA_CACHE_BUST}`,
+  footer: `./data/config/footer.json?${DATA_CACHE_BUST}`,
+  siteShell: `./data/config/site-shell.json?${DATA_CACHE_BUST}`,
+  speciesIndex: `./data/catalog/species-index.json?${DATA_CACHE_BUST}`,
+  catalog: `./data/catalog/species-index.json?${DATA_CACHE_BUST}`,
+  glossary: `./data/catalog/glossary.json?${DATA_CACHE_BUST}`,
+  "page:home": `./data/pages/home.json?${DATA_CACHE_BUST}`,
+  "page:species": `./data/pages/species.json?${DATA_CACHE_BUST}`,
+  "page:plant": `./data/pages/plant.json?${DATA_CACHE_BUST}`,
+  "page:taxonomy": `./data/pages/taxonomy.json?${DATA_CACHE_BUST}`,
+  "page:seasons": `./data/pages/seasons.json?${DATA_CACHE_BUST}`,
+  "page:compare": `./data/pages/compare.json?${DATA_CACHE_BUST}`,
+  "page:services": `./data/pages/services.json?${DATA_CACHE_BUST}`,
+  featured: `./data/catalog/featured-species.json?${DATA_CACHE_BUST}`,
+  taxonomy: `./data/catalog/taxonomy.json?${DATA_CACHE_BUST}`,
+  trivia: `./data/catalog/trivia.json?${DATA_CACHE_BUST}`,
+  highlights: `./data/catalog/highlights.json?${DATA_CACHE_BUST}`,
 });
 
 export const SECTION_ENDPOINTS = Object.freeze({
@@ -304,12 +311,27 @@ async function fetchJsonResource(url, label) {
   }
 }
 
+function purgeLegacySpeciesCaches() {
+  try {
+    if (!window.sessionStorage) return;
+    LEGACY_SPECIES_INDEX_KEYS.forEach((legacyKey) => {
+      window.sessionStorage.removeItem(legacyKey);
+    });
+  } catch {
+    // Ignore sessionStorage errors
+  }
+}
+
 function readCachedSpeciesIndex() {
   try {
+    purgeLegacySpeciesCaches();
     const raw = window.sessionStorage?.getItem(SPECIES_INDEX_STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed) || parsed.length === 0) return null;
+    if (!Array.isArray(parsed) || parsed.length < 30) {
+      window.sessionStorage?.removeItem(SPECIES_INDEX_STORAGE_KEY);
+      return null;
+    }
     return parsed;
   } catch {
     return null;
@@ -382,7 +404,7 @@ export function fetchSpeciesMonograph(rawSlug, { forceRefresh = false } = {}) {
     return inFlightCache.get(cacheKey);
   }
 
-  const relPath = `./data/species/${slug}.json`;
+  const relPath = `./data/species/${slug}.json?${DATA_CACHE_BUST}`;
   const requestPromise = fetchJsonResource(resolveDatasetHref(relPath), relPath)
     .then((raw) => validateSpeciesMonographPayload(raw))
     .catch((err) => {

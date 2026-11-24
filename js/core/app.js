@@ -19,9 +19,12 @@ function registerServiceWorker() {
     return;
   }
   try {
-    navigator.serviceWorker.register(resolveRootPath("sw.js")).catch(() => {
-      // Non-blocking PWA offline cache registration
-    });
+    navigator.serviceWorker
+      .register(resolveRootPath("sw.js"), { updateViaCache: "none" })
+      .then((reg) => reg.update().catch(() => {}))
+      .catch(() => {
+        // Non-blocking PWA offline cache registration
+      });
   } catch {
     // Ignore registration issues
   }

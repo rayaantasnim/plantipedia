@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.2.0",
-  "totalSpecies": 20,
+  "totalSpecies": 30,
   "species": [
     {
       "slug": "mango",
@@ -575,6 +575,296 @@
       "shortSummary": "Acid-loving evergreen mountain camellia whose tender apical 'two leaves and a bud' yield black, green, oolong, and white teas.",
       "thumbnailUrl": "https://images.pexels.com/photos/35141996/pexels-photo-35141996.jpeg?auto=compress&cs=tinysrgb&w=800",
       "imageAlt": "Terraced emerald green Camellia sinensis tea plantation",
+      "featuredRank": null
+    },
+    {
+      "slug": "krishnochura",
+      "commonName": "Royal Poinciana (Krishnochura)",
+      "commonNameBn": "কৃষ্ণচূড়া",
+      "scientificName": "Delonix regia",
+      "localName": "Krishnochura (কৃষ্ণচূড়া)",
+      "family": "Fabaceae",
+      "familyBn": "ফ্যাবাসি (শিম-কৃষ্ণচূড়া গোত্র)",
+      "plantGroup": "Angiosperm (Eudicot)",
+      "taxonomicDomain": "Tropical Canopy & Ornamentals",
+      "category": "Trees & Palms",
+      "categories": [
+        "Trees & Palms",
+        "Flowers"
+      ],
+      "seasons": [
+        "grishmo",
+        "borsha"
+      ],
+      "seasonalPhenology": {
+        "grishmo": "Fiery scarlet-vermilion terminal racemes ignite urban avenues and campus canopies across Boishakh and Jyoishtho.",
+        "borsha": "Fresh feathery bipinnate foliage deepens to emerald green while long flat legume seed pods develop."
+      },
+      "shortSummary": "Umbrella-crowned tropical legume tree celebrated across South Asian avenues for fiery scarlet-vermilion blossoms and feathery bipinnate foliage.",
+      "thumbnailUrl": "https://images.pexels.com/photos/41095533/pexels-photo-41095533.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "imageAlt": "Delonix regia Krishnochura tree canopy ablaze with scarlet-orange blossoms",
+      "featuredRank": null
+    },
+    {
+      "slug": "kadamba",
+      "commonName": "Kadamba",
+      "commonNameBn": "কদম",
+      "scientificName": "Neolamarckia cadamba",
+      "localName": "Kodom (কদম)",
+      "family": "Rubiaceae",
+      "familyBn": "রুবিয়াসি (কদম গোত্র)",
+      "plantGroup": "Angiosperm (Eudicot)",
+      "taxonomicDomain": "Tropical Canopy & Ornamentals",
+      "category": "Trees & Palms",
+      "categories": [
+        "Trees & Palms",
+        "Flowers",
+        "Medicinal"
+      ],
+      "seasons": [
+        "borsha",
+        "shorot"
+      ],
+      "seasonalPhenology": {
+        "borsha": "Iconic monsoon herald bursting into spherical golden pincushion flower heads across rain-soaked riverbanks.",
+        "shorot": "Fleshy yellow-orange compound fruits ripen and nourish frugivorous birds and bats above alluvial banks."
+      },
+      "shortSummary": "Iconic South Asian monsoon tree celebrated for golden-orange spherical pincushion flower heads, horizontal whorled tiers, and rapid timber growth.",
+      "thumbnailUrl": "https://images.pexels.com/photos/38093946/pexels-photo-38093946.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "imageAlt": "Spherical golden-orange Neolamarckia cadamba Kodom blossoms on leafy branch",
+      "featuredRank": null
+    },
+    {
+      "slug": "shimul",
+      "commonName": "Silk Cotton Tree (Shimul)",
+      "commonNameBn": "শিমুল",
+      "scientificName": "Bombax ceiba",
+      "localName": "Shimul (শিমুল)",
+      "family": "Malvaceae",
+      "familyBn": "ম্যালভেসি (জবা-শিমুল গোত্র)",
+      "plantGroup": "Angiosperm (Eudicot)",
+      "taxonomicDomain": "Tropical Canopy & Ornamentals",
+      "category": "Trees & Palms",
+      "categories": [
+        "Trees & Palms",
+        "Flowers",
+        "Medicinal"
+      ],
+      "seasons": [
+        "sheet",
+        "boshonto"
+      ],
+      "seasonalPhenology": {
+        "sheet": "Sheds all palmate foliage completely, priming horizontal thorny limbs with plump scarlet floral buds.",
+        "boshonto": "Blazes into chalice-shaped red blooms welcoming spring birds before splitting woody pods of white kapok silk."
+      },
+      "shortSummary": "Towering winter-deciduous giant bearing conical-thorned trunks, blazing scarlet cup flowers on bare branches, and pillowy kapok seed floss.",
+      "thumbnailUrl": "https://images.pexels.com/photos/36706294/pexels-photo-36706294.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "imageAlt": "Blooming red Bombax ceiba Shimul tree covered in crimson spring flowers",
+      "featuredRank": null
+    },
+    {
+      "slug": "palmyra-palm",
+      "commonName": "Palmyra Palm (Taal)",
+      "commonNameBn": "তাল",
+      "scientificName": "Borassus flabellifer",
+      "localName": "Taal (তাল)",
+      "family": "Arecaceae",
+      "familyBn": "অ্যারেকাসি (তাল-নারিকেল গোত্র)",
+      "plantGroup": "Angiosperm (Monocot)",
+      "taxonomicDomain": "Tropical Pomology & Fruit Trees",
+      "category": "Trees & Palms",
+      "categories": [
+        "Trees & Palms",
+        "Fruit Trees"
+      ],
+      "seasons": [
+        "grishmo",
+        "borsha"
+      ],
+      "seasonalPhenology": {
+        "grishmo": "Translucent cooling jelly kernels ('taal-shash') fill young husks amidst peak summer heat.",
+        "borsha": "Mature purple-black drupes ripen fragrant orange-gold pulp in Bhadro for traditional Taal Pitha feasts."
+      },
+      "shortSummary": "Majestic unbranched fan palm of South Asia prized for translucent cooling 'taal-shash' jelly seeds, fragrant golden fruit pulp, and lightning-resilient rural trunks.",
+      "thumbnailUrl": "https://images.pexels.com/photos/37615014/pexels-photo-37615014.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "imageAlt": "Tall Borassus flabellifer palm crowns silhouetted against tropical horizon",
+      "featuredRank": null
+    },
+    {
+      "slug": "guava",
+      "commonName": "Guava",
+      "commonNameBn": "পেয়ারা",
+      "scientificName": "Psidium guajava",
+      "localName": "Peyara (পেয়ারা)",
+      "family": "Myrtaceae",
+      "familyBn": "মিরটাসি (জাম-পেয়ারা গোত্র)",
+      "plantGroup": "Angiosperm (Eudicot)",
+      "taxonomicDomain": "Tropical Pomology & Fruit Trees",
+      "category": "Fruit Trees",
+      "categories": [
+        "Fruit Trees",
+        "Trees & Palms",
+        "Medicinal"
+      ],
+      "seasons": [
+        "borsha",
+        "hemonto",
+        "sheet"
+      ],
+      "seasonalPhenology": {
+        "borsha": "Heavy summer-monsoon harvests cascade through southern Bangladesh's floating canal boat markets.",
+        "hemonto": "Post-monsoon shoot flushes set crisp autumn berries destined for sweet winter ripening.",
+        "sheet": "Cool dry winter sunlight yields the highest brix sweetness and firmest crunch across Peyara orchards."
+      },
+      "shortSummary": "Fast-bearing myrtle fruit tree renowned for mottled peeling bark, aromatic vitamin-C-packed berries, and tannin-rich medicinal leaves.",
+      "thumbnailUrl": "https://images.pexels.com/photos/28884216/pexels-photo-28884216.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "imageAlt": "Fresh green Psidium guajava guavas hanging amidst veined myrtle leaves",
+      "featuredRank": null
+    },
+    {
+      "slug": "lychee",
+      "commonName": "Lychee",
+      "commonNameBn": "লিচু",
+      "scientificName": "Litchi chinensis",
+      "localName": "Lichu (লিচু)",
+      "family": "Sapindaceae",
+      "familyBn": "স্যাপিন্ডাসি (লিচু গোত্র)",
+      "plantGroup": "Angiosperm (Eudicot)",
+      "taxonomicDomain": "Tropical Pomology & Fruit Trees",
+      "category": "Fruit Trees",
+      "categories": [
+        "Fruit Trees",
+        "Trees & Palms"
+      ],
+      "seasons": [
+        "boshonto",
+        "grishmo"
+      ],
+      "seasonalPhenology": {
+        "boshonto": "Apetalous cream terminal panicles bloom across Dinajpur and Pabna, yielding prized spring Lichu honey.",
+        "grishmo": "Ruby-red tuberculate fruit clusters swell and ripen pearl-white arils during Jyoishtho heat."
+      },
+      "shortSummary": "Subtropical evergreen soapberry tree treasured for jewel-red tuberculate fruits filled with translucent rose-scented aril flesh.",
+      "thumbnailUrl": "https://images.pexels.com/photos/38519277/pexels-photo-38519277.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "imageAlt": "Vibrant crimson Litchi chinensis lychee fruits with textured pebbled skins",
+      "featuredRank": null
+    },
+    {
+      "slug": "turmeric",
+      "commonName": "Turmeric",
+      "commonNameBn": "হলুদ",
+      "scientificName": "Curcuma longa",
+      "localName": "Holud (হলুদ)",
+      "family": "Zingiberaceae",
+      "familyBn": "জিঞ্জিবেরাসি (আদা-হলুদ গোত্র)",
+      "plantGroup": "Angiosperm (Monocot)",
+      "taxonomicDomain": "Ethnobotanical & Ayurvedic Herbs",
+      "category": "Medicinal",
+      "categories": [
+        "Medicinal",
+        "Shrubs & Herbs"
+      ],
+      "seasons": [
+        "borsha",
+        "shorot",
+        "sheet"
+      ],
+      "seasonalPhenology": {
+        "borsha": "Humid monsoon rains propel lush upright pleated paddle leaves from sprouted mother rhizomes.",
+        "shorot": "Bracted cone floral spikes emerge amidst broad green pseudostems while curcumin levels rise underground.",
+        "sheet": "Drying winter foliage signals peak rhizome maturity for harvesting, curing, and sun-polishing Holud."
+      },
+      "shortSummary": "Aromatic monocot ginger-family perennial prized worldwide for saffron-gold curcuminoid rhizomes, pleated paddle leaves, and anti-inflammatory phytochemistry.",
+      "thumbnailUrl": "https://images.pexels.com/photos/209757/pexels-photo-209757.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "imageAlt": "Vibrant golden Curcuma longa turmeric roots and freshly ground powder",
+      "featuredRank": null
+    },
+    {
+      "slug": "ashwagandha",
+      "commonName": "Ashwagandha",
+      "commonNameBn": "অশ্বগন্ধা",
+      "scientificName": "Withania somnifera",
+      "localName": "Ashwagandha (অশ্বগন্ধা)",
+      "family": "Solanaceae",
+      "familyBn": "সোলানাসি (বেগুন-অশ্বগন্ধা গোত্র)",
+      "plantGroup": "Angiosperm (Eudicot)",
+      "taxonomicDomain": "Ethnobotanical & Ayurvedic Herbs",
+      "category": "Medicinal",
+      "categories": [
+        "Medicinal",
+        "Shrubs & Herbs"
+      ],
+      "seasons": [
+        "hemonto",
+        "sheet",
+        "boshonto"
+      ],
+      "seasonalPhenology": {
+        "hemonto": "Cool dry post-monsoon sowing establishes velvety silvery-haired rosettes in western sandy uplands.",
+        "sheet": "Inconspicuous axillary blooms give way to papery inflated lantern calyces shielding orange berries.",
+        "boshonto": "Yellowing winter foliage heralds harvest of starch- and withanolide-rich medicinal taproots."
+      },
+      "shortSummary": "Drought-hardy nightshade subshrub famed in Ayurvedic Rasayana pharmacology for withanolide-rich roots enclosed alongside lantern-like berry calyces.",
+      "thumbnailUrl": "https://images.pexels.com/photos/28511113/pexels-photo-28511113.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "imageAlt": "Ayurvedic Withania somnifera ashwagandha botanical herbal specimen",
+      "featuredRank": null
+    },
+    {
+      "slug": "shiuli",
+      "commonName": "Night-Flowering Jasmine (Shiuli)",
+      "commonNameBn": "শিউলি",
+      "scientificName": "Nyctanthes arbor-tristis",
+      "localName": "Shiuli (শিউলি)",
+      "family": "Oleaceae",
+      "familyBn": "ওলিয়াসি (বেলি-জলপাই গোত্র)",
+      "plantGroup": "Angiosperm (Eudicot)",
+      "taxonomicDomain": "Angiosperms & Ornamentals",
+      "category": "Flowers",
+      "categories": [
+        "Flowers",
+        "Medicinal",
+        "Shrubs & Herbs"
+      ],
+      "seasons": [
+        "shorot",
+        "hemonto"
+      ],
+      "seasonalPhenology": {
+        "shorot": "Quintessential Shorot bloomer perfuming moonlit nights and carpeting dewy grass with coral-tubed white stars at dawn.",
+        "hemonto": "Final autumn blossom waves transition into flat heart-shaped green bilocular seed capsules."
+      },
+      "shortSummary": "Beloved autumn night-bloomer bearing snow-white pinwheel petals anchored by bright coral-orange tubular throats that carpet lawns at dawn.",
+      "thumbnailUrl": "https://images.pexels.com/photos/40463625/pexels-photo-40463625.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "imageAlt": "White Nyctanthes arbor-tristis Shiuli blossom with bright orange-coral corolla tube",
+      "featuredRank": null
+    },
+    {
+      "slug": "water-hyacinth",
+      "commonName": "Water Hyacinth",
+      "commonNameBn": "কচুরিপানা",
+      "scientificName": "Pontederia crassipes",
+      "localName": "Kochuripana (কচুরিপানা)",
+      "family": "Pontederiaceae",
+      "familyBn": "পন্টেডেরিয়াসি (কচুরিপানা গোত্র)",
+      "plantGroup": "Angiosperm (Monocot)",
+      "taxonomicDomain": "Hydrophytes & Wetland Flora",
+      "category": "Aquatic",
+      "categories": [
+        "Aquatic",
+        "Flowers"
+      ],
+      "seasons": [
+        "borsha",
+        "shorot"
+      ],
+      "seasonalPhenology": {
+        "borsha": "Buoyant bulbous petioles multiply rapidly across floodwaters, woven into floating Dhap vegetable gardens.",
+        "shorot": "Orchid-like lavender-violet floral spikes with golden peacock-eye marks bloom prolifically over calm beels."
+      },
+      "shortSummary": "Free-floating aquatic monocot famous for buoyant spongy air-filled petioles, orchid-like lavender flower spikes, and remarkable phytoremediation.",
+      "thumbnailUrl": "https://images.pexels.com/photos/41052910/pexels-photo-41052910.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "imageAlt": "Vibrant lavender-violet Pontederia crassipes water hyacinth flower spike",
       "featuredRank": null
     }
   ]

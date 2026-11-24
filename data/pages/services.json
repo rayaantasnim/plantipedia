@@ -63,14 +63,14 @@
     {
       "id": "kpi-monographs",
       "dynamic": "speciesCount",
-      "value": "20",
+      "value": "30",
       "label": "Botanical Monographs",
       "note": "EN + বাংলা · Verified Data"
     },
     {
       "id": "kpi-families",
       "dynamic": "familiesCount",
-      "value": "17",
+      "value": "24",
       "label": "Plant Families & 6 Realms",
       "note": "Linnaean Lineage Graph"
     },
@@ -191,7 +191,7 @@
         "id": "monographs",
         "meta": "8-Chapter Reference",
         "title": "Curated Species Directory & Monographs",
-        "description": "Browse 20 illustrated botanical dossiers featuring herbarium plates, telemetry meters, bilingual terminology tooltips, and print-ready field sheets.",
+        "description": "Browse 30 illustrated botanical dossiers featuring herbarium plates, telemetry meters, bilingual terminology tooltips, and print-ready field sheets.",
         "ctaLabel": "Browse Species Atlas →",
         "href": "./species/",
         "imageUrl": "https://images.pexels.com/photos/56866/garden-rose-red-pink-56866.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -201,7 +201,7 @@
         "id": "taxonomy",
         "meta": "Evolutionary Lineage",
         "title": "Taxonomic Lineage Explorer",
-        "description": "Inspect 17 botanical families and Linnaean orders—from Nymphaeaceae and Anacardiaceae to Orchidaceae—with diagnostic traits and family filtering.",
+        "description": "Inspect 24 botanical families and Linnaean orders—from Nymphaeaceae and Anacardiaceae to Orchidaceae—with diagnostic traits and family filtering.",
         "ctaLabel": "Explore Taxonomy →",
         "href": "./taxonomy/",
         "imageUrl": "https://images.pexels.com/photos/30313199/pexels-photo-30313199.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -228,7 +228,7 @@
         "index": "Pathway 01 · Academia",
         "title": "Students & Academic Researchers",
         "description": "Verify binomial nomenclature, copy formatted APA/MLA/BibTeX citations in one click, and print clean monochrome monograph sheets for lab notebooks.",
-        "ctaLabel": "Explore 20 Monographs →",
+        "ctaLabel": "Explore 30 Monographs →",
         "href": "./species/"
       },
       {

@@ -4,9 +4,9 @@
     "id": "featured-species",
     "eyebrow": "02. Flagship Archive Selection",
     "heading": "Top 3 Curated Featured Species",
-    "totalIndexedSpecies": 20,
+    "totalIndexedSpecies": 30,
     "archiveCta": {
-      "label": "Explore All 20 Available Species",
+      "label": "Explore All 30 Available Species",
       "href": "./species/"
     }
   },

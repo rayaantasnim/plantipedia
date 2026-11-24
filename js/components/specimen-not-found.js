@@ -117,12 +117,13 @@ export function renderSpecimenNotFoundCard(
   heading.id = "notFoundHeading";
   card.appendChild(heading);
 
+  const totalAvailable = list.length > 0 ? list.length : 30;
   let detailCopy =
-    "The requested botanical monograph or archive route does not exist in our current 20-species registry. Search our living catalog below or return to the main flora index.";
+    `The requested botanical monograph or archive route does not exist in our current ${totalAvailable}-species registry. Search our living catalog below or return to the main flora index.`;
   if (requestedSlug) {
     detailCopy = `No herbarium monograph matched specimen identifier "${requestedSlug}" in the current registry. Search below by English, বাংলা, or Latin name to locate a documented species.`;
   } else if (requestedPath && requestedPath !== "/404.html") {
-    detailCopy = `Archive route "${requestedPath}" could not be resolved in Plantipedia. Search our 20 documented botanical monographs below or return to the flora gateway.`;
+    detailCopy = `Archive route "${requestedPath}" could not be resolved in Plantipedia. Search our ${totalAvailable} documented botanical monographs below or return to the flora gateway.`;
   }
   card.appendChild(createEl("p", "specimen-not-found-copy", detailCopy));
 

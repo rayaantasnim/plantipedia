@@ -229,6 +229,72 @@
         "Waxy five-petalled white blossoms filled with golden stamen clusters",
         "Strong affinity for aluminum-rich, strongly acidic upland soils (pH 4.5–5.5)"
       ]
+    },
+    "Fabaceae": {
+      "order": "Fabales",
+      "clade": "Eudicot (Fabids)",
+      "familyBn": "ফ্যাবাসি (শিম-কৃষ্ণচূড়া গোত্র)",
+      "description": "Cosmopolitan legume family ranging from herbaceous pulses to flamboyant umbrella canopy trees bearing compound pinnate leaves and elongated two-valved pods.",
+      "traits": [
+        "Compound pinnate or doubly pinnate (bipinnate) feathery leaves with pulvinus joints",
+        "Distinctive five-petalled flowers featuring an ornate upper banner petal",
+        "Elongated dehiscent or woody seed pods (legumes) housing hard-coated seeds"
+      ]
+    },
+    "Myrtaceae": {
+      "order": "Myrtales",
+      "clade": "Eudicot (Malvids)",
+      "familyBn": "মিরটাসি (জাম-পেয়ারা গোত্র)",
+      "description": "Aromatic myrtle trees and shrubs distinguished by peeling mottled bark, opposite oil-gland foliage, and powder-puff blossoms bristling with hundreds of stamens.",
+      "traits": [
+        "Exfoliating smooth copper-brown bark flaking in papery patches",
+        "Opposite leathery leaves dotted with fragrant terpenoid oil glands",
+        "Showy stamen-tufted blossoms yielding aromatic crowned berries and drupes"
+      ]
+    },
+    "Sapindaceae": {
+      "order": "Sapindales",
+      "clade": "Eudicot (Malvids)",
+      "familyBn": "স্যাপিন্ডাসি (লিচু গোত্র)",
+      "description": "Subtropical soapberry trees producing pinnately compound foliage, terminal nectariferous panicles, and tuberculate fruits cradling juicy translucent edible arils.",
+      "traits": [
+        "Evenly pinnate glossy foliage flushing coppery-salmon when young",
+        "Dense apetalous floral panicles featuring prominent honeybee nectary discs",
+        "Brittle pebbled pericarps enclosing a fleshy sweet aril around glossy seeds"
+      ]
+    },
+    "Zingiberaceae": {
+      "order": "Zingiberales",
+      "clade": "Monocot (Commelinids)",
+      "familyBn": "জিঞ্জিবেরাসি (আদা-হলুদ গোত্র)",
+      "description": "Aromatic tropical monocot herbs growing from fleshy horizontal rhizomes via clasping leafy pseudostems and shingled cone flower bracts rich in curcuminoids and volatile oils.",
+      "traits": [
+        "Fleshy subterranean rhizomes concentrated with polyphenolic curcuminoids",
+        "Tubular overlapping leaf sheaths forming herbaceous upright pseudostems",
+        "Asymmetrical flowers tucked within colorful shingled cone-spike bracts"
+      ]
+    },
+    "Solanaceae": {
+      "order": "Solanales",
+      "clade": "Eudicot (Lamiids)",
+      "familyBn": "সোলানাসি (বেগুন-অশ্বগন্ধা গোত্র)",
+      "description": "Alkaloid- and steroidal-lactone-rich nightshades spanning culinary vegetables and dryland Ayurvedic subshrubs marked by bell-shaped corollas and fleshy berries.",
+      "traits": [
+        "Radially symmetrical five-lobed bell or star corollas with connivent anthers",
+        "Accrescent papery bladder calyces enclosing orange berries in Physalis/Withania",
+        "Rich secondary metabolite synthesis (withanolides and alkaloids)"
+      ]
+    },
+    "Pontederiaceae": {
+      "order": "Commelinales",
+      "clade": "Monocot (Commelinids)",
+      "familyBn": "পন্টেডেরিয়াসি (কচুরিপানা গোত্র)",
+      "description": "Aquatic freshwater monocots equipped with spongy air-filled aerenchyma floats, feathery nutrient-scavenging roots, and tristylous lavender flower spikes.",
+      "traits": [
+        "Inflated bulbous petioles packed with gas-filled honeycomb aerenchyma",
+        "Dense trailing violet root curtains absorbing aquatic nitrates rapidly",
+        "Orchid-like six-tepalled spikes bearing golden peacock-eye nectar guides"
+      ]
     }
   }
 }

@@ -124,7 +124,7 @@ const FALLBACK_NAVBAR_CONFIG = {
     ],
     corePages: [
       { id: "m-home", label: "Home", href: "./", matchPaths: ["/", "/index.html"], sublabel: "Botanical Gateway" },
-      { id: "m-species", label: "All Species Atlas", href: "./species/", matchPaths: ["/species/", "/species", "/plant/", "/plant"], sublabel: "20 Curated Flora Monographs" },
+      { id: "m-species", label: "All Species Atlas", href: "./species/", matchPaths: ["/species/", "/species", "/plant/", "/plant"], sublabel: "30 Curated Flora Monographs" },
       { id: "m-taxonomy", label: "Taxonomic Lineage", href: "./taxonomy/", matchPaths: ["/taxonomy/", "/taxonomy"], sublabel: "Botanical Families & Diagnostic Traits" },
       { id: "m-seasons", label: "6-Season Calendar", href: "./seasons/", matchPaths: ["/seasons/", "/seasons"], sublabel: "Bangladeshi Shororitu Phenology" },
       { id: "m-compare", label: "Compare Split View", href: "./compare/", matchPaths: ["/compare/", "/compare"], sublabel: "Dual-Pane Monograph Comparison" },

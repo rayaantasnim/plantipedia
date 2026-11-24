@@ -3,7 +3,7 @@
  * Driven 100% by ./data/pages/species.json and lightweight ./data/catalog/species-index.json.
  * - 2-column botanical specimen card grid (collapsing cleanly to 1-col on <= 768px)
  * - 10 cards per page with sticky top pagination bar (← Prev, 1, 2, Next → + live result counter)
- * - Search, category pills, A–Z index, and sort always operate across all 20 species and reset to Page 1
+ * - Search, category pills, A–Z index, and sort always operate across all 30 species and reset to Page 1
  */
 
 import {

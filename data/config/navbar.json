@@ -101,7 +101,7 @@
     "ariaLabel": "Quick search plant species in English or Bengali",
     "clearLabel": "Clear search",
     "minQueryLength": 1,
-    "indexSource": "./data/catalog/species-index.json"
+    "indexSource": "./data/catalog/species-index.json?v=30"
   },
   "herbarium": {
     "label": "My Herbarium",
@@ -133,7 +133,7 @@
         "label": "All Species Atlas",
         "href": "./species/",
         "matchPaths": ["/species/", "/species", "/plant/", "/plant"],
-        "sublabel": "20 Curated Flora Monographs"
+        "sublabel": "30 Curated Flora Monographs"
       },
       {
         "id": "m-taxonomy",

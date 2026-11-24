@@ -9,7 +9,7 @@
 import { normalizePathnameRoute, resolveRootPath } from "../core/router.js";
 
 const SITE_ROOT_URL = new URL("../../", import.meta.url);
-const SHELL_DATA_URL = new URL("./data/config/site-shell.json", SITE_ROOT_URL).href;
+const SHELL_DATA_URL = new URL("./data/config/site-shell.json?v=30", SITE_ROOT_URL).href;
 const PLACEHOLDER_SVG_PATH = "./assets/images/placeholder-botanical.svg";
 
 const FALLBACK_SHELL_CONFIG = {
@@ -43,7 +43,7 @@ const FALLBACK_SHELL_CONFIG = {
         label: "Available Species",
         href: "./species/",
         matchPaths: ["/species/", "/species", "/plant/", "/plant"],
-        sublabel: "Full 20-Species Flora Directory",
+        sublabel: "Full 30-Species Flora Directory",
       },
       {
         id: "nav-ecology",
@@ -53,7 +53,7 @@ const FALLBACK_SHELL_CONFIG = {
       },
     ],
     search: {
-      placeholder: "Search 20 species...",
+      placeholder: "Search 30 species...",
       ariaLabel: "Quick search plant species",
       clearLabel: "Clear search",
     },
@@ -366,7 +366,7 @@ function buildNavbarDom(host, config) {
   const input = document.createElement("input");
   input.type = "search";
   input.id = "navbarSearchInput";
-  input.placeholder = searchCfg.placeholder || "Search 20 species...";
+  input.placeholder = searchCfg.placeholder || "Search 30 species...";
   input.autocomplete = "off";
   input.setAttribute(
     "aria-label",
@@ -483,7 +483,7 @@ function buildMobileOverlayDom(navbarHost, config) {
   const input = document.createElement("input");
   input.type = "search";
   input.id = "mobileSearchInput";
-  input.placeholder = searchCfg.placeholder || "Search 20 species...";
+  input.placeholder = searchCfg.placeholder || "Search 30 species...";
   input.autocomplete = "off";
   input.setAttribute("aria-label", "Search plant species");
 

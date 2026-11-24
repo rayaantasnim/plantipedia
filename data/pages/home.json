@@ -2,14 +2,14 @@
   "schemaVersion": "1.0.0",
   "page": "home",
   "seo": {
-    "title": "Plantipedia — Dark Botanical Luxury Encyclopedia & Flora Archive (20 Species)",
-    "description": "Explore Plantipedia, a scholarly digital botanical archive documenting 20 curated plant species with 8-chapter monographs, taxonomy, ecology, and field photography.",
-    "keywords": "plantipedia, plant encyclopedia, botanical archive, 20 curated plant species, taxonomy, plant morphology, South Asian flora, medicinal plants, fruit trees, horticulture",
+    "title": "Plantipedia — Dark Botanical Luxury Encyclopedia & Flora Archive (30 Species)",
+    "description": "Explore Plantipedia, a scholarly digital botanical archive documenting 30 curated plant species with 8-chapter monographs, taxonomy, ecology, and field photography.",
+    "keywords": "plantipedia, plant encyclopedia, botanical archive, 30 curated plant species, taxonomy, plant morphology, South Asian flora, medicinal plants, fruit trees, horticulture",
     "author": "Jalees Habib, Rayaan Tasnim",
     "canonicalFile": "",
     "ogType": "website",
-    "ogTitle": "Plantipedia — 20 Curated Botanical Monographs & Flora Archive",
-    "ogDescription": "Explore Plantipedia's 20 curated botanical monographs spanning morphology, taxonomy, ecology, medicinal properties, and cultivation guides.",
+    "ogTitle": "Plantipedia — 30 Curated Botanical Monographs & Flora Archive",
+    "ogDescription": "Explore Plantipedia's 30 curated botanical monographs spanning morphology, taxonomy, ecology, medicinal properties, and cultivation guides.",
     "ogImage": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
     "ogImageAlt": "Lush tropical botanical foliage featured in the Plantipedia Flora Archive",
     "jsonLd": {
@@ -19,7 +19,7 @@
           "@type": "EducationalOrganization",
           "@id": "https://plantipedia.archive/#organization",
           "name": "Plantipedia",
-          "description": "An educational botanical encyclopedia documenting 20 curated global and South Asian plant species with taxonomic precision, anatomical descriptions, ecological roles, and horticultural care guides.",
+          "description": "An educational botanical encyclopedia documenting 30 curated global and South Asian plant species with taxonomic precision, anatomical descriptions, ecological roles, and horticultural care guides.",
           "url": "https://plantipedia.archive/",
           "founder": [
             { "@type": "Person", "name": "Jalees Habib" },
@@ -31,7 +31,7 @@
           "@id": "https://plantipedia.archive/#website",
           "name": "Plantipedia",
           "url": "https://plantipedia.archive/",
-          "description": "Botanical luxury encyclopedia documenting 20 curated plant species with 8-chapter monographs covering morphology, taxonomy, ecology, medicinal properties, and cultivation.",
+          "description": "Botanical luxury encyclopedia documenting 30 curated plant species with 8-chapter monographs covering morphology, taxonomy, ecology, medicinal properties, and cultivation.",
           "publisher": { "@id": "https://plantipedia.archive/#organization" },
           "author": [
             { "@type": "Person", "name": "Jalees Habib" },
@@ -62,7 +62,7 @@
       "suggestionsLabel": "Matching plant species"
     },
     "summaryBadges": [
-      "20 Curated Monographs",
+      "30 Curated Monographs",
       "8 Structured Chapters",
       "High-Res Field Photography"
     ],
@@ -77,15 +77,15 @@
     "heading": "An Academic Reference Built for Curious Botanists and Growers",
     "paragraphs": [
       "Plantipedia transforms botanical reference literature into a structured, high-contrast digital museum. Every entry in the archive pairs classical taxonomic rigor—from family lineage and floral morphology to pollination syndromes—with practical agronomic guidance rooted in South Asian, tropical, and global growing traditions.",
-      "Curated cleanly across 20 documented plant species, the archive delivers eight-chapter monographs backed by verified field photography and structured classification tables. Explore our top 3 flagship specimens below or open the complete A–Z botanical directory."
+      "Curated cleanly across 30 documented plant species, the archive delivers eight-chapter monographs backed by verified field photography and structured classification tables. Explore our top 3 flagship specimens below or open the complete A–Z botanical directory."
     ],
     "stats": [
       {
         "id": "homeStatSpeciesCount",
         "dynamicCatalogCount": true,
-        "value": "20",
+        "value": "30",
         "title": "Indexed Archive Monographs",
-        "description": "20 complete, deeply researched entries across fruit trees, sacred herbs, ornamentals, palms, and aquatic flora."
+        "description": "30 complete, deeply researched entries across fruit trees, sacred herbs, ornamentals, palms, and aquatic flora."
       },
       {
         "id": "stat-chapters",
