@@ -1047,6 +1047,14 @@
 }
 
 /* Custom Glassmorphism Dropdown + Sticky Global Botanical Server Footer */
+.compare-dropdown-wrap[hidden],
+.compare-global-panel[hidden],
+.compare-global-form[hidden],
+.compare-global-status[hidden],
+.compare-global-inline-telemetry[hidden] {
+  display: none !important;
+}
+
 .compare-dropdown-wrap {
   position: relative;
   width: 100%;
@@ -1291,6 +1299,45 @@
 .compare-global-verified-name {
   font-weight: 600;
   color: #ecfdf5;
+}
+
+.compare-global-server-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  color: #a7f3d0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.compare-global-inline-telemetry {
+  width: 100%;
+}
+
+.compare-global-inline-telemetry .gbs-loader-card {
+  padding: 16px 16px 14px;
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
+}
+
+.compare-global-inline-telemetry .gbs-loader-head {
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.compare-global-inline-telemetry .gbs-loader-heading {
+  font-size: 1.05rem;
+}
+
+.compare-global-inline-telemetry .gbs-loader-status {
+  margin-bottom: 10px;
+  font-size: 0.84rem;
 }
 
 .compare-select-input {
