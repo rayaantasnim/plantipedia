@@ -1,5 +1,5 @@
 /**
- * Dedicated "Taxonomic Lineage" Explorer Page (taxonomy.html)
+ * Dedicated "Taxonomic Lineage" Explorer Page (/taxonomy/)
  * Step 1: Glassmorphism grid of botanical families with description, Bengali name & live species count
  * Step 2: Filtered family diagnostic traits & species archive + fixed bottom-right Floating "← Go Back" button
  */
@@ -44,12 +44,12 @@ function renderTaxonomyBanner(container, bannerCfg, activeFamilyObj) {
 
   const crumbs = activeFamilyObj
     ? [
-        { label: "Home", href: "./index.html" },
-        { label: "Taxonomic Lineage", href: "./taxonomy.html" },
+        { label: "Home", href: "./" },
+        { label: "Taxonomic Lineage", href: "./taxonomy/" },
         { label: activeFamilyObj.name, current: true },
       ]
     : bannerCfg.breadcrumbs || [
-        { label: "Home", href: "./index.html" },
+        { label: "Home", href: "./" },
         { label: "Taxonomic Lineage", current: true },
       ];
 
@@ -66,7 +66,7 @@ function renderTaxonomyBanner(container, bannerCfg, activeFamilyObj) {
       li.appendChild(span);
     } else {
       const a = createEl("a", "breadcrumb-link", crumb.label);
-      a.href = sanitizeUrl(crumb.href, "./index.html");
+      a.href = sanitizeUrl(crumb.href, "./");
       li.appendChild(a);
     }
     ol.appendChild(li);

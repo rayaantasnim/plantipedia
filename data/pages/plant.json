@@ -6,7 +6,7 @@
     "description": "Explore detailed 8-chapter botanical monographs from Plantipedia's 20-species archive covering classification, morphology, natural habitat, ecology, medicinal properties, and cultivation.",
     "keywords": "botanical monograph, 20 curated plant species, plant classification, plant morphology, taxonomy, cultivation guide, medicinal plants, Plantipedia",
     "author": "Jalees Habib, Rayaan Tasnim",
-    "canonicalFile": "plant.html",
+    "canonicalFile": "plant/",
     "ogType": "article",
     "ogTitle": "Botanical Species Monograph — 20 Curated Flora Entries | Plantipedia",
     "ogDescription": "Explore detailed 8-chapter botanical monographs from Plantipedia's 20-species archive covering classification, morphology, natural habitat, ecology, medicinal properties, and cultivation.",
@@ -32,9 +32,9 @@
   },
   "monograph": {
     "homeLabel": "Home",
-    "homeHref": "./index.html",
+    "homeHref": "./",
     "directoryLabel": "Available Species",
-    "directoryHref": "./species.html",
+    "directoryHref": "./species/",
     "profileLabel": "SECTION 00 · BOTANICAL PROFILE",
     "platePrefix": "Plate 00",
     "tableCaption": "Botanical Classification & Taxonomic Summary",
@@ -77,7 +77,7 @@
       "heading": "Species Monograph Not Found",
       "message": "No plant entry matched the requested species identifier. Browse all documented monographs in the directory.",
       "ctaLabel": "Browse Available Species",
-      "ctaHref": "./species.html"
+      "ctaHref": "./species/"
     }
   }
 }

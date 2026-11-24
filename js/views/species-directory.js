@@ -1,5 +1,5 @@
 /**
- * Species Directory Renderer & Paginated Filter Controller (species.html)
+ * Species Directory Renderer & Paginated Filter Controller (/species/)
  * Driven 100% by ./data/pages/species.json and lightweight ./data/catalog/species-index.json.
  * - 2-column botanical specimen card grid (collapsing cleanly to 1-col on <= 768px)
  * - 10 cards per page with sticky top pagination bar (← Prev, 1, 2, Next → + live result counter)
@@ -72,7 +72,7 @@ export function renderDirectoryBanner(mountEl, { pageData, catalog }) {
       li.appendChild(span);
     } else {
       const a = createEl("a", "breadcrumb-link", crumb.label);
-      a.href = sanitizeUrl(crumb.href, "./index.html");
+      a.href = sanitizeUrl(crumb.href, "./");
       li.appendChild(a);
     }
     ol.appendChild(li);

@@ -4,6 +4,7 @@
  */
 
 import { getSpeciesIndex } from "../core/state.js";
+import { resolveRootPath } from "../core/router.js";
 import { renderSearchSuggestionNodes } from "./templates.js";
 import { bindGlobalImageFallbackHandler } from "../components/navbar-compiler.js";
 
@@ -85,7 +86,7 @@ function bindLiveSpeciesSearch(config) {
   }
 
   function navigateToSpecies(slug) {
-    window.location.href = `./plant.html?species=${encodeURIComponent(slug)}`;
+    window.location.href = resolveRootPath(`./plant/?species=${encodeURIComponent(slug)}`);
   }
 
   input.addEventListener("input", () => {
@@ -142,7 +143,7 @@ function bindLiveSpeciesSearch(config) {
     }
     const q = input.value.trim();
     if (!q && config.emptySubmitToDirectory) {
-      window.location.href = "./species.html";
+      window.location.href = resolveRootPath("./species/");
       return;
     }
     const matches = getSpeciesIndex().filter((p) => plantMatchesQuery(p, q));
@@ -151,7 +152,7 @@ function bindLiveSpeciesSearch(config) {
       return;
     }
     if (q) {
-      window.location.href = `./species.html?q=${encodeURIComponent(q)}`;
+      window.location.href = resolveRootPath(`./species/?q=${encodeURIComponent(q)}`);
     }
   });
 

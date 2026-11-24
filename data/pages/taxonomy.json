@@ -6,7 +6,7 @@
     "description": "Browse Plantipedia's documented botanical families—from Anacardiaceae and Meliaceae to Nymphaeaceae and Orchidaceae—with diagnostic family traits and live species filtering.",
     "keywords": "plant taxonomy, botanical families, Anacardiaceae, Meliaceae, Malvaceae, Moraceae, Lamiaceae, Asteraceae, Plantipedia",
     "author": "Plantipedia Botanical Archive",
-    "canonicalFile": "taxonomy.html",
+    "canonicalFile": "taxonomy/",
     "ogType": "website",
     "ogTitle": "Taxonomic Lineage Explorer — Botanical Families | Plantipedia",
     "ogDescription": "Explore evolutionary plant families, Linnaean orders, diagnostic floral morphology, and member species monographs.",
@@ -15,8 +15,8 @@
   },
   "banner": {
     "breadcrumbs": [
-      { "label": "Home", "href": "./index.html" },
-      { "label": "Available Species", "href": "./species.html" },
+      { "label": "Home", "href": "./" },
+      { "label": "Available Species", "href": "./species/" },
       { "label": "Taxonomic Lineage", "current": true }
     ],
     "eyebrow": "Phylogenetic Archive · Family Registry",

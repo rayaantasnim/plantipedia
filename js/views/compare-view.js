@@ -1,13 +1,14 @@
 /**
- * Compare Split View Controller (compare.html)
+ * Compare Split View Controller (/compare/)
  * - Dual-species selector with strict validation (leftSlug && rightSlug && leftSlug !== rightSlug)
  * - 3-second "Labor Illusion" loader selecting 1 random message per stage from 5 unique messages (15 total)
- * - Background iframe preloading (./plant.html?species=<slug>&embed=true)
+ * - Background iframe preloading (../plant/?species=<slug>&embed=true)
  * - Desktop (>768px) 50/50 split layout vs Mobile (<=768px) & Desktop Focus Mode top 2-button pill switcher
  * - Fixed bottom-right floating glassmorphism Focus Mode / Split View toggle button
  */
 
 import { createEl } from "../utils/templates.js";
+import { resolveRootPath } from "../core/router.js";
 import { applyCompareSeo } from "../services/seo.js";
 
 function pickRandomMessage(pool, fallback) {
@@ -273,13 +274,17 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     leftIframe.className = "compare-iframe compare-iframe--left";
     leftIframe.title = `${leftPlant.commonName} Botanical Monograph`;
     leftIframe.loading = "eager";
-    leftIframe.src = `./plant.html?species=${encodeURIComponent(slugA)}&embed=true`;
+    leftIframe.src = resolveRootPath(
+      `./plant/?species=${encodeURIComponent(slugA)}&embed=true`,
+    );
 
     const rightIframe = document.createElement("iframe");
     rightIframe.className = "compare-iframe compare-iframe--right";
     rightIframe.title = `${rightPlant.commonName} Botanical Monograph`;
     rightIframe.loading = "eager";
-    rightIframe.src = `./plant.html?species=${encodeURIComponent(slugB)}&embed=true`;
+    rightIframe.src = resolveRootPath(
+      `./plant/?species=${encodeURIComponent(slugB)}&embed=true`,
+    );
 
     panesContainer.appendChild(leftIframe);
     panesContainer.appendChild(rightIframe);

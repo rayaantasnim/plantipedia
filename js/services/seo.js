@@ -1,7 +1,7 @@
 /**
  * Dynamic Document Head & Structured Schema.org JSON-LD Hydration Engine
  * Updates title, meta tags, canonical URL, OpenGraph, Twitter Cards, and Schema.org JSON-LD
- * across all Plantipedia pages (Home, Species Atlas, Plant Monograph, Taxonomy, 6-Season Calendar, Compare, & 404).
+ * across all Clean-URL folder routes (/, /species/, /plant/, /taxonomy/, /seasons/, /compare/, & 404).
  */
 
 const PRODUCTION_SITE_URL = "https://rayaantasnim.github.io/plantipedia/";
@@ -27,10 +27,13 @@ export function getCanonicalSiteBase() {
   return PRODUCTION_SITE_URL;
 }
 
-function resolveCanonicalPageUrl(fileName, queryString = "") {
+function resolveCanonicalPageUrl(routePath = "", queryString = "") {
   const base = getCanonicalSiteBase();
-  const cleanFile = String(fileName || "index.html").replace(/^\.?\//, "");
-  return `${base}${cleanFile}${queryString}`;
+  const cleanRoute = String(routePath || "")
+    .replace(/^\.?\//, "")
+    .replace(/^index\.html$/i, "")
+    .replace(/\.html$/i, "/");
+  return `${base}${cleanRoute}${queryString}`;
 }
 
 function setMetaTag(attrName, attrValue, content) {
@@ -84,9 +87,11 @@ export function applyPageSeo(seoConfig) {
     document.title = seoConfig.title;
   }
 
-  const canonicalUrl = seoConfig.canonicalFile
-    ? resolveCanonicalPageUrl(seoConfig.canonicalFile)
-    : `${getCanonicalSiteBase()}${window.location.pathname.split("/").pop() || "index.html"}`;
+  const canonicalRoute =
+    typeof seoConfig.canonicalFile === "string"
+      ? seoConfig.canonicalFile
+      : "";
+  const canonicalUrl = resolveCanonicalPageUrl(canonicalRoute);
   setCanonicalHref(canonicalUrl);
 
   const ogImage = seoConfig.ogImage || DEFAULT_OG_IMAGE;
@@ -120,9 +125,10 @@ export function applyPageSeo(seoConfig) {
   setMetaTag("name", "twitter:image:alt", ogImageAlt);
 
   if (seoConfig.jsonLd) {
-    const homeUrl = resolveCanonicalPageUrl("index.html");
+    const homeUrl = resolveCanonicalPageUrl("");
+    const isHome = canonicalRoute === "" || canonicalRoute === "index.html";
     const enriched =
-      seoConfig.canonicalFile === "index.html" && Array.isArray(seoConfig.jsonLd["@graph"])
+      isHome && Array.isArray(seoConfig.jsonLd["@graph"])
         ? {
             "@context": "https://schema.org",
             "@graph": [
@@ -154,8 +160,8 @@ export function applySpeciesDirectorySeo({ pageData, speciesList }) {
   const seo = pageData?.seo || {};
   applyPageSeo(seo);
 
-  const homeUrl = resolveCanonicalPageUrl("index.html");
-  const speciesUrl = resolveCanonicalPageUrl("species.html");
+  const homeUrl = resolveCanonicalPageUrl("");
+  const speciesUrl = resolveCanonicalPageUrl("species/");
   const list = Array.isArray(speciesList) ? speciesList : [];
 
   const schemaData = {
@@ -195,7 +201,7 @@ export function applySpeciesDirectorySeo({ pageData, speciesList }) {
           "@type": "ListItem",
           position: idx + 1,
           url: resolveCanonicalPageUrl(
-            "plant.html",
+            "plant/",
             `?species=${encodeURIComponent(sp.slug)}`,
           ),
           item: {
@@ -206,7 +212,7 @@ export function applySpeciesDirectorySeo({ pageData, speciesList }) {
               : sp.commonName,
             taxonRank: "Species",
             url: resolveCanonicalPageUrl(
-              "plant.html",
+              "plant/",
               `?species=${encodeURIComponent(sp.slug)}`,
             ),
           },
@@ -233,14 +239,14 @@ export function applySpeciesDirectorySeo({ pageData, speciesList }) {
 
 export function applyTaxonomySeo({ pageData, families, activeFamily }) {
   const baseSeo = pageData?.seo || {};
-  const homeUrl = resolveCanonicalPageUrl("index.html");
-  const taxonomyBaseUrl = resolveCanonicalPageUrl("taxonomy.html");
+  const homeUrl = resolveCanonicalPageUrl("");
+  const taxonomyBaseUrl = resolveCanonicalPageUrl("taxonomy/");
   const familyList = Array.isArray(families) ? families : [];
 
   const query = activeFamily
     ? `?family=${encodeURIComponent(activeFamily.name)}`
     : "";
-  const pageUrl = resolveCanonicalPageUrl("taxonomy.html", query);
+  const pageUrl = resolveCanonicalPageUrl("taxonomy/", query);
 
   const title = activeFamily
     ? `${activeFamily.name} Family Lineage & Species | Plantipedia`
@@ -314,7 +320,7 @@ export function applyTaxonomySeo({ pageData, families, activeFamily }) {
             "@type": "ListItem",
             position: idx + 1,
             url: resolveCanonicalPageUrl(
-              "plant.html",
+              "plant/",
               `?species=${encodeURIComponent(sp.slug)}`,
             ),
             item: {
@@ -334,7 +340,7 @@ export function applyTaxonomySeo({ pageData, families, activeFamily }) {
             "@type": "ListItem",
             position: idx + 1,
             url: resolveCanonicalPageUrl(
-              "taxonomy.html",
+              "taxonomy/",
               `?family=${encodeURIComponent(fam.name)}`,
             ),
             item: {
@@ -377,15 +383,15 @@ export function applySeasonsSeo({
   activeSpecies,
 }) {
   const baseSeo = pageData?.seo || {};
-  const homeUrl = resolveCanonicalPageUrl("index.html");
-  const seasonsBaseUrl = resolveCanonicalPageUrl("seasons.html");
+  const homeUrl = resolveCanonicalPageUrl("");
+  const seasonsBaseUrl = resolveCanonicalPageUrl("seasons/");
   const seasonList = Array.isArray(seasons) ? seasons : [];
   const floraList = Array.isArray(activeSpecies) ? activeSpecies : [];
 
   const query = focusedSeason
     ? `?season=${encodeURIComponent(focusedSeason.id)}`
     : "";
-  const pageUrl = resolveCanonicalPageUrl("seasons.html", query);
+  const pageUrl = resolveCanonicalPageUrl("seasons/", query);
 
   const title = focusedSeason
     ? `${focusedSeason.nameEn} (${focusedSeason.nameBn}) Flora Phenology | Plantipedia`
@@ -469,7 +475,7 @@ export function applySeasonsSeo({
               "@type": "ListItem",
               position: idx + 1,
               url: resolveCanonicalPageUrl(
-                "plant.html",
+                "plant/",
                 `?species=${encodeURIComponent(sp.slug)}`,
               ),
               item: {
@@ -490,7 +496,7 @@ export function applySeasonsSeo({
               position: idx + 1,
               name: `${s.nameEn} (${s.nameBn}) — ${s.bengaliMonths}`,
               url: resolveCanonicalPageUrl(
-                "seasons.html",
+                "seasons/",
                 `?season=${encodeURIComponent(s.id)}`,
               ),
             })),
@@ -508,14 +514,14 @@ export function applySeasonsSeo({
 
 export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
   const baseSeo = pageData?.seo || {};
-  const homeUrl = resolveCanonicalPageUrl("index.html");
-  const compareBaseUrl = resolveCanonicalPageUrl("compare.html");
+  const homeUrl = resolveCanonicalPageUrl("");
+  const compareBaseUrl = resolveCanonicalPageUrl("compare/");
   const hasPair = Boolean(leftPlant?.slug && rightPlant?.slug);
 
   const query = hasPair
     ? `?a=${encodeURIComponent(leftPlant.slug)}&b=${encodeURIComponent(rightPlant.slug)}`
     : "";
-  const pageUrl = resolveCanonicalPageUrl("compare.html", query);
+  const pageUrl = resolveCanonicalPageUrl("compare/", query);
 
   const title = hasPair
     ? `${leftPlant.commonName} vs. ${rightPlant.commonName} — Compare | Plantipedia`
@@ -596,7 +602,7 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
         "@type": "ListItem",
         position: idx + 1,
         url: resolveCanonicalPageUrl(
-          "plant.html",
+          "plant/",
           `?species=${encodeURIComponent(sp.slug)}`,
         ),
         item: {
@@ -618,14 +624,14 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
 export function applyPlantMonographSeo(plant) {
   if (!plant || typeof plant !== "object") return;
 
-  const homeUrl = resolveCanonicalPageUrl("index.html");
-  const directoryUrl = resolveCanonicalPageUrl("species.html");
+  const homeUrl = resolveCanonicalPageUrl("");
+  const directoryUrl = resolveCanonicalPageUrl("species/");
   const categoryUrl = resolveCanonicalPageUrl(
-    "species.html",
+    "species/",
     `?category=${encodeURIComponent(plant.category)}`,
   );
   const pageUrl = resolveCanonicalPageUrl(
-    "plant.html",
+    "plant/",
     `?species=${encodeURIComponent(plant.slug)}`,
   );
 

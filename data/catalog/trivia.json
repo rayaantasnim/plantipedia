@@ -12,7 +12,7 @@
       "title": "Thermogenic Blossom Heating & 1,300-Year Dormancy",
       "taxonLabel": "Nelumbo nucifera · Sacred Lotus",
       "speciesSlug": "lotus",
-      "href": "./plant.html?species=lotus",
+      "href": "./plant/?species=lotus",
       "description": "Sacred Lotus flowers actively regulate their receptacle temperature between 30°C and 35°C using cyanide-resistant respiration to volatilize floral scents for nocturnal pollinators, while its hard-coated nutlets have successfully germinated after more than 1,300 years of dormancy in ancient lake sediments.",
       "image": {
         "imageUrl": "https://images.pexels.com/photos/33059564/pexels-photo-33059564.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -31,7 +31,7 @@
       "title": "40+ cm Daily Intercalary Culm Elongation",
       "taxonLabel": "Bambusoideae · Bamboo",
       "speciesSlug": "bamboo",
-      "href": "./plant.html?species=bamboo",
+      "href": "./plant/?species=bamboo",
       "description": "Unlike dicotyledonous trees that grow strictly from terminal tips and vascular cambium, woody bamboos retain active intercalary meristems at the base of every internode—allowing multiple culm joints to expand simultaneously and surge skyward by over 40 centimetres in a single monsoon day.",
       "image": {
         "imageUrl": "https://images.pexels.com/photos/20793642/pexels-photo-20793642.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -50,7 +50,7 @@
       "title": "Self-Supporting Aerial Prop-Root Clonal Architecture",
       "taxonLabel": "Ficus benghalensis · Banyan",
       "speciesSlug": "banyan",
-      "href": "./plant.html?species=banyan",
+      "href": "./plant/?species=banyan",
       "description": "Spreading horizontal boughs of the Banyan drop slender aerial adventitious roots toward the soil; once anchored, they undergo rapid secondary thickening into lignified pillar trunks indistinguishable from the primary stem, enabling one genetic individual to span several hectares as a living forest.",
       "image": {
         "imageUrl": "https://images.pexels.com/photos/5479919/pexels-photo-5479919.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -69,7 +69,7 @@
       "title": "Protogynous Floral Timing & Botanical Beetle Traps",
       "taxonLabel": "Nymphaea · Water Lily",
       "speciesSlug": "water-lily",
-      "href": "./plant.html?species=water-lily",
+      "href": "./plant/?species=water-lily",
       "description": "Tropical water lilies open on day one in a female-receptive phase filled with nectar-rich stigmatic fluid that lures and briefly detains pollen-dusted beetles overnight; on day two, the flower reopens in its male phase with erect pollen-shedding stamens, enforcing cross-pollination.",
       "image": {
         "imageUrl": "https://images.pexels.com/photos/31856394/pexels-photo-31856394.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -88,7 +88,7 @@
       "title": "Fibonacci Golden-Angle Phyllotaxis Spirals",
       "taxonLabel": "Helianthus annuus · Sunflower",
       "speciesSlug": "sunflower",
-      "href": "./plant.html?species=sunflower",
+      "href": "./plant/?species=sunflower",
       "description": "Developing disc florets in a sunflower capitulum emerge sequentially rotated by the botanical golden angle of roughly 137.5 degrees, automatically organizing mature achenes into interlocking clockwise and counter-clockwise spiral parastichies matching Fibonacci pairs (34/55 or 55/89) for maximum packing efficiency.",
       "image": {
         "imageUrl": "https://images.pexels.com/photos/34537615/pexels-photo-34537615/free-photo-of-vibrant-sunflower-in-full-bloom-close-up.jpeg?auto=compress&cs=tinysrgb&w=800",

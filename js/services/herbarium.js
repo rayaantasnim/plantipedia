@@ -6,14 +6,13 @@
  */
 
 import { getSpeciesIndex } from "../core/state.js";
+import { resolveRootPath } from "../core/router.js";
 
 const STORAGE_KEY = "plantipedia:herbarium:v1";
 const SVG_NS = "http://www.w3.org/2000/svg";
-const SITE_ROOT_URL = new URL("../../", import.meta.url);
 
 function resolveHref(relPath) {
-  const clean = String(relPath || "").replace(/^\.\//, "");
-  return new URL(clean, SITE_ROOT_URL).href;
+  return resolveRootPath(relPath, "./");
 }
 
 export function getSavedSlugs() {
@@ -235,7 +234,7 @@ function renderHerbariumDrawerList() {
 
     const link = document.createElement("a");
     link.className = "herbarium-item-link";
-    link.href = resolveHref(`./plant.html?species=${encodeURIComponent(plant.slug)}`);
+    link.href = resolveHref(`./plant/?species=${encodeURIComponent(plant.slug)}`);
 
     const thumbWrap = document.createElement("div");
     thumbWrap.className = "herbarium-item-thumb";
@@ -351,7 +350,7 @@ function ensureHerbariumDrawerDom() {
     "Tap the bookmark icon on any species card or monograph header to save specimens for quick academic review.";
   const browseLink = document.createElement("a");
   browseLink.className = "empty-reset-btn empty-reset-link";
-  browseLink.href = resolveHref("./species.html");
+  browseLink.href = resolveHref("./species/");
   browseLink.textContent = "Browse Species Atlas";
   emptyBox.appendChild(emptyTitle);
   emptyBox.appendChild(emptyDesc);
@@ -369,7 +368,7 @@ function ensureHerbariumDrawerDom() {
 
   const viewSavedLink = document.createElement("a");
   viewSavedLink.className = "herbarium-footer-cta";
-  viewSavedLink.href = resolveHref("./species.html?saved=true");
+  viewSavedLink.href = resolveHref("./species/?saved=true");
   viewSavedLink.textContent = "Filter Saved in Atlas →";
 
   const clearBtn = document.createElement("button");

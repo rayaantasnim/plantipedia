@@ -6,7 +6,7 @@
     "description": "Explore Bengal's six traditional botanical seasons—Summer (গ্রীষ্ম), Monsoon (বর্ষা), Autumn (শরৎ), Late Autumn (হেমন্ত), Winter (শীত), and Spring (বসন্ত)—and discover when local flora bloom, fruit, and flush.",
     "keywords": "Bangladeshi 6 seasons, Shororitu, Bengal flora calendar, Grishmo, Borsha, Shorot, Hemonto, Sheet, Boshonto, seasonal blooming plants, Plantipedia",
     "author": "Plantipedia Botanical Archive",
-    "canonicalFile": "seasons.html",
+    "canonicalFile": "seasons/",
     "ogType": "website",
     "ogTitle": "Bangladeshi 6-Season Botanical Calendar (ষড়ঋতু) | Plantipedia",
     "ogDescription": "Interactive phenological calendar tracking blooming, fruiting, and canopy transitions across the six Bengali seasons.",
@@ -15,8 +15,8 @@
   },
   "banner": {
     "breadcrumbs": [
-      { "label": "Home", "href": "./index.html" },
-      { "label": "Available Species", "href": "./species.html" },
+      { "label": "Home", "href": "./" },
+      { "label": "Available Species", "href": "./species/" },
       { "label": "6-Season Calendar", "current": true }
     ],
     "eyebrow": "Phenology & Climate · ষড়ঋতু বর্ষপঞ্জি",

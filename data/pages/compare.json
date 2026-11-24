@@ -6,7 +6,7 @@
     "description": "Compare any two curated botanical species side-by-side in an edge-to-edge dual-pane split workspace or switch seamlessly in Focus Mode.",
     "keywords": "compare plants, botanical comparison, split view, side-by-side species monograph, Plantipedia",
     "author": "Plantipedia Botanical Archive",
-    "canonicalFile": "compare.html",
+    "canonicalFile": "compare/",
     "ogType": "website",
     "ogTitle": "Compare Split View — Side-by-Side Botanical Monographs | Plantipedia",
     "ogDescription": "Inspect morphology, taxonomy, ecology, and cultivation telemetry of two plant species side-by-side.",

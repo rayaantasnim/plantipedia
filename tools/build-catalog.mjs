@@ -19,11 +19,10 @@ const SITEMAP_PATH = path.join(ROOT_DIR, "sitemap.xml");
 
 const STATIC_ROUTES = [
   { loc: `${SITE_BASE}/`, changefreq: "weekly", priority: "1.0" },
-  { loc: `${SITE_BASE}/index.html`, changefreq: "weekly", priority: "1.0" },
-  { loc: `${SITE_BASE}/species.html`, changefreq: "weekly", priority: "0.9" },
-  { loc: `${SITE_BASE}/taxonomy.html`, changefreq: "weekly", priority: "0.9" },
-  { loc: `${SITE_BASE}/seasons.html`, changefreq: "weekly", priority: "0.9" },
-  { loc: `${SITE_BASE}/compare.html`, changefreq: "monthly", priority: "0.8" },
+  { loc: `${SITE_BASE}/species/`, changefreq: "weekly", priority: "0.9" },
+  { loc: `${SITE_BASE}/taxonomy/`, changefreq: "weekly", priority: "0.9" },
+  { loc: `${SITE_BASE}/seasons/`, changefreq: "weekly", priority: "0.9" },
+  { loc: `${SITE_BASE}/compare/`, changefreq: "monthly", priority: "0.8" },
 ];
 
 function main() {
@@ -47,7 +46,7 @@ function main() {
   const urls = [
     ...STATIC_ROUTES,
     ...speciesList.map((sp) => ({
-      loc: `${SITE_BASE}/plant.html?species=${encodeURIComponent(sp.slug)}`,
+      loc: `${SITE_BASE}/plant/?species=${encodeURIComponent(sp.slug)}`,
       changefreq: "monthly",
       priority: "0.8",
     })),

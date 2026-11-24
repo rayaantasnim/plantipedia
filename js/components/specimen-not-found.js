@@ -1,7 +1,7 @@
 /**
  * Shared "Specimen Not Found in Archive" Dark Botanical Luxury View
  * - Powers both root 404.html (for any invalid URL path on GitHub Pages)
- * - And plant.html whenever ?species=<invalid-slug> is requested
+ * - And /plant/ whenever ?species=<invalid-slug> is requested
  * - Features bilingual instant search (EN / বাংলা / Latin / Family) connected to species-index.json
  */
 
@@ -37,7 +37,7 @@ function matchesQuery(plant, query) {
 
 function buildSpeciesHref(slug, isEmbed) {
   return resolveSitePath(
-    `./plant.html?species=${encodeURIComponent(slug)}${isEmbed ? "&embed=true" : ""}`,
+    `./plant/?species=${encodeURIComponent(slug)}${isEmbed ? "&embed=true" : ""}`,
   );
 }
 
@@ -239,7 +239,7 @@ export function renderSpecimenNotFoundCard(
       return;
     }
     if (q) {
-      const target = resolveSitePath(`./species.html?q=${encodeURIComponent(q)}`);
+      const target = resolveSitePath(`./species/?q=${encodeURIComponent(q)}`);
       if (isEmbed && window.top) {
         window.top.location.href = target;
       } else {
@@ -282,7 +282,7 @@ export function renderSpecimenNotFoundCard(
   const actionsRow = createEl("div", "specimen-not-found-actions");
 
   const homeBtn = createEl("a", "specimen-nf-btn specimen-nf-btn--secondary", "Return to Home");
-  homeBtn.href = resolveSitePath("./index.html");
+  homeBtn.href = resolveSitePath("./");
   if (isEmbed) homeBtn.target = "_top";
 
   const atlasBtn = createEl(
@@ -290,7 +290,7 @@ export function renderSpecimenNotFoundCard(
     "specimen-nf-btn specimen-nf-btn--primary",
     "Browse Species Atlas →",
   );
-  atlasBtn.href = resolveSitePath("./species.html");
+  atlasBtn.href = resolveSitePath("./species/");
   if (isEmbed) atlasBtn.target = "_top";
 
   actionsRow.appendChild(homeBtn);

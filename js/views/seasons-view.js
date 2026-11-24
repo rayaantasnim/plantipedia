@@ -1,5 +1,5 @@
 /**
- * Dedicated "Bangladeshi 6-Season Botanical Calendar" Page (seasons.html)
+ * Dedicated "Bangladeshi 6-Season Botanical Calendar" Page (/seasons/)
  * - Auto-highlights the current Bangladeshi season (Shororitu) by default
  * - Allows clicking any season card to inspect seasonal ecological notes & filtered flora
  * - Renders a fixed bottom-right floating "← Go Back" button when inspecting an individual season view
@@ -182,12 +182,12 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
     const ol = createEl("ol", "breadcrumb-list");
     const crumbs = focusedSeason
       ? [
-          { label: "Home", href: "./index.html" },
-          { label: "6-Season Calendar", href: "./seasons.html" },
+          { label: "Home", href: "./" },
+          { label: "6-Season Calendar", href: "./seasons/" },
           { label: `${focusedSeason.nameEn} (${focusedSeason.nameBn})`, current: true },
         ]
       : bannerCfg.breadcrumbs || [
-          { label: "Home", href: "./index.html" },
+          { label: "Home", href: "./" },
           { label: "6-Season Calendar", current: true },
         ];
 
@@ -204,7 +204,7 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
         li.appendChild(span);
       } else {
         const a = createEl("a", "breadcrumb-link", crumb.label);
-        a.href = sanitizeUrl(crumb.href, "./index.html");
+        a.href = sanitizeUrl(crumb.href, "./");
         li.appendChild(a);
       }
       ol.appendChild(li);

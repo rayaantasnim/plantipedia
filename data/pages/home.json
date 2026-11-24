@@ -6,7 +6,7 @@
     "description": "Explore Plantipedia, a scholarly digital botanical archive documenting 20 curated plant species with 8-chapter monographs, taxonomy, ecology, and field photography.",
     "keywords": "plantipedia, plant encyclopedia, botanical archive, 20 curated plant species, taxonomy, plant morphology, South Asian flora, medicinal plants, fruit trees, horticulture",
     "author": "Jalees Habib, Rayaan Tasnim",
-    "canonicalFile": "index.html",
+    "canonicalFile": "",
     "ogType": "website",
     "ogTitle": "Plantipedia — 20 Curated Botanical Monographs & Flora Archive",
     "ogDescription": "Explore Plantipedia's 20 curated botanical monographs spanning morphology, taxonomy, ecology, medicinal properties, and cultivation guides.",
@@ -41,7 +41,7 @@
             "@type": "SearchAction",
             "target": {
               "@type": "EntryPoint",
-              "urlTemplate": "species.html?q={search_term_string}"
+              "urlTemplate": "https://rayaantasnim.github.io/plantipedia/species/?q={search_term_string}"
             },
             "query-input": "required name=search_term_string"
           }

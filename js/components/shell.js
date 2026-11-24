@@ -6,6 +6,8 @@
  * - Binds interactive dropdowns, mobile overlay drawer, keyboard Escape/focus, and SVG image fallback
  */
 
+import { normalizePathnameRoute, resolveRootPath } from "../core/router.js";
+
 const SITE_ROOT_URL = new URL("../../", import.meta.url);
 const SHELL_DATA_URL = new URL("./data/config/site-shell.json", SITE_ROOT_URL).href;
 const PLACEHOLDER_SVG_PATH = "./assets/images/placeholder-botanical.svg";
@@ -18,7 +20,7 @@ const FALLBACK_SHELL_CONFIG = {
     tagline: "Exploring the fascinating world of plants, one species at a time.",
     logo: "./assets/images/brand-flower.svg",
     logoAlt: "Plantipedia floral emblem",
-    homeHref: "./index.html",
+    homeHref: "./",
   },
   navbar: {
     ariaLabel: "Primary navigation",
@@ -26,27 +28,27 @@ const FALLBACK_SHELL_CONFIG = {
       {
         id: "nav-home",
         label: "Home",
-        href: "./index.html",
+        href: "./",
         matchPaths: ["/", "/index.html"],
         sublabel: "Botanical Gateway",
       },
       {
         id: "nav-about",
         label: "About",
-        href: "./index.html#about-plantipedia",
+        href: "./#about-plantipedia",
         sublabel: "Mission & Archive",
       },
       {
         id: "nav-species",
         label: "Available Species",
-        href: "./species.html",
-        matchPaths: ["/species.html", "/plant.html"],
+        href: "./species/",
+        matchPaths: ["/species/", "/species", "/plant/", "/plant"],
         sublabel: "Full 20-Species Flora Directory",
       },
       {
         id: "nav-ecology",
         label: "Ecology",
-        href: "./index.html#botanical-highlights",
+        href: "./#botanical-highlights",
         sublabel: "Field Notes & Habitats",
       },
     ],
@@ -61,19 +63,19 @@ const FALLBACK_SHELL_CONFIG = {
       dialogLabel: "Mobile navigation and search",
       quickTryTitle: "Quick Try",
       quickTry: [
-        { label: "Mango", href: "./plant.html?species=mango" },
-        { label: "Rose", href: "./plant.html?species=rose" },
-        { label: "Sacred Lotus", href: "./plant.html?species=lotus" },
-        { label: "Tulsi", href: "./plant.html?species=tulsi" },
+        { label: "Mango", href: "./plant/?species=mango" },
+        { label: "Rose", href: "./plant/?species=rose" },
+        { label: "Sacred Lotus", href: "./plant/?species=lotus" },
+        { label: "Tulsi", href: "./plant/?species=tulsi" },
       ],
       categoriesTitle: "Explore by Category",
       categories: [
-        { label: "Flowers", category: "Flowers", href: "./species.html?category=Flowers" },
-        { label: "Fruit Trees", category: "Fruit Trees", href: "./species.html?category=Fruit%20Trees" },
-        { label: "Medicinal", category: "Medicinal", href: "./species.html?category=Medicinal" },
-        { label: "Shrubs & Herbs", category: "Shrubs & Herbs", href: "./species.html?category=Shrubs%20%26%20Herbs" },
-        { label: "Trees & Palms", category: "Trees & Palms", href: "./species.html?category=Trees%20%26%20Palms" },
-        { label: "Aquatic", category: "Aquatic", href: "./species.html?category=Aquatic" },
+        { label: "Flowers", category: "Flowers", href: "./species/?category=Flowers" },
+        { label: "Fruit Trees", category: "Fruit Trees", href: "./species/?category=Fruit%20Trees" },
+        { label: "Medicinal", category: "Medicinal", href: "./species/?category=Medicinal" },
+        { label: "Shrubs & Herbs", category: "Shrubs & Herbs", href: "./species/?category=Shrubs%20%26%20Herbs" },
+        { label: "Trees & Palms", category: "Trees & Palms", href: "./species/?category=Trees%20%26%20Palms" },
+        { label: "Aquatic", category: "Aquatic", href: "./species/?category=Aquatic" },
       ],
       signature:
         "Plantipedia Botanical Archive · Authorized by Jalees Habib & Rayaan Tasnim",
@@ -97,7 +99,7 @@ const FALLBACK_SHELL_CONFIG = {
   },
 };
 
-function sanitizeHref(rawHref, fallback = "./index.html") {
+function sanitizeHref(rawHref, fallback = "./") {
   if (typeof rawHref !== "string") return fallback;
   const trimmed = rawHref.trim();
   if (!trimmed) return fallback;
@@ -108,57 +110,25 @@ function sanitizeHref(rawHref, fallback = "./index.html") {
 }
 
 /**
- * Resolves a site-root-relative path (e.g. "./species.html" or "./assets/...")
+ * Resolves a site-root-relative path (e.g. "./species/" or "./assets/...")
  * into a relative URL valid from the current page depth & GitHub Pages subpath.
  */
 export function resolveSitePath(rawPath) {
-  const clean = sanitizeHref(rawPath, "./index.html");
+  const clean = sanitizeHref(rawPath, "./");
   if (/^https?:/i.test(clean) || clean.startsWith("#")) {
     return clean;
   }
-
-  try {
-    const normalized = clean.replace(/^\.\//, "");
-    const targetUrl = new URL(normalized, SITE_ROOT_URL);
-    const currentDir = new URL(".", window.location.href);
-
-    if (targetUrl.origin !== currentDir.origin) {
-      return targetUrl.href;
-    }
-
-    const fromParts = currentDir.pathname.split("/").filter(Boolean);
-    const toParts = targetUrl.pathname.split("/").filter(Boolean);
-
-    let common = 0;
-    while (
-      common < fromParts.length &&
-      common < toParts.length &&
-      fromParts[common] === toParts[common]
-    ) {
-      common += 1;
-    }
-
-    const upSegments = new Array(fromParts.length - common).fill("..");
-    const downSegments = toParts.slice(common);
-    const relPath =
-      [...upSegments, ...downSegments].join("/") || "index.html";
-    const prefixed = relPath.startsWith("..") ? relPath : `./${relPath}`;
-    return `${prefixed}${targetUrl.search}${targetUrl.hash}`;
-  } catch {
-    return clean;
-  }
+  return resolveRootPath(clean, "./");
 }
 
 function normalizeRoutePath(pathname) {
-  if (!pathname) return "index.html";
+  if (!pathname) return "";
   const rootPath = SITE_ROOT_URL.pathname.replace(/\/+$/, "");
-  let stripped = pathname;
+  let stripped = String(pathname);
   if (rootPath && stripped.startsWith(rootPath)) {
     stripped = stripped.slice(rootPath.length);
   }
-  stripped = stripped.replace(/^\/+/, "");
-  if (!stripped || stripped === "/") return "index.html";
-  return stripped;
+  return normalizePathnameRoute(stripped);
 }
 
 function isNavItemActive(item) {
@@ -167,7 +137,7 @@ function isNavItemActive(item) {
 
   if (Array.isArray(item.matchPaths)) {
     const matchedPath = item.matchPaths.some((p) => {
-      const cleanMatch = p.replace(/^\/+/, "") || "index.html";
+      const cleanMatch = normalizePathnameRoute(p);
       return cleanMatch === currentRoute;
     });
     if (matchedPath && !item.matchHash) {
@@ -182,7 +152,7 @@ function isNavItemActive(item) {
     }
   }
 
-  if (item.matchHash && currentRoute === "index.html" && currentHash === item.matchHash) {
+  if (item.matchHash && currentRoute === "" && currentHash === item.matchHash) {
     return true;
   }
 
@@ -203,7 +173,7 @@ function isNavItemActive(item) {
 
 function createBrandLogo(brandConfig, className = "brand-logo", size = 32) {
   const link = document.createElement("a");
-  link.href = resolveSitePath(brandConfig.homeHref || "./index.html");
+  link.href = resolveSitePath(brandConfig.homeHref || "./");
   link.className = className;
   link.setAttribute("aria-label", `${brandConfig.title || "Plantipedia"} Home`);
 

@@ -6,7 +6,7 @@
     "description": "Browse the complete Plantipedia species directory of 20 curated botanical monographs featuring A-Z alphabetical indexing, taxonomic category filters, and instant search.",
     "keywords": "plant directory, 20 plant species, A-Z plant list, botanical atlas, Plantipedia species, taxonomy search, medicinal flora, fruit trees, ornamental flowers",
     "author": "Jalees Habib, Rayaan Tasnim",
-    "canonicalFile": "species.html",
+    "canonicalFile": "species/",
     "ogType": "website",
     "ogTitle": "Available Species Directory — 20 Curated Flora Monographs | Plantipedia",
     "ogDescription": "Search and filter all 20 documented botanical species across Flowers, Fruit Trees, Medicinal Plants, Shrubs & Herbs, Trees & Palms, and Aquatic Flora.",
@@ -17,11 +17,11 @@
       "@type": "CollectionPage",
       "name": "Plantipedia Available Species Directory",
       "description": "Searchable and filterable atlas of 20 curated botanical species monographs on Plantipedia.",
-      "url": "https://plantipedia.archive/species.html",
+      "url": "https://rayaantasnim.github.io/plantipedia/species/",
       "isPartOf": {
         "@type": "WebSite",
         "name": "Plantipedia",
-        "url": "https://plantipedia.archive/"
+        "url": "https://rayaantasnim.github.io/plantipedia/"
       },
       "author": [
         { "@type": "Person", "name": "Jalees Habib" },
@@ -31,7 +31,7 @@
   },
   "banner": {
     "breadcrumbs": [
-      { "label": "Home", "href": "./index.html" },
+      { "label": "Home", "href": "./" },
       { "label": "Available Species", "current": true }
     ],
     "eyebrow": "Complete Botanical Index",

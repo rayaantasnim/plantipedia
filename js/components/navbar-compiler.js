@@ -1,7 +1,7 @@
 /**
  * Independent Global Navbar Compiler (./data/config/navbar.json + ./data/catalog/species-index.json)
  * - Targets #global-navbar (or [data-shell="navbar"]) automatically on page load
- * - Respects ?embed=true on plant.html by adding body.is-embed and skipping chrome
+ * - Respects ?embed=true on /plant/ by adding body.is-embed and skipping chrome
  * - Supports 5 balanced desktop links with grouped Explore Flora dropdown sections
  * - Bilingual (English + বাংলা Unicode) autocomplete search with thumbnail previews
  * - Personal Herbarium trigger badge (🔖 0) synced with localStorage + My Herbarium drawer
@@ -10,6 +10,7 @@
 
 import { fetchDatasetsConcurrently } from "../services/api.js";
 import { getSpeciesIndex, setSpeciesIndex } from "../core/state.js";
+import { normalizePathnameRoute, resolveRootPath } from "../core/router.js";
 import {
   createBookmarkSvg,
   getSavedCount,
@@ -35,45 +36,45 @@ const FALLBACK_NAVBAR_CONFIG = {
     restTitle: "ipedia",
     logo: "./assets/images/brand-flower.svg",
     logoAlt: "Plantipedia floral emblem",
-    homeHref: "./index.html",
+    homeHref: "./",
   },
   ariaLabel: "Primary navigation",
   links: [
     {
       "id": "nav-home",
       "label": "Home",
-      "href": "./index.html",
+      "href": "./",
       "matchPaths": ["/", "/index.html"],
       "sublabel": "Botanical Gateway"
     },
     {
       "id": "nav-taxonomy",
       "label": "Taxonomy",
-      "href": "./taxonomy.html",
-      "matchPaths": ["/taxonomy.html"],
+      "href": "./taxonomy/",
+      "matchPaths": ["/taxonomy/", "/taxonomy"],
       "sublabel": "Families & Diagnostic Traits"
     },
     {
       "id": "nav-explore",
       "label": "Explore Flora",
-      "href": "./species.html",
-      "matchPaths": ["/species.html", "/plant.html"],
+      "href": "./species/",
+      "matchPaths": ["/species/", "/species", "/plant/", "/plant"],
       "sublabel": "Species Atlas & Quick Categories",
       "dropdownSections": [
         {
           "title": "Archive Views",
           "items": [
-            { "id": "nav-archive-species", "label": "All Species Atlas", "href": "./species.html" }
+            { "id": "nav-archive-species", "label": "All Species Atlas", "href": "./species/" }
           ]
         },
         {
           "title": "Quick Categories",
           "items": [
-            { "id": "nav-species-flowers", "label": "Flowers & Ornamentals", "href": "./species.html?category=Flowers" },
-            { "id": "nav-species-fruit", "label": "Fruit Trees & Palms", "href": "./species.html?category=Fruit%20Trees" },
-            { "id": "nav-species-medicinal", "label": "Medicinal Herbs", "href": "./species.html?category=Medicinal" },
-            { "id": "nav-species-shrubs", "label": "Shrubs & Herbs", "href": "./species.html?category=Shrubs%20%26%20Herbs" },
-            { "id": "nav-species-aquatic", "label": "Aquatic & Wetland Flora", "href": "./species.html?category=Aquatic" }
+            { "id": "nav-species-flowers", "label": "Flowers & Ornamentals", "href": "./species/?category=Flowers" },
+            { "id": "nav-species-fruit", "label": "Fruit Trees & Palms", "href": "./species/?category=Fruit%20Trees" },
+            { "id": "nav-species-medicinal", "label": "Medicinal Herbs", "href": "./species/?category=Medicinal" },
+            { "id": "nav-species-shrubs", "label": "Shrubs & Herbs", "href": "./species/?category=Shrubs%20%26%20Herbs" },
+            { "id": "nav-species-aquatic", "label": "Aquatic & Wetland Flora", "href": "./species/?category=Aquatic" }
           ]
         }
       ]
@@ -81,15 +82,15 @@ const FALLBACK_NAVBAR_CONFIG = {
     {
       "id": "nav-calendar",
       "label": "Calendar",
-      "href": "./seasons.html",
-      "matchPaths": ["/seasons.html"],
+      "href": "./seasons/",
+      "matchPaths": ["/seasons/", "/seasons"],
       "sublabel": "6-Season Ecological Phenology"
     },
     {
       "id": "nav-compare",
       "label": "Compare",
-      "href": "./compare.html",
-      "matchPaths": ["/compare.html"],
+      "href": "./compare/",
+      "matchPaths": ["/compare/", "/compare"],
       "sublabel": "Side-by-Side Split View"
     }
   ],
@@ -109,32 +110,32 @@ const FALLBACK_NAVBAR_CONFIG = {
     dialogLabel: "Mobile navigation and search",
     quickTryTitle: "Quick Try",
     quickTry: [
-      { label: "Mango · আম", href: "./plant.html?species=mango" },
-      { label: "Water Lily · শাপলা", href: "./plant.html?species=water-lily" },
-      { label: "Sacred Lotus · পদ্ম", href: "./plant.html?species=lotus" },
-      { label: "Tulsi · তুলসী", href: "./plant.html?species=tulsi" },
+      { label: "Mango · আম", href: "./plant/?species=mango" },
+      { label: "Water Lily · শাপলা", href: "./plant/?species=water-lily" },
+      { label: "Sacred Lotus · পদ্ম", href: "./plant/?species=lotus" },
+      { label: "Tulsi · তুলসী", href: "./plant/?species=tulsi" },
     ],
     corePages: [
-      { id: "m-home", label: "Home", href: "./index.html", matchPaths: ["/", "/index.html"], sublabel: "Botanical Gateway" },
-      { id: "m-species", label: "All Species Atlas", href: "./species.html", matchPaths: ["/species.html", "/plant.html"], sublabel: "20 Curated Flora Monographs" },
-      { id: "m-taxonomy", label: "Taxonomic Lineage", href: "./taxonomy.html", matchPaths: ["/taxonomy.html"], sublabel: "Botanical Families & Diagnostic Traits" },
-      { id: "m-seasons", label: "6-Season Calendar", href: "./seasons.html", matchPaths: ["/seasons.html"], sublabel: "Bangladeshi Shororitu Phenology" },
-      { id: "m-compare", label: "Compare Split View", href: "./compare.html", matchPaths: ["/compare.html"], sublabel: "Dual-Pane Monograph Comparison" },
+      { id: "m-home", label: "Home", href: "./", matchPaths: ["/", "/index.html"], sublabel: "Botanical Gateway" },
+      { id: "m-species", label: "All Species Atlas", href: "./species/", matchPaths: ["/species/", "/species", "/plant/", "/plant"], sublabel: "20 Curated Flora Monographs" },
+      { id: "m-taxonomy", label: "Taxonomic Lineage", href: "./taxonomy/", matchPaths: ["/taxonomy/", "/taxonomy"], sublabel: "Botanical Families & Diagnostic Traits" },
+      { id: "m-seasons", label: "6-Season Calendar", href: "./seasons/", matchPaths: ["/seasons/", "/seasons"], sublabel: "Bangladeshi Shororitu Phenology" },
+      { id: "m-compare", label: "Compare Split View", href: "./compare/", matchPaths: ["/compare/", "/compare"], sublabel: "Dual-Pane Monograph Comparison" },
     ],
     categoriesTitle: "Explore by Category",
     categories: [
-      { label: "Flowers", category: "Flowers", href: "./species.html?category=Flowers" },
-      { label: "Fruit Trees", category: "Fruit Trees", href: "./species.html?category=Fruit%20Trees" },
-      { label: "Medicinal", category: "Medicinal", href: "./species.html?category=Medicinal" },
-      { label: "Shrubs & Herbs", category: "Shrubs & Herbs", href: "./species.html?category=Shrubs%20%26%20Herbs" },
-      { label: "Trees & Palms", category: "Trees & Palms", href: "./species.html?category=Trees%20%26%20Palms" },
-      { label: "Aquatic", category: "Aquatic", href: "./species.html?category=Aquatic" },
+      { label: "Flowers", category: "Flowers", href: "./species/?category=Flowers" },
+      { label: "Fruit Trees", category: "Fruit Trees", href: "./species/?category=Fruit%20Trees" },
+      { label: "Medicinal", category: "Medicinal", href: "./species/?category=Medicinal" },
+      { label: "Shrubs & Herbs", category: "Shrubs & Herbs", href: "./species/?category=Shrubs%20%26%20Herbs" },
+      { label: "Trees & Palms", category: "Trees & Palms", href: "./species/?category=Trees%20%26%20Palms" },
+      { label: "Aquatic", category: "Aquatic", href: "./species/?category=Aquatic" },
     ],
     signature: "Plantipedia Botanical Archive · Authorized by Jalees Habib & Rayaan Tasnim",
   },
 };
 
-function sanitizeHref(rawHref, fallback = "./index.html") {
+function sanitizeHref(rawHref, fallback = "./") {
   if (typeof rawHref !== "string") return fallback;
   const trimmed = rawHref.trim();
   if (!trimmed) return fallback;
@@ -145,39 +146,11 @@ function sanitizeHref(rawHref, fallback = "./index.html") {
 }
 
 export function resolveSitePath(rawPath) {
-  const clean = sanitizeHref(rawPath, "./index.html");
+  const clean = sanitizeHref(rawPath, "./");
   if (/^https?:/i.test(clean) || clean.startsWith("#")) {
     return clean;
   }
-
-  try {
-    const normalized = clean.replace(/^\.\//, "");
-    const targetUrl = new URL(normalized, SITE_ROOT_URL);
-    const currentDir = new URL(".", window.location.href);
-
-    if (targetUrl.origin !== currentDir.origin) {
-      return targetUrl.href;
-    }
-
-    const fromParts = currentDir.pathname.split("/").filter(Boolean);
-    const toParts = targetUrl.pathname.split("/").filter(Boolean);
-
-    let common = 0;
-    while (
-      common < fromParts.length &&
-      common < toParts.length &&
-      fromParts[common] === toParts[common]
-    ) {
-      common += 1;
-    }
-
-    const ups = "../".repeat(Math.max(0, fromParts.length - common));
-    const rem = toParts.slice(common).join("/");
-    const rel = `${ups || "./"}${rem}`;
-    return `${rel}${targetUrl.search}${targetUrl.hash}`;
-  } catch {
-    return clean;
-  }
+  return resolveRootPath(clean, "./");
 }
 
 export function bindGlobalImageFallbackHandler() {
@@ -211,21 +184,18 @@ export function bindGlobalImageFallbackHandler() {
 }
 
 function normalizeRoutePath(pathname) {
-  if (!pathname) return "index.html";
+  if (!pathname) return "";
   const rootPath = SITE_ROOT_URL.pathname.replace(/\/+$/, "");
-  let stripped = pathname;
+  let stripped = String(pathname);
   if (rootPath && stripped.startsWith(rootPath)) {
     stripped = stripped.slice(rootPath.length);
   }
-  stripped = stripped.replace(/^\/+/, "");
-  if (!stripped || stripped === "/") return "index.html";
-  return stripped;
+  return normalizePathnameRoute(stripped);
 }
 
 function routeBaseName(route) {
-  return String(route || "index.html")
-    .replace(/^\/+/, "")
-    .replace(/\.html$/i, "") || "index";
+  const clean = normalizePathnameRoute(route);
+  return clean || "index";
 }
 
 function isNavItemActive(item) {
@@ -235,7 +205,7 @@ function isNavItemActive(item) {
 
   if (Array.isArray(item.matchPaths)) {
     const matchedPath = item.matchPaths.some((p) => {
-      const cleanMatch = p.replace(/^\/+/, "") || "index.html";
+      const cleanMatch = normalizePathnameRoute(p);
       return (
         cleanMatch === currentRoute ||
         routeBaseName(cleanMatch) === currentBase
@@ -268,7 +238,7 @@ function isNavItemActive(item) {
 
 function createBrandLogo(brandConfig, className = "brand-logo", size = 32) {
   const link = document.createElement("a");
-  link.href = resolveSitePath(brandConfig.homeHref || "./index.html");
+  link.href = resolveSitePath(brandConfig.homeHref || "./");
   link.className = className;
   link.setAttribute("aria-label", `${brandConfig.title || "Plantipedia"} Home`);
 
@@ -426,7 +396,7 @@ function buildDropdownMenuNodes(menuEl, item) {
         childLink.setAttribute("role", "menuitem");
         childLink.textContent = child.label;
 
-        const cleanTarget = String(child.href || "").replace(/^\.\//, "");
+        const cleanTarget = normalizePathnameRoute(String(child.href || "").split("?")[0]);
         if (cleanTarget === currentRoute && !window.location.search) {
           childLink.classList.add("is-current-route");
           childLink.setAttribute("aria-current", "page");
@@ -1017,7 +987,7 @@ function renderNavSuggestionNodes(container, matches, query) {
 
   matches.forEach((plant, idx) => {
     const link = document.createElement("a");
-    link.href = resolveSitePath(`./plant.html?species=${encodeURIComponent(plant.slug)}`);
+    link.href = resolveSitePath(`./plant/?species=${encodeURIComponent(plant.slug)}`);
     link.className = "nav-suggestion-item";
     link.setAttribute("role", "option");
     link.setAttribute("data-nav-idx", String(idx));
@@ -1107,7 +1077,7 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
   const navigateToSpecies = (slug) => {
     if (typeof onNavigate === "function") onNavigate();
     window.location.href = resolveSitePath(
-      `./plant.html?species=${encodeURIComponent(slug)}`,
+      `./plant/?species=${encodeURIComponent(slug)}`,
     );
   };
 
@@ -1175,7 +1145,7 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
     if (q) {
       if (typeof onNavigate === "function") onNavigate();
       window.location.href = resolveSitePath(
-        `./species.html?q=${encodeURIComponent(q)}`,
+        `./species/?q=${encodeURIComponent(q)}`,
       );
     }
   });

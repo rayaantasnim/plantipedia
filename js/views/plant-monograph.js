@@ -1,5 +1,5 @@
 /**
- * Plant Monograph Detail Page Renderer & Scholarly Tools Controller (plant.html)
+ * Plant Monograph Detail Page Renderer & Scholarly Tools Controller (/plant/)
  * - Renders active species from on-demand ./data/species/<slug>.json
  * - Digital Herbarium Specimen Plate Frame (Chapter 00) with SPECIMEN ID & corner registration ticks
  * - Herbarium Bookmark Toggle + Export Field Sheet (PDF) print action
@@ -15,6 +15,7 @@ import {
   createSpeciesCardElement,
   sanitizeUrl,
 } from "../utils/templates.js";
+import { resolveRootPath } from "../core/router.js";
 import { applyPlantMonographSeo } from "../services/seo.js";
 import { createBookmarkButton } from "../services/herbarium.js";
 import { renderSpecimenNotFoundCard } from "../components/specimen-not-found.js";
@@ -514,7 +515,9 @@ export function renderPlantMonograph(
 
   const ov = plant.overview || {};
   const labels = monographCfg.tableLabels || {};
-  const categoryHref = `./species.html?category=${encodeURIComponent(plant.category)}`;
+  const categoryHref = resolveRootPath(
+    `./species/?category=${encodeURIComponent(plant.category)}`,
+  );
 
   const detailContainer = createEl("div", "detail-container");
 
@@ -527,11 +530,11 @@ export function renderPlantMonograph(
   const crumbs = [
     {
       label: monographCfg.homeLabel || "Home",
-      href: sanitizeUrl(monographCfg.homeHref, "./index.html"),
+      href: sanitizeUrl(monographCfg.homeHref, "./"),
     },
     {
       label: monographCfg.directoryLabel || "Available Species",
-      href: sanitizeUrl(monographCfg.directoryHref, "./species.html"),
+      href: sanitizeUrl(monographCfg.directoryHref, "./species/"),
     },
     { label: plant.category, href: categoryHref },
     { label: plant.commonName, current: true },
@@ -687,7 +690,9 @@ export function renderPlantMonograph(
     related.forEach((item) => {
       const card = createSpeciesCardElement(item, "Explore Monograph");
       if (isEmbed && item.slug) {
-        card.href = `./plant.html?species=${encodeURIComponent(item.slug)}&embed=true`;
+        card.href = resolveRootPath(
+          `./plant/?species=${encodeURIComponent(item.slug)}&embed=true`,
+        );
       }
       relatedGrid.appendChild(card);
     });
@@ -702,7 +707,9 @@ export function renderPlantMonograph(
 
     const makePagerLink = (targetPlant, directionClass, directionLabel) => {
       const a = createEl("a", `pager-link ${directionClass}`);
-      a.href = `./plant.html?species=${encodeURIComponent(targetPlant.slug)}${isEmbed ? "&embed=true" : ""}`;
+      a.href = resolveRootPath(
+        `./plant/?species=${encodeURIComponent(targetPlant.slug)}${isEmbed ? "&embed=true" : ""}`,
+      );
       a.appendChild(createEl("span", "pager-direction", directionLabel));
       a.appendChild(
         createEl(

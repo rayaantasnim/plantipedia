@@ -6,127 +6,122 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/index.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/species.html</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/species/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/taxonomy.html</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/taxonomy/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/seasons.html</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/seasons/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/compare.html</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/compare/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=mango</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=mango</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=rose</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=rose</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=sunflower</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=sunflower</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=periwinkle</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=periwinkle</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=marigold</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=marigold</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=ixora</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=ixora</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=water-lily</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=water-lily</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=banyan</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=banyan</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=neem</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=neem</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=tulsi</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=tulsi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=hibiscus</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=hibiscus</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=jasmine</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=jasmine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=lotus</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=lotus</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=jackfruit</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=jackfruit</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=coconut</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=coconut</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=bamboo</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=bamboo</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=aloe-vera</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=aloe-vera</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=orchid</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=orchid</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=bougainvillea</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=bougainvillea</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rayaantasnim.github.io/plantipedia/plant.html?species=tea-plant</loc>
+    <loc>https://rayaantasnim.github.io/plantipedia/plant/?species=tea-plant</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

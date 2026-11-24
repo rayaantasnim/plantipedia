@@ -3,6 +3,8 @@
  * Uses strict relative ./ paths resolved safely for root and GitHub Pages subpath hosting.
  */
 
+import { resolveRootPath } from "../core/router.js";
+
 const SITE_ROOT_URL = new URL("../../", import.meta.url);
 const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v1.3.0";
 const KEBAB_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -39,6 +41,9 @@ export const CATALOG_ENDPOINT = SPECIES_INDEX_ENDPOINT;
 const inFlightCache = new Map();
 
 export function resolveDatasetHref(relativePath) {
+  if (typeof document !== "undefined" && typeof window !== "undefined") {
+    return resolveRootPath(relativePath);
+  }
   const clean = relativePath.replace(/^\.\//, "");
   return new URL(clean, SITE_ROOT_URL).href;
 }

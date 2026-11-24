@@ -6,8 +6,26 @@
  */
 
 import { bindGlobalImageFallbackHandler } from "../components/navbar-compiler.js";
+import { resolveRootPath } from "./router.js";
 import { hydrateActivePage, retryMountSection } from "./registry.js";
 import { initGlobalAnimations, refreshScrollTriggers } from "./animations.js";
+
+function registerServiceWorker() {
+  if (
+    typeof navigator === "undefined" ||
+    !("serviceWorker" in navigator) ||
+    window.location.protocol === "file:"
+  ) {
+    return;
+  }
+  try {
+    navigator.serviceWorker.register(resolveRootPath("sw.js")).catch(() => {
+      // Non-blocking PWA offline cache registration
+    });
+  } catch {
+    // Ignore registration issues
+  }
+}
 
 function bindRetryDelegation() {
   if (window.__plantipediaRetryBound) return;
@@ -26,6 +44,7 @@ function bindRetryDelegation() {
 async function bootApp() {
   bindGlobalImageFallbackHandler();
   bindRetryDelegation();
+  registerServiceWorker();
   try {
     initGlobalAnimations();
   } catch {

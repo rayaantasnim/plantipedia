@@ -5,24 +5,33 @@
  */
 
 import { createBookmarkButton } from "../services/herbarium.js";
+import { resolveRootPath } from "../core/router.js";
 
 const SAFE_PROTOCOL_RE = /^(https?:|\.{0,2}\/|#)/i;
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-export function sanitizeUrl(rawUrl, fallback = "./index.html") {
-  if (typeof rawUrl !== "string") return fallback;
+export function sanitizeUrl(rawUrl, fallback = "./") {
+  const safeFallback =
+    fallback && !/^https?:/i.test(fallback) && !fallback.startsWith("#")
+      ? resolveRootPath(fallback, "./")
+      : fallback;
+
+  if (typeof rawUrl !== "string") return safeFallback;
   const trimmed = rawUrl.trim();
-  if (!trimmed) return fallback;
+  if (!trimmed) return safeFallback;
   if (/^[a-z][a-z0-9+.-]*:/i.test(trimmed) && !/^https?:/i.test(trimmed)) {
-    return fallback;
+    return safeFallback;
+  }
+  if (/^https?:/i.test(trimmed) || trimmed.startsWith("#")) {
+    return trimmed;
   }
   if (
     SAFE_PROTOCOL_RE.test(trimmed) ||
-    /^[a-z0-9_-]+\.html(\?[^#]*)?(#.*)?$/i.test(trimmed)
+    /^[a-z0-9_/-]+(?:\.html)?(?:\?[^#]*)?(?:#.*)?$/i.test(trimmed)
   ) {
-    return trimmed;
+    return resolveRootPath(trimmed, safeFallback);
   }
-  return fallback;
+  return safeFallback;
 }
 
 export function createEl(tag, className, text) {
@@ -116,7 +125,7 @@ export function buildImageElement(
 
 export function createSpeciesCardElement(plant, ctaLabel = "Explore Monograph") {
   const slug = plant.slug || plant.id || "";
-  const fallbackHref = `./plant.html?species=${encodeURIComponent(slug)}`;
+  const fallbackHref = `./plant/?species=${encodeURIComponent(slug)}`;
   const safeHref = sanitizeUrl(plant.href || fallbackHref, fallbackHref);
 
   const card = createEl("a", "species-card");
@@ -512,7 +521,7 @@ export function renderFeaturedSpeciesSection(mountEl, { sectionData, catalog }) 
   if (meta.archiveCta) {
     const ctaWrap = createEl("div", "featured-cta-wrap");
     const ctaLink = createEl("a", "cta-glow-button");
-    ctaLink.href = sanitizeUrl(meta.archiveCta.href, "./species.html");
+    ctaLink.href = sanitizeUrl(meta.archiveCta.href, "./species/");
     ctaLink.appendChild(
       createEl("span", "", meta.archiveCta.label || "Explore All Available Species"),
     );
@@ -557,8 +566,8 @@ export function renderTaxonomySection(mountEl, { sectionData }) {
 
   items.forEach((domain, idx) => {
     const fallbackHref = domain.category
-      ? `./species.html?category=${encodeURIComponent(domain.category)}`
-      : "./species.html";
+      ? `./species/?category=${encodeURIComponent(domain.category)}`
+      : "./species/";
     const cardLink = createEl("a", "domain-card");
     cardLink.href = sanitizeUrl(domain.href, fallbackHref);
     cardLink.setAttribute("data-domain-id", domain.id || "");
@@ -638,8 +647,8 @@ export function renderTriviaSection(mountEl, { sectionData }) {
     titleRow.appendChild(createEl("h3", "curiosity-title", item.title));
 
     const fallbackHref = item.speciesSlug
-      ? `./plant.html?species=${encodeURIComponent(item.speciesSlug)}`
-      : "./species.html";
+      ? `./plant/?species=${encodeURIComponent(item.speciesSlug)}`
+      : "./species/";
     const taxonLink = createEl("a", "curiosity-taxon");
     taxonLink.href = sanitizeUrl(item.href, fallbackHref);
     taxonLink.appendChild(createEl("span", "", item.taxonLabel));
@@ -764,7 +773,7 @@ export function renderSearchSuggestionNodes(container, matches, emptyQuery, item
 
   matches.forEach((plant, idx) => {
     const link = document.createElement("a");
-    link.href = `./plant.html?species=${encodeURIComponent(plant.slug)}`;
+    link.href = resolveRootPath(`./plant/?species=${encodeURIComponent(plant.slug)}`);
     link.setAttribute("role", "option");
 
     const commonLabel = plant.commonNameBn

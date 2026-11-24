@@ -16,7 +16,7 @@ const FALLBACK_FOOTER_CONFIG = {
     restTitle: "ipedia",
     logo: "./assets/images/brand-flower.svg",
     logoAlt: "Plantipedia floral emblem",
-    homeHref: "./index.html",
+    homeHref: "./",
   },
   tagline: "Exploring the fascinating world of plants, one species at a time.",
   summary:
@@ -41,7 +41,7 @@ const FALLBACK_FOOTER_CONFIG = {
 
 function createFooterBrand(brandConfig) {
   const link = document.createElement("a");
-  link.href = resolveSitePath(brandConfig.homeHref || "./index.html");
+  link.href = resolveSitePath(brandConfig.homeHref || "./");
   link.className = "footer-brand";
   link.setAttribute("aria-label", `${brandConfig.title || "Plantipedia"} Home`);
 
