@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
  * Plantipedia Catalog Integrity & Sitemap Generator
- * Validates ./data/catalog/species-index.json against ./data/species/*.json
- * and regenerates ./sitemap.xml for GitHub Pages search indexing.
+ * Validates ./data/index/species-index.json against ./data/monographs/*.json
+ * and regenerates ./sitemap.xml for search indexing.
  */
 
 import fs from "node:fs";
@@ -13,8 +13,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, "..");
 const SITE_BASE = "https://rayaantasnim.github.io/plantipedia";
 
-const INDEX_PATH = path.join(ROOT_DIR, "data", "catalog", "species-index.json");
-const SPECIES_DIR = path.join(ROOT_DIR, "data", "species");
+const INDEX_PATH = path.join(ROOT_DIR, "data", "index", "species-index.json");
+const SPECIES_DIR = path.join(ROOT_DIR, "data", "monographs");
 const SITEMAP_PATH = path.join(ROOT_DIR, "sitemap.xml");
 
 const STATIC_ROUTES = [

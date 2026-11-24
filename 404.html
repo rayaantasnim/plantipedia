@@ -76,12 +76,13 @@
       rel="stylesheet"
     />
     <link rel="manifest" href="./manifest.json" />
-    <link rel="stylesheet" href="./styles/core/variables.css" />
-    <link rel="stylesheet" href="./styles/core/base.css" />
-    <link rel="stylesheet" href="./styles/core/layout.css" />
-    <link rel="stylesheet" href="./styles/modules/sections.css" />
-    <link rel="stylesheet" href="./styles/modules/components.css" />
-    <link rel="stylesheet" href="./styles/modules/pages-responsive.css" />
+    <link rel="stylesheet" href="./styles/base/variables.css" />
+    <link rel="stylesheet" href="./styles/base/base.css" />
+    <link rel="stylesheet" href="./styles/base/layout.css" />
+    <link rel="stylesheet" href="./styles/components/sections.css" />
+    <link rel="stylesheet" href="./styles/components/components.css" />
+    <link rel="stylesheet" href="./styles/pages/pages-responsive.css" />
+    <link rel="stylesheet" href="./styles/print/field-sheets.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="./styles/tailwind/tailwind.config.js"></script>
     <script src="./styles/tailwind/load-tailwind-layers.js" defer></script>
@@ -208,10 +209,10 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
       defer
     ></script>
-    <script type="module" src="./js/components/navbar-compiler.js"></script>
-    <script type="module" src="./js/components/footer-compiler.js"></script>
+    <script type="module" src="./src/core/compilers/navbar-compiler.js"></script>
+    <script type="module" src="./src/core/compilers/footer-compiler.js"></script>
     <script type="module">
-      import { mountStandalone404Page } from "./js/components/specimen-not-found.js";
+      import { mountStandalone404Page } from "./src/core/compilers/specimen-not-found.js";
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", mountStandalone404Page);
       } else {
