@@ -9,7 +9,10 @@ import { createEl, sanitizeUrl } from "../utils/templates.js";
 import { resolveRootPath } from "../core/router.js";
 import { fetchSpeciesMonograph, normalizeSpeciesSlug } from "../services/api.js";
 import { applyCompareSeo } from "../services/seo.js";
-import { extractPlantTelemetryStats } from "../utils/telemetry-stats.js";
+import {
+  ensureGsapWithScrollTrigger,
+  extractPlantTelemetryStats,
+} from "../utils/telemetry-stats.js";
 import {
   fetchFromGlobalBotanicalServer,
   getCachedGlobalMonograph,
@@ -418,11 +421,27 @@ function buildTelemetrySection(leftPlant, rightPlant) {
       labelSide.appendChild(createEl("span", `compare-bar-species is-${sideCls}`, plantName));
       labelSide.appendChild(createEl("span", "compare-bar-metric-name", stat?.label || ""));
       rowHead.appendChild(labelSide);
-      rowHead.appendChild(createEl("span", "compare-bar-value", formatTelemetryValue(stat)));
+
+      const finalText = formatTelemetryValue(stat);
+      const valEl = createEl("span", "compare-bar-value", finalText);
+      const targetNum = Number(stat?.value) || 0;
+      const decimals = Number.isFinite(stat?.decimals)
+        ? stat.decimals
+        : Number.isInteger(targetNum)
+          ? 0
+          : 1;
+      valEl.dataset.targetValue = String(targetNum);
+      valEl.dataset.decimals = String(decimals);
+      valEl.dataset.prefix = stat?.prefix || "";
+      valEl.dataset.suffix = stat?.suffix || "";
+      valEl.dataset.finalText = finalText;
+      valEl.setAttribute("aria-label", `${plantName} ${stat?.label || ""}: ${finalText}`);
+      rowHead.appendChild(valEl);
 
       const track = createEl("div", "compare-bar-track");
       const fill = createEl("div", `compare-bar-fill compare-bar-fill--${sideCls}`);
       fill.style.width = `${pct}%`;
+      fill.dataset.targetPct = String(pct);
       track.appendChild(fill);
 
       row.appendChild(rowHead);
@@ -782,4 +801,347 @@ export async function renderCompareResultWorkspace(
 
   workspace.appendChild(matrix);
   mountEl.replaceChildren(workspace);
+
+  animateCompareResultWorkspace(workspace);
+}
+
+function prefersReducedMotionResult() {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+function formatCounterStep(val, el) {
+  const decimals = Number(el.dataset.decimals || 0);
+  const prefix = el.dataset.prefix || "";
+  const suffix = el.dataset.suffix || "";
+  const numStr = decimals > 0 ? Number(val).toFixed(decimals) : String(Math.round(val));
+  return `${prefix}${numStr}${suffix}`;
+}
+
+function restoreFinalTelemetryState(workspace) {
+  if (!workspace) return;
+  workspace.querySelectorAll(".compare-bar-value[data-final-text]").forEach((el) => {
+    el.textContent = el.dataset.finalText;
+  });
+  workspace.querySelectorAll(".compare-bar-fill").forEach((fill) => {
+    fill.style.transform = "";
+    fill.classList.add("is-bar-revealed");
+  });
+  workspace.querySelectorAll(".compare-reveal-target").forEach((el) => {
+    el.classList.add("is-revealed");
+    el.style.opacity = "";
+    el.style.transform = "";
+  });
+}
+
+function runFallbackTelemetryCounters(gridEl) {
+  if (!gridEl || gridEl.dataset.barsAnimated === "true") return;
+  gridEl.dataset.barsAnimated = "true";
+
+  const valueEls = Array.from(gridEl.querySelectorAll(".compare-bar-value[data-target-value]"));
+  const fillEls = Array.from(gridEl.querySelectorAll(".compare-bar-fill"));
+
+  fillEls.forEach((fill, idx) => {
+    fill.style.transitionDelay = `${idx * 65}ms`;
+    fill.style.transform = "";
+    fill.classList.add("is-bar-revealed");
+  });
+
+  const start = performance.now();
+  const duration = 1150;
+
+  const tick = (now) => {
+    const progress = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    valueEls.forEach((el) => {
+      const target = Number(el.dataset.targetValue) || 0;
+      el.textContent = formatCounterStep(target * eased, el);
+    });
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      valueEls.forEach((el) => {
+        el.textContent = el.dataset.finalText || formatCounterStep(Number(el.dataset.targetValue) || 0, el);
+      });
+    }
+  };
+
+  requestAnimationFrame(tick);
+}
+
+function runCssFallbackChoreography(workspace) {
+  workspace.classList.add("compare-anim-fallback");
+
+  const targets = Array.from(
+    workspace.querySelectorAll(
+      ".compare-result-header-inner > *, .compare-hero-card, .compare-matrix-section, .compare-taxonomy-table tbody tr, .compare-telemetry-card, .compare-detail-card, .compare-subblock, .compare-care-item, .compare-phenology-row",
+    ),
+  );
+  const telemetryGrid = workspace.querySelector(".compare-telemetry-grid");
+
+  targets.forEach((el, idx) => {
+    el.classList.add("compare-reveal-target");
+    el.style.setProperty("--compare-reveal-delay", `${(idx % 4) * 55}ms`);
+  });
+
+  if (typeof IntersectionObserver === "undefined") {
+    restoreFinalTelemetryState(workspace);
+    return;
+  }
+
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-revealed");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.08, rootMargin: "0px 0px -24px 0px" },
+  );
+
+  targets.forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.94) {
+      requestAnimationFrame(() => el.classList.add("is-revealed"));
+    } else {
+      revealObserver.observe(el);
+    }
+  });
+
+  if (telemetryGrid) {
+    const triggerBars = () => runFallbackTelemetryCounters(telemetryGrid);
+    const rect = telemetryGrid.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92) {
+      triggerBars();
+    } else {
+      const barObserver = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            barObserver.disconnect();
+            triggerBars();
+          }
+        },
+        { threshold: 0.14 },
+      );
+      barObserver.observe(telemetryGrid);
+    }
+  }
+}
+
+async function animateCompareResultWorkspace(workspace) {
+  if (!workspace || prefersReducedMotionResult()) {
+    return;
+  }
+
+  const valueEls = Array.from(workspace.querySelectorAll(".compare-bar-value[data-target-value]"));
+  const fillEls = Array.from(workspace.querySelectorAll(".compare-bar-fill"));
+  const telemetryGrid = workspace.querySelector(".compare-telemetry-grid");
+
+  // Stage telemetry bars and numeric readouts at 0 immediately so they count/expand smoothly on reveal
+  valueEls.forEach((el) => {
+    el.textContent = formatCounterStep(0, el);
+  });
+  fillEls.forEach((fill) => {
+    fill.classList.add("is-bar-staged");
+  });
+
+  const handleBeforePrint = () => {
+    if (window.gsap) {
+      window.gsap.globalTimeline.progress(1);
+    }
+    restoreFinalTelemetryState(workspace);
+  };
+  window.addEventListener("beforeprint", handleBeforePrint, { once: true });
+
+  const gsapReady =
+    window.gsap && window.ScrollTrigger
+      ? (() => {
+          window.gsap.registerPlugin(window.ScrollTrigger);
+          return true;
+        })()
+      : await ensureGsapWithScrollTrigger();
+
+  if (!document.body.contains(workspace)) return;
+
+  if (!gsapReady || !window.gsap || !window.ScrollTrigger) {
+    fillEls.forEach((fill) => fill.classList.remove("is-bar-staged"));
+    runCssFallbackChoreography(workspace);
+    return;
+  }
+
+  const { gsap, ScrollTrigger } = window;
+
+  // 1. Utility Header & Hero Split Entrance
+  const headerChildren = Array.from(
+    workspace.querySelectorAll(".compare-result-header-inner > *"),
+  );
+  if (headerChildren.length) {
+    gsap.from(headerChildren, {
+      y: 16,
+      opacity: 0,
+      duration: 0.56,
+      ease: "power3.out",
+      stagger: 0.08,
+      clearProps: "transform,opacity",
+    });
+  }
+
+  const heroCards = Array.from(workspace.querySelectorAll(".compare-hero-card"));
+  if (heroCards.length) {
+    gsap.from(heroCards, {
+      y: 26,
+      opacity: 0,
+      duration: 0.68,
+      delay: 0.08,
+      ease: "power3.out",
+      stagger: 0.12,
+      clearProps: "transform,opacity",
+    });
+  }
+
+  // 2. Scroll-choreographed Comparison Sections (01 - 05)
+  const matrixSections = Array.from(workspace.querySelectorAll(".compare-matrix-section"));
+  matrixSections.forEach((sec) => {
+    gsap.from(sec, {
+      y: 26,
+      opacity: 0,
+      duration: 0.65,
+      ease: "power3.out",
+      clearProps: "transform,opacity",
+      scrollTrigger: {
+        trigger: sec,
+        start: "top 88%",
+        once: true,
+      },
+    });
+
+    const taxRows = sec.querySelectorAll(".compare-taxonomy-table tbody tr");
+    if (taxRows.length) {
+      gsap.from(taxRows, {
+        y: 14,
+        opacity: 0,
+        duration: 0.45,
+        ease: "power2.out",
+        stagger: 0.045,
+        clearProps: "transform,opacity",
+        scrollTrigger: {
+          trigger: sec.querySelector(".compare-taxonomy-table") || sec,
+          start: "top 86%",
+          once: true,
+        },
+      });
+    }
+
+    const telemetryCards = sec.querySelectorAll(".compare-telemetry-card");
+    if (telemetryCards.length) {
+      gsap.from(telemetryCards, {
+        y: 20,
+        opacity: 0,
+        duration: 0.58,
+        ease: "power3.out",
+        stagger: 0.09,
+        clearProps: "transform,opacity",
+        scrollTrigger: {
+          trigger: telemetryGrid || sec,
+          start: "top 86%",
+          once: true,
+        },
+      });
+    }
+
+    const detailCards = sec.querySelectorAll(".compare-detail-card");
+    if (detailCards.length) {
+      gsap.from(detailCards, {
+        y: 22,
+        opacity: 0,
+        duration: 0.62,
+        ease: "power3.out",
+        stagger: 0.1,
+        clearProps: "transform,opacity",
+        scrollTrigger: {
+          trigger: sec.querySelector(".compare-dual-cards") || sec,
+          start: "top 86%",
+          once: true,
+        },
+      });
+    }
+
+    const innerItems = sec.querySelectorAll(
+      ".compare-subblock, .compare-care-item, .compare-phenology-row",
+    );
+    if (innerItems.length) {
+      gsap.from(innerItems, {
+        y: 14,
+        opacity: 0,
+        duration: 0.48,
+        ease: "power2.out",
+        stagger: 0.04,
+        clearProps: "transform,opacity",
+        scrollTrigger: {
+          trigger: sec,
+          start: "top 82%",
+          once: true,
+        },
+      });
+    }
+  });
+
+  // 3. Numerical Telemetry Bars & Counter Choreography from 0
+  if (telemetryGrid && (fillEls.length > 0 || valueEls.length > 0)) {
+    gsap.set(fillEls, { scaleX: 0, transformOrigin: "left center" });
+    fillEls.forEach((fill) => fill.classList.remove("is-bar-staged"));
+
+    const animateTelemetryBarsAndCounters = () => {
+      if (telemetryGrid.dataset.barsAnimated === "true") return;
+      telemetryGrid.dataset.barsAnimated = "true";
+
+      gsap.to(fillEls, {
+        scaleX: 1,
+        duration: 1.05,
+        ease: "power3.out",
+        stagger: 0.07,
+        clearProps: "transform",
+      });
+
+      valueEls.forEach((el, idx) => {
+        const target = Number(el.dataset.targetValue) || 0;
+        const proxy = { val: 0 };
+        gsap.to(proxy, {
+          val: target,
+          duration: 1.15,
+          delay: Math.min(idx * 0.05, 0.3),
+          ease: "power3.out",
+          onUpdate: () => {
+            el.textContent = formatCounterStep(proxy.val, el);
+          },
+          onComplete: () => {
+            el.textContent =
+              el.dataset.finalText || formatCounterStep(target, el);
+          },
+        });
+      });
+    };
+
+    ScrollTrigger.create({
+      trigger: telemetryGrid,
+      start: "top 86%",
+      once: true,
+      onEnter: animateTelemetryBarsAndCounters,
+    });
+
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      const rect = telemetryGrid.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.9) {
+        animateTelemetryBarsAndCounters();
+      }
+    });
+  } else {
+    ScrollTrigger.refresh();
+  }
 }

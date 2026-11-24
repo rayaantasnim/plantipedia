@@ -1,15 +1,19 @@
 /**
  * Compare Split View Controller (/compare/)
- * - Custom Glassmorphism Dropdowns for Left & Right specimens with scrollable 50-species list
- *   and sticky bottom Global Botanical Server action ("Fetch from Global Server ->")
- * - Independent panel transformation into global query input + "Fetch" + "<- List"
- * - 5-second Global Botanical Server telemetry loader with AbortController & auto-retry loop
- * - Smart error recovery redirecting to ./404.html?reason=invalid|network&q=...&from=compare
- * - Supports ?left=<slug>, ?right=<slug>, ?a=, ?b=, ?leftGlobal=, ?rightGlobal=
- * - Dual-pane 50/50 split view on desktop + Focus Mode / Split View toggle
+ * - Dual Real-Time Search Inputs (#left-specimen-input & #right-specimen-input)
+ *   with instant 50-species local autocomplete (EN / বাংলা / Latin / family)
+ * - Global Botanical Server lookup trigger whenever query >= 2 chars and local matches < 2
+ * - Inline 5-second Global Botanical Server telemetry loader with AbortController & retry loop
+ * - Smart error recovery redirecting to ../404.html?reason=invalid|network&q=...&from=compare
+ * - URL pre-selection support (?left=<slug>, ?right=<slug>, ?leftGlobal=, ?rightGlobal=, ?leftType=, ?rightType=)
+ * - Clean handoff to ./result/?left=...&leftType=...&right=...&rightType=...
  */
 
-import { createEl } from "../utils/templates.js";
+import {
+  buildImageElement,
+  createEl,
+  createSearchIconSvg,
+} from "../utils/templates.js";
 import { resolveRootPath } from "../core/router.js";
 import { applyCompareSeo } from "../services/seo.js";
 import {
@@ -19,29 +23,39 @@ import {
   runGlobalServerTelemetry,
 } from "../services/global-botanical-server.js";
 
-function pickRandomMessage(pool, fallback) {
-  if (!Array.isArray(pool) || pool.length === 0) return fallback;
-  const idx = Math.floor(Math.random() * pool.length);
-  return pool[idx] || fallback;
+function scoreSpeciesMatch(sp, q) {
+  const fields = [
+    sp.commonName,
+    sp.commonNameBn,
+    sp.localName,
+    sp.scientificName,
+    sp.slug,
+    sp.family,
+    sp.familyBn,
+    sp.category,
+  ]
+    .filter(Boolean)
+    .map((val) => String(val).toLowerCase());
+
+  let bestScore = 0;
+  for (let i = 0; i < fields.length; i += 1) {
+    const field = fields[i];
+    if (field === q) {
+      bestScore = Math.max(bestScore, i <= 4 ? 100 : 75);
+    } else if (field.startsWith(q)) {
+      bestScore = Math.max(bestScore, i <= 4 ? 85 : 55);
+    } else if (field.includes(` ${q}`)) {
+      bestScore = Math.max(bestScore, i <= 4 ? 70 : 45);
+    } else if (field.includes(q)) {
+      bestScore = Math.max(bestScore, i <= 4 ? 50 : 30);
+    }
+  }
+  return bestScore;
 }
 
-function createDropdownCaretSvg() {
-  const svgNS = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("class", "compare-dropdown-caret");
-  svg.setAttribute("viewBox", "0 0 16 16");
-  svg.setAttribute("width", "14");
-  svg.setAttribute("height", "14");
-  svg.setAttribute("fill", "none");
-  svg.setAttribute("stroke", "currentColor");
-  svg.setAttribute("stroke-width", "2");
-  svg.setAttribute("stroke-linecap", "round");
-  svg.setAttribute("stroke-linejoin", "round");
-  svg.setAttribute("aria-hidden", "true");
-  const path = document.createElementNS(svgNS, "path");
-  path.setAttribute("d", "m4 6 4 4 4-4");
-  svg.appendChild(path);
-  return svg;
+function formatSpecimenInputLabel(sp) {
+  if (!sp) return "";
+  return sp.commonNameBn ? `${sp.commonName} (${sp.commonNameBn})` : sp.commonName;
 }
 
 export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
@@ -49,58 +63,19 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
   const list = Array.isArray(speciesIndex) ? speciesIndex.slice() : [];
   list.sort((a, b) => a.commonName.localeCompare(b.commonName));
-  const speciesBySlug = new Map(list.map((s) => [s.slug, s]));
+  const speciesBySlug = new Map(list.map((s) => [s.slug.toLowerCase(), s]));
 
   const selCfg = pageData.selector || {};
-  const stages = Array.isArray(pageData.loaderStages) && pageData.loaderStages.length === 3
-    ? pageData.loaderStages
-    : [
-        [
-          "Retrieving botanical monograph archives...",
-          "Sequencing Linnaean taxonomic lineage...",
-          "Indexing herbarium specimen records...",
-          "Loading native habitat & distribution data...",
-          "Cross-referencing species catalog entries...",
-        ],
-        [
-          "Aligning morphological & leaf venation traits...",
-          "Calibrating soil pH & cultivation parameters...",
-          "Comparing pollinator guilds & ecological roles...",
-          "Synthesizing phytochemical & medicinal profiles...",
-          "Mapping seasonal flowering & growth cycles...",
-        ],
-        [
-          "Assembling dual-pane split comparison...",
-          "Finalizing high-contrast specimen plates...",
-          "Synchronizing responsive monograph viewports...",
-          "Preparing side-by-side botanical workspace...",
-          "Ready — launching comparative view...",
-        ],
-      ];
-  const wsCfg = pageData.workspace || {};
 
-  // Independent panel states
+  // Independent specimen states
   const panelState = {
     left: { mode: "local", slug: "", globalQuery: "", verifiedPlant: null },
     right: { mode: "local", slug: "", globalQuery: "", verifiedPlant: null },
   };
 
-  let isFocusMode = window.innerWidth <= 768;
-  let activeFocusPane = "left";
-  let loaderTimerIds = [];
-  let activeResizeHandler = null;
   let docClickCleanup = null;
 
-  function clearLoaderTimers() {
-    loaderTimerIds.forEach((id) => clearTimeout(id));
-    loaderTimerIds = [];
-    if (activeResizeHandler) {
-      window.removeEventListener("resize", activeResizeHandler);
-      activeResizeHandler = null;
-    }
-  }
-
-  function clearDocumentDropdownListener() {
+  function clearDocumentListeners() {
     if (typeof docClickCleanup === "function") {
       docClickCleanup();
       docClickCleanup = null;
@@ -112,10 +87,26 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     if (existing) existing.remove();
   }
 
+  function filterCuratedSpecies(rawQuery) {
+    const q = String(rawQuery || "").trim().toLowerCase();
+    if (!q) return [];
+    const scored = [];
+    for (const sp of list) {
+      const score = scoreSpeciesMatch(sp, q);
+      if (score > 0) {
+        scored.push({ sp, score });
+      }
+    }
+    scored.sort((a, b) => b.score - a.score || a.sp.commonName.localeCompare(b.sp.commonName));
+    return scored.slice(0, 14).map((entry) => entry.sp);
+  }
+
   function getPanelIdentity(side) {
     const st = panelState[side];
     if (st.mode === "global") {
-      const q = normalizeGlobalQuery(st.globalQuery);
+      const q = normalizeGlobalQuery(
+        st.globalQuery || st.verifiedPlant?.query || st.verifiedPlant?.commonName,
+      );
       return q ? `global:${q.toLowerCase()}` : "";
     }
     return st.slug ? `local:${st.slug.toLowerCase()}` : "";
@@ -127,12 +118,14 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       if (st.verifiedPlant) return st.verifiedPlant;
       const q = normalizeGlobalQuery(st.globalQuery);
       const cached = q ? getCachedGlobalMonograph(q) : null;
-      return cached || {
-        isGlobalLive: true,
-        query: q,
-        commonName: q || "Global Specimen",
-        scientificName: "Global Botanical Server",
-      };
+      return (
+        cached || {
+          isGlobalLive: true,
+          query: q,
+          commonName: q || "Global Specimen",
+          scientificName: "Global Botanical Server",
+        }
+      );
     }
     return speciesBySlug.get(st.slug) || { slug: st.slug, commonName: st.slug };
   }
@@ -166,10 +159,12 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
   function syncCompareUrlParams() {
     try {
       const url = new URL(window.location.href);
-      ["a", "b", "left", "right", "leftGlobal", "rightGlobal", "leftType", "rightType"].forEach((k) => {
-        url.searchParams.delete(k);
-      });
-      if (isPanelReady("left") && isPanelReady("right") && !areSidesDuplicate()) {
+      ["a", "b", "left", "right", "leftGlobal", "rightGlobal", "leftType", "rightType"].forEach(
+        (k) => {
+          url.searchParams.delete(k);
+        },
+      );
+      if (isPanelReady("left")) {
         if (panelState.left.mode === "global") {
           url.searchParams.set("left", normalizeGlobalQuery(panelState.left.globalQuery));
           url.searchParams.set("leftType", "global");
@@ -177,6 +172,8 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           url.searchParams.set("left", panelState.left.slug);
           url.searchParams.set("leftType", "local");
         }
+      }
+      if (isPanelReady("right")) {
         if (panelState.right.mode === "global") {
           url.searchParams.set("right", normalizeGlobalQuery(panelState.right.globalQuery));
           url.searchParams.set("rightType", "global");
@@ -195,7 +192,9 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     const params = new URLSearchParams();
     if (panelState.left.mode === "global") {
       const leftVal = normalizeGlobalQuery(
-        panelState.left.globalQuery || panelState.left.verifiedPlant?.query || panelState.left.verifiedPlant?.commonName,
+        panelState.left.globalQuery ||
+          panelState.left.verifiedPlant?.query ||
+          panelState.left.verifiedPlant?.commonName,
       );
       params.set("left", leftVal);
       params.set("leftType", "global");
@@ -205,7 +204,9 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     }
     if (panelState.right.mode === "global") {
       const rightVal = normalizeGlobalQuery(
-        panelState.right.globalQuery || panelState.right.verifiedPlant?.query || panelState.right.verifiedPlant?.commonName,
+        panelState.right.globalQuery ||
+          panelState.right.verifiedPlant?.query ||
+          panelState.right.verifiedPlant?.commonName,
       );
       params.set("right", rightVal);
       params.set("rightType", "global");
@@ -226,8 +227,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
   }
 
   function renderSelectorView({ resetUrl = false, highlightRight = false } = {}) {
-    clearLoaderTimers();
-    clearDocumentDropdownListener();
+    clearDocumentListeners();
     removeFloatingModeButton();
 
     if (resetUrl) {
@@ -244,7 +244,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
     const shell = createEl("div", "compare-selector-shell");
     const card = createEl("section", "compare-selector-card");
-    card.setAttribute("aria-label", "Select two botanical species to compare");
+    card.setAttribute("aria-label", "Search and select two botanical species to compare");
 
     card.appendChild(
       createEl("span", "section-eyebrow", selCfg.eyebrow || "Comparative Botanical Workspace"),
@@ -257,7 +257,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         "p",
         "compare-selector-subcopy",
         selCfg.subcopy ||
-          "Select two distinct plant species from the archive—or query any taxon worldwide from the Global Botanical Server.",
+          "Search and lock two distinct plant species from the 50-monograph archive or query any worldwide taxon via the Global Botanical Server.",
       ),
     );
 
@@ -279,263 +279,234 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     const rightHint = createEl(
       "span",
       "compare-select-hint",
-      selCfg.rightNextStepHint || "Next step: Pick a second specimen to compare side-by-side.",
+      selCfg.rightNextStepHint || "Next step: Type a second specimen name to compare side-by-side.",
     );
 
-    const dropdownControllers = [];
     const panelControllers = {};
 
-    function closeAllCustomDropdowns(exceptSide = null) {
-      dropdownControllers.forEach((ctl) => {
-        if (exceptSide && ctl.side === exceptSide) return;
-        ctl.setOpen(false);
+    function closeAllMenus(exceptSide = null) {
+      Object.entries(panelControllers).forEach(([sideKey, ctl]) => {
+        if (exceptSide && sideKey === exceptSide) return;
+        ctl.closeMenu();
       });
     }
 
-    function buildSpecimenPanel(side, idPrefix, labelText) {
+    function buildSpecimenPanel(side, labelText) {
       const st = panelState[side];
       const field = createEl("div", "compare-select-field");
       field.dataset.side = side;
 
+      const inputId = `${side}-specimen-input`;
+      const clearBtnId = `${side}-clear-btn`;
+      const menuId = `${side}-autocomplete-menu`;
+
       const label = createEl("label", "compare-select-label", labelText);
-      const triggerId = `${idPrefix}Trigger`;
-      const globalInputId = `${idPrefix}GlobalInput`;
-      label.setAttribute("for", st.mode === "global" ? globalInputId : triggerId);
+      label.setAttribute("for", inputId);
       field.appendChild(label);
 
-      // 1. Custom Glassmorphism Dropdown + Scrollable 50-Species List + Sticky Global Server Footer
-      const dropdownWrap = createEl("div", "compare-dropdown-wrap");
-      dropdownWrap.id = `${side}-dropdown-wrap`;
+      const searchWrap = createEl("div", "compare-search-wrap");
+      const inputBox = createEl("div", "compare-search-input-box");
 
-      const trigger = createEl("button", "compare-dropdown-trigger");
-      trigger.type = "button";
-      trigger.id = triggerId;
-      trigger.setAttribute("aria-haspopup", "listbox");
-      trigger.setAttribute("aria-expanded", "false");
+      const searchIcon = createSearchIconSvg(17, "compare-search-icon");
+      const inputEl = document.createElement("input");
+      inputEl.type = "text";
+      inputEl.id = inputId;
+      inputEl.className = "compare-search-input";
+      inputEl.placeholder = "Type plant name (EN / বাংলা / Latin)...";
+      inputEl.autocomplete = "off";
+      inputEl.spellcheck = false;
+      inputEl.setAttribute("role", "combobox");
+      inputEl.setAttribute("aria-autocomplete", "list");
+      inputEl.setAttribute("aria-expanded", "false");
+      inputEl.setAttribute("aria-controls", menuId);
+      inputEl.setAttribute("aria-label", `${labelText} search`);
 
-      const selectedPlant = st.slug ? speciesBySlug.get(st.slug) : null;
-      const triggerText = selectedPlant
-        ? (selectedPlant.commonNameBn
-            ? `${selectedPlant.commonName} (${selectedPlant.commonNameBn}) — ${selectedPlant.scientificName}`
-            : `${selectedPlant.commonName} — ${selectedPlant.scientificName}`)
-        : (selCfg.placeholderOption || "Select a botanical specimen...");
+      const clearBtn = createEl("button", "compare-search-clear-btn", "✕");
+      clearBtn.type = "button";
+      clearBtn.id = clearBtnId;
+      clearBtn.setAttribute("aria-label", `Clear ${labelText}`);
+      clearBtn.hidden = true;
 
-      const textSpan = createEl(
-        "span",
-        `compare-dropdown-value${selectedPlant ? "" : " is-placeholder"}`,
-        triggerText,
-      );
-      trigger.appendChild(textSpan);
-      trigger.appendChild(createDropdownCaretSvg());
+      inputBox.appendChild(searchIcon);
+      inputBox.appendChild(inputEl);
+      inputBox.appendChild(clearBtn);
+      searchWrap.appendChild(inputBox);
 
-      const menu = createEl("div", "compare-dropdown-menu");
+      const menu = createEl("div", "compare-autocomplete-menu");
+      menu.id = menuId;
       menu.hidden = true;
       menu.setAttribute("role", "listbox");
-      menu.setAttribute("aria-label", `${labelText} curated species`);
+      menu.setAttribute("aria-label", `${labelText} suggestions`);
 
-      const listBox = createEl("div", "compare-dropdown-list");
+      const listBox = createEl("div", "compare-autocomplete-list");
+      const globalFooter = createEl("div", "compare-autocomplete-global-footer");
+      globalFooter.hidden = true;
 
-      list.forEach((sp) => {
-        const isSelected = sp.slug === st.slug;
-        const optBtn = createEl(
-          "button",
-          `compare-dropdown-option${isSelected ? " is-selected" : ""}`,
-        );
-        optBtn.type = "button";
-        optBtn.setAttribute("role", "option");
-        optBtn.setAttribute("aria-selected", String(isSelected));
-        optBtn.dataset.slug = sp.slug;
-
-        const nameSpan = createEl(
-          "span",
-          "compare-option-common",
-          sp.commonNameBn ? `${sp.commonName} (${sp.commonNameBn})` : sp.commonName,
-        );
-        const sciSpan = createEl("span", "compare-option-sci", sp.scientificName);
-        optBtn.appendChild(nameSpan);
-        optBtn.appendChild(sciSpan);
-
-        optBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          st.mode = "local";
-          st.slug = sp.slug;
-          st.verifiedPlant = null;
-          textSpan.textContent = sp.commonNameBn
-            ? `${sp.commonName} (${sp.commonNameBn}) — ${sp.scientificName}`
-            : `${sp.commonName} — ${sp.scientificName}`;
-          textSpan.classList.remove("is-placeholder");
-          listBox.querySelectorAll(".compare-dropdown-option").forEach((b) => {
-            const matched = b.dataset.slug === sp.slug;
-            b.classList.toggle("is-selected", matched);
-            b.setAttribute("aria-selected", String(matched));
-          });
-          setOpen(false);
-          validateSelection();
-          trigger.focus();
-        });
-
-        listBox.appendChild(optBtn);
-      });
-
-      const stickyFooter = createEl("div", "compare-dropdown-footer");
-      const globalTriggerBtn = createEl(
-        "button",
-        "compare-dropdown-global-btn",
-        "🌐 Fetch from Global Server →",
-      );
-      globalTriggerBtn.type = "button";
-      stickyFooter.appendChild(globalTriggerBtn);
-      listBox.appendChild(stickyFooter);
+      const globalFetchBtn = createEl("button", "compare-dropdown-global-btn", "");
+      globalFetchBtn.type = "button";
+      globalFetchBtn.setAttribute("role", "option");
+      globalFooter.appendChild(globalFetchBtn);
 
       menu.appendChild(listBox);
-      dropdownWrap.appendChild(trigger);
-      dropdownWrap.appendChild(menu);
+      menu.appendChild(globalFooter);
+      searchWrap.appendChild(menu);
 
-      function setOpen(open) {
-        menu.hidden = !open;
-        trigger.setAttribute("aria-expanded", String(open));
-        field.classList.toggle("is-open", open);
-        if (open) {
-          const activeOpt = listBox.querySelector(".compare-dropdown-option.is-selected");
-          if (activeOpt) {
-            requestAnimationFrame(() => activeOpt.scrollIntoView({ block: "nearest" }));
-          }
-        }
-      }
+      const statusEl = createEl("div", "compare-selection-status");
+      statusEl.hidden = true;
 
-      trigger.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const nextOpen = menu.hidden;
-        closeAllCustomDropdowns(side);
-        setOpen(nextOpen);
-      });
-
-      trigger.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          setOpen(false);
-        } else if (e.key === "ArrowDown" && menu.hidden) {
-          e.preventDefault();
-          closeAllCustomDropdowns(side);
-          setOpen(true);
-        }
-      });
-
-      menu.addEventListener("click", (e) => {
-        e.stopPropagation();
-      });
-
-      menu.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          e.stopPropagation();
-          setOpen(false);
-          trigger.focus();
-        }
-      });
-
-      dropdownControllers.push({ side, field, setOpen });
-
-      // 2. Independent Global Botanical Server Query Input Container (#left-global-input-wrap / #right-global-input-wrap)
-      const globalWrap = createEl("div", "compare-global-panel");
-      globalWrap.id = `${side}-global-input-wrap`;
-
-      const inputRow = createEl("form", "compare-global-form");
-      inputRow.setAttribute("role", "search");
-
-      const textInput = document.createElement("input");
-      textInput.type = "text";
-      textInput.id = globalInputId;
-      textInput.className = "compare-global-input";
-      textInput.placeholder = "Enter global plant name (EN / বাংলা)...";
-      textInput.value = st.globalQuery || "";
-      textInput.autocomplete = "off";
-      textInput.setAttribute("aria-label", `${labelText} global botanical query`);
-
-      const fetchBtn = createEl("button", "compare-global-fetch-btn", "Fetch");
-      fetchBtn.type = "submit";
-
-      const backListBtn = createEl("button", "compare-global-reset-btn", "← List");
-      backListBtn.type = "button";
-      backListBtn.title = "Return to 50 curated species list";
-
-      inputRow.appendChild(textInput);
-      inputRow.appendChild(fetchBtn);
-      inputRow.appendChild(backListBtn);
-
-      const statusBadge = createEl("div", "compare-global-status");
       const telemetrySlot = createEl("div", "compare-global-inline-telemetry");
       telemetrySlot.id = `${side}-global-telemetry-slot`;
       telemetrySlot.hidden = true;
 
-      function syncGlobalStatusUi() {
-        statusBadge.replaceChildren();
-        if (st.verifiedPlant) {
-          statusBadge.classList.add("is-verified");
-          statusBadge.appendChild(
-            createEl(
-              "span",
-              "compare-global-server-badge",
-              `🌐 GLOBAL SERVER: ${st.verifiedPlant.commonName}`,
-            ),
+      let currentMatches = [];
+      let highlightedIndex = -1;
+      let isInlineFetching = false;
+      let activeGlobalQuery = "";
+
+      function syncClearButton() {
+        clearBtn.hidden = inputEl.value.length === 0;
+      }
+
+      function syncStatusBadge() {
+        statusEl.replaceChildren();
+        if (st.mode === "local" && st.slug && speciesBySlug.has(st.slug)) {
+          const sp = speciesBySlug.get(st.slug);
+          statusEl.appendChild(createEl("span", "compare-badge compare-badge--curated", "CURATED MONOGRAPH"));
+          if (sp.scientificName) {
+            statusEl.appendChild(createEl("span", "compare-global-verified-name", sp.scientificName));
+          }
+          statusEl.hidden = false;
+          return;
+        }
+        if (st.mode === "global" && st.verifiedPlant) {
+          statusEl.appendChild(
+            createEl("span", "compare-badge compare-badge--global", "🌐 GLOBAL BOTANICAL SERVER"),
           );
           if (
             st.verifiedPlant.scientificName &&
-            st.verifiedPlant.scientificName.toLowerCase() !== st.verifiedPlant.commonName.toLowerCase()
+            st.verifiedPlant.scientificName.toLowerCase() !==
+              st.verifiedPlant.commonName.toLowerCase()
           ) {
-            statusBadge.appendChild(
+            statusEl.appendChild(
               createEl("span", "compare-global-verified-name", st.verifiedPlant.scientificName),
             );
           }
-        } else {
-          statusBadge.classList.remove("is-verified");
-          statusBadge.appendChild(
-            document.createTextNode("Type a plant name and press Enter or click Fetch"),
-          );
+          statusEl.hidden = false;
+          return;
+        }
+        statusEl.hidden = true;
+      }
+
+      function hydrateLockedInputText() {
+        if (st.mode === "local" && st.slug && speciesBySlug.has(st.slug)) {
+          inputEl.value = formatSpecimenInputLabel(speciesBySlug.get(st.slug));
+        } else if (st.mode === "global" && st.verifiedPlant) {
+          inputEl.value = st.verifiedPlant.commonName || st.globalQuery || "";
+        } else if (st.mode === "global" && st.globalQuery) {
+          inputEl.value = st.globalQuery;
+        }
+        syncClearButton();
+        syncStatusBadge();
+      }
+
+      function closeMenu() {
+        menu.hidden = true;
+        highlightedIndex = -1;
+        inputEl.setAttribute("aria-expanded", "false");
+        field.classList.remove("is-open");
+      }
+
+      function getInteractiveMenuItems() {
+        const opts = Array.from(listBox.querySelectorAll(".compare-autocomplete-option"));
+        if (!globalFooter.hidden) {
+          opts.push(globalFetchBtn);
+        }
+        return opts;
+      }
+
+      function applyHighlightIndex(nextIdx) {
+        const items = getInteractiveMenuItems();
+        items.forEach((el) => el.classList.remove("is-highlighted"));
+        if (items.length === 0) {
+          highlightedIndex = -1;
+          return;
+        }
+        if (nextIdx < 0) {
+          highlightedIndex = -1;
+          return;
+        }
+        const bounded = nextIdx % items.length;
+        highlightedIndex = bounded;
+        const target = items[bounded];
+        if (target) {
+          target.classList.add("is-highlighted");
+          target.scrollIntoView({ block: "nearest" });
         }
       }
 
-      function syncPanelVisibility() {
-        const isGlobal = st.mode === "global";
-        dropdownWrap.hidden = isGlobal;
-        globalWrap.hidden = !isGlobal;
-        label.setAttribute("for", isGlobal ? globalInputId : triggerId);
-        if (!isGlobal) {
-          setOpen(false);
-        }
-        syncGlobalStatusUi();
-      }
+      function lockLocalSpecies(sp) {
+        if (!sp) return;
+        st.mode = "local";
+        st.slug = sp.slug.toLowerCase();
+        st.globalQuery = "";
+        st.verifiedPlant = null;
+        inputEl.value = formatSpecimenInputLabel(sp);
+        syncClearButton();
+        syncStatusBadge();
+        closeMenu();
+        validateSelection();
+        syncCompareUrlParams();
 
-      let isInlineFetching = false;
+        if (side === "left" && !isPanelReady("right")) {
+          const rightInput = document.getElementById("right-specimen-input");
+          if (rightInput) {
+            requestAnimationFrame(() => rightInput.focus({ preventScroll: true }));
+          }
+        }
+      }
 
       async function triggerInlineGlobalFetch(rawQueryValue) {
         if (isInlineFetching) return;
-        const query = normalizeGlobalQuery(rawQueryValue ?? textInput.value);
+        const query = normalizeGlobalQuery(rawQueryValue ?? inputEl.value);
         if (query.length < 2) {
-          warningEl.textContent = "Please enter at least 2 characters for Global Botanical Server lookup.";
+          warningEl.textContent =
+            "Please enter at least 2 characters for Global Botanical Server lookup.";
           warningEl.hidden = false;
-          textInput.focus();
+          inputEl.focus();
           return;
         }
 
+        closeAllMenus();
         warningEl.hidden = true;
         warningEl.textContent = "";
         st.mode = "global";
+        st.slug = "";
         st.globalQuery = query;
-        textInput.value = query;
+        st.verifiedPlant = null;
+        inputEl.value = query;
+        syncClearButton();
+        syncStatusBadge();
 
         const cached = getCachedGlobalMonograph(query);
         if (cached) {
           st.verifiedPlant = cached;
-          syncPanelVisibility();
+          inputEl.value = cached.commonName || query;
+          syncClearButton();
+          syncStatusBadge();
           validateSelection();
+          syncCompareUrlParams();
           if (side === "left" && !isPanelReady("right")) {
-            rightField.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            const rightInput = document.getElementById("right-specimen-input");
+            if (rightInput) {
+              requestAnimationFrame(() => rightInput.focus({ preventScroll: true }));
+            }
           }
           return;
         }
 
         isInlineFetching = true;
-        inputRow.hidden = true;
-        statusBadge.hidden = true;
+        searchWrap.hidden = true;
+        statusEl.hidden = true;
         telemetrySlot.hidden = false;
         telemetrySlot.replaceChildren();
 
@@ -547,22 +518,21 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           onAbort: () => {
             telemetrySlot.replaceChildren();
             telemetrySlot.hidden = true;
-            inputRow.hidden = false;
-            statusBadge.hidden = false;
+            searchWrap.hidden = false;
+            syncStatusBadge();
           },
         });
 
         isInlineFetching = false;
 
-        if (telemetryOutcome.aborted || st.mode !== "global") {
+        if (telemetryOutcome.aborted) {
           telemetrySlot.replaceChildren();
           telemetrySlot.hidden = true;
-          inputRow.hidden = false;
-          statusBadge.hidden = false;
-          if (st.mode === "global") {
-            requestAnimationFrame(() => textInput.focus());
-          }
+          searchWrap.hidden = false;
+          st.verifiedPlant = null;
+          syncStatusBadge();
           validateSelection();
+          requestAnimationFrame(() => inputEl.focus());
           return;
         }
 
@@ -570,13 +540,20 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         if (res?.ok && res.monograph) {
           telemetrySlot.replaceChildren();
           telemetrySlot.hidden = true;
-          inputRow.hidden = false;
-          statusBadge.hidden = false;
+          searchWrap.hidden = false;
+          st.mode = "global";
+          st.globalQuery = query;
           st.verifiedPlant = res.monograph;
-          syncPanelVisibility();
+          inputEl.value = res.monograph.commonName || query;
+          syncClearButton();
+          syncStatusBadge();
           validateSelection();
+          syncCompareUrlParams();
           if (side === "left" && !isPanelReady("right")) {
-            rightField.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            const rightInput = document.getElementById("right-specimen-input");
+            if (rightInput) {
+              requestAnimationFrame(() => rightInput.focus({ preventScroll: true }));
+            }
           }
           return;
         }
@@ -584,45 +561,163 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         redirectToCompare404(res?.reason || "invalid", query);
       }
 
-      globalTriggerBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        closeAllCustomDropdowns();
-        st.mode = "global";
+      function renderAutocomplete(rawQuery) {
+        const trimmed = String(rawQuery || "").trim().replace(/\s+/g, " ");
+        syncClearButton();
+
+        if (trimmed.length < 1) {
+          currentMatches = [];
+          activeGlobalQuery = "";
+          closeMenu();
+          return;
+        }
+
+        closeAllMenus(side);
+        currentMatches = filterCuratedSpecies(trimmed);
+        highlightedIndex = -1;
+        listBox.replaceChildren();
+
+        if (currentMatches.length === 0) {
+          listBox.appendChild(
+            createEl(
+              "div",
+              "compare-autocomplete-empty",
+              `No curated archive species matched "${trimmed}".`,
+            ),
+          );
+        } else {
+          currentMatches.forEach((sp, idx) => {
+            const optBtn = createEl("button", "compare-autocomplete-option");
+            optBtn.type = "button";
+            optBtn.setAttribute("role", "option");
+            optBtn.dataset.slug = sp.slug;
+            optBtn.dataset.idx = String(idx);
+
+            const thumb = buildImageElement(
+              sp.thumbnailUrl || sp.image?.imageUrl,
+              sp.imageAlt || sp.commonName,
+              sp.commonName,
+            );
+            thumb.className = "compare-autocomplete-thumb";
+            optBtn.appendChild(thumb);
+
+            const textCol = createEl("div", "compare-autocomplete-text");
+            textCol.appendChild(
+              createEl("span", "compare-option-common", formatSpecimenInputLabel(sp)),
+            );
+            const sciSub = sp.family
+              ? `${sp.scientificName} · ${sp.family}`
+              : sp.scientificName;
+            textCol.appendChild(createEl("span", "compare-option-sci", sciSub));
+            optBtn.appendChild(textCol);
+
+            optBtn.addEventListener("mouseenter", () => {
+              applyHighlightIndex(idx);
+            });
+
+            optBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              lockLocalSpecies(sp);
+            });
+
+            listBox.appendChild(optBtn);
+          });
+        }
+
+        if (trimmed.length >= 2 && currentMatches.length < 2) {
+          activeGlobalQuery = trimmed;
+          globalFetchBtn.textContent = `🌐 Fetch "${trimmed}" from Global Botanical Server →`;
+          globalFooter.hidden = false;
+        } else {
+          activeGlobalQuery = "";
+          globalFooter.hidden = true;
+        }
+
+        menu.hidden = false;
+        inputEl.setAttribute("aria-expanded", "true");
+        field.classList.add("is-open");
+      }
+
+      inputEl.addEventListener("input", () => {
+        // Unlock previous selection whenever user edits the search query
+        st.mode = "local";
         st.slug = "";
         st.globalQuery = "";
         st.verifiedPlant = null;
-        textInput.value = "";
-        syncPanelVisibility();
+        syncStatusBadge();
         validateSelection();
-        requestAnimationFrame(() => textInput.focus());
+        syncCompareUrlParams();
+        renderAutocomplete(inputEl.value);
       });
 
-      textInput.addEventListener("input", () => {
-        const val = textInput.value;
-        if (normalizeGlobalQuery(val).toLowerCase() !== normalizeGlobalQuery(st.globalQuery).toLowerCase()) {
-          st.verifiedPlant = null;
-          syncGlobalStatusUi();
+      inputEl.addEventListener("focus", () => {
+        if (!isPanelReady(side) && inputEl.value.trim().length >= 1) {
+          renderAutocomplete(inputEl.value);
         }
-        st.globalQuery = val;
-        validateSelection();
       });
 
-      textInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
+      inputEl.addEventListener("keydown", (e) => {
+        const items = getInteractiveMenuItems();
+        if (e.key === "ArrowDown") {
+          if (menu.hidden && inputEl.value.trim().length >= 1) {
+            renderAutocomplete(inputEl.value);
+          }
+          if (!menu.hidden && items.length > 0) {
+            e.preventDefault();
+            applyHighlightIndex(highlightedIndex + 1);
+          }
+        } else if (e.key === "ArrowUp") {
+          if (!menu.hidden && items.length > 0) {
+            e.preventDefault();
+            const prevIdx =
+              highlightedIndex <= 0 ? items.length - 1 : highlightedIndex - 1;
+            applyHighlightIndex(prevIdx);
+          }
+        } else if (e.key === "Escape") {
+          if (!menu.hidden) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeMenu();
+          }
+        } else if (e.key === "Enter") {
           e.preventDefault();
           e.stopPropagation();
-          triggerInlineGlobalFetch(textInput.value);
+
+          if (highlightedIndex >= 0 && items[highlightedIndex]) {
+            const target = items[highlightedIndex];
+            if (target === globalFetchBtn) {
+              triggerInlineGlobalFetch(activeGlobalQuery || inputEl.value);
+            } else {
+              const slug = target.dataset.slug;
+              const sp = speciesBySlug.get(String(slug || "").toLowerCase());
+              if (sp) lockLocalSpecies(sp);
+            }
+            return;
+          }
+
+          const trimmed = inputEl.value.trim().replace(/\s+/g, " ");
+          if (trimmed.length >= 2 && currentMatches.length < 2) {
+            triggerInlineGlobalFetch(trimmed);
+            return;
+          }
+          if (currentMatches.length >= 1) {
+            lockLocalSpecies(currentMatches[0]);
+            return;
+          }
+          if (trimmed.length >= 2) {
+            triggerInlineGlobalFetch(trimmed);
+          }
         }
       });
 
-      inputRow.addEventListener("submit", (e) => {
+      globalFetchBtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        triggerInlineGlobalFetch(textInput.value);
+        triggerInlineGlobalFetch(activeGlobalQuery || inputEl.value);
       });
 
-      backListBtn.addEventListener("click", (e) => {
+      clearBtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
         if (isInlineFetching) {
@@ -630,27 +725,28 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           if (abortBtn) abortBtn.click();
         }
         st.mode = "local";
+        st.slug = "";
         st.globalQuery = "";
         st.verifiedPlant = null;
-        textInput.value = "";
-        telemetrySlot.replaceChildren();
-        telemetrySlot.hidden = true;
-        inputRow.hidden = false;
-        statusBadge.hidden = false;
-        syncPanelVisibility();
+        inputEl.value = "";
+        syncClearButton();
+        syncStatusBadge();
+        closeMenu();
         validateSelection();
-        requestAnimationFrame(() => trigger.focus());
+        syncCompareUrlParams();
+        requestAnimationFrame(() => inputEl.focus());
       });
 
-      globalWrap.appendChild(inputRow);
-      globalWrap.appendChild(statusBadge);
-      globalWrap.appendChild(telemetrySlot);
+      menu.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
 
-      syncPanelVisibility();
-      panelControllers[side] = { triggerInlineGlobalFetch, syncPanelVisibility };
+      hydrateLockedInputText();
+      panelControllers[side] = { triggerInlineGlobalFetch, closeMenu };
 
-      field.appendChild(dropdownWrap);
-      field.appendChild(globalWrap);
+      field.appendChild(searchWrap);
+      field.appendChild(statusEl);
+      field.appendChild(telemetrySlot);
 
       if (side === "right") {
         field.appendChild(rightHint);
@@ -659,16 +755,8 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       return field;
     }
 
-    const leftField = buildSpecimenPanel(
-      "left",
-      "compareLeftSelect",
-      selCfg.leftLabel || "Left Specimen",
-    );
-    const rightField = buildSpecimenPanel(
-      "right",
-      "compareRightSelect",
-      selCfg.rightLabel || "Right Specimen",
-    );
+    const leftField = buildSpecimenPanel("left", selCfg.leftLabel || "Left Specimen");
+    const rightField = buildSpecimenPanel("right", selCfg.rightLabel || "Right Specimen");
 
     selectsRow.appendChild(leftField);
     selectsRow.appendChild(rightField);
@@ -704,12 +792,12 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
     submitBtn.addEventListener("click", () => {
       if (!validateSelection()) return;
-      handleCompareLaunch();
+      navigateToCompareResult();
     });
 
     const handleDocClick = (e) => {
-      if (!e.target.closest(".compare-dropdown-wrap")) {
-        closeAllCustomDropdowns();
+      if (!e.target.closest(".compare-search-wrap")) {
+        closeAllMenus();
       }
     };
     document.addEventListener("click", handleDocClick);
@@ -719,7 +807,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     shell.appendChild(card);
     mountEl.replaceChildren(shell);
 
-    // If page opened with pre-filled URL global specimen(s) that aren't cached yet, resolve inline automatically
+    // Resolve any uncached URL global specimens inline
     ["left", "right"].forEach((side) => {
       const st = panelState[side];
       if (st.mode === "global" && st.globalQuery && !st.verifiedPlant) {
@@ -730,249 +818,10 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     if (highlightRight && isPanelReady("left") && !isPanelReady("right")) {
       requestAnimationFrame(() => {
         rightField.scrollIntoView({ behavior: "smooth", block: "center" });
-        const rightTarget = document.getElementById(
-          panelState.right.mode === "global"
-            ? "compareRightSelectGlobalInput"
-            : "compareRightSelectTrigger",
-        );
-        if (rightTarget) rightTarget.focus({ preventScroll: true });
+        const rightInput = document.getElementById("right-specimen-input");
+        if (rightInput) rightInput.focus({ preventScroll: true });
       });
     }
-  }
-
-  async function handleCompareLaunch() {
-    if (!isPanelReady("left") || !isPanelReady("right") || areSidesDuplicate()) {
-      return;
-    }
-    navigateToCompareResult();
-  }
-
-  function buildPaneIframeSrc(side) {
-    const st = panelState[side];
-    if (st.mode === "global") {
-      const q = normalizeGlobalQuery(st.globalQuery);
-      return resolveRootPath(
-        `./plant/live/?q=${encodeURIComponent(q)}&embed=true&cached=1`,
-      );
-    }
-    return resolveRootPath(
-      `./plant/?species=${encodeURIComponent(st.slug)}&embed=true`,
-    );
-  }
-
-  function launchDualViewport({ skipLoader = false } = {}) {
-    clearLoaderTimers();
-    clearDocumentDropdownListener();
-    removeFloatingModeButton();
-
-    const leftPlant = getPanelDisplayPlant("left");
-    const rightPlant = getPanelDisplayPlant("right");
-
-    syncCompareUrlParams();
-    try {
-      applyCompareSeo({ pageData, leftPlant, rightPlant });
-    } catch {
-      // Non-blocking SEO update
-    }
-
-    const stageRoot = createEl("div", "compare-active-root");
-
-    // 1. Top Pill Switcher + Reset Bar
-    const controlStrip = createEl("div", "compare-focus-bar");
-    controlStrip.id = "compareFocusBar";
-
-    const pillGroup = createEl("div", "compare-pill-switcher");
-    pillGroup.setAttribute("role", "tablist");
-    pillGroup.setAttribute("aria-label", "Switch focused specimen");
-
-    const leftPill = createEl(
-      "button",
-      "compare-pill-btn is-active",
-      leftPlant.commonName,
-    );
-    leftPill.type = "button";
-    leftPill.setAttribute("role", "tab");
-    leftPill.setAttribute("data-pane", "left");
-    leftPill.setAttribute("aria-selected", "true");
-
-    const rightPill = createEl(
-      "button",
-      "compare-pill-btn",
-      rightPlant.commonName,
-    );
-    rightPill.type = "button";
-    rightPill.setAttribute("role", "tab");
-    rightPill.setAttribute("data-pane", "right");
-    rightPill.setAttribute("aria-selected", "false");
-
-    pillGroup.appendChild(leftPill);
-    pillGroup.appendChild(rightPill);
-
-    const changeBtn = createEl(
-      "button",
-      "compare-change-btn",
-      wsCfg.changeSpeciesLabel || "Change Species",
-    );
-    changeBtn.type = "button";
-    changeBtn.addEventListener("click", () => renderSelectorView({ resetUrl: true }));
-
-    controlStrip.appendChild(pillGroup);
-    controlStrip.appendChild(changeBtn);
-
-    // 2. Dual Iframe Viewport Container
-    const panesContainer = createEl("div", "compare-panes-grid");
-    panesContainer.id = "comparePanesGrid";
-
-    const leftIframe = document.createElement("iframe");
-    leftIframe.className = "compare-iframe compare-iframe--left";
-    leftIframe.title = `${leftPlant.commonName} Botanical Monograph`;
-    leftIframe.loading = "eager";
-    leftIframe.src = buildPaneIframeSrc("left");
-
-    const rightIframe = document.createElement("iframe");
-    rightIframe.className = "compare-iframe compare-iframe--right";
-    rightIframe.title = `${rightPlant.commonName} Botanical Monograph`;
-    rightIframe.loading = "eager";
-    rightIframe.src = buildPaneIframeSrc("right");
-
-    panesContainer.appendChild(leftIframe);
-    panesContainer.appendChild(rightIframe);
-
-    stageRoot.appendChild(controlStrip);
-    stageRoot.appendChild(panesContainer);
-
-    const syncPaneClasses = () => {
-      const mobileViewport = window.innerWidth <= 768;
-      const effectiveFocus = mobileViewport || isFocusMode;
-
-      stageRoot.classList.toggle("is-focus-mode", effectiveFocus);
-      panesContainer.classList.toggle("is-focus-mode", effectiveFocus);
-      leftIframe.classList.toggle("is-active-pane", !effectiveFocus || activeFocusPane === "left");
-      rightIframe.classList.toggle("is-active-pane", !effectiveFocus || activeFocusPane === "right");
-
-      leftPill.classList.toggle("is-active", activeFocusPane === "left");
-      leftPill.setAttribute("aria-selected", String(activeFocusPane === "left"));
-      rightPill.classList.toggle("is-active", activeFocusPane === "right");
-      rightPill.setAttribute("aria-selected", String(activeFocusPane === "right"));
-
-      const floatBtn = document.getElementById("compareModeToggleBtn");
-      if (floatBtn) {
-        floatBtn.textContent = isFocusMode
-          ? wsCfg.splitViewLabel || "Split View"
-          : wsCfg.focusModeLabel || "Focus Mode";
-        floatBtn.hidden = mobileViewport;
-      }
-
-      const visiblePane =
-        !effectiveFocus || activeFocusPane === "left" ? leftIframe : rightIframe;
-      try {
-        visiblePane.contentWindow?.dispatchEvent(new Event("resize"));
-      } catch {
-        // Ignore cross-frame restrictions
-      }
-    };
-
-    const mountFloatModeBtn = () => {
-      const floatBtn = createEl(
-        "button",
-        "floating-back-btn compare-floating-mode-btn",
-        isFocusMode
-          ? wsCfg.splitViewLabel || "Split View"
-          : wsCfg.focusModeLabel || "Focus Mode",
-      );
-      floatBtn.type = "button";
-      floatBtn.id = "compareModeToggleBtn";
-      floatBtn.addEventListener("click", () => {
-        isFocusMode = !isFocusMode;
-        syncPaneClasses();
-      });
-      document.body.appendChild(floatBtn);
-      syncPaneClasses();
-    };
-
-    leftPill.addEventListener("click", () => {
-      activeFocusPane = "left";
-      syncPaneClasses();
-    });
-    rightPill.addEventListener("click", () => {
-      activeFocusPane = "right";
-      syncPaneClasses();
-    });
-
-    if (skipLoader) {
-      mountEl.replaceChildren(stageRoot);
-      mountFloatModeBtn();
-    } else {
-      const loaderOverlay = createEl("div", "compare-loader-overlay");
-      loaderOverlay.setAttribute("role", "status");
-      loaderOverlay.setAttribute("aria-live", "polite");
-
-      const loaderCard = createEl("div", "compare-loader-card");
-      loaderCard.appendChild(createEl("div", "loading-spinner"));
-      loaderCard.appendChild(
-        createEl(
-          "h2",
-          "compare-loader-title",
-          `${leftPlant.commonName} vs. ${rightPlant.commonName}`,
-        ),
-      );
-      const stageMsgEl = createEl(
-        "p",
-        "compare-loader-message",
-        pickRandomMessage(stages[0], "Retrieving botanical monograph archives..."),
-      );
-      loaderCard.appendChild(stageMsgEl);
-
-      const progressTrack = createEl("div", "compare-loader-progress");
-      const progressFill = createEl("div", "compare-loader-progress-fill");
-      progressTrack.appendChild(progressFill);
-      loaderCard.appendChild(progressTrack);
-
-      const stageLabelEl = createEl("span", "compare-loader-step", "Stage 1 of 3");
-      loaderCard.appendChild(stageLabelEl);
-      loaderOverlay.appendChild(loaderCard);
-
-      stageRoot.appendChild(loaderOverlay);
-      mountEl.replaceChildren(stageRoot);
-
-      requestAnimationFrame(() => {
-        progressFill.style.width = "33%";
-      });
-
-      loaderTimerIds.push(
-        setTimeout(() => {
-          stageLabelEl.textContent = "Stage 2 of 3";
-          stageMsgEl.textContent = pickRandomMessage(
-            stages[1],
-            "Aligning morphological & leaf venation traits...",
-          );
-          progressFill.style.width = "68%";
-        }, 1000),
-      );
-
-      loaderTimerIds.push(
-        setTimeout(() => {
-          stageLabelEl.textContent = "Stage 3 of 3";
-          stageMsgEl.textContent = pickRandomMessage(
-            stages[2],
-            "Assembling dual-pane split comparison...",
-          );
-          progressFill.style.width = "100%";
-        }, 2000),
-      );
-
-      loaderTimerIds.push(
-        setTimeout(() => {
-          loaderOverlay.classList.add("is-leaving");
-          setTimeout(() => loaderOverlay.remove(), 240);
-          mountFloatModeBtn();
-        }, 3000),
-      );
-    }
-
-    activeResizeHandler = syncPaneClasses;
-    window.addEventListener("resize", activeResizeHandler);
-    syncPaneClasses();
   }
 
   // Hydrate initial URL parameters (?left=, ?right=, ?a=, ?b=, ?leftGlobal=, ?rightGlobal=, ?leftType=, ?rightType=)
@@ -1024,7 +873,6 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     };
   }
 
-  // Always render the Specimen Selection Gateway on /compare/ (so "<- Change Specimens" never bounces back)
   renderSelectorView({
     highlightRight: Boolean(isPanelReady("left") && !isPanelReady("right")),
   });

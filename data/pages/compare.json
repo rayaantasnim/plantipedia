@@ -16,10 +16,10 @@
   "selector": {
     "eyebrow": "Comparative Botanical Workspace",
     "headline": "Compare Split View",
-    "subcopy": "Select two distinct plant species from the 50-monograph archive to launch an edge-to-edge comparative inspection.",
+    "subcopy": "Search and lock two distinct plant species from the 50-monograph archive or query any worldwide taxon via the Global Botanical Server.",
     "leftLabel": "Left Specimen",
     "rightLabel": "Right Specimen",
-    "placeholderOption": "Select a botanical specimen...",
+    "placeholderOption": "Type plant name (EN / বাংলা / Latin)...",
     "submitLabel": "Compare Specimens",
     "sameSpeciesWarning": "Please select two different species to run a side-by-side comparison.",
     "incompleteWarning": "Choose both a Left Specimen and a Right Specimen to continue."
