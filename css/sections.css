@@ -1,0 +1,630 @@
+/* ================= HOME SECTION 01: SITE OVERVIEW & MISSION ================= */
+.overview-section {
+  position: relative;
+  padding: 76px 0;
+  background:
+    radial-gradient(
+      ellipse 65% 60% at 85% 20%,
+      rgba(16, 185, 129, 0.14),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 50% 50% at 10% 80%,
+      rgba(251, 191, 36, 0.05),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--canvas-bg) 0%, var(--canvas-band) 100%);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.mission-stats-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.mission-stat-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 22px 24px;
+  border-radius: var(--radius-md);
+  background: var(--glass-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-hairline);
+  box-shadow: var(--glass-shadow);
+  transition:
+    transform 0.32s var(--ease-settle),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    background-color 0.28s ease;
+}
+
+.mission-stat-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    240px circle at 100% 0%,
+    rgba(74, 222, 128, 0.14),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.mission-stat-card:hover {
+  transform: translateY(-5px) scale(1.015);
+  background: var(--glass-surface-hover);
+  border-color: var(--border-luminous);
+  box-shadow: var(--glass-shadow-hover);
+}
+
+.mission-stat-card:hover::after {
+  opacity: 1;
+}
+
+.mission-stat-number {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-size: 2.45rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent-mint);
+  text-shadow: 0 0 22px rgba(74, 222, 128, 0.26);
+  min-width: 72px;
+}
+
+.mission-stat-title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.mission-stat-desc {
+  margin: 0;
+  font-size: 0.91rem;
+  line-height: 1.6;
+  color: var(--ink-secondary);
+}
+
+/* ================= HOME SECTION 02: FEATURED SPECIES & EXPLORER SHOWCASE ================= */
+.explorer-section {
+  position: relative;
+  padding: 72px 0 84px;
+  background:
+    radial-gradient(
+      ellipse 75% 45% at 50% 0%,
+      rgba(16, 185, 129, 0.1),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 85% 65%,
+      rgba(74, 222, 128, 0.06),
+      transparent 65%
+    ),
+    linear-gradient(
+      180deg,
+      var(--canvas-bg) 0%,
+      #05190f 50%,
+      var(--canvas-band) 100%
+    );
+}
+
+.showcase-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.explorer-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-hairline);
+  margin-bottom: 36px;
+}
+
+.explorer-count {
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.species-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.featured-cta-wrap {
+  margin-top: 44px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ================= HOME SECTION 03: BOTANICAL TAXONOMIC DOMAINS ================= */
+.domains-section {
+  position: relative;
+  padding: 76px 0;
+  background:
+    radial-gradient(
+      ellipse 65% 55% at 85% 25%,
+      rgba(16, 185, 129, 0.12),
+      transparent 65%
+    ),
+    linear-gradient(180deg, var(--canvas-band) 0%, var(--canvas-bg) 100%);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.domains-header {
+  max-width: 760px;
+  margin-bottom: 36px;
+}
+
+.domains-intro {
+  max-width: 68ch;
+}
+
+.domains-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.domain-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-radius: var(--radius-md);
+  background: var(--glass-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-hairline);
+  box-shadow: var(--glass-shadow);
+  transition:
+    transform 0.32s var(--ease-settle),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    background-color 0.28s ease;
+}
+
+.domain-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #062115;
+  border-bottom: 1px solid rgba(110, 231, 183, 0.14);
+}
+
+.domain-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 20, 12, 0.08) 0%,
+    rgba(4, 20, 12, 0.56) 100%
+  );
+  pointer-events: none;
+}
+
+.domain-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s var(--ease-settle);
+}
+
+.domain-card:hover .domain-card-media img {
+  transform: scale(1.06);
+}
+
+.domain-card-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px 28px 28px;
+}
+
+.domain-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    280px circle at 100% 0%,
+    rgba(74, 222, 128, 0.14),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.domain-card:hover {
+  transform: translateY(-5px) scale(1.015);
+  background: var(--glass-surface-hover);
+  border-color: var(--border-luminous);
+  box-shadow: var(--glass-shadow-hover);
+}
+
+.domain-card:hover::after {
+  opacity: 1;
+}
+
+.domain-card:active {
+  transform: scale(0.985);
+}
+
+.domain-card-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 1.52rem;
+  font-weight: 700;
+  line-height: 1.22;
+  color: var(--ink-primary);
+}
+
+.domain-card-desc {
+  margin: 0 0 20px;
+  font-size: 0.95rem;
+  line-height: 1.68;
+  color: var(--ink-secondary);
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  flex: 1;
+}
+
+.domain-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(110, 231, 183, 0.12);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--accent-mint);
+}
+
+.domain-card:hover .domain-card-cta span {
+  transform: translateX(4px);
+  transition: transform 0.2s var(--ease-settle);
+}
+
+/* ================= HOME SECTION 04: BOTANICAL CURIOSITIES (DID YOU KNOW?) ================= */
+.curiosities-section {
+  position: relative;
+  padding: 76px 0;
+  background:
+    radial-gradient(
+      ellipse 60% 60% at 18% 45%,
+      rgba(251, 191, 36, 0.06),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 65% 55% at 85% 25%,
+      rgba(16, 185, 129, 0.12),
+      transparent 65%
+    ),
+    linear-gradient(180deg, var(--canvas-bg) 0%, var(--canvas-band) 100%);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.curiosities-header {
+  max-width: 760px;
+  margin-bottom: 34px;
+}
+
+.curiosities-intro {
+  max-width: 68ch;
+}
+
+.curiosities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.curiosity-strip {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr 180px;
+  align-items: center;
+  gap: 22px;
+  padding: 24px 28px;
+  border-radius: var(--radius-md);
+  background: var(--glass-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-hairline);
+  box-shadow: var(--glass-shadow);
+  transition:
+    transform 0.32s var(--ease-settle),
+    border-color 0.26s ease,
+    box-shadow 0.26s ease,
+    background-color 0.26s ease;
+}
+
+.curiosity-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #062115;
+  border: 1px solid rgba(110, 231, 183, 0.2);
+}
+
+.curiosity-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 50%,
+    rgba(4, 20, 12, 0.42) 100%
+  );
+  pointer-events: none;
+}
+
+.curiosity-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease-settle);
+}
+
+.curiosity-strip:hover .curiosity-media img {
+  transform: scale(1.06);
+}
+
+.curiosity-strip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    280px circle at 100% 0%,
+    rgba(74, 222, 128, 0.13),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.curiosity-strip:hover {
+  transform: translateY(-5px) scale(1.01);
+  background: var(--glass-surface-hover);
+  border-color: var(--border-luminous);
+  box-shadow: var(--glass-shadow-hover);
+}
+
+.curiosity-strip:hover::after {
+  opacity: 1;
+}
+
+.curiosity-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(110, 231, 183, 0.34);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.22);
+  margin-top: 2px;
+}
+
+.curiosity-body {
+  min-width: 0;
+}
+
+.curiosity-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 18px;
+  margin-bottom: 10px;
+}
+
+.curiosity-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.38rem;
+  font-weight: 700;
+  line-height: 1.24;
+  color: var(--ink-primary);
+}
+
+.curiosity-taxon {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent-gold-soft);
+  white-space: nowrap;
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.curiosity-taxon:hover {
+  color: var(--accent-mint);
+}
+
+.curiosity-desc {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.72;
+  color: var(--ink-secondary);
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* ================= HOME SECTION 05: BOTANICAL HIGHLIGHTS ================= */
+.highlights-section {
+  position: relative;
+  padding: 76px 0 88px;
+  background:
+    radial-gradient(
+      ellipse 65% 60% at 15% 25%,
+      rgba(16, 185, 129, 0.13),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 55% 55% at 85% 75%,
+      rgba(251, 191, 36, 0.05),
+      transparent 65%
+    ),
+    linear-gradient(180deg, var(--canvas-band) 0%, var(--canvas-bg) 100%);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.highlights-header {
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.highlight-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-radius: var(--radius-md);
+  background: var(--glass-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-hairline);
+  box-shadow: var(--glass-shadow);
+  transition:
+    transform 0.32s var(--ease-settle),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    background-color 0.28s ease;
+}
+
+.highlight-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #062115;
+  border-bottom: 1px solid rgba(110, 231, 183, 0.14);
+}
+
+.highlight-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 20, 12, 0.08) 0%,
+    rgba(4, 20, 12, 0.5) 100%
+  );
+  pointer-events: none;
+}
+
+.highlight-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s var(--ease-settle);
+}
+
+.highlight-card:hover .highlight-card-media img {
+  transform: scale(1.06);
+}
+
+.highlight-card-content {
+  padding: 24px 26px 28px;
+}
+
+.highlight-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    240px circle at 100% 0%,
+    rgba(74, 222, 128, 0.14),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.highlight-card:hover {
+  transform: translateY(-5px) scale(1.015);
+  background: var(--glass-surface-hover);
+  border-color: var(--border-luminous);
+  box-shadow: var(--glass-shadow-hover);
+}
+
+.highlight-card:hover::after {
+  opacity: 1;
+}
+
+.highlight-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(110, 231, 183, 0.3);
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.16);
+}
+
+.highlight-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.22;
+  color: var(--ink-primary);
+}
