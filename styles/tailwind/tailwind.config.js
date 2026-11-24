@@ -1,6 +1,6 @@
 /**
  * Plantipedia Zero-Build Tailwind CSS Play CDN Configuration
- * Preserves existing /css/*.css cascade by disabling Preflight while exposing
+ * Preserves existing /styles/**/*.css cascade by disabling Preflight while exposing
  * Dark Botanical Luxury color, font, blur, shadow, and breakpoint tokens.
  */
 window.tailwind = window.tailwind || {};

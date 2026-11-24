@@ -4,7 +4,7 @@
  * Zero inline HTML templates or innerHTML interpolation.
  */
 
-import { createBookmarkButton } from "./modules/herbarium.js";
+import { createBookmarkButton } from "../services/herbarium.js";
 
 const SAFE_PROTOCOL_RE = /^(https?:|\.{0,2}\/|#)/i;
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -421,7 +421,7 @@ export function renderHeroSection(mountEl, { pageData }) {
 }
 
 /**
- * 2. Home About / Botanical Mission Section (./data/pages/home.json + ./data/species-index.json)
+ * 2. Home About / Botanical Mission Section (./data/pages/home.json + ./data/catalog/species-index.json)
  */
 export function renderAboutSection(mountEl, { pageData, catalog }) {
   const about = pageData?.about;
@@ -467,7 +467,7 @@ export function renderAboutSection(mountEl, { pageData, catalog }) {
 }
 
 /**
- * 3. Top 3 Curated Featured Species Section (./data/featured-species.json)
+ * 3. Top 3 Curated Featured Species Section (./data/catalog/featured-species.json)
  */
 export function renderFeaturedSpeciesSection(mountEl, { sectionData, catalog }) {
   if (!mountEl || !sectionData) return;
@@ -528,7 +528,7 @@ export function renderFeaturedSpeciesSection(mountEl, { sectionData, catalog }) 
 }
 
 /**
- * 4. Botanical Taxonomic Domains Section (./data/taxonomy.json)
+ * 4. Botanical Taxonomic Domains Section (./data/catalog/taxonomy.json)
  */
 export function renderTaxonomySection(mountEl, { sectionData }) {
   if (!mountEl || !sectionData) return;
@@ -600,7 +600,7 @@ export function renderTaxonomySection(mountEl, { sectionData }) {
 }
 
 /**
- * 5. Botanical Curiosities — Did You Know? Section (./data/trivia.json)
+ * 5. Botanical Curiosities — Did You Know? Section (./data/catalog/trivia.json)
  */
 export function renderTriviaSection(mountEl, { sectionData }) {
   if (!mountEl || !sectionData) return;
@@ -676,7 +676,7 @@ export function renderTriviaSection(mountEl, { sectionData }) {
 }
 
 /**
- * 6. Botanical Highlights & Stewardship Principles Section (./data/highlights.json)
+ * 6. Botanical Highlights & Stewardship Principles Section (./data/catalog/highlights.json)
  */
 export function renderHighlightsSection(mountEl, { sectionData }) {
   if (!mountEl || !sectionData) return;

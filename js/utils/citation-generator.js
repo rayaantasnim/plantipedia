@@ -3,7 +3,7 @@
  * Attributed solely to "Plantipedia Botanical Archive" using active species metadata and canonical URL.
  */
 
-import { createEl } from "../templates.js";
+import { createEl } from "./templates.js";
 
 function getCleanCanonicalHref(plant) {
   try {

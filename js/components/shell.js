@@ -1,13 +1,13 @@
 /**
  * Universal Single-Source-of-Truth Layout Shell Hydrator
- * - Fetches /data/site-shell.json using subpath-safe relative resolution
+ * - Fetches ./data/config/site-shell.json using subpath-safe relative resolution
  * - Hydrates #global-navbar, sibling #mobileNavOverlay, and #global-footer
  * - Auto-detects active route (handling / and /index.html cleanly)
  * - Binds interactive dropdowns, mobile overlay drawer, keyboard Escape/focus, and SVG image fallback
  */
 
 const SITE_ROOT_URL = new URL("../../", import.meta.url);
-const SHELL_DATA_URL = new URL("./data/site-shell.json", SITE_ROOT_URL).href;
+const SHELL_DATA_URL = new URL("./data/config/site-shell.json", SITE_ROOT_URL).href;
 const PLACEHOLDER_SVG_PATH = "./assets/images/placeholder-botanical.svg";
 
 const FALLBACK_SHELL_CONFIG = {

@@ -1,6 +1,6 @@
 /**
  * Species Directory Renderer & Paginated Filter Controller (species.html)
- * Driven 100% by ./data/pages/species.json and lightweight ./data/species-index.json.
+ * Driven 100% by ./data/pages/species.json and lightweight ./data/catalog/species-index.json.
  * - 2-column botanical specimen card grid (collapsing cleanly to 1-col on <= 768px)
  * - 10 cards per page with sticky top pagination bar (← Prev, 1, 2, Next → + live result counter)
  * - Search, category pills, A–Z index, and sort always operate across all 20 species and reset to Page 1
@@ -11,9 +11,9 @@ import {
   createSearchIconSvg,
   createSpeciesCardElement,
   sanitizeUrl,
-} from "../templates.js";
-import { animateDynamicSpeciesGrid } from "../animations.js";
-import { createBookmarkSvg, getSavedSlugs } from "./herbarium.js";
+} from "../utils/templates.js";
+import { animateDynamicSpeciesGrid } from "../core/animations.js";
+import { createBookmarkSvg, getSavedSlugs } from "../services/herbarium.js";
 
 function plantMatchesQuery(plant, query) {
   if (!query) return true;

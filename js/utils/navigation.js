@@ -1,11 +1,11 @@
 /**
  * Shared live species autocomplete interactions for Home Hero search.
- * (Navbar & Mobile search are bound independently by js/navbar-compiler.js.)
+ * (Navbar & Mobile search are bound independently by js/components/navbar-compiler.js.)
  */
 
-import { getSpeciesIndex } from "./state.js";
+import { getSpeciesIndex } from "../core/state.js";
 import { renderSearchSuggestionNodes } from "./templates.js";
-import { bindGlobalImageFallbackHandler } from "./navbar-compiler.js";
+import { bindGlobalImageFallbackHandler } from "../components/navbar-compiler.js";
 
 function plantMatchesQuery(plant, query) {
   if (!query) return true;

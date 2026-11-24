@@ -19,18 +19,18 @@
       "sublabel": "Botanical Gateway"
     },
     {
-      "id": "nav-about",
-      "label": "About",
-      "href": "./index.html#about-plantipedia",
-      "matchHash": "#about-plantipedia",
-      "sublabel": "Mission & Archive"
+      "id": "nav-taxonomy",
+      "label": "Taxonomy",
+      "href": "./taxonomy.html",
+      "matchPaths": ["/taxonomy.html"],
+      "sublabel": "Families & Diagnostic Traits"
     },
     {
       "id": "nav-explore",
       "label": "Explore Flora",
       "href": "./species.html",
-      "matchPaths": ["/species.html", "/plant.html", "/taxonomy.html", "/seasons.html"],
-      "sublabel": "Atlas, Taxonomy & 6-Season Calendar",
+      "matchPaths": ["/species.html", "/plant.html"],
+      "sublabel": "Species Atlas & Quick Categories",
       "dropdownSections": [
         {
           "title": "Archive Views",
@@ -39,16 +39,6 @@
               "id": "nav-archive-species",
               "label": "All Species Atlas",
               "href": "./species.html"
-            },
-            {
-              "id": "nav-archive-taxonomy",
-              "label": "Taxonomic Lineage",
-              "href": "./taxonomy.html"
-            },
-            {
-              "id": "nav-archive-seasons",
-              "label": "6-Season Calendar",
-              "href": "./seasons.html"
             }
           ]
         },
@@ -85,18 +75,18 @@
       ]
     },
     {
+      "id": "nav-calendar",
+      "label": "Calendar",
+      "href": "./seasons.html",
+      "matchPaths": ["/seasons.html"],
+      "sublabel": "6-Season Ecological Phenology"
+    },
+    {
       "id": "nav-compare",
       "label": "Compare",
       "href": "./compare.html",
       "matchPaths": ["/compare.html"],
       "sublabel": "Side-by-Side Split View"
-    },
-    {
-      "id": "nav-ecology",
-      "label": "Ecology",
-      "href": "./index.html#botanical-highlights",
-      "matchHash": "#botanical-highlights",
-      "sublabel": "Field Notes & Habitats"
     }
   ],
   "search": {
@@ -104,7 +94,7 @@
     "ariaLabel": "Quick search plant species in English or Bengali",
     "clearLabel": "Clear search",
     "minQueryLength": 1,
-    "indexSource": "./data/species-index.json"
+    "indexSource": "./data/catalog/species-index.json"
   },
   "herbarium": {
     "label": "My Herbarium",

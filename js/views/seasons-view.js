@@ -9,8 +9,8 @@ import {
   createEl,
   createSpeciesCardElement,
   sanitizeUrl,
-} from "../templates.js";
-import { animateDynamicSpeciesGrid } from "../animations.js";
+} from "../utils/templates.js";
+import { animateDynamicSpeciesGrid } from "../core/animations.js";
 
 function detectCurrentBangladeshiSeasonId(seasons) {
   const now = new Date();

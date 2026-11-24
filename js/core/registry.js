@@ -2,7 +2,7 @@
  * Declarative Component Registry for Plantipedia Headless Static Architecture.
  * - Scans DOM for [data-section] mount points on load
  * - Resolves minimal deduplicated JSON dataset dependencies per active page
- * - Uses ./data/species-index.json for index/search and on-demand ./data/species/<slug>.json for monographs
+ * - Uses ./data/catalog/species-index.json for index/search and on-demand ./data/species/<slug>.json for monographs
  * - Renders skeletons immediately to prevent CLS and hydrates concurrently via Promise.allSettled()
  */
 
@@ -10,13 +10,13 @@ import {
   fetchDatasetsConcurrently,
   isValidSpeciesSlug,
   normalizeSpeciesSlug,
-} from "./api.js";
+} from "../services/api.js";
 import {
   setActiveMonograph,
   setMountState,
   setSpeciesIndex,
 } from "./state.js";
-import { applyPageSeo } from "./modules/seo.js";
+import { applyPageSeo } from "../services/seo.js";
 import {
   renderHeroSection,
   renderAboutSection,
@@ -26,17 +26,17 @@ import {
   renderHighlightsSection,
   renderMountSkeleton,
   renderMountError,
-} from "./templates.js";
+} from "../utils/templates.js";
 import {
   renderDirectoryBanner,
   renderDirectoryExplorer,
-} from "./modules/species-directory.js";
-import { renderPlantMonograph } from "./modules/plant-monograph.js";
-import { renderTaxonomyExplorer } from "./modules/taxonomy-view.js";
-import { renderSeasonsCalendar } from "./modules/seasons-view.js";
-import { renderCompareWorkspace } from "./modules/compare-view.js";
+} from "../views/species-directory.js";
+import { renderPlantMonograph } from "../views/plant-monograph.js";
+import { renderTaxonomyExplorer } from "../views/taxonomy-view.js";
+import { renderSeasonsCalendar } from "../views/seasons-view.js";
+import { renderCompareWorkspace } from "../views/compare-view.js";
 import { animateHydratedSection, refreshScrollTriggers } from "./animations.js";
-import { initNavigationInteractions } from "./navigation.js";
+import { initNavigationInteractions } from "../utils/navigation.js";
 
 function resolveRequestedSpeciesSlug() {
   const params = new URLSearchParams(window.location.search);

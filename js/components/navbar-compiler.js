@@ -1,5 +1,5 @@
 /**
- * Independent Global Navbar Compiler (/data/navbar.json + /data/species-index.json)
+ * Independent Global Navbar Compiler (./data/config/navbar.json + ./data/catalog/species-index.json)
  * - Targets #global-navbar (or [data-shell="navbar"]) automatically on page load
  * - Respects ?embed=true on plant.html by adding body.is-embed and skipping chrome
  * - Supports 5 balanced desktop links with grouped Explore Flora dropdown sections
@@ -8,16 +8,16 @@
  * - Luxury full-screen mobile overlay drawer with quick search, Herbarium shortcut & core routes
  */
 
-import { fetchDatasetsConcurrently } from "./api.js";
-import { getSpeciesIndex, setSpeciesIndex } from "./state.js";
+import { fetchDatasetsConcurrently } from "../services/api.js";
+import { getSpeciesIndex, setSpeciesIndex } from "../core/state.js";
 import {
   createBookmarkSvg,
   getSavedCount,
   initHerbariumSystem,
   openHerbariumDrawer,
-} from "./modules/herbarium.js";
+} from "../services/herbarium.js";
 
-const SITE_ROOT_URL = new URL("../", import.meta.url);
+const SITE_ROOT_URL = new URL("../../", import.meta.url);
 const PLACEHOLDER_SVG_PATH = "./assets/images/placeholder-botanical.svg";
 
 function isEmbedMode() {
@@ -40,60 +40,58 @@ const FALLBACK_NAVBAR_CONFIG = {
   ariaLabel: "Primary navigation",
   links: [
     {
-      id: "nav-home",
-      label: "Home",
-      href: "./index.html",
-      matchPaths: ["/", "/index.html"],
-      sublabel: "Botanical Gateway",
+      "id": "nav-home",
+      "label": "Home",
+      "href": "./index.html",
+      "matchPaths": ["/", "/index.html"],
+      "sublabel": "Botanical Gateway"
     },
     {
-      id: "nav-about",
-      label: "About",
-      href: "./index.html#about-plantipedia",
-      matchHash: "#about-plantipedia",
-      sublabel: "Mission & Archive",
+      "id": "nav-taxonomy",
+      "label": "Taxonomy",
+      "href": "./taxonomy.html",
+      "matchPaths": ["/taxonomy.html"],
+      "sublabel": "Families & Diagnostic Traits"
     },
     {
-      id: "nav-explore",
-      label: "Explore Flora",
-      href: "./species.html",
-      matchPaths: ["/species.html", "/plant.html", "/taxonomy.html", "/seasons.html"],
-      sublabel: "Atlas, Taxonomy & 6-Season Calendar",
-      dropdownSections: [
+      "id": "nav-explore",
+      "label": "Explore Flora",
+      "href": "./species.html",
+      "matchPaths": ["/species.html", "/plant.html"],
+      "sublabel": "Species Atlas & Quick Categories",
+      "dropdownSections": [
         {
-          title: "Archive Views",
-          items: [
-            { id: "nav-archive-species", label: "All Species Atlas", href: "./species.html" },
-            { id: "nav-archive-taxonomy", label: "Taxonomic Lineage", href: "./taxonomy.html" },
-            { id: "nav-archive-seasons", label: "6-Season Calendar", href: "./seasons.html" },
-          ],
+          "title": "Archive Views",
+          "items": [
+            { "id": "nav-archive-species", "label": "All Species Atlas", "href": "./species.html" }
+          ]
         },
         {
-          title: "Quick Categories",
-          items: [
-            { id: "nav-species-flowers", label: "Flowers & Ornamentals", href: "./species.html?category=Flowers" },
-            { id: "nav-species-fruit", label: "Fruit Trees & Palms", href: "./species.html?category=Fruit%20Trees" },
-            { id: "nav-species-medicinal", label: "Medicinal Herbs", href: "./species.html?category=Medicinal" },
-            { id: "nav-species-shrubs", label: "Shrubs & Herbs", href: "./species.html?category=Shrubs%20%26%20Herbs" },
-            { id: "nav-species-aquatic", label: "Aquatic & Wetland Flora", href: "./species.html?category=Aquatic" },
-          ],
-        },
-      ],
+          "title": "Quick Categories",
+          "items": [
+            { "id": "nav-species-flowers", "label": "Flowers & Ornamentals", "href": "./species.html?category=Flowers" },
+            { "id": "nav-species-fruit", "label": "Fruit Trees & Palms", "href": "./species.html?category=Fruit%20Trees" },
+            { "id": "nav-species-medicinal", "label": "Medicinal Herbs", "href": "./species.html?category=Medicinal" },
+            { "id": "nav-species-shrubs", "label": "Shrubs & Herbs", "href": "./species.html?category=Shrubs%20%26%20Herbs" },
+            { "id": "nav-species-aquatic", "label": "Aquatic & Wetland Flora", "href": "./species.html?category=Aquatic" }
+          ]
+        }
+      ]
     },
     {
-      id: "nav-compare",
-      label: "Compare",
-      href: "./compare.html",
-      matchPaths: ["/compare.html"],
-      sublabel: "Side-by-Side Split View",
+      "id": "nav-calendar",
+      "label": "Calendar",
+      "href": "./seasons.html",
+      "matchPaths": ["/seasons.html"],
+      "sublabel": "6-Season Ecological Phenology"
     },
     {
-      id: "nav-ecology",
-      label: "Ecology",
-      href: "./index.html#botanical-highlights",
-      matchHash: "#botanical-highlights",
-      sublabel: "Field Notes & Habitats",
-    },
+      "id": "nav-compare",
+      "label": "Compare",
+      "href": "./compare.html",
+      "matchPaths": ["/compare.html"],
+      "sublabel": "Side-by-Side Split View"
+    }
   ],
   search: {
     placeholder: "Search species (EN / বাংলা)...",
@@ -224,27 +222,31 @@ function normalizeRoutePath(pathname) {
   return stripped;
 }
 
+function routeBaseName(route) {
+  return String(route || "index.html")
+    .replace(/^\/+/, "")
+    .replace(/\.html$/i, "") || "index";
+}
+
 function isNavItemActive(item) {
   const currentRoute = normalizeRoutePath(window.location.pathname);
+  const currentBase = routeBaseName(currentRoute);
   const currentHash = window.location.hash || "";
 
   if (Array.isArray(item.matchPaths)) {
     const matchedPath = item.matchPaths.some((p) => {
       const cleanMatch = p.replace(/^\/+/, "") || "index.html";
-      return cleanMatch === currentRoute;
+      return (
+        cleanMatch === currentRoute ||
+        routeBaseName(cleanMatch) === currentBase
+      );
     });
     if (matchedPath && !item.matchHash) {
-      if (item.id === "nav-home" && currentHash && currentHash !== "#hero-search") {
-        const hasHashLinkMatch =
-          currentHash === "#about-plantipedia" ||
-          currentHash === "#botanical-highlights";
-        return !hasHashLinkMatch;
-      }
       return true;
     }
   }
 
-  if (item.matchHash && currentRoute === "index.html" && currentHash === item.matchHash) {
+  if (item.matchHash && currentBase === "index" && currentHash === item.matchHash) {
     return true;
   }
 
@@ -254,10 +256,11 @@ function isNavItemActive(item) {
       SITE_ROOT_URL,
     );
     const targetRoute = normalizeRoutePath(targetUrl.pathname);
+    const targetBase = routeBaseName(targetRoute);
     if (targetUrl.hash) {
-      return currentRoute === targetRoute && currentHash === targetUrl.hash;
+      return currentBase === targetBase && currentHash === targetUrl.hash;
     }
-    return currentRoute === targetRoute;
+    return currentRoute === targetRoute || currentBase === targetBase;
   } catch {
     return false;
   }

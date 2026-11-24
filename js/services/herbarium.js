@@ -5,7 +5,7 @@
  * - Pure DOM manipulation with XSS-safe textContent and relative ./ navigation
  */
 
-import { getSpeciesIndex } from "../state.js";
+import { getSpeciesIndex } from "../core/state.js";
 
 const STORAGE_KEY = "plantipedia:herbarium:v1";
 const SVG_NS = "http://www.w3.org/2000/svg";

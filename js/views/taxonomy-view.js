@@ -8,8 +8,8 @@ import {
   createEl,
   createSpeciesCardElement,
   sanitizeUrl,
-} from "../templates.js";
-import { animateDynamicSpeciesGrid } from "../animations.js";
+} from "../utils/templates.js";
+import { animateDynamicSpeciesGrid } from "../core/animations.js";
 
 function buildFamilyDirectory(speciesIndex, familiesMeta = {}) {
   const map = new Map();

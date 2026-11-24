@@ -7,7 +7,7 @@
  * - Fixed bottom-right floating glassmorphism Focus Mode / Split View toggle button
  */
 
-import { createEl } from "../templates.js";
+import { createEl } from "../utils/templates.js";
 
 function pickRandomMessage(pool, fallback) {
   if (!Array.isArray(pool) || pool.length === 0) return fallback;

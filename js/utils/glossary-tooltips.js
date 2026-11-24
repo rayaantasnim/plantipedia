@@ -1,11 +1,11 @@
 /**
- * Interactive Botanical Glossary & Auto-Tooltip Engine (/data/glossary.json)
+ * Interactive Botanical Glossary & Auto-Tooltip Engine (./data/catalog/glossary.json)
  * - Safely scans monograph prose text nodes (skipping headings, links, tables, and existing wraps)
  * - Highlights scientific terms with subtle dotted emerald underlines (.glossary-term)
  * - Displays a viewport-aware glassmorphism English + Bengali tooltip on hover/focus/tap
  */
 
-import { createEl } from "../templates.js";
+import { createEl } from "./templates.js";
 
 function escapeRegExp(str) {
   return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

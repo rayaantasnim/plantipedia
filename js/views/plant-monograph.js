@@ -5,7 +5,7 @@
  * - Herbarium Bookmark Toggle + Export Field Sheet (PDF) print action
  * - Visual Cultivation Telemetry Meters (Chapter 07)
  * - Institutional Citation Generator (APA | MLA | BibTeX)
- * - Interactive Botanical Glossary Auto-Tooltips (/data/glossary.json)
+ * - Interactive Botanical Glossary Auto-Tooltips (./data/catalog/glossary.json)
  */
 
 import {
@@ -14,12 +14,12 @@ import {
   createEl,
   createSpeciesCardElement,
   sanitizeUrl,
-} from "../templates.js";
-import { applyPlantMonographSeo } from "./seo.js";
-import { createBookmarkButton } from "./herbarium.js";
-import { renderCultivationTelemetry } from "./telemetry-meters.js";
-import { renderCitationGenerator } from "./citation-generator.js";
-import { applyGlossaryTooltips } from "./glossary-tooltips.js";
+} from "../utils/templates.js";
+import { applyPlantMonographSeo } from "../services/seo.js";
+import { createBookmarkButton } from "../services/herbarium.js";
+import { renderCultivationTelemetry } from "../utils/telemetry-meters.js";
+import { renderCitationGenerator } from "../utils/citation-generator.js";
+import { applyGlossaryTooltips } from "../utils/glossary-tooltips.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 

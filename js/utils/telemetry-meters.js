@@ -3,7 +3,7 @@
  * Renders Soil pH Spectrum Meter (4.0–9.0), Sunlight Intensity bars, and Irrigation Frequency meters.
  */
 
-import { createEl } from "../templates.js";
+import { createEl } from "./templates.js";
 
 function inferTelemetryFromText(plant) {
   const sec07 = (plant?.sections || []).find((s) => s.number === "07");

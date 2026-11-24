@@ -3,27 +3,27 @@
  * Uses strict relative ./ paths resolved safely for root and GitHub Pages subpath hosting.
  */
 
-const SITE_ROOT_URL = new URL("../", import.meta.url);
+const SITE_ROOT_URL = new URL("../../", import.meta.url);
 const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v1.3.0";
 const KEBAB_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const DATASET_ENDPOINTS = Object.freeze({
-  navbar: "./data/navbar.json",
-  footer: "./data/footer.json",
-  siteShell: "./data/site-shell.json",
-  speciesIndex: "./data/species-index.json",
-  catalog: "./data/species-index.json",
-  glossary: "./data/glossary.json",
+  navbar: "./data/config/navbar.json",
+  footer: "./data/config/footer.json",
+  siteShell: "./data/config/site-shell.json",
+  speciesIndex: "./data/catalog/species-index.json",
+  catalog: "./data/catalog/species-index.json",
+  glossary: "./data/catalog/glossary.json",
   "page:home": "./data/pages/home.json",
   "page:species": "./data/pages/species.json",
   "page:plant": "./data/pages/plant.json",
   "page:taxonomy": "./data/pages/taxonomy.json",
   "page:seasons": "./data/pages/seasons.json",
   "page:compare": "./data/pages/compare.json",
-  featured: "./data/featured-species.json",
-  taxonomy: "./data/taxonomy.json",
-  trivia: "./data/trivia.json",
-  highlights: "./data/highlights.json",
+  featured: "./data/catalog/featured-species.json",
+  taxonomy: "./data/catalog/taxonomy.json",
+  trivia: "./data/catalog/trivia.json",
+  highlights: "./data/catalog/highlights.json",
 });
 
 export const SECTION_ENDPOINTS = Object.freeze({

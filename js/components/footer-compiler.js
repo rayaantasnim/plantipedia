@@ -1,12 +1,12 @@
 /**
- * Independent Global Footer Compiler (/data/footer.json)
+ * Independent Global Footer Compiler (./data/config/footer.json)
  * - Targets #global-footer (or [data-shell="footer"]) automatically on page load
- * - Fetches ./data/footer.json and renders the compact centered Dark Botanical Luxury footer
+ * - Fetches ./data/config/footer.json and renders the compact centered Dark Botanical Luxury footer
  * - Resolves dynamic copyright year (autoYear: true) and binds smooth back-to-top scrolling
  * - Provides graceful lightweight fallback if JSON fetch fails
  */
 
-import { fetchDataset } from "./api.js";
+import { fetchDataset } from "../services/api.js";
 import { resolveSitePath } from "./navbar-compiler.js";
 
 const FALLBACK_FOOTER_CONFIG = {
