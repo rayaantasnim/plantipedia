@@ -25,6 +25,7 @@ import { applyPageSeo } from "../services/seo.js";
 import {
   buildServicesTelemetryStats,
   createTelemetryStatsGrid,
+  ensureGsapWithScrollTrigger,
 } from "../utils/telemetry-stats.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -351,6 +352,7 @@ function buildCategoryDistributionCard(metrics) {
     const track = createEl("div", "services-bar-track");
     const fill = createEl("div", "services-bar-fill");
     const widthPct = Math.max(10, Math.round((item.count / maxCount) * 100));
+    fill.dataset.targetWidth = `${widthPct}%`;
     fill.style.width = `${widthPct}%`;
     track.appendChild(fill);
 
@@ -460,11 +462,13 @@ function buildSeasonalCurveCard(metrics) {
   const areaD = `${lineD} L ${points[points.length - 1].x.toFixed(1)} ${baseY} L ${points[0].x.toFixed(1)} ${baseY} Z`;
 
   const areaPath = document.createElementNS(SVG_NS, "path");
+  areaPath.setAttribute("class", "services-season-area-path");
   areaPath.setAttribute("d", areaD);
   areaPath.setAttribute("fill", "url(#servicesSeasonAreaGrad)");
   svg.appendChild(areaPath);
 
   const linePath = document.createElementNS(SVG_NS, "path");
+  linePath.setAttribute("class", "services-season-line-path");
   linePath.setAttribute("d", lineD);
   linePath.setAttribute("fill", "none");
   linePath.setAttribute("stroke", "#34d399");
@@ -820,107 +824,540 @@ function renderPathwaysSection(pathwaysCfg) {
   return section;
 }
 
-function renderSectionIndexBar(indexItems) {
-  const items =
-    Array.isArray(indexItems) && indexItems.length > 0
-      ? indexItems
-      : [
-          { num: "01", label: "Hero & Telemetry", href: "#services-hero" },
-          { num: "02", label: "Platform Matrix", href: "#services-comparison" },
-          { num: "03", label: "Live Analytics", href: "#services-analytics" },
-          { num: "04", label: "Digital Toolkit", href: "#services-toolkit" },
-          { num: "05", label: "Live Sandbox", href: "#services-sandbox" },
-          { num: "06", label: "Audience Pathways", href: "#services-pathways" },
-          { num: "07", label: "Global Server", href: "#services-global-architecture" },
-          { num: "08", label: "Synthesis Pipeline", href: "#services-synthesis-pipeline" },
-          { num: "09", label: "Field-Sheet Studio", href: "#services-field-studio" },
-          { num: "10", label: "Standards & CTA", href: "#services-open-standards" },
-        ];
+const DEFAULT_SERVICES_MATRIX = [
+  {
+    num: "01",
+    targetId: "services-hero",
+    title: "01. Hero & Live Telemetry",
+    desc: "Live archive counts across monographs, families, chapters, and Bengali seasons.",
+    theme: "emerald",
+  },
+  {
+    num: "02",
+    targetId: "services-comparison",
+    title: "02. Platform Comparison Matrix",
+    desc: "Filterable benchmark contrasting Plantipedia against traditional plant blogs.",
+    theme: "cyan",
+  },
+  {
+    num: "03",
+    targetId: "services-analytics",
+    title: "03. Live Data Analytics",
+    desc: "Dynamic realm distribution bars and interactive 6-season phenology curve.",
+    theme: "violet",
+  },
+  {
+    num: "04",
+    targetId: "services-toolkit",
+    title: "04. Core Digital Toolkit",
+    desc: "Direct gateways to Split Comparator, 6-Season Atlas, Monographs, and Taxonomy.",
+    theme: "amber",
+  },
+  {
+    num: "05",
+    targetId: "services-sandbox",
+    title: "05. Interactive Live Sandbox",
+    desc: "Test APA/MLA/BibTeX citation generation and bilingual glossary tooltips live.",
+    theme: "magenta",
+  },
+  {
+    num: "06",
+    targetId: "services-pathways",
+    title: "06. Audience Pathways",
+    desc: "Tailored research workflows for scholars, home growers, and botanical educators.",
+    theme: "sapphire",
+  },
+  {
+    num: "07",
+    targetId: "services-global-architecture",
+    title: "07. Global Botanical Server Architecture",
+    desc: "Zero-key worldwide flora resolution, EN/বাংলা sync, and 5-second retry guard.",
+    theme: "cyan",
+  },
+  {
+    num: "08",
+    targetId: "services-synthesis-pipeline",
+    title: "08. Interactive Synthesis Pipeline",
+    desc: "Inspect how live queries normalize into structured 8-chapter monographs.",
+    theme: "lime",
+  },
+  {
+    num: "09",
+    targetId: "services-field-studio",
+    title: "09. Offline PWA & Field-Sheet Studio",
+    desc: "Compare Dark Conservatory mode with monochrome @media print A4 handouts.",
+    theme: "crimson",
+  },
+  {
+    num: "10",
+    targetId: "services-open-standards",
+    title: "10. Open Standards & CTA",
+    desc: "Schema.org JSON-LD, WCAG AA+ contrast, zero-tracking privacy, and launch CTAs.",
+    theme: "emerald",
+  },
+];
 
-  const bar = createEl("nav", "services-section-index");
-  bar.setAttribute("aria-label", "Services 10-section index");
+let activeMatrixCleanup = null;
 
-  const inner = createEl("div", "section-container services-section-index-inner");
-  const statusPill = createEl("div", "services-index-status");
-  statusPill.appendChild(createEl("span", "services-index-status-dot"));
-  const counterEl = createEl("span", "services-index-counter", "SECTION 01 / 10");
-  statusPill.appendChild(counterEl);
+function createMatrixGridSvgIcon() {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("class", "services-map-matrix-icon");
+  svg.setAttribute("width", "16");
+  svg.setAttribute("height", "16");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("fill", "currentColor");
+  svg.setAttribute("aria-hidden", "true");
 
-  const rail = createEl("div", "services-index-rail");
-  const linkEls = [];
-
-  items.forEach((item, idx) => {
-    const a = createEl(
-      "a",
-      `services-index-link${idx === 0 ? " is-active" : ""}`,
-    );
-    a.href = item.href || "#services-hero";
-    a.setAttribute("data-section-target", (item.href || "").replace(/^#/, ""));
-    a.appendChild(createEl("span", "services-index-num", item.num));
-    a.appendChild(createEl("span", "services-index-label", item.label));
-
-    a.addEventListener("click", (e) => {
-      const targetId = (item.href || "").replace(/^#/, "");
-      const target = targetId ? document.getElementById(targetId) : null;
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
-
-    rail.appendChild(a);
-    linkEls.push({ item, el: a, idx });
+  [
+    [4.5, 4.5],
+    [11.5, 4.5],
+    [4.5, 11.5],
+    [11.5, 11.5],
+  ].forEach(([cx, cy]) => {
+    const dot = document.createElementNS(SVG_NS, "circle");
+    dot.setAttribute("cx", String(cx));
+    dot.setAttribute("cy", String(cy));
+    dot.setAttribute("r", "2.1");
+    svg.appendChild(dot);
   });
 
-  const progressTrack = createEl("div", "services-index-progress-track");
-  progressTrack.setAttribute("aria-hidden", "true");
-  const progressFill = createEl("div", "services-index-progress-fill");
-  progressFill.style.width = "10%";
-  progressTrack.appendChild(progressFill);
-
-  inner.appendChild(statusPill);
-  inner.appendChild(rail);
-  bar.appendChild(inner);
-  bar.appendChild(progressTrack);
-
-  return { bar, linkEls, counterEl, progressFill };
+  return svg;
 }
 
-function bindServicesIndexScrollSpy(portal, { linkEls, counterEl, progressFill }) {
-  if (!portal || !linkEls.length) return;
+function buildMatrixItems(indexItems) {
+  if (!Array.isArray(indexItems) || indexItems.length === 0) {
+    return DEFAULT_SERVICES_MATRIX;
+  }
+  return DEFAULT_SERVICES_MATRIX.map((def, idx) => {
+    const custom = indexItems[idx];
+    if (!custom) return def;
+    const customTargetId = custom.href
+      ? String(custom.href).replace(/^#/, "")
+      : def.targetId;
+    return {
+      ...def,
+      num: custom.num || def.num,
+      targetId: customTargetId || def.targetId,
+    };
+  });
+}
 
-  const setActiveById = (sectionId) => {
-    const found = linkEls.find(
-      (entry) => entry.el.getAttribute("data-section-target") === sectionId,
-    );
-    if (!found) return;
-    linkEls.forEach((entry) => {
-      entry.el.classList.toggle("is-active", entry === found);
+function renderServicesMapMatrix(portal, indexItems) {
+  if (!portal) return;
+
+  if (typeof activeMatrixCleanup === "function") {
+    activeMatrixCleanup();
+    activeMatrixCleanup = null;
+  }
+
+  document.getElementById("services-map-matrix-btn")?.remove();
+  document.getElementById("services-matrix-overlay")?.remove();
+  document.body.style.overflow = "";
+
+  const items = buildMatrixItems(indexItems);
+  const totalStr = String(items.length).padStart(2, "0");
+  const abortController = new AbortController();
+  const { signal } = abortController;
+
+  // 1. Floating Top-Left "Map Matrix" Pill Button
+  const triggerBtn = createEl("button", "services-map-matrix-btn");
+  triggerBtn.id = "services-map-matrix-btn";
+  triggerBtn.type = "button";
+  triggerBtn.setAttribute("aria-haspopup", "dialog");
+  triggerBtn.setAttribute("aria-expanded", "false");
+  triggerBtn.setAttribute("aria-controls", "services-matrix-overlay");
+  triggerBtn.setAttribute(
+    "aria-label",
+    `Open Services Architecture Map Matrix (${items.length} sections)`,
+  );
+
+  triggerBtn.appendChild(createMatrixGridSvgIcon());
+  triggerBtn.appendChild(createEl("span", "services-map-matrix-label", "Map Matrix"));
+  const sepDot = createEl("span", "services-map-matrix-sep", "·");
+  sepDot.setAttribute("aria-hidden", "true");
+  triggerBtn.appendChild(sepDot);
+  const badgeEl = createEl("span", "services-map-matrix-badge", `01/${totalStr}`);
+  triggerBtn.appendChild(badgeEl);
+
+  // 2. Full-Screen Glassmorphism Overlay Modal
+  const overlay = createEl("div", "services-matrix-overlay");
+  overlay.id = "services-matrix-overlay";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-labelledby", "servicesMatrixTitle");
+  overlay.hidden = true;
+
+  const dialogShell = createEl("div", "services-matrix-dialog");
+
+  const header = createEl("header", "services-matrix-header");
+  const titleWrap = createEl("div", "services-matrix-title-wrap");
+  const titleEl = createEl(
+    "h2",
+    "services-matrix-title",
+    "Services Architecture · Map Matrix (10 Sections)",
+  );
+  titleEl.id = "servicesMatrixTitle";
+  const subtitleEl = createEl(
+    "p",
+    "services-matrix-subtitle",
+    "Select any capability module to jump directly",
+  );
+  titleWrap.appendChild(titleEl);
+  titleWrap.appendChild(subtitleEl);
+
+  const closeBtn = createEl("button", "services-matrix-close-btn", "✕ Close");
+  closeBtn.id = "services-matrix-close-btn";
+  closeBtn.type = "button";
+  closeBtn.setAttribute("aria-label", "Close Map Matrix overlay");
+
+  header.appendChild(titleWrap);
+  header.appendChild(closeBtn);
+
+  const grid = createEl("div", "services-matrix-grid");
+  const cardEntries = [];
+
+  const setActiveSection = (sectionId) => {
+    const foundIdx = items.findIndex((it) => it.targetId === sectionId);
+    if (foundIdx < 0) return;
+    const activeNum = String(foundIdx + 1).padStart(2, "0");
+    badgeEl.textContent = `${activeNum}/${totalStr}`;
+    cardEntries.forEach(({ item, card, statusPill }) => {
+      const isCurrent = item.targetId === sectionId;
+      card.classList.toggle("is-active", isCurrent);
+      card.setAttribute("aria-current", isCurrent ? "location" : "false");
+      statusPill.textContent = isCurrent ? "● In View" : "Jump →";
     });
-    counterEl.textContent = `SECTION ${String(found.idx + 1).padStart(2, "0")} / ${String(linkEls.length).padStart(2, "0")}`;
-    const pct = Math.round(((found.idx + 1) / linkEls.length) * 100);
-    progressFill.style.width = `${pct}%`;
   };
 
+  const openMatrix = () => {
+    overlay.hidden = false;
+    triggerBtn.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+    closeBtn.focus({ preventScroll: true });
+  };
+
+  const closeMatrix = ({ restoreFocus = true } = {}) => {
+    if (overlay.hidden) return;
+    overlay.hidden = true;
+    triggerBtn.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+    if (restoreFocus) {
+      triggerBtn.focus({ preventScroll: true });
+    }
+  };
+
+  items.forEach((item, idx) => {
+    const card = createEl(
+      "button",
+      `services-matrix-card botanical-theme--${item.theme}${idx === 0 ? " is-active" : ""}`,
+    );
+    card.type = "button";
+    card.setAttribute("data-section-target", item.targetId);
+    card.setAttribute("aria-current", idx === 0 ? "location" : "false");
+
+    const topRow = createEl("div", "services-matrix-card-top");
+    topRow.appendChild(createEl("span", "services-matrix-num-badge", item.num));
+    const statusPill = createEl(
+      "span",
+      "services-matrix-status-pill",
+      idx === 0 ? "● In View" : "Jump →",
+    );
+    topRow.appendChild(statusPill);
+
+    const cardTitle = createEl("h3", "services-matrix-card-title", item.title);
+    const cardDesc = createEl("p", "services-matrix-card-desc", item.desc);
+
+    card.appendChild(topRow);
+    card.appendChild(cardTitle);
+    card.appendChild(cardDesc);
+
+    card.addEventListener(
+      "click",
+      () => {
+        setActiveSection(item.targetId);
+        closeMatrix({ restoreFocus: false });
+        const target = document.getElementById(item.targetId);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      },
+      { signal },
+    );
+
+    grid.appendChild(card);
+    cardEntries.push({ item, card, statusPill });
+  });
+
+  dialogShell.appendChild(header);
+  dialogShell.appendChild(grid);
+  overlay.appendChild(dialogShell);
+
+  triggerBtn.addEventListener("click", openMatrix, { signal });
+  closeBtn.addEventListener("click", () => closeMatrix({ restoreFocus: true }), { signal });
+
+  overlay.addEventListener(
+    "click",
+    (e) => {
+      if (e.target === overlay || e.target === dialogShell) {
+        closeMatrix({ restoreFocus: true });
+      }
+    },
+    { signal },
+  );
+
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.key === "Escape" && !overlay.hidden) {
+        e.preventDefault();
+        closeMatrix({ restoreFocus: true });
+      }
+    },
+    { signal },
+  );
+
+  let observer = null;
   if (typeof IntersectionObserver === "function") {
-    const observer = new IntersectionObserver(
+    observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
         if (visible[0]?.target?.id) {
-          setActiveById(visible[0].target.id);
+          setActiveSection(visible[0].target.id);
         }
       },
-      { rootMargin: "-20% 0px -55% 0px", threshold: [0.1, 0.35, 0.6] },
+      { rootMargin: "-22% 0px -52% 0px", threshold: [0.08, 0.25, 0.5] },
     );
 
-    linkEls.forEach(({ el }) => {
-      const targetId = el.getAttribute("data-section-target");
-      const sec = targetId ? portal.querySelector(`#${targetId}`) : null;
+    items.forEach(({ targetId }) => {
+      const sec = portal.querySelector(`#${targetId}`);
       if (sec) observer.observe(sec);
     });
   }
+
+  document.body.appendChild(triggerBtn);
+  document.body.appendChild(overlay);
+
+  activeMatrixCleanup = () => {
+    abortController.abort();
+    if (observer) observer.disconnect();
+    document.body.style.overflow = "";
+    triggerBtn.remove();
+    overlay.remove();
+  };
+}
+
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+async function initServicesAnimations(portal) {
+  if (!portal || prefersReducedMotion() || document.body.classList.contains("is-embed")) {
+    return;
+  }
+
+  const ready = await ensureGsapWithScrollTrigger();
+  if (!ready || !window.gsap || !window.ScrollTrigger || !document.body.contains(portal)) {
+    return;
+  }
+
+  const { gsap, ScrollTrigger } = window;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // 1. Above-the-Fold Hero Reveal
+  const heroTargets = portal.querySelectorAll(
+    ".services-hero .section-eyebrow, .services-hero-title, .services-hero-subcopy, .services-hero-actions, .services-kpi-card",
+  );
+  if (heroTargets.length) {
+    gsap.fromTo(
+      heroTargets,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.75,
+        stagger: 0.1,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      },
+    );
+  }
+
+  // Hero Telemetry KPI Numerical Counters (0 -> target)
+  portal.querySelectorAll(".services-kpi-value").forEach((valEl) => {
+    const raw = (valEl.textContent || "").trim();
+    const targetNum = parseInt(raw, 10);
+    if (!Number.isFinite(targetNum) || targetNum <= 0) return;
+    const minDigits = raw.length;
+    const proxy = { val: 0 };
+    valEl.textContent = "0".padStart(minDigits, "0");
+    gsap.to(proxy, {
+      val: targetNum,
+      duration: 1.15,
+      ease: "power3.out",
+      onUpdate: () => {
+        valEl.textContent = String(Math.round(proxy.val)).padStart(minDigits, "0");
+      },
+      onComplete: () => {
+        valEl.textContent = raw;
+      },
+    });
+  });
+
+  const animateScrollGroup = (triggerEl, nodes, stagger = 0.08) => {
+    const targets = Array.from(nodes || []).filter(Boolean);
+    if (!triggerEl || !targets.length) return;
+    gsap.fromTo(
+      targets,
+      { opacity: 0, y: 22 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.68,
+        stagger,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+        scrollTrigger: {
+          trigger: triggerEl,
+          start: "top 86%",
+          once: true,
+        },
+      },
+    );
+  };
+
+  // 2. Section Headers across Sections 02-10
+  portal.querySelectorAll(".services-section .services-section-header").forEach((hdr) => {
+    animateScrollGroup(hdr, [hdr], 0);
+  });
+
+  // Section 02: Comparison Filter Pills & Rows
+  const compSec = portal.querySelector("#services-comparison");
+  if (compSec) {
+    animateScrollGroup(
+      compSec.querySelector(".services-filter-bar"),
+      compSec.querySelectorAll(".services-filter-pill"),
+      0.06,
+    );
+    animateScrollGroup(
+      compSec.querySelector(".services-table-scroll"),
+      compSec.querySelectorAll(".services-comparison-table tbody tr"),
+      0.08,
+    );
+  }
+
+  // Section 03: Analytics Cards + Bar Fills + 6-Season Curve Nodes
+  const analyticsSec = portal.querySelector("#services-analytics");
+  if (analyticsSec) {
+    const chartsGrid = analyticsSec.querySelector(".services-charts-grid");
+    animateScrollGroup(chartsGrid, analyticsSec.querySelectorAll(".services-chart-card"), 0.08);
+
+    const barFills = Array.from(analyticsSec.querySelectorAll(".services-bar-fill"));
+    if (barFills.length) {
+      gsap.fromTo(
+        barFills,
+        { width: "0%" },
+        {
+          width: (_idx, el) => el.dataset.targetWidth || "50%",
+          duration: 0.9,
+          stagger: 0.08,
+          ease: "power3.out",
+          clearProps: "transition",
+          scrollTrigger: {
+            trigger: analyticsSec.querySelector(".services-bars-list") || chartsGrid,
+            start: "top 86%",
+            once: true,
+          },
+        },
+      );
+    }
+
+    const svgNodes = analyticsSec.querySelectorAll(".services-svg-node");
+    if (svgNodes.length) {
+      gsap.fromTo(
+        svgNodes,
+        { opacity: 0, scale: 0.55, transformOrigin: "center center" },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.55,
+          stagger: 0.08,
+          ease: "back.out(1.6)",
+          clearProps: "transform,opacity",
+          scrollTrigger: {
+            trigger: analyticsSec.querySelector(".services-svg-wrap") || chartsGrid,
+            start: "top 86%",
+            once: true,
+          },
+        },
+      );
+    }
+  }
+
+  // Section 04: Toolkit Cards
+  const toolkitGrid = portal.querySelector(".services-toolkit-grid");
+  if (toolkitGrid) {
+    animateScrollGroup(toolkitGrid, toolkitGrid.querySelectorAll(".services-toolkit-card"), 0.08);
+  }
+
+  // Section 05: Live Sandbox Panels
+  const sandboxGrid = portal.querySelector(".services-sandbox-grid");
+  if (sandboxGrid) {
+    animateScrollGroup(sandboxGrid, sandboxGrid.querySelectorAll(".services-sandbox-panel"), 0.08);
+  }
+
+  // Section 06: Audience Pathways Cards
+  const pathwaysGrid = portal.querySelector(".services-pathways-grid");
+  if (pathwaysGrid) {
+    animateScrollGroup(pathwaysGrid, pathwaysGrid.querySelectorAll(".services-pathway-card"), 0.08);
+  }
+
+  // Section 07: Global Server Pillars
+  const archGrid = portal.querySelector(".services-arch-grid");
+  if (archGrid) {
+    animateScrollGroup(archGrid, archGrid.querySelectorAll(".services-arch-card"), 0.08);
+  }
+
+  // Section 08: Interactive Synthesis Pipeline Nodes & Inspector
+  const pipelineShell = portal.querySelector(".services-pipeline-shell");
+  if (pipelineShell) {
+    animateScrollGroup(
+      pipelineShell,
+      pipelineShell.querySelectorAll(".services-pipeline-node, .services-pipeline-inspector"),
+      0.08,
+    );
+  }
+
+  // Section 09: Offline PWA & Field-Sheet Studio
+  const studioGrid = portal.querySelector(".services-studio-grid");
+  if (studioGrid) {
+    animateScrollGroup(
+      studioGrid,
+      studioGrid.querySelectorAll(".services-studio-preview-shell, .services-studio-feature-card"),
+      0.08,
+    );
+  }
+
+  // Section 10: Open Standards Cards & Final CTA Banner
+  const standardsSec = portal.querySelector("#services-open-standards");
+  if (standardsSec) {
+    animateScrollGroup(
+      standardsSec.querySelector(".services-standards-grid"),
+      standardsSec.querySelectorAll(".services-standard-card"),
+      0.08,
+    );
+    const finalBanner = standardsSec.querySelector(".services-final-cta-banner");
+    if (finalBanner) {
+      animateScrollGroup(finalBanner, [finalBanner], 0);
+    }
+  }
+
+  ScrollTrigger.refresh();
 }
 
 function renderGlobalArchitectureSection(archCfg) {
@@ -1322,9 +1759,6 @@ export function renderServicesPortal(
   telemetryBand.appendChild(telemetryContainer);
   portal.appendChild(telemetryBand);
 
-  const indexBarCtrl = renderSectionIndexBar(pageData.sectionIndex);
-  portal.appendChild(indexBarCtrl.bar);
-
   portal.appendChild(renderComparisonSection(pageData.comparison || {}));
   portal.appendChild(renderAnalyticsSection(pageData.analytics || {}, metrics));
   portal.appendChild(renderToolkitSection(pageData.toolkit || {}));
@@ -1338,5 +1772,6 @@ export function renderServicesPortal(
   portal.appendChild(renderStandardsAndCtaSection(pageData.standardsCta || {}));
 
   mountEl.replaceChildren(portal);
-  bindServicesIndexScrollSpy(portal, indexBarCtrl);
+  renderServicesMapMatrix(portal, pageData.sectionIndex);
+  initServicesAnimations(portal);
 }
