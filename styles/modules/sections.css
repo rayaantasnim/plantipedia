@@ -9,11 +9,11 @@
       transparent 65%
     ),
     radial-gradient(
-      ellipse 50% 50% at 10% 80%,
-      rgba(251, 191, 36, 0.05),
-      transparent 60%
+      ellipse 55% 55% at 12% 78%,
+      rgba(56, 189, 248, 0.08),
+      transparent 62%
     ),
-    linear-gradient(180deg, var(--canvas-bg) 0%, var(--canvas-band) 100%);
+    linear-gradient(180deg, var(--canvas-bg) 0%, #061b18 100%);
   border-bottom: 1px solid var(--border-hairline);
 }
 
@@ -42,16 +42,20 @@
   gap: 20px;
   padding: 22px 24px;
   border-radius: var(--radius-md);
-  background: var(--glass-surface);
+  background: linear-gradient(
+    145deg,
+    var(--card-bg, #071e16),
+    rgba(8, 16, 14, 0.96)
+  );
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--card-border, var(--border-hairline));
   box-shadow: var(--glass-shadow);
   transition:
     transform 0.32s var(--ease-settle),
     border-color 0.28s ease,
     box-shadow 0.28s ease,
-    background-color 0.28s ease;
+    background 0.28s ease;
 }
 
 .mission-stat-card::after {
@@ -60,7 +64,7 @@
   inset: 0;
   background: radial-gradient(
     240px circle at 100% 0%,
-    rgba(74, 222, 128, 0.14),
+    var(--card-glow, rgba(74, 222, 128, 0.14)),
     transparent 70%
   );
   opacity: 0;
@@ -70,9 +74,15 @@
 
 .mission-stat-card:hover {
   transform: translateY(-5px) scale(1.015);
-  background: var(--glass-surface-hover);
-  border-color: var(--border-luminous);
-  box-shadow: var(--glass-shadow-hover);
+  background: linear-gradient(
+    145deg,
+    var(--card-bg, #071e16),
+    rgba(10, 24, 20, 0.98)
+  );
+  border-color: var(--card-border-hover, var(--border-luminous));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 12px 32px var(--card-glow, rgba(16, 185, 129, 0.32));
 }
 
 .mission-stat-card:hover::after {
@@ -85,8 +95,8 @@
   font-size: 2.45rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--accent-mint);
-  text-shadow: 0 0 22px rgba(74, 222, 128, 0.26);
+  color: var(--card-accent, var(--accent-mint));
+  text-shadow: 0 0 22px var(--card-glow, rgba(74, 222, 128, 0.26));
   min-width: 72px;
 }
 
@@ -102,7 +112,7 @@
   margin: 0;
   font-size: 0.91rem;
   line-height: 1.6;
-  color: var(--ink-secondary);
+  color: #cbd5e1;
 }
 
 /* ================= HOME SECTION 02: FEATURED SPECIES & EXPLORER SHOWCASE ================= */
@@ -111,19 +121,19 @@
   padding: 72px 0 84px;
   background:
     radial-gradient(
-      ellipse 75% 45% at 50% 0%,
-      rgba(16, 185, 129, 0.1),
+      ellipse 70% 45% at 22% 12%,
+      rgba(251, 191, 36, 0.08),
       transparent 65%
     ),
     radial-gradient(
       ellipse 60% 50% at 85% 65%,
-      rgba(74, 222, 128, 0.06),
+      rgba(244, 114, 182, 0.07),
       transparent 65%
     ),
     linear-gradient(
       180deg,
       var(--canvas-bg) 0%,
-      #05190f 50%,
+      #081814 50%,
       var(--canvas-band) 100%
     );
 }
@@ -188,10 +198,15 @@
   background:
     radial-gradient(
       ellipse 65% 55% at 85% 25%,
-      rgba(16, 185, 129, 0.12),
+      rgba(167, 139, 250, 0.11),
       transparent 65%
     ),
-    linear-gradient(180deg, var(--canvas-band) 0%, var(--canvas-bg) 100%);
+    radial-gradient(
+      ellipse 55% 50% at 14% 75%,
+      rgba(244, 114, 182, 0.07),
+      transparent 62%
+    ),
+    linear-gradient(180deg, var(--canvas-band) 0%, #07131a 100%);
   border-top: 1px solid var(--border-hairline);
 }
 
@@ -217,16 +232,20 @@
   flex-direction: column;
   padding: 0;
   border-radius: var(--radius-md);
-  background: var(--glass-surface);
+  background: linear-gradient(
+    145deg,
+    var(--card-bg, #071e16),
+    rgba(8, 16, 14, 0.96)
+  );
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--card-border, var(--border-hairline));
   box-shadow: var(--glass-shadow);
   transition:
     transform 0.32s var(--ease-settle),
     border-color 0.28s ease,
     box-shadow 0.28s ease,
-    background-color 0.28s ease;
+    background 0.28s ease;
 }
 
 .domain-card-media {
@@ -235,7 +254,7 @@
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #062115;
-  border-bottom: 1px solid rgba(110, 231, 183, 0.14);
+  border-bottom: 1px solid var(--card-border, rgba(110, 231, 183, 0.14));
 }
 
 .domain-card-media::after {
@@ -274,7 +293,7 @@
   inset: 0;
   background: radial-gradient(
     280px circle at 100% 0%,
-    rgba(74, 222, 128, 0.14),
+    var(--card-glow, rgba(74, 222, 128, 0.14)),
     transparent 70%
   );
   opacity: 0;
@@ -284,9 +303,15 @@
 
 .domain-card:hover {
   transform: translateY(-5px) scale(1.015);
-  background: var(--glass-surface-hover);
-  border-color: var(--border-luminous);
-  box-shadow: var(--glass-shadow-hover);
+  background: linear-gradient(
+    145deg,
+    var(--card-bg, #071e16),
+    rgba(10, 24, 20, 0.98)
+  );
+  border-color: var(--card-border-hover, var(--border-luminous));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 12px 32px var(--card-glow, rgba(16, 185, 129, 0.32));
 }
 
 .domain-card:hover::after {
@@ -310,7 +335,7 @@
   margin: 0 0 20px;
   font-size: 0.95rem;
   line-height: 1.68;
-  color: var(--ink-secondary);
+  color: #cbd5e1;
   text-align: justify;
   text-justify: inter-word;
   overflow-wrap: break-word;
@@ -324,10 +349,10 @@
   align-items: center;
   gap: 6px;
   padding-top: 14px;
-  border-top: 1px solid rgba(110, 231, 183, 0.12);
+  border-top: 1px solid var(--card-border, rgba(110, 231, 183, 0.12));
   font-size: 0.86rem;
   font-weight: 600;
-  color: var(--accent-mint);
+  color: var(--card-accent, var(--accent-mint));
 }
 
 .domain-card:hover .domain-card-cta span {
@@ -342,15 +367,15 @@
   background:
     radial-gradient(
       ellipse 60% 60% at 18% 45%,
-      rgba(251, 191, 36, 0.06),
+      rgba(251, 191, 36, 0.08),
       transparent 65%
     ),
     radial-gradient(
       ellipse 65% 55% at 85% 25%,
-      rgba(16, 185, 129, 0.12),
+      rgba(139, 92, 246, 0.11),
       transparent 65%
     ),
-    linear-gradient(180deg, var(--canvas-bg) 0%, var(--canvas-band) 100%);
+    linear-gradient(180deg, var(--canvas-bg) 0%, #0d141d 100%);
   border-top: 1px solid var(--border-hairline);
 }
 
@@ -378,16 +403,20 @@
   gap: 22px;
   padding: 24px 28px;
   border-radius: var(--radius-md);
-  background: var(--glass-surface);
+  background: linear-gradient(
+    145deg,
+    var(--card-bg, #071e16),
+    rgba(8, 16, 14, 0.96)
+  );
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--card-border, var(--border-hairline));
   box-shadow: var(--glass-shadow);
   transition:
     transform 0.32s var(--ease-settle),
     border-color 0.26s ease,
     box-shadow 0.26s ease,
-    background-color 0.26s ease;
+    background 0.26s ease;
 }
 
 .curiosity-media {
@@ -397,7 +426,7 @@
   border-radius: var(--radius-sm);
   overflow: hidden;
   background: #062115;
-  border: 1px solid rgba(110, 231, 183, 0.2);
+  border: 1px solid var(--card-border, rgba(110, 231, 183, 0.2));
 }
 
 .curiosity-media::after {
@@ -429,7 +458,7 @@
   inset: 0;
   background: radial-gradient(
     280px circle at 100% 0%,
-    rgba(74, 222, 128, 0.13),
+    var(--card-glow, rgba(74, 222, 128, 0.13)),
     transparent 70%
   );
   opacity: 0;
@@ -439,9 +468,15 @@
 
 .curiosity-strip:hover {
   transform: translateY(-5px) scale(1.01);
-  background: var(--glass-surface-hover);
-  border-color: var(--border-luminous);
-  box-shadow: var(--glass-shadow-hover);
+  background: linear-gradient(
+    145deg,
+    var(--card-bg, #071e16),
+    rgba(10, 24, 20, 0.98)
+  );
+  border-color: var(--card-border-hover, var(--border-luminous));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 12px 32px var(--card-glow, rgba(16, 185, 129, 0.32));
 }
 
 .curiosity-strip:hover::after {
@@ -460,10 +495,10 @@
   font-variant-numeric: tabular-nums;
   font-size: 0.85rem;
   font-weight: 700;
-  color: #6ee7b7;
-  background: rgba(16, 185, 129, 0.16);
-  border: 1px solid rgba(110, 231, 183, 0.34);
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.22);
+  color: var(--card-subtext, #6ee7b7);
+  background: var(--card-pill-bg, rgba(16, 185, 129, 0.16));
+  border: 1px solid var(--card-border, rgba(110, 231, 183, 0.34));
+  box-shadow: 0 0 20px var(--card-glow, rgba(16, 185, 129, 0.22));
   margin-top: 2px;
 }
 
@@ -493,7 +528,7 @@
   font-family: var(--font-mono);
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--accent-gold-soft);
+  color: var(--card-accent, var(--accent-gold-soft));
   white-space: nowrap;
   transition:
     color 0.18s ease,
@@ -501,14 +536,14 @@
 }
 
 .curiosity-taxon:hover {
-  color: var(--accent-mint);
+  color: var(--card-subtext, var(--accent-mint));
 }
 
 .curiosity-desc {
   margin: 0;
   font-size: 0.96rem;
   line-height: 1.72;
-  color: var(--ink-secondary);
+  color: #cbd5e1;
   text-align: justify;
   text-justify: inter-word;
   overflow-wrap: break-word;
@@ -523,15 +558,15 @@
   background:
     radial-gradient(
       ellipse 65% 60% at 15% 25%,
-      rgba(16, 185, 129, 0.13),
+      rgba(52, 211, 153, 0.13),
       transparent 65%
     ),
     radial-gradient(
       ellipse 55% 55% at 85% 75%,
-      rgba(251, 191, 36, 0.05),
+      rgba(56, 189, 248, 0.08),
       transparent 65%
     ),
-    linear-gradient(180deg, var(--canvas-band) 0%, var(--canvas-bg) 100%);
+    linear-gradient(180deg, var(--canvas-band) 0%, #041612 100%);
   border-top: 1px solid var(--border-hairline);
 }
 
@@ -553,16 +588,20 @@
   flex-direction: column;
   padding: 0;
   border-radius: var(--radius-md);
-  background: var(--glass-surface);
+  background: linear-gradient(
+    145deg,
+    var(--card-bg, #071e16),
+    rgba(8, 16, 14, 0.96)
+  );
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--border-hairline);
+  border: 1px solid var(--card-border, var(--border-hairline));
   box-shadow: var(--glass-shadow);
   transition:
     transform 0.32s var(--ease-settle),
     border-color 0.28s ease,
     box-shadow 0.28s ease,
-    background-color 0.28s ease;
+    background 0.28s ease;
 }
 
 .highlight-card-media {
@@ -571,7 +610,7 @@
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: #062115;
-  border-bottom: 1px solid rgba(110, 231, 183, 0.14);
+  border-bottom: 1px solid var(--card-border, rgba(110, 231, 183, 0.14));
 }
 
 .highlight-card-media::after {
@@ -607,7 +646,7 @@
   inset: 0;
   background: radial-gradient(
     240px circle at 100% 0%,
-    rgba(74, 222, 128, 0.14),
+    var(--card-glow, rgba(74, 222, 128, 0.14)),
     transparent 70%
   );
   opacity: 0;
@@ -617,9 +656,15 @@
 
 .highlight-card:hover {
   transform: translateY(-5px) scale(1.015);
-  background: var(--glass-surface-hover);
-  border-color: var(--border-luminous);
-  box-shadow: var(--glass-shadow-hover);
+  background: linear-gradient(
+    145deg,
+    var(--card-bg, #071e16),
+    rgba(10, 24, 20, 0.98)
+  );
+  border-color: var(--card-border-hover, var(--border-luminous));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 12px 32px var(--card-glow, rgba(16, 185, 129, 0.32));
 }
 
 .highlight-card:hover::after {
@@ -634,13 +679,13 @@
   font-variant-numeric: tabular-nums;
   font-size: 0.82rem;
   font-weight: 600;
-  color: #6ee7b7;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(110, 231, 183, 0.3);
+  color: var(--card-subtext, #6ee7b7);
+  background: var(--card-pill-bg, rgba(16, 185, 129, 0.15));
+  border: 1px solid var(--card-border, rgba(110, 231, 183, 0.3));
   padding: 5px 14px;
   border-radius: 999px;
   margin-bottom: 16px;
-  box-shadow: 0 0 18px rgba(16, 185, 129, 0.16);
+  box-shadow: 0 0 18px var(--card-glow, rgba(16, 185, 129, 0.16));
 }
 
 .highlight-title {
@@ -650,6 +695,10 @@
   font-weight: 700;
   line-height: 1.22;
   color: var(--ink-primary);
+}
+
+.highlight-card .justified-prose {
+  color: #cbd5e1;
 }
 
 /* ================= TAXONOMY & 6-SEASON EXPLORER CARDS ================= */

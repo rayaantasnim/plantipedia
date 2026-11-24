@@ -14,6 +14,63 @@ import {
 const SAFE_PROTOCOL_RE = /^(https?:|\.{0,2}\/|#)/i;
 const SVG_NS = "http://www.w3.org/2000/svg";
 
+export const BOTANICAL_THEMES = [
+  "emerald",
+  "magenta",
+  "amber",
+  "violet",
+  "cyan",
+  "crimson",
+  "lime",
+  "sapphire",
+];
+
+export const SPECIES_THEME_MAP = {
+  "aloe-vera": "emerald",
+  bamboo: "lime",
+  banyan: "amber",
+  bougainvillea: "magenta",
+  lotus: "violet",
+  "water-lily": "cyan",
+  hibiscus: "crimson",
+  mango: "amber",
+  rose: "magenta",
+  sunflower: "lime",
+  periwinkle: "violet",
+  marigold: "magenta",
+  ixora: "emerald",
+  neem: "emerald",
+  tulsi: "violet",
+  jasmine: "sapphire",
+  jackfruit: "cyan",
+  coconut: "sapphire",
+  orchid: "amber",
+  "tea-plant": "crimson",
+};
+
+export function resolveBotanicalTheme(plantOrTheme, fallbackIdx = 0) {
+  if (typeof plantOrTheme === "string" && BOTANICAL_THEMES.includes(plantOrTheme)) {
+    return plantOrTheme;
+  }
+  if (plantOrTheme && typeof plantOrTheme === "object") {
+    if (plantOrTheme.themeColor && BOTANICAL_THEMES.includes(plantOrTheme.themeColor)) {
+      return plantOrTheme.themeColor;
+    }
+    const slug = String(plantOrTheme.slug || plantOrTheme.id || "").toLowerCase();
+    if (slug && SPECIES_THEME_MAP[slug]) {
+      return SPECIES_THEME_MAP[slug];
+    }
+    if (slug) {
+      let hash = 0;
+      for (let i = 0; i < slug.length; i += 1) {
+        hash = (hash * 31 + slug.charCodeAt(i)) >>> 0;
+      }
+      return BOTANICAL_THEMES[hash % BOTANICAL_THEMES.length];
+    }
+  }
+  return BOTANICAL_THEMES[Math.abs(Number(fallbackIdx) || 0) % BOTANICAL_THEMES.length];
+}
+
 export function sanitizeUrl(rawUrl, fallback = "./") {
   const safeFallback =
     fallback && !/^https?:/i.test(fallback) && !fallback.startsWith("#")
@@ -131,8 +188,9 @@ export function createSpeciesCardElement(plant, ctaLabel = "Explore Monograph") 
   const slug = plant.slug || plant.id || "";
   const fallbackHref = `./plant/?species=${encodeURIComponent(slug)}`;
   const safeHref = sanitizeUrl(plant.href || fallbackHref, fallbackHref);
+  const theme = resolveBotanicalTheme(plant);
 
-  const card = createEl("a", "species-card");
+  const card = createEl("a", `species-card botanical-theme--${theme}`);
   card.href = safeHref;
   card.setAttribute("aria-label", `Read monograph for ${plant.commonName}`);
   card.setAttribute("data-species-id", plant.id || slug);
@@ -489,8 +547,13 @@ export function renderAboutSection(mountEl, { pageData, catalog }) {
   const statsCol = createEl("div", "mission-stats-col");
   const catalogCount = Array.isArray(catalog) ? catalog.length : 0;
 
-  (about.stats || []).forEach((stat) => {
-    const card = createEl("article", "mission-stat-card");
+  const missionThemes = ["emerald", "amber", "cyan", "violet"];
+  (about.stats || []).forEach((stat, idx) => {
+    const theme = resolveBotanicalTheme(
+      stat.themeColor || missionThemes[idx % missionThemes.length],
+      idx,
+    );
+    const card = createEl("article", `mission-stat-card botanical-theme--${theme}`);
     const displayVal =
       stat.dynamicCatalogCount && catalogCount > 0 ? String(catalogCount) : stat.value;
     const numEl = createEl("span", "mission-stat-number", displayVal);
@@ -601,11 +664,16 @@ export function renderTaxonomySection(mountEl, { sectionData }) {
   grid.id = "botanicalDomainsGrid";
   grid.setAttribute("aria-live", "polite");
 
+  const domainThemes = ["magenta", "amber", "emerald", "cyan"];
   items.forEach((domain, idx) => {
     const fallbackHref = domain.category
       ? `./species/?category=${encodeURIComponent(domain.category)}`
       : "./species/";
-    const cardLink = createEl("a", "domain-card");
+    const theme = resolveBotanicalTheme(
+      domain.themeColor || domainThemes[idx % domainThemes.length],
+      idx,
+    );
+    const cardLink = createEl("a", `domain-card botanical-theme--${theme}`);
     cardLink.href = sanitizeUrl(domain.href, fallbackHref);
     cardLink.setAttribute("data-domain-id", domain.id || "");
 
@@ -671,8 +739,14 @@ export function renderTriviaSection(mountEl, { sectionData }) {
   list.id = "curiositiesList";
   list.setAttribute("aria-live", "polite");
 
+  const triviaFallbackThemes = ["violet", "lime", "amber", "cyan", "crimson"];
   items.forEach((item, idx) => {
-    const strip = createEl("article", "curiosity-strip");
+    const theme = resolveBotanicalTheme(
+      item.themeColor ||
+        (item.speciesSlug ? { slug: item.speciesSlug } : triviaFallbackThemes[idx % triviaFallbackThemes.length]),
+      idx,
+    );
+    const strip = createEl("article", `curiosity-strip botanical-theme--${theme}`);
     strip.setAttribute("data-trivia-id", item.id || "");
 
     const num = createEl("span", "curiosity-num", String(idx + 1).padStart(2, "0"));
@@ -750,8 +824,13 @@ export function renderHighlightsSection(mountEl, { sectionData }) {
   grid.id = "botanicalHighlightsGrid";
   grid.setAttribute("aria-live", "polite");
 
+  const highlightThemes = ["emerald", "amber", "cyan", "violet"];
   items.forEach((item, idx) => {
-    const card = createEl("article", "highlight-card");
+    const theme = resolveBotanicalTheme(
+      item.themeColor || highlightThemes[idx % highlightThemes.length],
+      idx,
+    );
+    const card = createEl("article", `highlight-card botanical-theme--${theme}`);
     card.setAttribute("data-highlight-id", item.id || "");
 
     if (item.image?.imageUrl || item.image?.url) {

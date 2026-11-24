@@ -41,3 +41,92 @@
   --nav-height: 74px;
   --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ================= 8-THEME MULTI-COLOR BOTANICAL PALETTE SYSTEM ================= */
+.botanical-theme--emerald {
+  --card-bg: #071e16;
+  --card-border: rgba(52, 211, 153, 0.3);
+  --card-border-hover: rgba(52, 211, 153, 0.65);
+  --card-accent: #34d399;
+  --card-accent-alt: #2dd4bf;
+  --card-subtext: #6ee7b7;
+  --card-glow: rgba(16, 185, 129, 0.28);
+  --card-pill-bg: rgba(16, 185, 129, 0.16);
+}
+
+.botanical-theme--magenta {
+  --card-bg: #1f0d1b;
+  --card-border: rgba(244, 114, 182, 0.3);
+  --card-border-hover: rgba(244, 114, 182, 0.66);
+  --card-accent: #f472b6;
+  --card-accent-alt: #fb7185;
+  --card-subtext: #f9a8d4;
+  --card-glow: rgba(244, 114, 182, 0.26);
+  --card-pill-bg: rgba(244, 114, 182, 0.16);
+}
+
+.botanical-theme--amber {
+  --card-bg: #1f1608;
+  --card-border: rgba(251, 191, 36, 0.3);
+  --card-border-hover: rgba(251, 191, 36, 0.66);
+  --card-accent: #fbbf24;
+  --card-accent-alt: #fb923c;
+  --card-subtext: #fde68a;
+  --card-glow: rgba(245, 158, 11, 0.26);
+  --card-pill-bg: rgba(251, 191, 36, 0.15);
+}
+
+.botanical-theme--violet {
+  --card-bg: #140e24;
+  --card-border: rgba(167, 139, 250, 0.3);
+  --card-border-hover: rgba(232, 121, 249, 0.64);
+  --card-accent: #a78bfa;
+  --card-accent-alt: #e879f9;
+  --card-subtext: #ddd6fe;
+  --card-glow: rgba(139, 92, 246, 0.28);
+  --card-pill-bg: rgba(167, 139, 250, 0.16);
+}
+
+.botanical-theme--cyan {
+  --card-bg: #071a24;
+  --card-border: rgba(56, 189, 248, 0.3);
+  --card-border-hover: rgba(34, 211, 238, 0.66);
+  --card-accent: #38bdf8;
+  --card-accent-alt: #22d3ee;
+  --card-subtext: #bae6fd;
+  --card-glow: rgba(56, 189, 248, 0.26);
+  --card-pill-bg: rgba(56, 189, 248, 0.16);
+}
+
+.botanical-theme--crimson {
+  --card-bg: #210b10;
+  --card-border: rgba(248, 113, 113, 0.3);
+  --card-border-hover: rgba(251, 113, 133, 0.66);
+  --card-accent: #f87171;
+  --card-accent-alt: #fda4af;
+  --card-subtext: #fecaca;
+  --card-glow: rgba(244, 63, 94, 0.26);
+  --card-pill-bg: rgba(248, 113, 113, 0.16);
+}
+
+.botanical-theme--lime {
+  --card-bg: #141d09;
+  --card-border: rgba(163, 230, 53, 0.3);
+  --card-border-hover: rgba(163, 230, 53, 0.65);
+  --card-accent: #a3e635;
+  --card-accent-alt: #fde047;
+  --card-subtext: #d9f99d;
+  --card-glow: rgba(132, 204, 22, 0.26);
+  --card-pill-bg: rgba(163, 230, 53, 0.15);
+}
+
+.botanical-theme--sapphire {
+  --card-bg: #091526;
+  --card-border: rgba(96, 165, 250, 0.3);
+  --card-border-hover: rgba(96, 165, 250, 0.66);
+  --card-accent: #60a5fa;
+  --card-accent-alt: #34d399;
+  --card-subtext: #bfdbfe;
+  --card-glow: rgba(59, 130, 246, 0.28);
+  --card-pill-bg: rgba(96, 165, 250, 0.16);
+}
