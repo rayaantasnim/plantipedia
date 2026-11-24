@@ -22,6 +22,10 @@ import { renderSpecimenNotFoundCard } from "../components/specimen-not-found.js"
 import { renderCultivationTelemetry } from "../utils/telemetry-meters.js";
 import { renderCitationGenerator } from "../utils/citation-generator.js";
 import { applyGlossaryTooltips } from "../utils/glossary-tooltips.js";
+import {
+  createTelemetryStatsGrid,
+  extractPlantTelemetryStats,
+} from "../utils/telemetry-stats.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -662,6 +666,23 @@ export function renderPlantMonograph(
   tableWrap.appendChild(tableGrid);
   heroCard.appendChild(tableWrap);
   detailContainer.appendChild(heroCard);
+
+  // 2b. Dynamic Species-Specific Botanical Telemetry Grid (GSAP ScrollTrigger)
+  const plantStats = extractPlantTelemetryStats(plant);
+  if (plantStats.length > 0) {
+    const telemetryBand = createEl("section", "monograph-telemetry-band");
+    telemetryBand.setAttribute(
+      "aria-label",
+      `${plant.commonName} key botanical telemetry metrics`,
+    );
+    telemetryBand.appendChild(
+      createTelemetryStatsGrid(plantStats, {
+        ariaLabel: `${plant.commonName} botanical telemetry metrics`,
+        sectionId: "monographTelemetryGrid",
+      }),
+    );
+    detailContainer.appendChild(telemetryBand);
+  }
 
   // 3. Chapters 01–07
   const chaptersWrap = createEl("div", "encyclopedia-chapters");

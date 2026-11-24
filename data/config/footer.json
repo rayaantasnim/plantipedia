@@ -30,6 +30,5 @@
     "autoYear": true,
     "owner": "Plantipedia",
     "template": "© {year} Plantipedia. All rights reserved."
-  },
-  "backToTopLabel": "Back to Top ↑"
+  }
 }

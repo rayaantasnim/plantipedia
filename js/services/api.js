@@ -22,6 +22,7 @@ export const DATASET_ENDPOINTS = Object.freeze({
   "page:taxonomy": "./data/pages/taxonomy.json",
   "page:seasons": "./data/pages/seasons.json",
   "page:compare": "./data/pages/compare.json",
+  "page:services": "./data/pages/services.json",
   featured: "./data/catalog/featured-species.json",
   taxonomy: "./data/catalog/taxonomy.json",
   trivia: "./data/catalog/trivia.json",
@@ -182,6 +183,16 @@ function validateComparePagePayload(payload) {
   return payload;
 }
 
+function validateServicesPagePayload(payload) {
+  assertObject(payload, "pages/services");
+  assertObject(payload.banner, "pages/services.banner");
+  assertObject(payload.comparison, "pages/services.comparison");
+  assertObject(payload.toolkit, "pages/services.toolkit");
+  assertObject(payload.sandbox, "pages/services.sandbox");
+  assertObject(payload.pathways, "pages/services.pathways");
+  return payload;
+}
+
 function validateGlossaryPayload(payload) {
   assertObject(payload, "glossary");
   if (!Array.isArray(payload.terms)) {
@@ -274,6 +285,7 @@ const VALIDATORS = {
   "page:taxonomy": validateTaxonomyPagePayload,
   "page:seasons": validateSeasonsPagePayload,
   "page:compare": validateComparePagePayload,
+  "page:services": validateServicesPagePayload,
   featured: validateFeaturedPayload,
   taxonomy: validateTaxonomyPayload,
   trivia: validateTriviaPayload,

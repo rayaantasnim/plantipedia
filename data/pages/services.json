@@ -1,0 +1,250 @@
+{
+  "schemaVersion": "1.0.0",
+  "page": "services",
+  "seo": {
+    "title": "Digital Botanical Research Suite & Services | Plantipedia",
+    "description": "Explore Plantipedia's interactive botanical tools—bilingual EN/বাংলা instant search, split-screen species comparator, 6-season phenology calendar, APA/MLA/BibTeX citation engine, and live taxonomic telemetry.",
+    "keywords": "Plantipedia services, botanical research suite, bilingual plant search, species comparison tool, Bengali 6-season phenology calendar, plant citation generator, taxonomic analytics",
+    "author": "Jalees Habib, Rayaan Tasnim",
+    "canonicalFile": "services/",
+    "ogType": "website",
+    "ogTitle": "Digital Botanical Research Suite & Services | Plantipedia",
+    "ogDescription": "Compare traditional plant blogs against Plantipedia's bilingual botanical archive, explore live taxonomic visualizations, and test our citation and glossary engines live.",
+    "ogImage": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "ogImageAlt": "Plantipedia Digital Botanical Research Suite",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://rayaantasnim.github.io/plantipedia/services/#webpage",
+          "name": "Digital Botanical Research Suite & Services | Plantipedia",
+          "description": "Interactive suite of bilingual botanical tools, live ecological telemetry, and academic research utilities powered by Plantipedia.",
+          "url": "https://rayaantasnim.github.io/plantipedia/services/",
+          "inLanguage": ["en", "bn"]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://rayaantasnim.github.io/plantipedia/services/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://rayaantasnim.github.io/plantipedia/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Services & Tools",
+              "item": "https://rayaantasnim.github.io/plantipedia/services/"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "banner": {
+    "breadcrumbs": [
+      { "label": "Home", "href": "./" },
+      { "label": "Services & Tools", "current": true }
+    ],
+    "eyebrow": "Digital Botanical Research Suite · ডিজিটাল উদ্ভিদবিজ্ঞান সেবা",
+    "headline": "Open-Access Botanical Tools Built for Field & Scholarship",
+    "subcopy": "Plantipedia pairs peer-structured eight-chapter species monographs with real-time bilingual search, seasonal delta phenology, soil telemetry meters, and instant academic citations—zero logins, zero paywalls.",
+    "heroImage": {
+      "imageUrl": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "imageAlt": "Lush tropical emerald canopy leaves representing Plantipedia's digital botanical research suite"
+    },
+    "primaryCta": { "label": "Browse Species Atlas →", "href": "./species/" },
+    "secondaryCta": { "label": "Try Live Sandbox", "href": "#services-sandbox" }
+  },
+  "telemetry": [
+    {
+      "id": "kpi-monographs",
+      "dynamic": "speciesCount",
+      "value": "20",
+      "label": "Botanical Monographs",
+      "note": "EN + বাংলা · Verified Data"
+    },
+    {
+      "id": "kpi-families",
+      "dynamic": "familiesCount",
+      "value": "17",
+      "label": "Plant Families & 6 Realms",
+      "note": "Linnaean Lineage Graph"
+    },
+    {
+      "id": "kpi-chapters",
+      "value": "08",
+      "label": "Chapters Per Monograph",
+      "note": "Morphology to Ethnobotany"
+    },
+    {
+      "id": "kpi-seasons",
+      "dynamic": "seasonsCount",
+      "value": "06",
+      "label": "Bengali Seasons Mapped",
+      "note": "Shororitu (ষড়ঋতু) Cycle"
+    }
+  ],
+  "comparison": {
+    "eyebrow": "01. Platform Architecture Benchmark",
+    "heading": "Why Plantipedia Outperforms Static Plant Blogs",
+    "lead": "Filter our core architectural capabilities below to see how an indexed, bilingual botanical data lake replaces fragmented gardening articles.",
+    "filters": [
+      { "id": "all", "label": "All Capabilities" },
+      { "id": "research", "label": "Research & Academic" },
+      { "id": "field", "label": "Field & Gardening" },
+      { "id": "ux", "label": "Accessibility & UX" }
+    ],
+    "rows": [
+      {
+        "capability": "Bilingual EN/বাংলা Instant Search",
+        "domainLabel": "UX & Discovery",
+        "group": "ux",
+        "traditional": "English-only keyword match; misses Bengali common names, regional dialects, and Latin binomials.",
+        "plantipedia": "Sub-50ms client-side search across English, বাংলা script (e.g., আম, শাপলা), Latin binomials, and plant families."
+      },
+      {
+        "capability": "APA / MLA / BibTeX Citation Generator",
+        "domainLabel": "Research & Academic",
+        "group": "research",
+        "traditional": "No structured attribution or exportable bibliographic metadata for student papers.",
+        "plantipedia": "One-click institutional citations in APA 7th, MLA 9th, and BibTeX formats with canonical specimen URLs."
+      },
+      {
+        "capability": "Side-by-Side Split Species Comparator",
+        "domainLabel": "Research & Field",
+        "group": "research",
+        "traditional": "Requires opening multiple browser tabs and manually scanning prose paragraphs.",
+        "plantipedia": "Synchronized dual-pane workspace comparing taxonomy, morphology, ecology, and cultivation side by side."
+      },
+      {
+        "capability": "6-Season Bengali Phenology Calendar",
+        "domainLabel": "Field & Ecology",
+        "group": "field",
+        "traditional": "Generic temperate four-season advice unsuited for Bengal's monsoon-alluvial climate.",
+        "plantipedia": "Tracks active flowering, fruiting, and flushing across all six Shororitu (গ্রীষ্ম through বসন্ত)."
+      },
+      {
+        "capability": "Soil pH & Light Telemetry Gauges",
+        "domainLabel": "Field & Gardening",
+        "group": "field",
+        "traditional": "Vague phrases like 'prefers normal soil' without quantifiable pH bands or drainage metrics.",
+        "plantipedia": "Precision horizontal pH scale meters, light-intensity ratings, moisture profiles, and substrate specs."
+      },
+      {
+        "capability": "Offline-Ready Print / PDF Field Sheets",
+        "domainLabel": "Field & Academic",
+        "group": "research",
+        "traditional": "Cluttered sidebars, ads, and dark backgrounds waste ink and break across page boundaries.",
+        "plantipedia": "Dedicated A4 print stylesheet strips navigation chrome into clean, monochrome academic herbarium sheets."
+      },
+      {
+        "capability": "Zero-Login Local Herbarium Bookmarks",
+        "domainLabel": "Accessibility & UX",
+        "group": "ux",
+        "traditional": "Forces account creation, email walls, or cookie-heavy tracking before saving plants.",
+        "plantipedia": "Instant browser-local Herbarium drawer persists saved specimens privately with zero sign-up friction."
+      },
+      {
+        "capability": "Interactive Botanical Glossary Tooltips",
+        "domainLabel": "Research & UX",
+        "group": "ux",
+        "traditional": "Dense terminology left unexplained or requires leaving the article to search external dictionaries.",
+        "plantipedia": "Auto-detected scientific terms reveal instant English & বাংলা definitions on hover, focus, or tap."
+      }
+    ]
+  },
+  "analytics": {
+    "eyebrow": "02. Live Archive Analytics",
+    "heading": "Taxonomic Distribution & 6-Season Phenology Pulse",
+    "lead": "Computed dynamically from Plantipedia's live species index and seasonal calendar datasets. Hover or tap any bar or seasonal node to inspect archive coverage."
+  },
+  "toolkit": {
+    "eyebrow": "03. Core Digital Toolkit",
+    "heading": "Four Specialized Botanical Workspaces",
+    "lead": "Jump directly into any interactive Plantipedia module—each engineered for zero-latency exploration on desktop, tablet, and mobile.",
+    "items": [
+      {
+        "id": "compare",
+        "meta": "Dual-Pane Diagnostics",
+        "title": "Side-by-Side Split Comparator",
+        "description": "Contrast any two monographs simultaneously across Linnaean lineage, vegetative form, soil pH bands, and ecological roles with synchronized focus controls.",
+        "ctaLabel": "Launch Comparator →",
+        "href": "./compare/",
+        "imageUrl": "https://images.pexels.com/photos/30893226/pexels-photo-30893226.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "imageAlt": "Golden ripe mangoes representing pomology and comparative botanical analysis"
+      },
+      {
+        "id": "seasons",
+        "meta": "Shororitu Phenology",
+        "title": "Bangladeshi 6-Season Calendar",
+        "description": "Track when wetland lotus pads bloom, when mango panicles emerge, and how monsoon floodwaters reshape delta flora across all six Bengali seasons.",
+        "ctaLabel": "Open 6-Season Atlas →",
+        "href": "./seasons/",
+        "imageUrl": "https://images.pexels.com/photos/36002741/pexels-photo-36002741.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "imageAlt": "Aquatic water lilies blooming in seasonal wetlands"
+      },
+      {
+        "id": "monographs",
+        "meta": "8-Chapter Reference",
+        "title": "Curated Species Directory & Monographs",
+        "description": "Browse 20 illustrated botanical dossiers featuring herbarium plates, telemetry meters, bilingual terminology tooltips, and print-ready field sheets.",
+        "ctaLabel": "Browse Species Atlas →",
+        "href": "./species/",
+        "imageUrl": "https://images.pexels.com/photos/56866/garden-rose-red-pink-56866.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "imageAlt": "Crimson garden rose blossom representing detailed floral monographs"
+      },
+      {
+        "id": "taxonomy",
+        "meta": "Evolutionary Lineage",
+        "title": "Taxonomic Lineage Explorer",
+        "description": "Inspect 17 botanical families and Linnaean orders—from Nymphaeaceae and Anacardiaceae to Orchidaceae—with diagnostic traits and family filtering.",
+        "ctaLabel": "Explore Taxonomy →",
+        "href": "./taxonomy/",
+        "imageUrl": "https://images.pexels.com/photos/30313199/pexels-photo-30313199.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "imageAlt": "Moth orchid flowers demonstrating Orchidaceae floral symmetry"
+      }
+    ]
+  },
+  "sandbox": {
+    "eyebrow": "04. Interactive Live Sandbox",
+    "heading": "Try Plantipedia Tools Live",
+    "lead": "Test our Academic Citation Generator and Bilingual Botanical Glossary Engine right here without leaving the page.",
+    "citationTitle": "Live Academic Citation Engine",
+    "citationHint": "Select any documented species from the archive and switch between APA 7th, MLA 9th, and BibTeX formats.",
+    "glossaryTitle": "Bilingual Glossary Tooltip Preview",
+    "glossaryHint": "Hover, focus, or tap any underlined botanical term in the field excerpt below to inspect its English and বাংলা definition.",
+    "sampleParagraph": "Across alluvial agroforestry plots, Neem root exudates demonstrate subtle allelopathy against competing weeds, while mature orchard canopies rely on symbiotic mycorrhiza networks to mobilize soil phosphorus. Shade-grown Camellia sinensis leaves accumulate calming L-theanine amino acids, contrasting with epiphytic orchids anchored high on mossy banyan limbs."
+  },
+  "pathways": {
+    "eyebrow": "05. Audience Pathways",
+    "heading": "Tailored Workflows for Every Botanical Discipline",
+    "lead": "Choose the entry point aligned with your coursework, garden planning, or ecological field research.",
+    "items": [
+      {
+        "index": "Pathway 01 · Academia",
+        "title": "Students & Academic Researchers",
+        "description": "Verify binomial nomenclature, copy formatted APA/MLA/BibTeX citations in one click, and print clean monochrome monograph sheets for lab notebooks.",
+        "ctaLabel": "Explore 20 Monographs →",
+        "href": "./species/"
+      },
+      {
+        "index": "Pathway 02 · Cultivation",
+        "title": "Home Gardeners & Growers",
+        "description": "Match crops and ornamentals to Bangladesh's six seasonal windows, check exact soil pH tolerances, and save a personal shortlist in your Herbarium.",
+        "ctaLabel": "Plan by 6 Seasons →",
+        "href": "./seasons/"
+      },
+      {
+        "index": "Pathway 03 · Instruction",
+        "title": "Botanists & Educators",
+        "description": "Contrast homologous morphology side by side in split-screen mode, inspect family-level diagnostic keys, and demonstrate bilingual botanical terms live.",
+        "ctaLabel": "Open Split Comparator →",
+        "href": "./compare/"
+      }
+    ]
+  }
+}

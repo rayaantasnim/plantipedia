@@ -19,6 +19,7 @@ import {
 import { applyPageSeo } from "../services/seo.js";
 import {
   renderHeroSection,
+  renderHomeTelemetrySection,
   renderAboutSection,
   renderFeaturedSpeciesSection,
   renderTaxonomySection,
@@ -35,6 +36,7 @@ import { renderPlantMonograph } from "../views/plant-monograph.js";
 import { renderTaxonomyExplorer } from "../views/taxonomy-view.js";
 import { renderSeasonsCalendar } from "../views/seasons-view.js";
 import { renderCompareWorkspace } from "../views/compare-view.js";
+import { renderServicesPortal } from "../views/services-view.js";
 import { animateHydratedSection, refreshScrollTriggers } from "./animations.js";
 import { initNavigationInteractions } from "../utils/navigation.js";
 
@@ -64,6 +66,15 @@ const SECTION_REGISTRY = {
     render: (el, dataMap) => {
       renderHeroSection(el, {
         pageData: dataMap.get("page:home")?.data,
+        catalog: dataMap.get("speciesIndex")?.data || [],
+      });
+    },
+  },
+  "home-telemetry": {
+    datasets: [],
+    optionalDatasets: ["speciesIndex"],
+    render: (el, dataMap) => {
+      renderHomeTelemetrySection(el, {
         catalog: dataMap.get("speciesIndex")?.data || [],
       });
     },
@@ -180,6 +191,18 @@ const SECTION_REGISTRY = {
       });
     },
   },
+  "services-portal": {
+    datasets: ["page:services", "speciesIndex"],
+    optionalDatasets: ["page:seasons", "glossary"],
+    render: (el, dataMap) => {
+      renderServicesPortal(el, {
+        pageData: dataMap.get("page:services")?.data,
+        speciesIndex: dataMap.get("speciesIndex")?.data || [],
+        seasonsData: dataMap.get("page:seasons")?.data || null,
+        glossaryData: dataMap.get("glossary")?.data || null,
+      });
+    },
+  },
   "section-map": {
     // Co-hydrated by plant-monograph once active species monograph resolves
     datasets: [],
@@ -201,6 +224,7 @@ function resolveActivePageKey() {
     taxonomy: "page:taxonomy",
     seasons: "page:seasons",
     compare: "page:compare",
+    services: "page:services",
   };
   return pageKeyMap[pageName] || null;
 }

@@ -798,35 +798,61 @@ body.is-embed .detail-container {
 [data-shell="footer"],
 #global-footer,
 .site-footer {
-  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+  min-height: 290px;
   background:
     radial-gradient(
-      ellipse 65% 70% at 50% 0%,
-      rgba(16, 185, 129, 0.1),
+      ellipse 62% 65% at 50% 0%,
+      rgba(16, 185, 129, 0.11),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 42% 55% at 78% 18%,
+      rgba(167, 139, 250, 0.08),
       transparent 70%
     ),
     #030f09;
   color: var(--ink-primary);
-  border-top: 1px solid var(--border-hairline);
+  border-top: 1px solid rgba(110, 231, 183, 0.12);
   margin-top: auto;
+}
+
+.footer-top-luminous-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(52, 211, 153, 0.45) 36%,
+    rgba(167, 139, 250, 0.35) 64%,
+    transparent 100%
+  );
+  transform-origin: center center;
+  pointer-events: none;
 }
 
 #app-footer[data-footer-variant="compact"],
 [data-shell="footer"][data-footer-variant="compact"],
 #global-footer[data-footer-variant="compact"],
 .site-footer--compact {
-  min-height: 220px;
+  min-height: 215px;
 }
 
 .footer-container {
-  max-width: 920px;
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 56px clamp(16px, 4vw, 32px) 48px;
+  padding: 58px clamp(16px, 4vw, 32px) 48px;
   text-align: center;
 }
 
 .site-footer--compact .footer-container {
-  padding: 42px clamp(16px, 4vw, 32px) 38px;
+  padding: 44px clamp(16px, 4vw, 32px) 38px;
 }
 
 .footer-overview-block {
@@ -844,7 +870,7 @@ body.is-embed .detail-container {
   font-size: 1.85rem;
   font-weight: 700;
   color: var(--ink-primary);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .footer-brand:hover .brand-flower-svg {
@@ -876,22 +902,26 @@ body.is-embed .detail-container {
 }
 
 .footer-legal-note {
-  margin: 4px 0 0;
+  margin: 6px auto 0;
+  max-width: 720px;
   font-size: 0.78rem;
+  line-height: 1.6;
   color: var(--ink-muted);
 }
 
 .footer-divider {
   width: 100%;
-  max-width: 560px;
+  max-width: 600px;
   height: 1px;
-  margin: 28px auto 24px;
+  margin: 28px auto 26px;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(110, 231, 183, 0.28),
+    rgba(52, 211, 153, 0.34),
+    rgba(167, 139, 250, 0.24),
     transparent
   );
+  transform-origin: center center;
 }
 
 .footer-credits-bar {
@@ -899,41 +929,164 @@ body.is-embed .detail-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
-.footer-credit-row {
+/* Multi-Color Glassmorphism Contributor Pills */
+.footer-contributor-pills {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 14px;
+  width: 100%;
 }
 
-.footer-credit-line {
-  margin: 0;
-  display: flex;
+.contributor-pill {
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 6px 10px;
-  font-size: 0.86rem;
+  gap: 7px 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  max-width: 100%;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 0.84rem;
+  line-height: 1.35;
+  transition:
+    transform 0.26s var(--ease-settle),
+    border-color 0.24s ease,
+    box-shadow 0.24s ease,
+    background 0.24s ease;
 }
 
-.credit-label {
-  color: var(--ink-muted);
-  letter-spacing: 0.03em;
+.contributor-pill-icon {
+  flex-shrink: 0;
+  transition: transform 0.24s var(--ease-settle);
 }
 
-.credit-sep {
-  color: rgba(74, 222, 128, 0.6);
+.contributor-pill:hover .contributor-pill-icon {
+  transform: scale(1.1);
+}
+
+.contributor-pill-role {
+  letter-spacing: 0.025em;
+  font-weight: 500;
+}
+
+.contributor-pill-sep {
+  opacity: 0.65;
   font-weight: 700;
 }
 
-.credit-name {
-  color: #6ee7b7;
+.contributor-pill-name {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+/* Pill 1: Royal Emerald & Gold Amber (JALEES HABIB) */
+.contributor-pill--patron {
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.12),
+    rgba(245, 158, 11, 0.12)
+  );
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.24);
+}
+
+.contributor-pill--patron .contributor-pill-icon {
+  color: #fbbf24;
+}
+
+.contributor-pill--patron .contributor-pill-role {
+  color: #fde68a;
+}
+
+.contributor-pill--patron .contributor-pill-sep {
+  color: rgba(251, 191, 36, 0.72);
+}
+
+.contributor-pill--patron .contributor-pill-name {
+  color: #fbbf24;
+  background: linear-gradient(135deg, #fde68a 0%, #fbbf24 55%, #34d399 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contributor-pill--patron:hover {
+  transform: translateY(-3px);
+  border-color: rgba(251, 191, 36, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 8px 24px rgba(245, 158, 11, 0.2);
+}
+
+/* Pill 2: Bioluminescent Cyan & Violet Orchid (RAYAAN TASNIM) */
+.contributor-pill--architect {
+  background: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.12),
+    rgba(167, 139, 250, 0.14)
+  );
+  border: 1px solid rgba(167, 139, 250, 0.38);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.24);
+}
+
+.contributor-pill--architect .contributor-pill-icon {
+  color: #38bdf8;
+}
+
+.contributor-pill--architect .contributor-pill-role {
+  color: #cbd5e1;
+}
+
+.contributor-pill--architect .contributor-pill-sep {
+  color: rgba(167, 139, 250, 0.75);
+}
+
+.contributor-pill--architect .contributor-pill-name {
+  color: #38bdf8;
+  background: linear-gradient(135deg, #38bdf8 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contributor-pill--architect:hover {
+  transform: translateY(-3px);
+  border-color: rgba(192, 132, 252, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 8px 24px rgba(139, 92, 246, 0.22);
+}
+
+@media (max-width: 640px) {
+  .footer-contributor-pills {
+    gap: 11px;
+  }
+
+  .contributor-pill {
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 0.81rem;
+  }
+}
+
+@media (max-width: 440px) {
+  .contributor-pill {
+    width: 100%;
+    border-radius: 18px;
+    padding: 11px 16px;
+  }
 }
 
 .footer-partner-pill {
@@ -953,14 +1106,38 @@ body.is-embed .detail-container {
   font-size: 0.82rem;
 }
 
+.footer-partner-pill--home {
+  display: inline-block;
+  text-align: center;
+  line-height: 1.75;
+  padding: 12px 24px;
+  border-radius: 18px;
+  transition: all 0.25s ease;
+}
+
+.footer-partner-pill--home:hover {
+  transform: translateY(-2px);
+  border-color: rgba(52, 211, 153, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 6px 20px rgba(16, 185, 129, 0.16);
+}
+
 .partner-muted {
   color: var(--ink-muted);
 }
 
-.partner-highlight {
+.partner-highlight,
+.credit-highlight {
   color: var(--ink-primary);
   font-weight: 600;
   letter-spacing: 0.04em;
+  transition: color 0.25s ease;
+}
+
+.footer-partner-pill--home:hover .credit-highlight,
+.credit-highlight:hover {
+  color: #34d399;
 }
 
 .partner-pipe {
@@ -984,25 +1161,114 @@ body.is-embed .detail-container {
   color: #7c9a89;
 }
 
-.footer-top-btn {
-  padding: 5px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(110, 231, 183, 0.24);
-  background: rgba(16, 185, 129, 0.08);
-  color: var(--accent-mint);
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 600;
-  transition:
-    background-color 0.18s ease,
-    border-color 0.18s ease,
-    transform 0.18s var(--ease-settle);
+/* Offline CSS reveal fallback for GSAP-animated footer */
+.site-footer.footer-css-reveal .footer-top-luminous-line,
+.site-footer.footer-css-reveal .footer-divider {
+  transform: scaleX(0);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.footer-top-btn:hover {
+.site-footer.footer-css-reveal .footer-overview-block,
+.site-footer.footer-css-reveal .contributor-pill,
+.site-footer.footer-css-reveal .footer-partner-pill,
+.site-footer.footer-css-reveal .footer-legal-note,
+.site-footer.footer-css-reveal .footer-bottom-meta {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-footer.footer-css-reveal.is-footer-revealed .footer-top-luminous-line,
+.site-footer.footer-css-reveal.is-footer-revealed .footer-divider {
+  transform: scaleX(1);
+}
+
+.site-footer.footer-css-reveal.is-footer-revealed .footer-overview-block,
+.site-footer.footer-css-reveal.is-footer-revealed .contributor-pill,
+.site-footer.footer-css-reveal.is-footer-revealed .footer-partner-pill,
+.site-footer.footer-css-reveal.is-footer-revealed .footer-legal-note,
+.site-footer.footer-css-reveal.is-footer-revealed .footer-bottom-meta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================= GLOBAL BOTTOM-LEFT FLOATING BACK TO TOP BUTTON ================= */
+#plantipedia-back-to-top,
+.plantipedia-back-to-top {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 990;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 28, 20, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  color: #34d399;
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  pointer-events: none;
+  cursor: pointer;
+  transition:
+    opacity 0.26s ease,
+    visibility 0.26s ease,
+    transform 0.26s var(--ease-settle),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+#plantipedia-back-to-top.is-visible,
+.plantipedia-back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+#plantipedia-back-to-top:hover,
+#plantipedia-back-to-top:focus-visible,
+.plantipedia-back-to-top:hover,
+.plantipedia-back-to-top:focus-visible {
   transform: translateY(-2px);
-  background: rgba(16, 185, 129, 0.2);
-  border-color: var(--accent-mint);
+  background: rgba(16, 46, 32, 0.94);
+  border-color: rgba(52, 211, 153, 0.7);
+  color: #6ee7b7;
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.26);
+}
+
+#plantipedia-back-to-top:active,
+.plantipedia-back-to-top:active {
+  transform: scale(0.95);
+}
+
+body.is-embed #plantipedia-back-to-top {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  #plantipedia-back-to-top,
+  .plantipedia-back-to-top {
+    bottom: 18px;
+    left: 16px;
+    width: 42px;
+    height: 42px;
+    font-size: 1.05rem;
+  }
 }
 
 /* ================= PERSONAL HERBARIUM SLIDE-OVER DRAWER ================= */

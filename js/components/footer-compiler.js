@@ -8,6 +8,9 @@
 
 import { fetchDataset } from "../services/api.js";
 import { resolveSitePath } from "./navbar-compiler.js";
+import { ensureGsapWithScrollTrigger } from "../utils/telemetry-stats.js";
+
+const SVG_NS = "http://www.w3.org/2000/svg";
 
 const FALLBACK_FOOTER_CONFIG = {
   brand: {
@@ -36,7 +39,6 @@ const FALLBACK_FOOTER_CONFIG = {
     owner: "Plantipedia",
     template: "© {year} Plantipedia. All rights reserved.",
   },
-  backToTopLabel: "Back to Top ↑",
 };
 
 function createFooterBrand(brandConfig) {
@@ -73,6 +75,50 @@ function createFooterBrand(brandConfig) {
   return link;
 }
 
+function createPatronCrownIconSvg() {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("class", "contributor-pill-icon");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", "15");
+  svg.setAttribute("height", "15");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "1.9");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+
+  const path = document.createElementNS(SVG_NS, "path");
+  path.setAttribute("d", "m2 7 4.4 4.4L12 5l5.6 6.4L22 7l-2 11H4L2 7Z");
+  const base = document.createElementNS(SVG_NS, "path");
+  base.setAttribute("d", "M5 21h14");
+  svg.appendChild(path);
+  svg.appendChild(base);
+  return svg;
+}
+
+function createArchitectSparkIconSvg() {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("class", "contributor-pill-icon");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", "15");
+  svg.setAttribute("height", "15");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "1.9");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+
+  const p1 = document.createElementNS(SVG_NS, "polyline");
+  p1.setAttribute("points", "16 18 22 12 16 6");
+  const p2 = document.createElementNS(SVG_NS, "polyline");
+  p2.setAttribute("points", "8 6 2 12 8 18");
+  svg.appendChild(p1);
+  svg.appendChild(p2);
+  return svg;
+}
+
 function buildFooterDom(host, config) {
   const brand = config.brand || FALLBACK_FOOTER_CONFIG.brand;
   const isCompact = host.getAttribute("data-footer-variant") === "compact";
@@ -81,6 +127,13 @@ function buildFooterDom(host, config) {
   if (isCompact) {
     host.classList.add("site-footer--compact");
   }
+
+  const fragment = document.createDocumentFragment();
+
+  const topLuminousLine = document.createElement("div");
+  topLuminousLine.className = "footer-top-luminous-line";
+  topLuminousLine.setAttribute("aria-hidden", "true");
+  fragment.appendChild(topLuminousLine);
 
   const container = document.createElement("div");
   container.className = "footer-container";
@@ -105,58 +158,80 @@ function buildFooterDom(host, config) {
   divider.setAttribute("aria-hidden", "true");
   container.appendChild(divider);
 
-  // Credits, Partners, Disclaimer & Dynamic Copyright Bar
+  // Credits, Partners, Home-Only Disclaimer & Dynamic Copyright Bar
   const creditsBar = document.createElement("div");
   creditsBar.className = "footer-credits-bar";
 
   if (Array.isArray(config.credits) && config.credits.length > 0) {
-    const creditRow = document.createElement("div");
-    creditRow.className = "footer-credit-row";
+    const pillsRow = document.createElement("div");
+    pillsRow.className = "footer-contributor-pills";
 
-    config.credits.forEach((credit) => {
-      const line = document.createElement("p");
-      line.className = "footer-credit-line";
+    config.credits.forEach((credit, idx) => {
+      const isPatron =
+        idx === 0 || /patron/i.test(credit.role || "");
+      const pill = document.createElement("div");
+      pill.className = `contributor-pill ${
+        isPatron ? "contributor-pill--patron" : "contributor-pill--architect"
+      }`;
+
+      pill.appendChild(
+        isPatron ? createPatronCrownIconSvg() : createArchitectSparkIconSvg(),
+      );
 
       const roleSpan = document.createElement("span");
-      roleSpan.className = "credit-label";
+      roleSpan.className = "contributor-pill-role";
       roleSpan.textContent = credit.role;
 
       const sepSpan = document.createElement("span");
-      sepSpan.className = "credit-sep";
+      sepSpan.className = "contributor-pill-sep";
       sepSpan.setAttribute("aria-hidden", "true");
       sepSpan.textContent = "·";
 
       const nameSpan = document.createElement("span");
-      nameSpan.className = "credit-name";
+      nameSpan.className = "contributor-pill-name";
       nameSpan.textContent = credit.name;
 
-      line.appendChild(roleSpan);
-      line.appendChild(sepSpan);
-      line.appendChild(nameSpan);
-      creditRow.appendChild(line);
+      pill.appendChild(roleSpan);
+      pill.appendChild(sepSpan);
+      pill.appendChild(nameSpan);
+      pillsRow.appendChild(pill);
     });
 
-    creditsBar.appendChild(creditRow);
+    creditsBar.appendChild(pillsRow);
   }
+
+  const isHomePage =
+    document.body?.dataset?.page === "home" ||
+    /^(?:\/(?:plantipedia\/?)?)?(?:index\.html)?$/i.test(
+      window.location.pathname || "/",
+    );
 
   if (!isCompact && Array.isArray(config.partners) && config.partners.length > 0) {
     const partnerPill = document.createElement("div");
-    partnerPill.className = "footer-partner-pill";
+    partnerPill.className = isHomePage
+      ? "footer-partner-pill footer-partner-pill--home"
+      : "footer-partner-pill";
 
     config.partners.forEach((partner, idx) => {
       if (idx > 0) {
-        const pipe = document.createElement("span");
-        pipe.className = "partner-pipe";
-        pipe.setAttribute("aria-hidden", "true");
-        pipe.textContent = "|";
-        partnerPill.appendChild(pipe);
+        if (isHomePage) {
+          partnerPill.appendChild(document.createElement("br"));
+        } else {
+          const pipe = document.createElement("span");
+          pipe.className = "partner-pipe";
+          pipe.setAttribute("aria-hidden", "true");
+          pipe.textContent = "|";
+          partnerPill.appendChild(pipe);
+        }
       }
       const muted = document.createElement("span");
       muted.className = "partner-muted";
       muted.textContent = `${partner.prefix} `;
 
-      const strong = document.createElement("strong");
-      strong.className = "partner-highlight";
+      const strong = document.createElement(isHomePage ? "span" : "strong");
+      strong.className = isHomePage
+        ? "credit-highlight partner-highlight"
+        : "partner-highlight";
       strong.textContent = partner.name;
 
       partnerPill.appendChild(muted);
@@ -167,7 +242,7 @@ function buildFooterDom(host, config) {
   }
 
   const disclaimerText = config.disclaimer || config.legalNote;
-  if (disclaimerText) {
+  if (isHomePage && disclaimerText) {
     const legal = document.createElement("p");
     legal.className = "footer-legal-note";
     legal.textContent = disclaimerText;
@@ -190,20 +265,199 @@ function buildFooterDom(host, config) {
   copyrightEl.textContent = rawTemplate.replace(/\{year\}/g, year);
   bottomRow.appendChild(copyrightEl);
 
-  if (config.backToTopLabel) {
-    const topBtn = document.createElement("button");
-    topBtn.type = "button";
-    topBtn.className = "footer-top-btn";
-    topBtn.textContent = config.backToTopLabel;
-    topBtn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-    bottomRow.appendChild(topBtn);
-  }
-
   creditsBar.appendChild(bottomRow);
   container.appendChild(creditsBar);
-  host.replaceChildren(container);
+  fragment.appendChild(container);
+  host.replaceChildren(fragment);
+}
+
+function initFooterRevealFallback(host) {
+  host.classList.add("footer-css-reveal");
+  const reveal = () => host.classList.add("is-footer-revealed");
+
+  if (typeof IntersectionObserver === "undefined") {
+    reveal();
+    return;
+  }
+
+  const rect = host.getBoundingClientRect();
+  if (rect.top <= window.innerHeight * 0.96) {
+    requestAnimationFrame(reveal);
+    return;
+  }
+
+  const obs = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        obs.disconnect();
+        reveal();
+      }
+    },
+    { threshold: 0.08 },
+  );
+  obs.observe(host);
+}
+
+function initFooterScrollAnimation(host) {
+  if (!host) return;
+  const reduced =
+    (typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches) ||
+    document.body?.classList.contains("is-embed");
+
+  if (reduced) {
+    host.classList.add("is-footer-revealed");
+    return;
+  }
+
+  ensureGsapWithScrollTrigger().then((ready) => {
+    if (!document.body.contains(host)) return;
+    if (!ready || !window.gsap || !window.ScrollTrigger) {
+      initFooterRevealFallback(host);
+      return;
+    }
+
+    const { gsap, ScrollTrigger } = window;
+    const lines = Array.from(
+      host.querySelectorAll(".footer-top-luminous-line, .footer-divider"),
+    );
+    const overview = host.querySelector(".footer-overview-block");
+    const pills = Array.from(host.querySelectorAll(".contributor-pill"));
+    const metaNodes = Array.from(
+      host.querySelectorAll(
+        ".footer-partner-pill, .footer-legal-note, .footer-bottom-meta",
+      ),
+    );
+
+    if (lines.length) gsap.set(lines, { scaleX: 0, transformOrigin: "center center" });
+    if (overview) gsap.set(overview, { opacity: 0, y: 16 });
+    if (pills.length) gsap.set(pills, { opacity: 0, y: 14, scale: 0.96 });
+    if (metaNodes.length) gsap.set(metaNodes, { opacity: 0 });
+
+    const playEntrance = () => {
+      if (host.dataset.footerAnimated === "true") return;
+      host.dataset.footerAnimated = "true";
+      host.classList.add("is-footer-revealed");
+
+      const tl = gsap.timeline({ defaults: { overwrite: "auto" } });
+      if (lines.length) {
+        tl.to(lines, {
+          scaleX: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          stagger: 0.06,
+          clearProps: "transform",
+        });
+      }
+      if (overview) {
+        tl.to(
+          overview,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.62,
+            ease: "power2.out",
+            clearProps: "transform,opacity",
+          },
+          0.12,
+        );
+      }
+      if (pills.length) {
+        tl.to(
+          pills,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.62,
+            stagger: 0.12,
+            ease: "back.out(1.4)",
+            clearProps: "transform,opacity",
+          },
+          0.26,
+        );
+      }
+      if (metaNodes.length) {
+        tl.to(
+          metaNodes,
+          {
+            opacity: 1,
+            duration: 0.55,
+            stagger: 0.08,
+            ease: "power2.out",
+            clearProps: "opacity",
+          },
+          0.42,
+        );
+      }
+    };
+
+    ScrollTrigger.create({
+      trigger: host,
+      start: "top 92%",
+      once: true,
+      onEnter: playEntrance,
+    });
+
+    const checkImmediate = () => {
+      ScrollTrigger.refresh();
+      const rect = host.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.94) {
+        playEntrance();
+      }
+    };
+
+    requestAnimationFrame(checkImmediate);
+    window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+  });
+}
+
+export function initGlobalBackToTopButton() {
+  try {
+    if (new URLSearchParams(window.location.search).get("embed") === "true") {
+      return null;
+    }
+  } catch {
+    // Ignore URLSearchParams issues
+  }
+
+  if (document.body?.classList.contains("is-embed")) {
+    return null;
+  }
+
+  let btn = document.getElementById("plantipedia-back-to-top");
+  if (!btn) {
+    btn = document.createElement("button");
+    btn.id = "plantipedia-back-to-top";
+    btn.className = "plantipedia-back-to-top";
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Back to top");
+    btn.title = "Back to top";
+
+    const arrow = document.createElement("span");
+    arrow.setAttribute("aria-hidden", "true");
+    arrow.textContent = "↑";
+    btn.appendChild(arrow);
+
+    btn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.body.appendChild(btn);
+  }
+
+  if (!window.__plantipediaBackToTopBound) {
+    window.__plantipediaBackToTopBound = true;
+    const syncVisibility = () => {
+      const target = document.getElementById("plantipedia-back-to-top");
+      if (!target) return;
+      target.classList.toggle("is-visible", window.scrollY > 320);
+    };
+    window.addEventListener("scroll", syncVisibility, { passive: true });
+    syncVisibility();
+  }
+
+  return btn;
 }
 
 let compiledFooterPromise = null;
@@ -230,7 +484,10 @@ export function compileFooter() {
       // Ignore query parse failures
     }
 
-    if (!host) return null;
+    if (!host) {
+      initGlobalBackToTopButton();
+      return null;
+    }
 
     let config = FALLBACK_FOOTER_CONFIG;
     try {
@@ -243,6 +500,8 @@ export function compileFooter() {
     }
 
     buildFooterDom(host, config);
+    initFooterScrollAnimation(host);
+    initGlobalBackToTopButton();
     document.dispatchEvent(
       new CustomEvent("plantipedia:footer-ready", { detail: { config } }),
     );

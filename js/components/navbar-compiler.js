@@ -92,6 +92,13 @@ const FALLBACK_NAVBAR_CONFIG = {
       "href": "./compare/",
       "matchPaths": ["/compare/", "/compare"],
       "sublabel": "Side-by-Side Split View"
+    },
+    {
+      "id": "nav-services",
+      "label": "Services",
+      "href": "./services/",
+      "matchPaths": ["/services/", "/services"],
+      "sublabel": "Digital Ecosystem & Live Tools"
     }
   ],
   search: {
@@ -121,6 +128,7 @@ const FALLBACK_NAVBAR_CONFIG = {
       { id: "m-taxonomy", label: "Taxonomic Lineage", href: "./taxonomy/", matchPaths: ["/taxonomy/", "/taxonomy"], sublabel: "Botanical Families & Diagnostic Traits" },
       { id: "m-seasons", label: "6-Season Calendar", href: "./seasons/", matchPaths: ["/seasons/", "/seasons"], sublabel: "Bangladeshi Shororitu Phenology" },
       { id: "m-compare", label: "Compare Split View", href: "./compare/", matchPaths: ["/compare/", "/compare"], sublabel: "Dual-Pane Monograph Comparison" },
+      { id: "m-services", label: "Services", href: "./services/", matchPaths: ["/services/", "/services"], sublabel: "Ecosystem Telemetry, Charts & Live Tools" },
     ],
     categoriesTitle: "Explore by Category",
     categories: [
@@ -705,8 +713,9 @@ function buildMobileOverlayDom(navbarHost, config) {
   corePages.forEach((item, idx) => {
     const card = document.createElement("a");
     card.href = resolveSitePath(item.href);
-    card.className = "mobile-nav-card";
-    if (isNavItemActive(item)) {
+    const active = isNavItemActive(item);
+    card.className = active ? "mobile-nav-card active" : "mobile-nav-card";
+    if (active) {
       card.setAttribute("aria-current", "page");
     }
 

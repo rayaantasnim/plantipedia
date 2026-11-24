@@ -10,6 +10,10 @@ import { getSpeciesIndex, setSpeciesIndex } from "../core/state.js";
 import { applyNotFoundSeo } from "../services/seo.js";
 import { resolveSitePath } from "./navbar-compiler.js";
 import { createEl, createSearchIconSvg } from "../utils/templates.js";
+import {
+  buildNotFoundTelemetryStats,
+  createTelemetryStatsGrid,
+} from "../utils/telemetry-stats.js";
 
 const PLACEHOLDER_SVG_PATH = "./assets/images/placeholder-botanical.svg";
 
@@ -41,14 +45,61 @@ function buildSpeciesHref(slug, isEmbed) {
   );
 }
 
+function createChipLeafSvg() {
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("class", "not-found-chip-leaf");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("width", "13");
+  svg.setAttribute("height", "13");
+  svg.setAttribute("fill", "currentColor");
+  svg.setAttribute("aria-hidden", "true");
+
+  const path = document.createElementNS(svgNS, "path");
+  path.setAttribute(
+    "d",
+    "M13.5 2.5C9.2 2.5 5.4 4.2 3.4 7.3c-1 1.6-1.3 3.4-.9 5.1 1.7.4 3.5.1 5.1-.9 3.1-2 4.8-5.8 5.9-9Zm-7.6 7.7c.9-.9 2-1.9 3.6-2.9a.5.5 0 1 1 .5.8c-1.4.9-2.5 1.8-3.3 2.7l-.8-.6Z",
+  );
+  svg.appendChild(path);
+  return svg;
+}
+
+function buildQuickChipEl(entry, isEmbed) {
+  const chip = document.createElement("a");
+  chip.className = "not-found-pill-chip";
+  chip.href = buildSpeciesHref(entry.slug, isEmbed);
+
+  chip.appendChild(createChipLeafSvg());
+  chip.appendChild(createEl("span", "not-found-chip-en", entry.commonName));
+
+  if (entry.commonNameBn) {
+    const sep = createEl("span", "not-found-chip-sep", "·");
+    sep.setAttribute("aria-hidden", "true");
+    chip.appendChild(sep);
+    chip.appendChild(createEl("span", "not-found-chip-bn", entry.commonNameBn));
+  }
+  return chip;
+}
+
 export function renderSpecimenNotFoundCard(
   mountEl,
-  { speciesIndex = [], requestedSlug = "", isEmbed = false, requestedPath = "" } = {},
+  {
+    speciesIndex = [],
+    requestedSlug = "",
+    isEmbed = false,
+    requestedPath = "",
+    enableAutoRedirect = false,
+  } = {},
 ) {
   if (!mountEl) return;
 
   const list = Array.isArray(speciesIndex) ? speciesIndex : [];
   applyNotFoundSeo({ requestedSlug });
+
+  if (typeof window.__plantipedia404Cleanup === "function") {
+    window.__plantipedia404Cleanup();
+    window.__plantipedia404Cleanup = null;
+  }
 
   const shell = createEl("section", "specimen-not-found-shell");
   shell.setAttribute("aria-labelledby", "notFoundHeading");
@@ -248,13 +299,14 @@ export function renderSpecimenNotFoundCard(
     }
   });
 
-  document.addEventListener("click", (e) => {
+  const handleDocumentClick = (e) => {
     if (!searchWrap.contains(e.target)) {
       hideSuggestions();
     }
-  });
+  };
+  document.addEventListener("click", handleDocumentClick);
 
-  // Quick-jump popular species chips
+  // Quick-jump popular species pill chips
   if (list.length > 0) {
     const featuredSlugs = ["mango", "water-lily", "lotus", "tulsi"];
     const chips = featuredSlugs
@@ -266,13 +318,7 @@ export function renderSpecimenNotFoundCard(
     quickWrap.appendChild(createEl("span", "specimen-not-found-quick-label", "Quick Specifier"));
     const quickRow = createEl("div", "not-found-quick-links");
     chipPool.forEach((entry) => {
-      const chip = createEl(
-        "a",
-        "mobile-quick-chip",
-        entry.commonNameBn ? `${entry.commonName} · ${entry.commonNameBn}` : entry.commonName,
-      );
-      chip.href = buildSpeciesHref(entry.slug, isEmbed);
-      quickRow.appendChild(chip);
+      quickRow.appendChild(buildQuickChipEl(entry, isEmbed));
     });
     quickWrap.appendChild(quickRow);
     card.appendChild(quickWrap);
@@ -297,7 +343,152 @@ export function renderSpecimenNotFoundCard(
   actionsRow.appendChild(atlasBtn);
   card.appendChild(actionsRow);
 
+  // Smart 30-Second Auto-Redirect Timer (on 404.html)
+  let intervalId = null;
+  if (enableAutoRedirect && !isEmbed) {
+    const TOTAL_SECONDS = 30;
+    let remaining = TOTAL_SECONDS;
+    let isPaused = false;
+    let isCancelled = false;
+
+    const timerBox = createEl("div", "redirect-timer-box");
+    timerBox.id = "redirect-timer-box";
+
+    const topRow = createEl("div", "redirect-timer-top");
+    const statusText = createEl(
+      "span",
+      "redirect-timer-text",
+      `Auto-returning to Homepage in ${remaining}s...`,
+    );
+    statusText.id = "redirectTimerStatus";
+
+    const srStatus = createEl(
+      "span",
+      "sr-only",
+      `Auto-returning to Homepage in ${TOTAL_SECONDS} seconds.`,
+    );
+    srStatus.setAttribute("aria-live", "polite");
+
+    const btnGroup = createEl("div", "redirect-timer-controls");
+
+    const resumeBtn = createEl("button", "redirect-timer-btn redirect-timer-btn--resume", "Resume");
+    resumeBtn.type = "button";
+    resumeBtn.hidden = true;
+
+    const cancelBtn = createEl("button", "redirect-timer-btn", "Cancel");
+    cancelBtn.type = "button";
+
+    btnGroup.appendChild(resumeBtn);
+    btnGroup.appendChild(cancelBtn);
+
+    topRow.appendChild(statusText);
+    topRow.appendChild(btnGroup);
+    topRow.appendChild(srStatus);
+
+    const track = createEl("div", "redirect-timer-track");
+    track.setAttribute("aria-hidden", "true");
+    const fill = createEl("div", "redirect-timer-fill");
+    fill.style.width = "100%";
+    track.appendChild(fill);
+
+    timerBox.appendChild(topRow);
+    timerBox.appendChild(track);
+    card.appendChild(timerBox);
+
+    const updateProgressUi = () => {
+      const pct = Math.max(0, Math.min(100, (remaining / TOTAL_SECONDS) * 100));
+      fill.style.width = `${pct}%`;
+    };
+
+    const startInterval = () => {
+      if (intervalId !== null || isCancelled) return;
+      intervalId = window.setInterval(() => {
+        if (isPaused || isCancelled) return;
+        remaining -= 1;
+        if (remaining <= 0) {
+          remaining = 0;
+          updateProgressUi();
+          statusText.textContent = "Auto-returning to Homepage in 0s...";
+          srStatus.textContent = "Returning to Homepage now.";
+          window.clearInterval(intervalId);
+          intervalId = null;
+          window.location.href = resolveSitePath("./");
+          return;
+        }
+        statusText.textContent = `Auto-returning to Homepage in ${remaining}s...`;
+        updateProgressUi();
+        if (remaining === 15 || remaining === 5) {
+          srStatus.textContent = `Auto-returning to Homepage in ${remaining} seconds.`;
+        }
+      }, 1000);
+    };
+
+    const pauseTimer = () => {
+      if (isCancelled || isPaused) return;
+      isPaused = true;
+      timerBox.classList.add("is-paused");
+      statusText.textContent = "Auto-redirect paused while searching";
+      srStatus.textContent = "Auto-redirect paused while searching.";
+      resumeBtn.hidden = false;
+    };
+
+    const resumeTimer = () => {
+      if (isCancelled || !isPaused) return;
+      isPaused = false;
+      timerBox.classList.remove("is-paused");
+      statusText.textContent = `Auto-returning to Homepage in ${remaining}s...`;
+      srStatus.textContent = `Auto-redirect resumed with ${remaining} seconds remaining.`;
+      resumeBtn.hidden = true;
+      startInterval();
+    };
+
+    const cancelTimer = () => {
+      if (isCancelled) return;
+      isCancelled = true;
+      isPaused = false;
+      if (intervalId !== null) {
+        window.clearInterval(intervalId);
+        intervalId = null;
+      }
+      timerBox.classList.remove("is-paused");
+      timerBox.classList.add("is-cancelled");
+      statusText.textContent = "Auto-redirect cancelled.";
+      srStatus.textContent = "Auto-redirect cancelled.";
+      resumeBtn.hidden = true;
+      cancelBtn.hidden = true;
+      track.hidden = true;
+    };
+
+    input.addEventListener("focus", pauseTimer);
+    input.addEventListener("input", pauseTimer);
+    resumeBtn.addEventListener("click", resumeTimer);
+    cancelBtn.addEventListener("click", cancelTimer);
+
+    startInterval();
+  }
+
+  window.__plantipedia404Cleanup = () => {
+    document.removeEventListener("click", handleDocumentClick);
+    if (intervalId !== null) {
+      window.clearInterval(intervalId);
+      intervalId = null;
+    }
+  };
+
   shell.appendChild(card);
+
+  if (!isEmbed) {
+    const telemetryWrap = createEl("div", "not-found-telemetry-wrap");
+    telemetryWrap.appendChild(
+      createTelemetryStatsGrid(buildNotFoundTelemetryStats(list), {
+        variant: "compact",
+        ariaLabel: "Explore Plantipedia archive metrics",
+        sectionId: "notFoundTelemetryGrid",
+      }),
+    );
+    shell.appendChild(telemetryWrap);
+  }
+
   mountEl.replaceChildren(shell);
 }
 
@@ -324,5 +515,6 @@ export async function mountStandalone404Page() {
     requestedSlug,
     requestedPath: window.location.pathname,
     isEmbed: false,
+    enableAutoRedirect: true,
   });
 }

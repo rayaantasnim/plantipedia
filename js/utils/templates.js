@@ -6,6 +6,10 @@
 
 import { createBookmarkButton } from "../services/herbarium.js";
 import { resolveRootPath } from "../core/router.js";
+import {
+  buildHomeTelemetryStats,
+  createTelemetryStatsGrid,
+} from "./telemetry-stats.js";
 
 const SAFE_PROTOCOL_RE = /^(https?:|\.{0,2}\/|#)/i;
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -214,6 +218,21 @@ export function renderMountSkeleton(mountEl, sectionKey) {
     return;
   }
 
+  if (sectionKey === "home-telemetry") {
+    const band = createEl("div", "home-telemetry-section");
+    band.setAttribute("aria-hidden", "true");
+    const container = createEl("div", "section-container");
+    const bar = createEl("div", "skeleton-hero-bar skeleton-shimmer");
+    bar.style.maxWidth = "100%";
+    bar.style.height = "128px";
+    bar.style.borderRadius = "18px";
+    container.appendChild(bar);
+    band.appendChild(container);
+    fragment.appendChild(band);
+    mountEl.replaceChildren(fragment);
+    return;
+  }
+
   if (sectionKey === "directory-banner" || sectionKey === "page-banner") {
     const band = createEl("div", "skeleton-section-band");
     band.setAttribute("aria-hidden", "true");
@@ -276,7 +295,8 @@ export function renderMountSkeleton(mountEl, sectionKey) {
     sectionKey === "about" ||
     sectionKey === "directory-explorer" ||
     sectionKey === "taxonomy-explorer" ||
-    sectionKey === "compare-workspace";
+    sectionKey === "compare-workspace" ||
+    sectionKey === "services-portal";
   const count =
     sectionKey === "featured-species" ||
     sectionKey === "highlights" ||
@@ -426,6 +446,23 @@ export function renderHeroSection(mountEl, { pageData }) {
   }
 
   wrapper.appendChild(inner);
+  mountEl.replaceChildren(wrapper);
+}
+
+/**
+ * 1b. Home Archive Telemetry Stats Grid (GSAP + ScrollTrigger)
+ */
+export function renderHomeTelemetrySection(mountEl, { catalog }) {
+  if (!mountEl) return;
+  const wrapper = createEl("div", "home-telemetry-section");
+  const container = createEl("div", "section-container");
+  container.appendChild(
+    createTelemetryStatsGrid(buildHomeTelemetryStats(catalog), {
+      ariaLabel: "Plantipedia archive telemetry metrics",
+      sectionId: "homeTelemetryGrid",
+    }),
+  );
+  wrapper.appendChild(container);
   mountEl.replaceChildren(wrapper);
 }
 

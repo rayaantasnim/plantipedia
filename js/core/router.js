@@ -12,6 +12,7 @@ const LEGACY_HTML_ROUTE_MAP = Object.freeze({
   "taxonomy.html": "taxonomy/",
   "seasons.html": "seasons/",
   "compare.html": "compare/",
+  "services.html": "services/",
 });
 
 export function getRootPath() {

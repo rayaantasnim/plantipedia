@@ -4,7 +4,7 @@
  * resolved safely against self.location (compatible with both / and /plantipedia/ GitHub Pages).
  */
 
-const CACHE_VERSION = "plantipedia-v2.0.0";
+const CACHE_VERSION = "plantipedia-v2.4.0";
 
 const CORE_SHELL_PATHS = [
   "./",
@@ -13,6 +13,7 @@ const CORE_SHELL_PATHS = [
   "./taxonomy/",
   "./seasons/",
   "./compare/",
+  "./services/",
   "./404.html",
   "./manifest.json",
   "./assets/images/brand-flower.svg",
@@ -33,12 +34,15 @@ const CORE_SHELL_PATHS = [
   "./js/services/api.js",
   "./js/services/herbarium.js",
   "./js/services/seo.js",
+  "./js/views/services-view.js",
+  "./js/utils/telemetry-stats.js",
   "./js/components/navbar-compiler.js",
   "./js/components/footer-compiler.js",
   "./js/components/specimen-not-found.js",
   "./data/config/navbar.json",
   "./data/config/footer.json",
   "./data/catalog/species-index.json",
+  "./data/pages/services.json",
 ];
 
 self.addEventListener("install", (event) => {

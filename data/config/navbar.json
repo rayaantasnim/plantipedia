@@ -87,6 +87,13 @@
       "href": "./compare/",
       "matchPaths": ["/compare/", "/compare"],
       "sublabel": "Side-by-Side Split View"
+    },
+    {
+      "id": "nav-services",
+      "label": "Services",
+      "href": "./services/",
+      "matchPaths": ["/services/", "/services"],
+      "sublabel": "Digital Ecosystem & Live Tools"
     }
   ],
   "search": {
@@ -148,6 +155,13 @@
         "href": "./compare/",
         "matchPaths": ["/compare/", "/compare"],
         "sublabel": "Dual-Pane Monograph Comparison"
+      },
+      {
+        "id": "m-services",
+        "label": "Services",
+        "href": "./services/",
+        "matchPaths": ["/services/", "/services"],
+        "sublabel": "Ecosystem Telemetry, Charts & Live Tools"
       }
     ],
     "categoriesTitle": "Explore by Category",

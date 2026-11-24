@@ -226,6 +226,30 @@
       "category": "Ecology",
       "en": "A functional group of pollinators (bees, hoverflies, bats, or hawkmoths) drawn to plants sharing compatible floral shapes, scents, and nectar timing.",
       "bn": "পরাগায়নকারী দল — একই ধরনের ফুলের গঠন ও মধুর টানে আকৃষ্ট মৌমাছি, প্রজাপতি বা পাখির সমষ্টি।"
+    },
+    {
+      "id": "allelopathy",
+      "term": "Allelopathy",
+      "aliases": ["allelopathy", "allelopathic"],
+      "category": "Ecology",
+      "en": "The biochemical phenomenon where a plant releases secondary compounds (such as alpha-terthienyl from marigold roots) into soil to suppress competing weeds or root nematodes.",
+      "bn": "অ্যালিলোপ্যাথি — উদ্ভিদের শিকড় বা পাতা থেকে নিঃসৃত প্রাকৃতিক জৈব-রাসায়নিক পদার্থ, যা মাটির ক্ষতিকর কৃমি বা প্রতিদ্বন্দ্বী আগাছার বৃদ্ধি দমন করে।"
+    },
+    {
+      "id": "mycorrhiza",
+      "term": "Mycorrhiza",
+      "aliases": ["mycorrhiza", "mycorrhizal", "mycorrhizae"],
+      "category": "Ecology",
+      "en": "A mutually beneficial symbiotic association between beneficial soil fungi and vascular plant roots that expands phosphorus, micronutrient, and water uptake.",
+      "bn": "মাইকোরাইজা — উদ্ভিদের শিকড় ও উপকারী ছত্রাকের মিথোজীবী সম্পর্ক, যা মাটি থেকে ফসফরাস ও খনিজ শোষণ বহুগুণ বাড়িয়ে দেয়।"
+    },
+    {
+      "id": "l-theanine",
+      "term": "L-theanine",
+      "aliases": ["l-theanine", "theanine"],
+      "category": "Phytochemistry",
+      "en": "A unique non-protein amino acid synthesized predominantly in Camellia sinensis roots and leaves that imparts umami sweetness and promotes calm cognitive focus.",
+      "bn": "এল-থিয়ানিন — চা পাতায় (Camellia sinensis) পাওয়া বিশেষ অ্যামিনো অ্যাসিড, যা চায়ে মৃদু মিষ্টতা আনে এবং মানসিক প্রশান্তি ও মনোযোগ বাড়াতে সহায়তা করে।"
     }
   ]
 }

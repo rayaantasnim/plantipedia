@@ -4,14 +4,19 @@
  */
 
 import { createEl } from "./templates.js";
+import { resolveRootPath } from "../core/router.js";
 
-function getCleanCanonicalHref(plant) {
+function getCleanCanonicalHref(plant, cfg = {}) {
+  if (cfg.canonicalUrl) return cfg.canonicalUrl;
   try {
+    if (plant?.slug) {
+      const targetHref = resolveRootPath(
+        `./plant/?species=${encodeURIComponent(plant.slug)}`,
+      );
+      return new URL(targetHref, window.location.href).href;
+    }
     const url = new URL(window.location.href);
     url.searchParams.delete("embed");
-    if (plant?.slug) {
-      url.searchParams.set("species", plant.slug);
-    }
     return url.href;
   } catch {
     return window.location.href;
@@ -22,7 +27,7 @@ function buildCitations(plant, cfg = {}) {
   const institution = cfg.institution || "Plantipedia Botanical Archive";
   const year = String(cfg.year || 2026);
   const title = `${plant.commonName} (${plant.scientificName})`;
-  const url = getCleanCanonicalHref(plant);
+  const url = getCleanCanonicalHref(plant, cfg);
 
   const now = new Date();
   const monthNames = [

@@ -55,7 +55,7 @@ export function applyGlossaryTooltips(rootContainer, glossaryData) {
   if (!matcher) return;
 
   const proseTargets = rootContainer.querySelectorAll(
-    ".overview-lead-summary, .chapter-body p, .subblock-item p, .safety-notice-box",
+    ".overview-lead-summary, .chapter-body p, .subblock-item p, .safety-notice-box, .services-glossary-sample p",
   );
 
   const seenTermsGlobal = new Set();

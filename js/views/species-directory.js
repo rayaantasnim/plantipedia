@@ -15,6 +15,10 @@ import {
 import { animateDynamicSpeciesGrid } from "../core/animations.js";
 import { createBookmarkSvg, getSavedSlugs } from "../services/herbarium.js";
 import { applySpeciesDirectorySeo } from "../services/seo.js";
+import {
+  buildSpeciesAtlasTelemetryStats,
+  createTelemetryStatsGrid,
+} from "../utils/telemetry-stats.js";
 
 function plantMatchesQuery(plant, query) {
   if (!query) return true;
@@ -119,6 +123,16 @@ export function renderDirectoryBanner(mountEl, { pageData, catalog }) {
   bannerGrid.appendChild(left);
   bannerGrid.appendChild(statsWrap);
   container.appendChild(bannerGrid);
+
+  const telemetryWrap = createEl("div", "directory-telemetry-wrap");
+  telemetryWrap.appendChild(
+    createTelemetryStatsGrid(buildSpeciesAtlasTelemetryStats(catalog), {
+      ariaLabel: "Species Atlas live archive telemetry",
+      sectionId: "speciesAtlasTelemetryGrid",
+    }),
+  );
+  container.appendChild(telemetryWrap);
+
   wrapper.appendChild(container);
   mountEl.replaceChildren(wrapper);
 }
