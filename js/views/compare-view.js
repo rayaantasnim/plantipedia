@@ -118,7 +118,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     }
   }
 
-  function renderSelectorView({ resetUrl = false } = {}) {
+  function renderSelectorView({ resetUrl = false, highlightRight = false } = {}) {
     clearLoaderTimers();
     removeFloatingModeButton();
     if (resetUrl) {
@@ -153,8 +153,23 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     const leftCtl = buildSpeciesSelect("compareLeftSelect", selCfg.leftLabel || "Left Specimen");
     const rightCtl = buildSpeciesSelect("compareRightSelect", selCfg.rightLabel || "Right Specimen");
 
-    if (leftSlug) leftCtl.select.value = leftSlug;
+    if (leftSlug) {
+      leftCtl.select.value = leftSlug;
+      leftCtl.select.disabled = false;
+      leftCtl.field.classList.add("is-preselected");
+    }
     if (rightSlug) rightCtl.select.value = rightSlug;
+
+    const rightHint = createEl(
+      "span",
+      "compare-select-hint",
+      selCfg.rightNextStepHint || "Next step: Pick a second specimen to compare side-by-side.",
+    );
+    rightHint.hidden = !(highlightRight && leftSlug && !rightSlug);
+    rightCtl.field.appendChild(rightHint);
+    if (highlightRight && leftSlug && !rightSlug) {
+      rightCtl.field.classList.add("is-guided-next");
+    }
 
     selectsRow.appendChild(leftCtl.field);
     selectsRow.appendChild(rightCtl.field);
@@ -179,6 +194,11 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     const validateSelection = () => {
       leftSlug = leftCtl.select.value;
       rightSlug = rightCtl.select.value;
+
+      leftCtl.field.classList.toggle("is-preselected", Boolean(leftSlug));
+      const guideRight = Boolean(leftSlug && !rightSlug);
+      rightCtl.field.classList.toggle("is-guided-next", guideRight);
+      rightHint.hidden = !guideRight;
 
       if (leftSlug && rightSlug && leftSlug === rightSlug) {
         submitBtn.disabled = true;
@@ -206,6 +226,13 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     validateSelection();
     shell.appendChild(card);
     mountEl.replaceChildren(shell);
+
+    if (highlightRight && leftSlug && !rightSlug) {
+      requestAnimationFrame(() => {
+        rightCtl.field.scrollIntoView({ behavior: "smooth", block: "center" });
+        rightCtl.select.focus({ preventScroll: true });
+      });
+    }
   }
 
   function launchComparisonWithLoader(slugA, slugB) {
@@ -420,20 +447,28 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
   }
 
   const urlParams = new URLSearchParams(window.location.search);
-  const initialA = (urlParams.get("a") || urlParams.get("left") || "").trim().toLowerCase();
-  const initialB = (urlParams.get("b") || urlParams.get("right") || "").trim().toLowerCase();
+  const initialA = (
+    urlParams.get("left") ||
+    urlParams.get("a") ||
+    urlParams.get("species") ||
+    ""
+  )
+    .trim()
+    .toLowerCase();
+  const initialB = (urlParams.get("right") || urlParams.get("b") || "")
+    .trim()
+    .toLowerCase();
 
-  if (
-    initialA &&
-    initialB &&
-    initialA !== initialB &&
-    speciesBySlug.has(initialA) &&
-    speciesBySlug.has(initialB)
-  ) {
+  if (initialA && speciesBySlug.has(initialA)) {
     leftSlug = initialA;
+  }
+  if (initialB && speciesBySlug.has(initialB) && initialB !== leftSlug) {
     rightSlug = initialB;
-    launchComparisonWithLoader(initialA, initialB);
+  }
+
+  if (leftSlug && rightSlug && leftSlug !== rightSlug) {
+    launchComparisonWithLoader(leftSlug, rightSlug);
   } else {
-    renderSelectorView();
+    renderSelectorView({ highlightRight: Boolean(leftSlug && !rightSlug) });
   }
 }

@@ -2,21 +2,21 @@
   "schemaVersion": "1.0.0",
   "page": "species",
   "seo": {
-    "title": "Available Species Directory — 30 Curated Flora Monographs | Plantipedia",
-    "description": "Browse the complete Plantipedia species directory of 30 curated botanical monographs featuring A-Z alphabetical indexing, taxonomic category filters, and instant search.",
-    "keywords": "plant directory, 30 plant species, A-Z plant list, botanical atlas, Plantipedia species, taxonomy search, medicinal flora, fruit trees, ornamental flowers",
+    "title": "Available Species Directory — 50 Curated Flora Monographs | Plantipedia",
+    "description": "Browse the complete Plantipedia species directory of 50 curated botanical monographs featuring A-Z alphabetical indexing, taxonomic category filters, and instant search.",
+    "keywords": "plant directory, 50 plant species, A-Z plant list, botanical atlas, Plantipedia species, taxonomy search, medicinal flora, fruit trees, ornamental flowers",
     "author": "Jalees Habib, Rayaan Tasnim",
     "canonicalFile": "species/",
     "ogType": "website",
-    "ogTitle": "Available Species Directory — 30 Curated Flora Monographs | Plantipedia",
-    "ogDescription": "Search and filter all 30 documented botanical species across Flowers, Fruit Trees, Medicinal Plants, Shrubs & Herbs, Trees & Palms, and Aquatic Flora.",
+    "ogTitle": "Available Species Directory — 50 Curated Flora Monographs | Plantipedia",
+    "ogDescription": "Search and filter all 50 documented botanical species across Flowers, Fruit Trees, Medicinal Plants, Shrubs & Herbs, Trees & Palms, and Aquatic Flora.",
     "ogImage": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
     "ogImageAlt": "Plantipedia Botanical Species Directory",
     "jsonLd": {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       "name": "Plantipedia Available Species Directory",
-      "description": "Searchable and filterable atlas of 30 curated botanical species monographs on Plantipedia.",
+      "description": "Searchable and filterable atlas of 50 curated botanical species monographs on Plantipedia.",
       "url": "https://rayaantasnim.github.io/plantipedia/species/",
       "isPartOf": {
         "@type": "WebSite",
@@ -36,7 +36,7 @@
     ],
     "eyebrow": "Complete Botanical Index",
     "headline": "Available Species Atlas",
-    "subcopy": "Browse all 30 curated species in the Plantipedia herbarium archive with instant A–Z alphabetical indexing, taxonomic category filtering, family sorting, and zero-lag rendering.",
+    "subcopy": "Browse all 50 curated species in the Plantipedia herbarium archive with instant A–Z alphabetical indexing, taxonomic category filtering, family sorting, and zero-lag rendering.",
     "stats": {
       "totalLabel": "Documented Species",
       "filteredLabel": "Matching Filters"

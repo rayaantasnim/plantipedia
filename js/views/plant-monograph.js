@@ -88,6 +88,62 @@ function createPrintIconSvg() {
   return svg;
 }
 
+function createCompareIconSvg() {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", "16");
+  svg.setAttribute("height", "16");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "2");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+
+  const topLine = document.createElementNS(SVG_NS, "path");
+  topLine.setAttribute("d", "M4 8h15");
+  const topArrow = document.createElementNS(SVG_NS, "polyline");
+  topArrow.setAttribute("points", "15 4 19 8 15 12");
+  const botLine = document.createElementNS(SVG_NS, "path");
+  botLine.setAttribute("d", "M20 16H5");
+  const botArrow = document.createElementNS(SVG_NS, "polyline");
+  botArrow.setAttribute("points", "9 12 5 16 9 20");
+
+  svg.appendChild(topLine);
+  svg.appendChild(topArrow);
+  svg.appendChild(botLine);
+  svg.appendChild(botArrow);
+  return svg;
+}
+
+function mountFloatingCompareButton(plant, isEmbed) {
+  const existing = document.getElementById("plant-floating-compare");
+  if (existing) existing.remove();
+
+  if (!plant || !plant.slug || isEmbed) return;
+
+  const urlSpecies = new URLSearchParams(window.location.search).get("species");
+  const currentSpeciesSlug = (urlSpecies || plant.slug || "").trim();
+  if (!currentSpeciesSlug) return;
+
+  const compareLink = document.createElement("a");
+  compareLink.id = "plant-floating-compare";
+  compareLink.className = "plant-floating-compare-btn";
+  compareLink.href = resolveRootPath(
+    `./compare/?left=${encodeURIComponent(currentSpeciesSlug)}`,
+  );
+  compareLink.setAttribute(
+    "aria-label",
+    `Compare ${plant.commonName} side-by-side with another species`,
+  );
+  compareLink.title = `Compare ${plant.commonName} side-by-side`;
+
+  compareLink.appendChild(createCompareIconSvg());
+  compareLink.appendChild(createEl("span", "", "⇄ Compare"));
+
+  document.body.appendChild(compareLink);
+}
+
 function buildFigureElement(fig, figCode, className) {
   const figure = createEl("figure", className);
   const mediaBox = createEl("div", "figure-media-box");
@@ -493,6 +549,7 @@ export function renderPlantMonograph(
   const sectionMapCfg = pageData.sectionMap || {};
 
   if (!plant) {
+    mountFloatingCompareButton(null, isEmbed);
     renderSpecimenNotFoundCard(mountEl, {
       speciesIndex: indexList,
       requestedSlug,
@@ -766,6 +823,7 @@ export function renderPlantMonograph(
 
   mountEl.replaceChildren(detailContainer);
   mountAndBindSectionMap(sectionMapCfg, plant);
+  mountFloatingCompareButton(plant, isEmbed);
 
   // 7. Apply Botanical Glossary Auto-Tooltips across prose
   if (glossaryData) {

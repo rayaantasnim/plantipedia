@@ -14,7 +14,8 @@ function registerServiceWorker() {
   if (
     typeof navigator === "undefined" ||
     !("serviceWorker" in navigator) ||
-    window.location.protocol === "file:"
+    window.location.protocol === "file:" ||
+    /^(localhost|127\.0\.0\.1)$|\.run\.app$|^ais-/i.test(window.location.hostname)
   ) {
     return;
   }

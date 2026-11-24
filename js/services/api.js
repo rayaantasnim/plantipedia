@@ -6,15 +6,16 @@
 import { resolveRootPath } from "../core/router.js";
 
 const SITE_ROOT_URL = new URL("../../", import.meta.url);
-const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v30";
+const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v50";
 const LEGACY_SPECIES_INDEX_KEYS = [
   "plantipedia:species-index:v1.0.0",
   "plantipedia:species-index:v1.1.0",
   "plantipedia:species-index:v1.2.0",
   "plantipedia:species-index:v1.3.0",
+  "plantipedia:species-index:v30",
 ];
 const KEBAB_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const DATA_CACHE_BUST = "v=30";
+const DATA_CACHE_BUST = "v=50";
 
 export const DATASET_ENDPOINTS = Object.freeze({
   navbar: `./data/config/navbar.json?${DATA_CACHE_BUST}`,
@@ -300,7 +301,7 @@ const VALIDATORS = {
 };
 
 async function fetchJsonResource(url, label) {
-  const response = await fetch(url, { cache: "no-cache" });
+  const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`Failed to fetch ${label} (HTTP ${response.status}).`);
   }
@@ -328,7 +329,7 @@ function readCachedSpeciesIndex() {
     const raw = window.sessionStorage?.getItem(SPECIES_INDEX_STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed) || parsed.length < 30) {
+    if (!Array.isArray(parsed) || parsed.length < 50) {
       window.sessionStorage?.removeItem(SPECIES_INDEX_STORAGE_KEY);
       return null;
     }

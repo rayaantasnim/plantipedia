@@ -181,9 +181,9 @@ export function applySpeciesDirectorySeo({ pageData, speciesList }) {
       {
         "@type": "Dataset",
         "@id": `${speciesUrl}#dataset`,
-        name: "Plantipedia 30-Species Botanical Index",
+        name: "Plantipedia 50-Species Botanical Index",
         description:
-          "Structured taxonomic, phenological, and ecological metadata across 30 curated plant species monographs.",
+          "Structured taxonomic, phenological, and ecological metadata across 50 curated plant species monographs.",
         url: speciesUrl,
         creator: AUTHOR_ENTITIES,
         distribution: {
@@ -400,7 +400,7 @@ export function applySeasonsSeo({
   const description = focusedSeason
     ? `${focusedSeason.climateSummary} Discover ${floraList.length} active flora species during ${focusedSeason.nameEn} (${focusedSeason.bengaliMonths}).`
     : baseSeo.description ||
-      "Explore Bengal's six botanical seasons (Shororitu) and track flowering, fruiting, and ecological transitions across 30 species.";
+      "Explore Bengal's six botanical seasons (Shororitu) and track flowering, fruiting, and ecological transitions across 50 species.";
 
   document.title = title;
   setCanonicalHref(pageUrl);
@@ -745,7 +745,7 @@ export function applyPlantMonographSeo(plant) {
 export function applyNotFoundSeo({ requestedSlug = "" } = {}) {
   const title = "Specimen Not Found in Archive | Plantipedia";
   const description = requestedSlug
-    ? `No herbarium record matched "${requestedSlug}". Search all 30 documented botanical monographs in Plantipedia.`
+    ? `No herbarium record matched "${requestedSlug}". Search all 50 documented botanical monographs in Plantipedia.`
     : "The requested botanical monograph or archive route does not exist in Plantipedia.";
 
   document.title = title;

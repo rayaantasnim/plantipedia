@@ -77,8 +77,8 @@ function computeArchiveMetrics(speciesIndex, seasons) {
   });
 
   return {
-    speciesCount: list.length || 30,
-    familiesCount: familySet.size || 24,
+    speciesCount: list.length || 50,
+    familiesCount: familySet.size || 34,
     seasonsCount: seasonList.length || 6,
     categoryStats,
     seasonStats,

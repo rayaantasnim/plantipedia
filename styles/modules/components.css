@@ -1141,6 +1141,69 @@
   display: none;
 }
 
+#plant-floating-compare,
+.plant-floating-compare-btn {
+  position: fixed;
+  bottom: 76px;
+  right: 24px;
+  z-index: 990;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(10, 32, 26, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  color: #6ee7b7;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition:
+    transform 0.2s var(--ease-settle),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+#plant-floating-compare:hover,
+#plant-floating-compare:focus-visible,
+.plant-floating-compare-btn:hover,
+.plant-floating-compare-btn:focus-visible {
+  transform: translateY(-2px);
+  background: rgba(16, 48, 36, 0.94);
+  border-color: rgba(52, 211, 153, 0.78);
+  color: #a7f3d0;
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.24);
+}
+
+#plant-floating-compare:active,
+.plant-floating-compare-btn:active {
+  transform: scale(0.97);
+}
+
+body.is-embed #plant-floating-compare,
+body.is-embed .plant-floating-compare-btn {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  #plant-floating-compare,
+  .plant-floating-compare-btn {
+    bottom: 68px;
+    right: 16px;
+    padding: 9px 15px;
+    font-size: 0.8rem;
+  }
+}
+
 /* ================= TAXONOMY & SEASON BADGE / TRAIT COMPONENTS ================= */
 .family-order-label,
 .season-months-meta {

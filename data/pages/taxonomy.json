@@ -295,6 +295,116 @@
         "Dense trailing violet root curtains absorbing aquatic nitrates rapidly",
         "Orchid-like six-tepalled spikes bearing golden peacock-eye nectar guides"
       ]
+    },
+    "Dipterocarpaceae": {
+      "order": "Malvales",
+      "clade": "Eudicot (Malvids)",
+      "familyBn": "ডিপ্টেরোকার্পাসি (শাল-গর্জন গোত্র)",
+      "description": "Resin-bearing tropical hardwood giants anchoring South and Southeast Asian broadleaf forests, instantly recognizable by shuttlecock-like winged fruiting calyces.",
+      "traits": [
+        "Woody ovoid nuts crowned with two to five persistent papery calyx wings",
+        "Deeply fissured fire-hardy bark containing aromatic dammar oleoresins",
+        "Ectomycorrhizal root symbiosis supporting gregarious terrace stands"
+      ]
+    },
+    "Combretaceae": {
+      "order": "Myrtales",
+      "clade": "Eudicot (Malvids)",
+      "familyBn": "কমব্রেটাসি (অর্জুন-হরীতকী গোত্র)",
+      "description": "Riparian and dry-forest trees and lianas marked by sub-opposite leaves with basal petiole glands, apetalous stamen-rich spikes, and ribbed or five-winged woody drupes.",
+      "traits": [
+        "Pair of extrafloral nectar glands at the petiole-blade junction",
+        "Dense tannin- and triterpenoid-rich flaking inner bark",
+        "Fibrous multi-winged or angled drupes adapted for floodwater dispersal"
+      ]
+    },
+    "Rutaceae": {
+      "order": "Sapindales",
+      "clade": "Eudicot (Malvids)",
+      "familyBn": "রুটাসি (লেবু-বেল-কামিনী গোত্র)",
+      "description": "Aromatic citrus and wood-apple family distinguished by leaves speckled with translucent essential-oil glands, winged petioles, and intensely fragrant white blossoms.",
+      "traits": [
+        "Pellucid terpenoid oil dots visible when leaves are held against sunlight",
+        "Stout axillary spines or glossy pinnate leaflets with citrus scent",
+        "Hesperidium or hard-shelled amphisarca fruits rich in aromatic pectin"
+      ]
+    },
+    "Lythraceae": {
+      "order": "Myrtales",
+      "clade": "Eudicot (Malvids)",
+      "familyBn": "লাইথ্রাসি (ডালিম-জারুল-পানিফল গোত্র)",
+      "description": "Diverse family spanning ornamental crape-myrtles, jewel-seeded pomegranates, and floating wetland water chestnuts marked by crumpled petals and tubular hypanthia.",
+      "traits": [
+        "Campanulate leathery floral hypanthium cradling crumpled petals",
+        "Opposite simple leaves and tannin-rich rinds or aquatic floating rosettes",
+        "Fleshy arillate seeds (pomegranate) or horned woody aquatic nuts"
+      ]
+    },
+    "Oxalidaceae": {
+      "order": "Oxalidales",
+      "clade": "Eudicot (Rosids)",
+      "familyBn": "অক্সালিডাসি (কামরাঙ্গা গোত্র)",
+      "description": "Woody fruit trees and clover-like herbs noted for oxalic-acid-rich sap, nyctinastic sleep-folding compound leaflets, and deeply five-ribbed star-shaped berries.",
+      "traits": [
+        "Odd-pinnate compound leaves folding downward neatly at dusk",
+        "Cauliflorous and axillary clusters of pink-lavender pentamerous blooms",
+        "Succulent five-winged berries slicing cleanly into five-pointed stars"
+      ]
+    },
+    "Magnoliaceae": {
+      "order": "Magnoliales",
+      "clade": "Magnoliid (Early Angiosperm)",
+      "familyBn": "ম্যাগনোলিয়াসি (চম্পা গোত্র)",
+      "description": "Ancient evolutionary lineage of fragrant forest trees featuring spirally arranged waxy tepals, ringed stipule scars on twigs, and beetle-pollinated cone-like fruits.",
+      "traits": [
+        "Elongated floral receptacle packed with spiral tepals and stamens",
+        "Conical stipular hoods leaving circular nodal rings along smooth twigs",
+        "Fleshy scarlet-seeded follicular aggregates splitting along wooden axes"
+      ]
+    },
+    "Phyllanthaceae": {
+      "order": "Malpighiales",
+      "clade": "Eudicot (Rosids)",
+      "familyBn": "ফাইল্যান্থাসি (আমলকী গোত্র)",
+      "description": "Tropical trees and herbs distinguished by feathery twiglets ('phyllanthoid branching') mimicking pinnate leaves and crisp vitamin-C-packed ribbed drupes.",
+      "traits": [
+        "Deciduous slender branchlets bearing neat rows of tiny oblong leaflets",
+        "Minute monoecious blossoms tucked in axillary clusters along twigs",
+        "Six-ribbed translucent green-gold fruits rich in ascorbic acid & tannins"
+      ]
+    },
+    "Acanthaceae": {
+      "order": "Lamiales",
+      "clade": "Eudicot (Lamiids)",
+      "familyBn": "অ্যাকান্থাসি (কালমেঘ-বাসক গোত্র)",
+      "description": "Medicinal herbs and coastal shrubs recognized by swollen stem nodes above opposite leaves, two-lipped flowers, and explosively dehiscent seed capsules.",
+      "traits": [
+        "Distinctively swollen jointed nodes along quadrangular herbaceous stems",
+        "Bilabiate spotted corollas often framed by conspicuous floral bracts",
+        "Linear two-valved capsules hurling seeds via curved hook-like retinacula"
+      ]
+    },
+    "Plantaginaceae": {
+      "order": "Lamiales",
+      "clade": "Eudicot (Lamiids)",
+      "familyBn": "প্ল্যান্টাজিনাসি (ব্রাহ্মী গোত্র)",
+      "description": "Cosmopolitan medicinal herbs spanning dryland plantains and creeping wetland neuro-botanical mats like Brahmi with succulent opposite leaves and five-lobed bells.",
+      "traits": [
+        "Creeping stoloniferous stems rooting effortlessly at flooded nodes",
+        "Fleshy opposite sessile blades retaining moisture in marsh margins",
+        "Triterpenoid bacoside saponins concentrated in succulent aerial shoots"
+      ]
+    },
+    "Typhaceae": {
+      "order": "Poales",
+      "clade": "Monocot (Commelinids)",
+      "familyBn": "টাইফাসি (হোগলা গোত্র)",
+      "description": "Rhizomatous marshland monocot reeds rising in sword-like vertical blades crowned by dense velvety brown cylindrical cattail flower spikes.",
+      "traits": [
+        "Spongy aerenchyma-filled sword leaves withstanding brackish tides",
+        "Distinctive two-part unisexual cattail spike (male apex over female cylinder)",
+        "Millions of wind-drifted plumed achenes stabilizing delta mudflats"
+      ]
     }
   }
 }

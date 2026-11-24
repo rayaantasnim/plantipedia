@@ -117,7 +117,7 @@ export function renderSpecimenNotFoundCard(
   heading.id = "notFoundHeading";
   card.appendChild(heading);
 
-  const totalAvailable = list.length > 0 ? list.length : 30;
+  const totalAvailable = list.length > 0 ? list.length : 50;
   let detailCopy =
     `The requested botanical monograph or archive route does not exist in our current ${totalAvailable}-species registry. Search our living catalog below or return to the main flora index.`;
   if (requestedSlug) {

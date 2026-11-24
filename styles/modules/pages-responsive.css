@@ -1596,7 +1596,7 @@
   }
 }
 
-/* ================= ACADEMIC FIELD SHEET PRINT STYLES (plant.html) ================= */
+/* ================= ACADEMIC FIELD SHEET PRINT STYLES (ALL PAGES) ================= */
 @media print {
   @page {
     size: A4;
@@ -1606,6 +1606,11 @@
   *,
   *::before,
   *::after {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
     background-image: none !important;
     box-shadow: none !important;
     text-shadow: none !important;
@@ -1615,14 +1620,66 @@
 
   html,
   body {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    position: static !important;
     background: #ffffff !important;
-    color: #111827 !important;
+    color: #0f172a !important;
     font-size: 10.5pt;
     line-height: 1.5;
   }
 
+  .page-main,
+  .page-main--404,
+  .compare-body,
+  .compare-workspace,
+  .compare-workspace [data-section="compare-workspace"],
+  .compare-selector-shell,
+  .compare-active-root,
+  .services-portal,
+  .services-hero,
+  .services-hero-inner,
+  .directory-banner,
+  .explorer-section,
+  [data-section],
+  #mount-hero,
+  #mount-home-telemetry,
+  #mount-about,
+  #mount-featured,
+  #mount-taxonomy,
+  #mount-trivia,
+  #mount-highlights,
+  #mount-directory-banner,
+  #mount-directory-explorer,
+  #mount-plant-monograph,
+  #mount-compare-workspace,
+  #mount-services-portal {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    position: static !important;
+    width: auto !important;
+    padding-top: 0 !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  .section-container,
+  .detail-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
   #global-navbar,
   #global-footer,
+  .site-footer,
   .scroll-progress-track,
   .section-map-dock,
   .section-map-overlay,
@@ -1633,27 +1690,42 @@
   .related-species-section,
   .glossary-tooltip,
   .floating-back-btn,
+  #plant-floating-compare,
+  .plant-floating-compare-btn,
   #plantipedia-back-to-top,
   .herbarium-drawer,
   .herbarium-drawer-backdrop,
-  .mobile-nav-overlay {
+  .herbarium-card-bookmark,
+  .mobile-nav-overlay,
+  .services-hero-backdrop,
+  .services-hero-actions,
+  .services-filter-bar,
+  .services-season-pills,
+  .services-glossary-legend,
+  .services-toolkit-cta,
+  .services-pathway-cta,
+  .directory-controls-bar,
+  .directory-filter-panel,
+  .directory-search-form,
+  .directory-sort-wrap,
+  .directory-saved-toggle,
+  .directory-pagination-bar,
+  .az-index-bar,
+  .species-pagination,
+  .compare-focus-bar,
+  .compare-loader-overlay,
+  .compare-floating-mode-btn,
+  #compareModeToggleBtn,
+  .compare-submit-btn,
+  form[role="search"],
+  input[type="search"] {
     display: none !important;
-  }
-
-  .page-main {
-    padding-top: 0 !important;
-  }
-
-  .detail-container {
-    max-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
   }
 
   .detail-breadcrumb-row {
     padding-right: 0 !important;
     margin-bottom: 12px !important;
-    border-bottom: 1px solid #d1d5db;
+    border-bottom: 1px solid #cbd5e1 !important;
     padding-bottom: 8px;
   }
 
@@ -1669,41 +1741,95 @@
   .telemetry-ph-card,
   .telemetry-meter-card,
   .chapter-figure-single,
-  .gallery-figure {
+  .gallery-figure,
+  .species-card,
+  .directory-stat-pill,
+  .compare-selector-card,
+  .compare-select-input,
+  .services-kpi-card,
+  .services-table-scroll,
+  .services-comparison-table th,
+  .services-comparison-table td,
+  .services-chart-card,
+  .services-chart-readout,
+  .services-bar-row,
+  .services-svg-wrap,
+  .services-season-spotlight,
+  .services-toolkit-card,
+  .services-sandbox-panel,
+  .services-glossary-sample,
+  .services-glossary-preview,
+  .services-sandbox-select,
+  .services-pathway-card,
+  .specimen-not-found-card {
     background: #ffffff !important;
-    color: #111827 !important;
-    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
   }
 
   .overview-hero-card,
   .chapter-card,
   .citation-generator-card,
   .subblock-item,
-  .cultivation-telemetry-panel {
+  .cultivation-telemetry-panel,
+  .species-card,
+  .compare-selector-card,
+  .services-kpi-card,
+  .services-chart-card,
+  .services-toolkit-card,
+  .services-pathway-card,
+  .services-sandbox-panel,
+  table,
+  tr,
+  figure {
     break-inside: avoid;
     page-break-inside: avoid;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
   .overview-plant-title,
   .chapter-title,
   .citation-card-heading,
   .classification-val,
   .telemetry-metric-value,
-  .specimen-plate-id {
-    color: #064e3b !important;
+  .specimen-plate-id,
+  .directory-headline,
+  .directory-stat-num,
+  .species-card-title,
+  .compare-selector-heading,
+  .services-hero-title,
+  .services-kpi-value,
+  .services-kpi-label,
+  .services-cap-name,
+  .services-chart-title,
+  .services-bar-name,
+  .services-spotlight-title,
+  .services-toolkit-title,
+  .services-pathway-title,
+  .services-glossary-preview-term,
+  .specimen-not-found-title {
+    color: #0f172a !important;
   }
 
+  p,
+  li,
+  td,
+  th,
+  span,
+  label,
+  select,
   .overview-scientific-name,
+  .section-eyebrow,
   .section-index-label,
   .telemetry-panel-kicker,
   .chapter-subtitle,
   .detail-taxonomy-trail,
   .detail-taxonomy-trail em,
   .subblock-item h4,
-  .safety-notice-title {
-    color: #047857 !important;
-  }
-
+  .safety-notice-title,
   .overview-lead-summary,
   .chapter-body,
   .chapter-body p,
@@ -1712,17 +1838,78 @@
   .specimen-plate-caption-text,
   .specimen-plate-attribution,
   .citation-preview-box,
-  .telemetry-metric-label {
-    color: #1f2937 !important;
+  .telemetry-metric-label,
+  .directory-subcopy,
+  .directory-stat-label,
+  .species-card-sci,
+  .species-card-summary,
+  .species-card-meta,
+  .compare-selector-subcopy,
+  .compare-select-label,
+  .services-hero-subcopy,
+  .services-section-lead,
+  .services-kpi-note,
+  .services-cap-tag,
+  .services-cell-traditional,
+  .services-cell-plantipedia,
+  .services-chart-sub,
+  .services-chart-readout,
+  .services-bar-count,
+  .services-spotlight-summary,
+  .services-spotlight-count,
+  .services-toolkit-meta,
+  .services-toolkit-desc,
+  .services-pathway-index,
+  .services-pathway-desc,
+  .services-glossary-sample p,
+  .services-glossary-hint,
+  .services-glossary-preview-en,
+  .services-glossary-preview-bn,
+  .specimen-not-found-copy {
+    color: #334155 !important;
   }
 
   .chapter-num,
   .figcaption-fig,
   .specimen-plate-rank,
-  .telemetry-drainage-tag {
-    background: #ecfdf5 !important;
-    color: #065f46 !important;
-    border: 1px solid #6ee7b7 !important;
+  .telemetry-drainage-tag,
+  .species-card-badge {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  .services-bar-track {
+    background: #e2e8f0 !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  .services-bar-fill {
+    background: #0f172a !important;
+  }
+
+  .species-grid,
+  .species-grid--directory {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  .compare-panes-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  .compare-iframe {
+    display: block !important;
+    width: 100% !important;
+    height: 700px !important;
+    border: 1px solid #cbd5e1 !important;
+    page-break-after: always;
   }
 
   .glossary-term {

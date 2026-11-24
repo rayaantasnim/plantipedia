@@ -1070,6 +1070,38 @@
   box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
 }
 
+.compare-select-field.is-preselected .compare-select-input {
+  border-color: rgba(52, 211, 153, 0.62);
+  background: rgba(6, 32, 20, 0.94);
+}
+
+.compare-select-field.is-guided-next {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(16, 185, 129, 0.09);
+  border: 1px solid rgba(52, 211, 153, 0.55);
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.14);
+  transition:
+    border-color 0.24s ease,
+    box-shadow 0.24s ease,
+    background-color 0.24s ease;
+}
+
+.compare-select-field.is-guided-next .compare-select-input {
+  border-color: #34d399;
+}
+
+.compare-select-hint {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #6ee7b7;
+  line-height: 1.4;
+}
+
+.compare-select-hint[hidden] {
+  display: none;
+}
+
 .compare-validation-warning {
   margin: 0 0 18px;
   padding: 12px 16px;

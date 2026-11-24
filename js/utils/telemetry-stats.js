@@ -336,7 +336,7 @@ export function createTelemetryStatsGrid(
 /* ==================== PAGE-SPECIFIC TELEMETRY MAPPINGS ==================== */
 
 export function buildHomeTelemetryStats(speciesIndex = []) {
-  const count = Array.isArray(speciesIndex) && speciesIndex.length > 0 ? speciesIndex.length : 30;
+  const count = Array.isArray(speciesIndex) && speciesIndex.length > 0 ? speciesIndex.length : 50;
   return [
     {
       value: count,
@@ -365,7 +365,7 @@ export function buildHomeTelemetryStats(speciesIndex = []) {
 
 export function buildSpeciesAtlasTelemetryStats(speciesIndex = []) {
   const list = Array.isArray(speciesIndex) ? speciesIndex : [];
-  const totalSpecies = list.length > 0 ? list.length : 30;
+  const totalSpecies = list.length > 0 ? list.length : 50;
 
   const domainSet = new Set();
   let bilingualCount = 0;
@@ -438,7 +438,7 @@ export function buildServicesTelemetryStats() {
 
 export function buildNotFoundTelemetryStats(speciesIndex = []) {
   const list = Array.isArray(speciesIndex) ? speciesIndex : [];
-  const total = list.length > 0 ? list.length : 30;
+  const total = list.length > 0 ? list.length : 50;
   const domainSet = new Set();
   list.forEach((sp) => {
     if (Array.isArray(sp.categories) && sp.categories.length > 0) {
@@ -657,6 +657,126 @@ const PLANT_TRAIT_PROFILES = {
     ph: { value: 6.8, decimals: 1, label: "OPTIMAL WATER pH", subtext: "Nutrient-rich still freshwater" },
     vitality: { value: 12, suffix: "d", label: "BIOMASS DOUBLING TIME", subtext: "Rapid wetland & dhap colonizer" },
     climate: { value: 34, suffix: "°C", label: "AQUATIC WARMTH OPTIMUM", subtext: "Sunlit monsoon & autumn beels" },
+  },
+  sal: {
+    height: { value: 50, suffix: "m", label: "MAXIMUM CANOPY HEIGHT", subtext: "Gregarious Madhupur hardwood" },
+    ph: { value: 5.8, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Acidic lateritic red clay-loam" },
+    vitality: { value: 180, suffix: "+", label: "FOREST LIFESPAN (YRS)", subtext: "Fire-hardy coppice giant" },
+    climate: { value: 36, suffix: "°C", label: "MONSOON CANOPY OPTIMUM", subtext: "Well-drained Pleistocene terrace" },
+  },
+  arjun: {
+    height: { value: 30, suffix: "m", label: "RIPARIAN CANOPY HEIGHT", subtext: "Fluted pale-bark riverside giant" },
+    ph: { value: 6.9, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Deep moist alluvial loam" },
+    vitality: { value: 120, suffix: "+", label: "TREE LONGEVITY (YRS)", subtext: "Sustainable regenerating bark" },
+    climate: { value: 35, suffix: "°C", label: "RIVERBANK OPTIMUM", subtext: "Full sun & flood resilience" },
+  },
+  mahogany: {
+    height: { value: 35, suffix: "m", label: "TIMBER CANOPY HEIGHT", subtext: "Straight-boled Meliaceae giant" },
+    ph: { value: 6.7, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Deep well-drained loam" },
+    vitality: { value: 100, suffix: "+", label: "TREE LIFESPAN (YRS)", subtext: "Lustrous heartwood timber" },
+    climate: { value: 34, suffix: "°C", label: "TROPICAL OPTIMUM", subtext: "Windfirm homestead shelter" },
+  },
+  "date-palm": {
+    height: { value: 16, suffix: "m", label: "PALM TRUNK HEIGHT", subtext: "Solitary notched sap palm" },
+    ph: { value: 6.8, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Alluvial bunds & sandy loam" },
+    vitality: { value: 65, suffix: "+", label: "BEARING LIFESPAN (YRS)", subtext: "Winter Khejur Rosh & gur yield" },
+    climate: { value: 38, suffix: "°C", label: "SUMMER HEAT TOLERANCE", subtext: "Cool winter nights spur sap" },
+  },
+  jamun: {
+    height: { value: 30, suffix: "m", label: "EVERGREEN CROWN HEIGHT", subtext: "Monsoon anthocyanin fruit giant" },
+    ph: { value: 6.5, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Moist deep alluvial loam" },
+    vitality: { value: 90, suffix: "+", label: "ORCHARD LIFESPAN (YRS)", subtext: "Heavy Asharh Kalojam harvests" },
+    climate: { value: 34, suffix: "°C", label: "MONSOON RIPENING TEMP", subtext: "Flood-tolerant pond borders" },
+  },
+  bael: {
+    height: { value: 15, suffix: "m", label: "MEDIUM TREE HEIGHT", subtext: "Spiny trifoliate citrus ally" },
+    ph: { value: 7.0, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Wide arid-to-alkaline loam" },
+    vitality: { value: 80, suffix: "+", label: "TREE LONGEVITY (YRS)", subtext: "10-month wood-shelled fruit" },
+    climate: { value: 44, suffix: "°C", label: "PEAK DROUGHT HEAT", subtext: "Unmatched Barind heat tolerance" },
+  },
+  pomegranate: {
+    height: { value: 6, suffix: "m", label: "SHRUB & TREE STATURE", subtext: "Multi-stemmed ruby fruit" },
+    ph: { value: 6.5, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Well-drained sandy loam" },
+    vitality: { value: 50, suffix: "+", label: "BEARING LIFESPAN (YRS)", subtext: "Punicalagin-rich balausta fruit" },
+    climate: { value: 38, suffix: "°C", label: "SOLAR RIPENING HEAT", subtext: "Thrives on sunny rooftops" },
+  },
+  starfruit: {
+    height: { value: 10, suffix: "m", label: "COMPACT CROWN HEIGHT", subtext: "Drooping nyctinastic branches" },
+    ph: { value: 6.2, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Acidic humus-rich loam" },
+    vitality: { value: 40, suffix: "+", label: "ORCHARD LIFESPAN (YRS)", subtext: "Biannual five-winged stars" },
+    climate: { value: 33, suffix: "°C", label: "HUMID WARMTH OPTIMUM", subtext: "Frost-free sheltered yards" },
+  },
+  aparajita: {
+    height: { value: 5, suffix: "m", label: "TWINING VINE LENGTH", subtext: "Nitrogen-fixing blue climber" },
+    ph: { value: 6.7, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Well-drained trellis loam" },
+    vitality: { value: 45, suffix: "d", label: "SEED TO FIRST BLOOM", subtext: "pH-shifting ternatin petals" },
+    climate: { value: 34, suffix: "°C", label: "BLOOMING OPTIMUM", subtext: "Continuous Borsha–Hemonto waves" },
+  },
+  frangipani: {
+    height: { value: 8, suffix: "m", label: "UMBRELLA CROWN HEIGHT", subtext: "Succulent milky-stem tree" },
+    ph: { value: 6.8, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Fast-draining sandy grit" },
+    vitality: { value: 50, suffix: "+", label: "TREE LONGEVITY (YRS)", subtext: "Drought-hardy rooftop favorite" },
+    climate: { value: 40, suffix: "°C", label: "ROOFTOP HEAT OPTIMUM", subtext: "Loves reflected solar warmth" },
+  },
+  champa: {
+    height: { value: 30, suffix: "m", label: "EVERGREEN TREE HEIGHT", subtext: "Ancient spiralled Magnoliid" },
+    ph: { value: 6.0, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Deep acidic leaf-mold loam" },
+    vitality: { value: 100, suffix: "+", label: "HERITAGE SPAN (YRS)", subtext: "Champaca absolute perfumery" },
+    climate: { value: 32, suffix: "°C", label: "HUMID PARK OPTIMUM", subtext: "Scented monsoon dusk blooms" },
+  },
+  kamini: {
+    height: { value: 6, suffix: "m", label: "EVERGREEN SHRUB HEIGHT", subtext: "Dense manicured courtyard hedge" },
+    ph: { value: 6.7, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Fertile well-drained loam" },
+    vitality: { value: 30, suffix: "+", label: "HEDGE LIFESPAN (YRS)", subtext: "Rain-triggered snow-white waves" },
+    climate: { value: 33, suffix: "°C", label: "MONSOON BLOOM TEMP", subtext: "Warm showers spark fragrance" },
+  },
+  amla: {
+    height: { value: 18, suffix: "m", label: "DECIDUOUS CANOPY HEIGHT", subtext: "Feathery phyllanthoid sprays" },
+    ph: { value: 7.0, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Sandy to mildly alkaline loam" },
+    vitality: { value: 75, suffix: "+", label: "ORCHARD LIFESPAN (YRS)", subtext: "600+ mg/100g stable vitamin C" },
+    climate: { value: 40, suffix: "°C", label: "ARID HEAT RESILIENCE", subtext: "Winter-harvested Triphala fruit" },
+  },
+  ginger: {
+    height: { value: 1.2, decimals: 1, suffix: "m", label: "PSEUDOSTEM STATURE", subtext: "Distichous leafy ginger stalk" },
+    ph: { value: 6.0, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Acidic friable raised loam" },
+    vitality: { value: 255, suffix: "d", label: "RHIZOME CROP CYCLE", subtext: "Gingerol-rich palmate hands" },
+    climate: { value: 30, suffix: "°C", label: "DAPPLED SHADE OPTIMUM", subtext: "Humid hill & sack cultivation" },
+  },
+  kalmegh: {
+    height: { value: 1.1, decimals: 1, suffix: "m", label: "ANNUAL SHOOT STATURE", subtext: "Jointed square medicinal herb" },
+    ph: { value: 6.7, decimals: 1, label: "OPTIMAL SOIL pH", subtext: "Moist garden & orchard beds" },
+    vitality: { value: 105, suffix: "d", label: "PRE-BLOOM HARVEST", subtext: "Peak andrographolide potency" },
+    climate: { value: 32, suffix: "°C", label: "MONSOON GROWTH TEMP", subtext: "Pesticide-free natural bitterness" },
+  },
+  brahmi: {
+    height: { value: 30, suffix: "cm", label: "CREEPING MAT HEIGHT", subtext: "Nodal-rooting wetland carpet" },
+    ph: { value: 6.8, decimals: 1, label: "OPTIMAL MUD pH", subtext: "Saturated clay-silt margin" },
+    vitality: { value: 45, suffix: "d", label: "TIP HARVEST CYCLE", subtext: "Bacoside-rich succulent tips" },
+    climate: { value: 32, suffix: "°C", label: "WETLAND SUN OPTIMUM", subtext: "Flooded clean clay-tray vigor" },
+  },
+  sundari: {
+    height: { value: 25, suffix: "m", label: "MANGROVE CANOPY HEIGHT", subtext: "Buttressed Sundarbans giant" },
+    ph: { value: 7.3, decimals: 1, label: "ESTUARINE MUD pH", subtext: "Mildly brackish delta silt" },
+    vitality: { value: 150, suffix: "+", label: "MANGROVE SPAN (YRS)", subtext: "Cyclone-buffering pneumatophores" },
+    climate: { value: 34, suffix: "°C", label: "TIDAL DELTA OPTIMUM", subtext: "IUCN Endangered keystone tree" },
+  },
+  golpata: {
+    height: { value: 9, suffix: "m", label: "ARCHING FROND SPAN", subtext: "Trunkless estuarine mangrove palm" },
+    ph: { value: 7.0, decimals: 1, label: "TIDAL SILT pH", subtext: "Soft brackish creek mudbanks" },
+    vitality: { value: 60, suffix: "+", label: "RHIZOME CLUMP SPAN (YRS)", subtext: "Sustainable Bawali roof thatch" },
+    climate: { value: 34, suffix: "°C", label: "ESTUARINE HEAT OPTIMUM", subtext: "Twice-daily tidal inundation" },
+  },
+  "water-chestnut": {
+    height: { value: 3, suffix: "m", label: "SUBMERGED STEM REACH", subtext: "Mosaic floating pond rosettes" },
+    ph: { value: 6.8, decimals: 1, label: "OPTIMAL POND pH", subtext: "Nutrient-rich still freshwater" },
+    vitality: { value: 120, suffix: "d", label: "ANNUAL HARVEST SPAN", subtext: "Crisp horned autumn kernels" },
+    climate: { value: 33, suffix: "°C", label: "MONSOON BEEL OPTIMUM", subtext: "Sunlit calm rural borrow-pits" },
+  },
+  hogla: {
+    height: { value: 3.5, decimals: 1, suffix: "m", label: "MARSH REED HEIGHT", subtext: "Spongy aerenchyma sword blades" },
+    ph: { value: 6.9, decimals: 1, label: "MARSH SILT pH", subtext: "Fresh-to-brackish alluvial clay" },
+    vitality: { value: 30, suffix: "+", label: "RHIZOME CLUMP SPAN (YRS)", subtext: "Biodegradable Hogla Pata craft" },
+    climate: { value: 34, suffix: "°C", label: "OPEN MARSH OPTIMUM", subtext: "Wastewater nitrate biofilter" },
   },
 };
 
