@@ -121,11 +121,21 @@ function createArchitectSparkIconSvg() {
 
 function buildFooterDom(host, config) {
   const brand = config.brand || FALLBACK_FOOTER_CONFIG.brand;
-  const isCompact = host.getAttribute("data-footer-variant") === "compact";
+  const bodyPage = document.body?.dataset?.page || "";
+  const isHomePage =
+    bodyPage === "home" ||
+    (!bodyPage &&
+      /^(?:\/(?:plantipedia\/?)?)?(?:index\.html)?$/i.test(
+        window.location.pathname || "/",
+      ));
+  const isCompact =
+    !isHomePage || host.getAttribute("data-footer-variant") === "compact";
 
   host.classList.add("site-footer");
   if (isCompact) {
     host.classList.add("site-footer--compact");
+  } else {
+    host.classList.remove("site-footer--compact");
   }
 
   const fragment = document.createDocumentFragment();
@@ -143,12 +153,12 @@ function buildFooterDom(host, config) {
   overview.className = "footer-overview-block";
   overview.appendChild(createFooterBrand(brand));
 
-  const taglineText = isCompact
-    ? config.tagline || brand.tagline || FALLBACK_FOOTER_CONFIG.tagline
-    : config.summary || config.tagline || FALLBACK_FOOTER_CONFIG.summary;
+  const taglineText = isHomePage
+    ? config.summary || config.tagline || FALLBACK_FOOTER_CONFIG.summary
+    : config.tagline || brand.tagline || FALLBACK_FOOTER_CONFIG.tagline;
 
   const copy = document.createElement("p");
-  copy.className = isCompact ? "footer-tagline-compact" : "footer-overview-copy";
+  copy.className = isHomePage ? "footer-overview-copy" : "footer-tagline-compact";
   copy.textContent = taglineText;
   overview.appendChild(copy);
   container.appendChild(overview);
@@ -158,11 +168,11 @@ function buildFooterDom(host, config) {
   divider.setAttribute("aria-hidden", "true");
   container.appendChild(divider);
 
-  // Credits, Partners, Home-Only Disclaimer & Dynamic Copyright Bar
+  // Credits, Partners, Disclaimer (Home-Only) & Dynamic Copyright Bar
   const creditsBar = document.createElement("div");
   creditsBar.className = "footer-credits-bar";
 
-  if (Array.isArray(config.credits) && config.credits.length > 0) {
+  if (isHomePage && Array.isArray(config.credits) && config.credits.length > 0) {
     const pillsRow = document.createElement("div");
     pillsRow.className = "footer-contributor-pills";
 
@@ -200,38 +210,24 @@ function buildFooterDom(host, config) {
     creditsBar.appendChild(pillsRow);
   }
 
-  const isHomePage =
-    document.body?.dataset?.page === "home" ||
-    /^(?:\/(?:plantipedia\/?)?)?(?:index\.html)?$/i.test(
-      window.location.pathname || "/",
-    );
-
-  if (!isCompact && Array.isArray(config.partners) && config.partners.length > 0) {
+  if (
+    isHomePage &&
+    Array.isArray(config.partners) &&
+    config.partners.length > 0
+  ) {
     const partnerPill = document.createElement("div");
-    partnerPill.className = isHomePage
-      ? "footer-partner-pill footer-partner-pill--home"
-      : "footer-partner-pill";
+    partnerPill.className = "footer-partner-pill footer-partner-pill--home";
 
     config.partners.forEach((partner, idx) => {
       if (idx > 0) {
-        if (isHomePage) {
-          partnerPill.appendChild(document.createElement("br"));
-        } else {
-          const pipe = document.createElement("span");
-          pipe.className = "partner-pipe";
-          pipe.setAttribute("aria-hidden", "true");
-          pipe.textContent = "|";
-          partnerPill.appendChild(pipe);
-        }
+        partnerPill.appendChild(document.createElement("br"));
       }
       const muted = document.createElement("span");
       muted.className = "partner-muted";
       muted.textContent = `${partner.prefix} `;
 
-      const strong = document.createElement(isHomePage ? "span" : "strong");
-      strong.className = isHomePage
-        ? "credit-highlight partner-highlight"
-        : "partner-highlight";
+      const strong = document.createElement("span");
+      strong.className = "credit-highlight partner-highlight";
       strong.textContent = partner.name;
 
       partnerPill.appendChild(muted);

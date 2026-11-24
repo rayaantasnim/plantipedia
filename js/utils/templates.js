@@ -334,6 +334,19 @@ export function renderMountSkeleton(mountEl, sectionKey) {
     return;
   }
 
+  if (sectionKey === "global-gateway") {
+    const band = createEl("div", "skeleton-section-band");
+    band.setAttribute("aria-hidden", "true");
+    const card = createEl("div", "skeleton-card skeleton-card--panel");
+    ["skeleton-line--xs", "skeleton-line--lg", "skeleton-line--md", "skeleton-hero-bar"].forEach(
+      (cls) => card.appendChild(createEl("div", `${cls.startsWith("skeleton-hero") ? cls : `skeleton-line ${cls}`} skeleton-shimmer`)),
+    );
+    band.appendChild(card);
+    fragment.appendChild(band);
+    mountEl.replaceChildren(fragment);
+    return;
+  }
+
   const band = createEl("div", "skeleton-section-band");
   band.setAttribute("aria-hidden", "true");
 
@@ -739,6 +752,182 @@ export function renderTaxonomySection(mountEl, { sectionData }) {
   });
 
   container.appendChild(grid);
+  wrapper.appendChild(container);
+  mountEl.replaceChildren(wrapper);
+}
+
+/**
+ * 4b. Worldwide Botanical Server Gateway Section (./data/pages/home.json)
+ * Strict Local Bypass: Queries route directly to /plant/live/?q=...&source=gateway without local filtering.
+ */
+export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
+  if (!mountEl) return;
+  const gateway = pageData?.globalGateway || {};
+  const searchCfg = gateway.search || {};
+  const expeditions = Array.isArray(gateway.expeditions) && gateway.expeditions.length > 0
+    ? gateway.expeditions
+    : ["Baobab", "Venus Flytrap", "Ginkgo Biloba", "Dragon Blood Tree", "Rafflesia"];
+  const paragraphs = Array.isArray(gateway.paragraphs) && gateway.paragraphs.length > 0
+    ? gateway.paragraphs
+    : [
+        "While Plantipedia's core archive houses 50 deeply curated, eight-chapter botanical monographs, the global plant kingdom spans more than 390,000 documented vascular species. This dedicated gateway connects your research session directly to the Global Botanical Server for live taxonomic, morphological, and bilingual records.",
+        "Every query entered in this console bypasses the local 50-species index entirely—synthesizing real-time global botanical dossiers on demand with automated plant validation, English and বাংলা nomenclature cross-referencing, and instant split-screen comparison readiness.",
+      ];
+
+  const wrapper = createEl("div", "global-gateway-section");
+  wrapper.id = gateway.anchorId || "worldwide-gateway";
+
+  const container = createEl("div", "section-container");
+  const card = createEl("div", "global-gateway-card");
+
+  const topMeta = createEl("div", "global-gateway-meta-row");
+  topMeta.appendChild(
+    createEl(
+      "span",
+      "global-gateway-eyebrow",
+      gateway.eyebrow || "🌐 WORLDWIDE FLORA REGISTRY · LIVE UPLINK",
+    ),
+  );
+  topMeta.appendChild(
+    createEl(
+      "span",
+      "global-gateway-status-tag",
+      gateway.statusTag || "ZERO-KEY LIVE UPLINK · STRICT LOCAL BYPASS",
+    ),
+  );
+  card.appendChild(topMeta);
+
+  card.appendChild(
+    createEl(
+      "h2",
+      "section-heading global-gateway-heading",
+      gateway.heading || "Worldwide Botanical Server Gateway",
+    ),
+  );
+
+  const proseWrap = createEl("div", "global-gateway-prose");
+  paragraphs.forEach((pText) => {
+    proseWrap.appendChild(createEl("p", "justified-prose global-gateway-p", pText));
+  });
+  card.appendChild(proseWrap);
+
+  const form = createEl("form", "global-gateway-form");
+  form.id = "globalGatewayForm";
+  form.setAttribute("role", "search");
+  form.setAttribute("novalidate", "novalidate");
+
+  const inputWrap = createEl("div", "global-gateway-input-wrap");
+  const globeSvg = document.createElementNS(SVG_NS, "svg");
+  globeSvg.setAttribute("class", "global-gateway-icon");
+  globeSvg.setAttribute("viewBox", "0 0 24 24");
+  globeSvg.setAttribute("width", "20");
+  globeSvg.setAttribute("height", "20");
+  globeSvg.setAttribute("fill", "none");
+  globeSvg.setAttribute("stroke", "currentColor");
+  globeSvg.setAttribute("stroke-width", "1.9");
+  globeSvg.setAttribute("stroke-linecap", "round");
+  globeSvg.setAttribute("stroke-linejoin", "round");
+  globeSvg.setAttribute("aria-hidden", "true");
+  const c1 = document.createElementNS(SVG_NS, "circle");
+  c1.setAttribute("cx", "12");
+  c1.setAttribute("cy", "12");
+  c1.setAttribute("r", "10");
+  const p1 = document.createElementNS(SVG_NS, "path");
+  p1.setAttribute("d", "M2 12h20");
+  const p2 = document.createElementNS(SVG_NS, "path");
+  p2.setAttribute("d", "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z");
+  globeSvg.appendChild(c1);
+  globeSvg.appendChild(p1);
+  globeSvg.appendChild(p2);
+
+  const input = document.createElement("input");
+  input.type = "search";
+  input.id = "global-gateway-input";
+  input.className = "global-gateway-input";
+  input.placeholder =
+    searchCfg.placeholder ||
+    "Query any worldwide species (e.g., Baobab, Ginkgo Biloba, Venus Flytrap, Rafflesia)...";
+  input.autocomplete = "off";
+  input.spellcheck = false;
+  input.setAttribute(
+    "aria-label",
+    searchCfg.ariaLabel || "Query Global Botanical Server by plant name",
+  );
+
+  const submitBtn = createEl(
+    "button",
+    "global-gateway-submit",
+    searchCfg.submitLabel || "Query Global Server →",
+  );
+  submitBtn.type = "submit";
+
+  inputWrap.appendChild(globeSvg);
+  inputWrap.appendChild(input);
+  form.appendChild(inputWrap);
+  form.appendChild(submitBtn);
+
+  const hintEl = createEl("p", "global-gateway-validation");
+  hintEl.setAttribute("aria-live", "polite");
+  hintEl.hidden = true;
+
+  const launchGatewayQuery = (rawValue) => {
+    const clean = String(rawValue || "").trim().replace(/\s+/g, " ");
+    if (clean.length < 2) {
+      hintEl.textContent =
+        searchCfg.validationHint ||
+        "Enter at least 2 characters of a common or Latin botanical name to query the Global Botanical Server.";
+      hintEl.hidden = false;
+      input.focus();
+      return;
+    }
+    hintEl.hidden = true;
+    const targetUrl = resolveRootPath(
+      `./plant/live/?q=${encodeURIComponent(clean)}&source=gateway`,
+    );
+    window.location.href = targetUrl;
+  };
+
+  input.addEventListener("input", () => {
+    if (!hintEl.hidden && String(input.value || "").trim().length >= 2) {
+      hintEl.hidden = true;
+    }
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    launchGatewayQuery(input.value);
+  });
+
+  card.appendChild(form);
+  card.appendChild(hintEl);
+
+  const expRow = createEl("div", "global-gateway-expeditions");
+  expRow.appendChild(
+    createEl(
+      "span",
+      "global-gateway-exp-label",
+      gateway.expeditionsLabel || "Global Expedition Chips",
+    ),
+  );
+
+  const chipsWrap = createEl("div", "global-expedition-chips");
+  expeditions.forEach((speciesName) => {
+    const chipBtn = createEl("button", "global-expedition-chip", speciesName);
+    chipBtn.type = "button";
+    chipBtn.setAttribute(
+      "aria-label",
+      `Query Global Botanical Server for ${speciesName}`,
+    );
+    chipBtn.addEventListener("click", () => {
+      input.value = speciesName;
+      launchGatewayQuery(speciesName);
+    });
+    chipsWrap.appendChild(chipBtn);
+  });
+  expRow.appendChild(chipsWrap);
+  card.appendChild(expRow);
+
+  container.appendChild(card);
   wrapper.appendChild(container);
   mountEl.replaceChildren(wrapper);
 }

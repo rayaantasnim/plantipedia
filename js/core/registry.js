@@ -23,6 +23,7 @@ import {
   renderAboutSection,
   renderFeaturedSpeciesSection,
   renderTaxonomySection,
+  renderGlobalGatewaySection,
   renderTriviaSection,
   renderHighlightsSection,
   renderMountSkeleton,
@@ -106,6 +107,14 @@ const SECTION_REGISTRY = {
     render: (el, dataMap) => {
       renderTaxonomySection(el, {
         sectionData: dataMap.get("taxonomy")?.data,
+      });
+    },
+  },
+  "global-gateway": {
+    datasets: ["page:home"],
+    render: (el, dataMap) => {
+      renderGlobalGatewaySection(el, {
+        pageData: dataMap.get("page:home")?.data,
       });
     },
   },

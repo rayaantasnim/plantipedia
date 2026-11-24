@@ -3109,6 +3109,753 @@
   }
 }
 
+/* ================= SERVICES 10-SECTION INDEX & SECTIONS 07-10 ================= */
+.services-hero,
+.services-section {
+  scroll-margin-top: calc(var(--nav-height, 74px) + 66px);
+}
+
+.services-section-index {
+  position: sticky;
+  top: var(--nav-height, 74px);
+  z-index: 45;
+  background: rgba(4, 20, 14, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(52, 211, 153, 0.16);
+  border-bottom: 1px solid rgba(52, 211, 153, 0.24);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+}
+
+.services-section-index-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.services-index-status {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+}
+
+.services-index-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+}
+
+.services-index-counter {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #a7f3d0;
+  white-space: nowrap;
+}
+
+.services-index-rail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 2px 0;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.services-index-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.services-index-link {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 231, 183, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink-secondary);
+  font-size: 0.77rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+}
+
+.services-index-link:hover {
+  border-color: rgba(52, 211, 153, 0.45);
+  color: #ecfdf5;
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.services-index-link.is-active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.28), rgba(56, 189, 248, 0.2));
+  border-color: rgba(52, 211, 153, 0.68);
+  color: #ecfdf5;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+}
+
+.services-index-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #6ee7b7;
+}
+
+.services-index-progress-track {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.services-index-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #22d3ee);
+  transition: width 0.28s var(--ease-settle);
+}
+
+/* Section 07: Global Botanical Server Architecture */
+.services-arch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.services-arch-card {
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(150deg, rgba(7, 29, 24, 0.88), rgba(4, 18, 22, 0.94));
+  border: 1px solid rgba(56, 189, 248, 0.26);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.26s var(--ease-settle), border-color 0.24s ease;
+}
+
+.services-arch-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.62);
+}
+
+.services-arch-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.services-arch-badge {
+  font-family: var(--font-mono);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.34);
+  color: #bae6fd;
+}
+
+.services-arch-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #6ee7b7;
+}
+
+.services-arch-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+}
+
+.services-arch-index {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-mint);
+}
+
+.services-arch-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.32rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.services-arch-desc {
+  margin: 0;
+  font-size: 0.91rem;
+  line-height: 1.65;
+  color: var(--ink-secondary);
+  flex: 1;
+}
+
+.services-arch-cta {
+  align-self: flex-start;
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.36);
+  color: #e0f2fe;
+  font-size: 0.83rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.services-arch-cta:hover {
+  background: rgba(16, 185, 129, 0.24);
+  border-color: rgba(52, 211, 153, 0.62);
+}
+
+/* Section 08: Interactive Data Synthesis Pipeline */
+.services-pipeline-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.services-pipeline-nodes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.services-pipeline-node {
+  position: relative;
+  text-align: left;
+  padding: 18px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(6, 26, 18, 0.8);
+  border: 1px solid rgba(110, 231, 183, 0.22);
+  color: var(--ink-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-settle), border-color 0.2s ease, background 0.2s ease;
+}
+
+.services-pipeline-node:hover {
+  transform: translateY(-2px);
+  border-color: rgba(52, 211, 153, 0.52);
+  color: var(--ink-primary);
+}
+
+.services-pipeline-node.is-active {
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.24), rgba(14, 165, 233, 0.18));
+  border-color: rgba(52, 211, 153, 0.72);
+  color: #ecfdf5;
+  box-shadow: 0 10px 26px rgba(16, 185, 129, 0.2);
+}
+
+.services-pipeline-node-num {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #34d399;
+}
+
+.services-pipeline-node-title {
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.services-pipeline-node-meta {
+  font-family: var(--font-mono);
+  font-size: 0.71rem;
+  color: #a7f3d0;
+}
+
+.services-pipeline-inspector {
+  padding: clamp(22px, 3vw, 30px);
+  border-radius: var(--radius-lg);
+  background: rgba(5, 22, 16, 0.9);
+  border: 1px solid rgba(52, 211, 153, 0.34);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.services-pipeline-insp-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px 18px;
+}
+
+.services-pipeline-insp-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #34d399;
+  margin-bottom: 4px;
+}
+
+.services-pipeline-insp-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.48rem;
+  color: var(--ink-primary);
+}
+
+.services-pipeline-insp-latency {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.34);
+  color: #bae6fd;
+}
+
+.services-pipeline-insp-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.68;
+  color: var(--ink-secondary);
+}
+
+.services-pipeline-specs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.services-pipeline-spec-box {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(4, 16, 11, 0.76);
+  border: 1px solid rgba(110, 231, 183, 0.18);
+}
+
+.services-pipeline-spec-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+
+.services-pipeline-spec-val {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #ecfdf5;
+}
+
+/* Section 09: Offline PWA & Academic PDF Field-Sheet Studio */
+.services-studio-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.services-studio-preview-shell {
+  padding: clamp(18px, 3vw, 26px);
+  border-radius: var(--radius-lg);
+  background: var(--glass-surface);
+  border: 1px solid var(--border-hairline);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.services-studio-mode-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.services-studio-mode-btn {
+  min-height: 40px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 231, 183, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink-secondary);
+  font-size: 0.81rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.services-studio-mode-btn.is-active {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: rgba(52, 211, 153, 0.68);
+  color: #ecfdf5;
+}
+
+.services-studio-sheet {
+  padding: 22px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: background-color 0.26s ease, color 0.26s ease, border-color 0.26s ease;
+  flex: 1;
+}
+
+.services-studio-sheet.is-mode-screen {
+  background: linear-gradient(155deg, #062116, #04140d);
+  border: 1px solid rgba(52, 211, 153, 0.34);
+  color: #f3f7f4;
+}
+
+.services-studio-sheet.is-mode-print {
+  background: #ffffff;
+  border: 2px solid #0f172a;
+  color: #0f172a;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+
+.services-studio-sheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid currentColor;
+  border-bottom-color: rgba(110, 231, 183, 0.2);
+}
+
+.services-studio-sheet.is-mode-print .services-studio-sheet-head {
+  border-bottom-color: #cbd5e1;
+}
+
+.services-studio-sheet-kicker {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #6ee7b7;
+  margin-bottom: 4px;
+}
+
+.services-studio-sheet.is-mode-print .services-studio-sheet-kicker {
+  color: #047857;
+}
+
+.services-studio-sheet-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.32rem;
+  color: inherit;
+}
+
+.services-studio-mode-badge {
+  font-family: var(--font-mono);
+  font-size: 0.69rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(52, 211, 153, 0.16);
+  color: #6ee7b7;
+}
+
+.services-studio-sheet.is-mode-print .services-studio-mode-badge {
+  background: #f1f5f9;
+  border: 1px solid #94a3b8;
+  color: #0f172a;
+}
+
+.services-studio-sheet-specs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.services-studio-spec-cell {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(110, 231, 183, 0.16);
+}
+
+.services-studio-sheet.is-mode-print .services-studio-spec-cell {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.services-studio-spec-lbl {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: #8aa596;
+  margin-bottom: 3px;
+}
+
+.services-studio-sheet.is-mode-print .services-studio-spec-lbl {
+  color: #475569;
+}
+
+.services-studio-spec-val {
+  font-size: 0.84rem;
+  color: inherit;
+}
+
+.services-studio-sheet-prose {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.62;
+  opacity: 0.9;
+  flex: 1;
+}
+
+.services-studio-sheet-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(110, 231, 183, 0.22);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: #6ee7b7;
+}
+
+.services-studio-sheet.is-mode-print .services-studio-sheet-foot {
+  border-top-color: #94a3b8;
+  color: #334155;
+}
+
+.services-studio-features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.services-studio-feature-card {
+  padding: 20px 22px;
+  border-radius: var(--radius-md);
+  background: rgba(6, 26, 18, 0.82);
+  border: 1px solid rgba(110, 231, 183, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.services-studio-feature-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fde68a;
+}
+
+.services-studio-feature-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.18rem;
+  color: var(--ink-primary);
+}
+
+.services-studio-feature-desc {
+  margin: 0;
+  font-size: 0.89rem;
+  line-height: 1.6;
+  color: var(--ink-secondary);
+}
+
+/* Section 10: Open Botanical Standards & Ecosystem CTA */
+.services-section--final {
+  padding-bottom: clamp(56px, 7vw, 88px);
+}
+
+.services-standards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.services-standard-card {
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  background: var(--glass-surface);
+  border: 1px solid var(--border-hairline);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.services-standard-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent-mint);
+}
+
+.services-standard-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.32rem;
+  color: var(--ink-primary);
+}
+
+.services-standard-desc {
+  margin: 0;
+  font-size: 0.91rem;
+  line-height: 1.64;
+  color: var(--ink-secondary);
+}
+
+.services-final-cta-banner {
+  padding: clamp(26px, 4vw, 40px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    135deg,
+    rgba(6, 36, 24, 0.92),
+    rgba(7, 29, 38, 0.92)
+  );
+  border: 1px solid rgba(52, 211, 153, 0.44);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 20px 44px rgba(0, 0, 0, 0.34);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px 28px;
+}
+
+.services-final-cta-copy {
+  max-width: 60ch;
+}
+
+.services-final-cta-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #6ee7b7;
+  margin-bottom: 6px;
+}
+
+.services-final-cta-heading {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.42rem, 2.5vw, 1.92rem);
+  color: var(--ink-primary);
+}
+
+.services-final-cta-text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--ink-secondary);
+}
+
+.services-final-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.specimen-nf-btn--gateway {
+  background: rgba(34, 211, 238, 0.16);
+  border: 1px solid rgba(56, 189, 248, 0.52);
+  color: #e0f2fe;
+}
+
+.specimen-nf-btn--gateway:hover {
+  background: rgba(34, 211, 238, 0.28);
+  border-color: #22d3ee;
+  color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .services-arch-grid,
+  .services-standards-grid,
+  .services-studio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services-pipeline-nodes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .services-pipeline-specs,
+  .services-studio-sheet-specs {
+    grid-template-columns: 1fr;
+  }
+
+  .services-section-index-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .services-index-status {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 540px) {
+  .services-pipeline-nodes {
+    grid-template-columns: 1fr;
+  }
+
+  .services-final-cta-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .services-final-cta-actions .specimen-nf-btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+
 
 
 

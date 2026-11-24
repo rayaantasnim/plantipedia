@@ -1,12 +1,16 @@
 /**
  * Dedicated "Digital Botanical Research Suite & Services" Page (/services/)
- * 6 Interactive Sections built 100% natively with XSS-safe DOM builders & custom SVG analytics:
- *  1. Visual Hero & Live Archive Telemetry
- *  2. Interactive Filterable Platform Comparison Table
- *  3. Live Data Visualization & Interactive Charts (Category Distribution + 6-Season Curve)
- *  4. Core Digital Toolkit Showcase (2x2 Grid)
- *  5. Interactive Live Sandbox ("Try Plantipedia Tools Live": Citation Engine + Glossary Tooltips)
- *  6. Audience Pathways & Quick-Start CTA
+ * 10 Interactive Sections built 100% natively with XSS-safe DOM builders & custom SVG analytics:
+ *  01. Visual Hero & Live Archive Telemetry
+ *  02. Interactive Filterable Platform Comparison Table
+ *  03. Live Data Visualization & Interactive Charts (Category Distribution + 6-Season Curve)
+ *  04. Core Digital Toolkit Showcase (2x2 Grid)
+ *  05. Interactive Live Sandbox ("Try Plantipedia Tools Live": Citation Engine + Glossary Tooltips)
+ *  06. Audience Pathways & Role Workflows
+ *  07. Global Botanical Server Architecture (Zero-Key Engine Breakdown)
+ *  08. Interactive Data Synthesis Pipeline (Clickable 4-Step Node Diagram + Inspector)
+ *  09. Offline PWA & Academic PDF Field-Sheet Studio (Dark Screen vs. Print Mode Toggle)
+ *  10. Open Botanical Standards & Ecosystem Dual-CTA
  */
 
 import {
@@ -14,6 +18,7 @@ import {
   createEl,
   sanitizeUrl,
 } from "../utils/templates.js";
+import { resolveRootPath } from "../core/router.js";
 import { renderCitationGenerator } from "../utils/citation-generator.js";
 import { applyGlossaryTooltips } from "../utils/glossary-tooltips.js";
 import { applyPageSeo } from "../services/seo.js";
@@ -97,6 +102,7 @@ function buildSectionHeader(eyebrow, heading, lead) {
 
 function renderHeroAndTelemetry(banner, telemetry, metrics) {
   const hero = createEl("section", "services-hero");
+  hero.id = "services-hero";
   hero.setAttribute("aria-labelledby", "servicesHeroHeading");
 
   if (banner.heroImage?.imageUrl) {
@@ -814,6 +820,476 @@ function renderPathwaysSection(pathwaysCfg) {
   return section;
 }
 
+function renderSectionIndexBar(indexItems) {
+  const items =
+    Array.isArray(indexItems) && indexItems.length > 0
+      ? indexItems
+      : [
+          { num: "01", label: "Hero & Telemetry", href: "#services-hero" },
+          { num: "02", label: "Platform Matrix", href: "#services-comparison" },
+          { num: "03", label: "Live Analytics", href: "#services-analytics" },
+          { num: "04", label: "Digital Toolkit", href: "#services-toolkit" },
+          { num: "05", label: "Live Sandbox", href: "#services-sandbox" },
+          { num: "06", label: "Audience Pathways", href: "#services-pathways" },
+          { num: "07", label: "Global Server", href: "#services-global-architecture" },
+          { num: "08", label: "Synthesis Pipeline", href: "#services-synthesis-pipeline" },
+          { num: "09", label: "Field-Sheet Studio", href: "#services-field-studio" },
+          { num: "10", label: "Standards & CTA", href: "#services-open-standards" },
+        ];
+
+  const bar = createEl("nav", "services-section-index");
+  bar.setAttribute("aria-label", "Services 10-section index");
+
+  const inner = createEl("div", "section-container services-section-index-inner");
+  const statusPill = createEl("div", "services-index-status");
+  statusPill.appendChild(createEl("span", "services-index-status-dot"));
+  const counterEl = createEl("span", "services-index-counter", "SECTION 01 / 10");
+  statusPill.appendChild(counterEl);
+
+  const rail = createEl("div", "services-index-rail");
+  const linkEls = [];
+
+  items.forEach((item, idx) => {
+    const a = createEl(
+      "a",
+      `services-index-link${idx === 0 ? " is-active" : ""}`,
+    );
+    a.href = item.href || "#services-hero";
+    a.setAttribute("data-section-target", (item.href || "").replace(/^#/, ""));
+    a.appendChild(createEl("span", "services-index-num", item.num));
+    a.appendChild(createEl("span", "services-index-label", item.label));
+
+    a.addEventListener("click", (e) => {
+      const targetId = (item.href || "").replace(/^#/, "");
+      const target = targetId ? document.getElementById(targetId) : null;
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+
+    rail.appendChild(a);
+    linkEls.push({ item, el: a, idx });
+  });
+
+  const progressTrack = createEl("div", "services-index-progress-track");
+  progressTrack.setAttribute("aria-hidden", "true");
+  const progressFill = createEl("div", "services-index-progress-fill");
+  progressFill.style.width = "10%";
+  progressTrack.appendChild(progressFill);
+
+  inner.appendChild(statusPill);
+  inner.appendChild(rail);
+  bar.appendChild(inner);
+  bar.appendChild(progressTrack);
+
+  return { bar, linkEls, counterEl, progressFill };
+}
+
+function bindServicesIndexScrollSpy(portal, { linkEls, counterEl, progressFill }) {
+  if (!portal || !linkEls.length) return;
+
+  const setActiveById = (sectionId) => {
+    const found = linkEls.find(
+      (entry) => entry.el.getAttribute("data-section-target") === sectionId,
+    );
+    if (!found) return;
+    linkEls.forEach((entry) => {
+      entry.el.classList.toggle("is-active", entry === found);
+    });
+    counterEl.textContent = `SECTION ${String(found.idx + 1).padStart(2, "0")} / ${String(linkEls.length).padStart(2, "0")}`;
+    const pct = Math.round(((found.idx + 1) / linkEls.length) * 100);
+    progressFill.style.width = `${pct}%`;
+  };
+
+  if (typeof IntersectionObserver === "function") {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target?.id) {
+          setActiveById(visible[0].target.id);
+        }
+      },
+      { rootMargin: "-20% 0px -55% 0px", threshold: [0.1, 0.35, 0.6] },
+    );
+
+    linkEls.forEach(({ el }) => {
+      const targetId = el.getAttribute("data-section-target");
+      const sec = targetId ? portal.querySelector(`#${targetId}`) : null;
+      if (sec) observer.observe(sec);
+    });
+  }
+}
+
+function renderGlobalArchitectureSection(archCfg) {
+  const section = createEl("section", "services-section");
+  section.id = "services-global-architecture";
+  const container = createEl("div", "section-container");
+
+  container.appendChild(
+    buildSectionHeader(
+      archCfg.eyebrow || "07. Global Botanical Server Architecture",
+      archCfg.heading || "Zero-Key Worldwide Flora Uplink & Botanical Validation",
+      archCfg.lead || "",
+    ),
+  );
+
+  const grid = createEl("div", "services-arch-grid");
+  (archCfg.pillars || []).forEach((pillar, idx) => {
+    const card = createEl("article", "services-arch-card");
+
+    const top = createEl("div", "services-arch-top");
+    top.appendChild(createEl("span", "services-arch-badge", pillar.badge || ""));
+    const status = createEl("span", "services-arch-status");
+    status.appendChild(createEl("span", "services-arch-pulse"));
+    status.appendChild(createEl("span", "", pillar.statusLabel || "LIVE"));
+    top.appendChild(status);
+    card.appendChild(top);
+
+    card.appendChild(
+      createEl(
+        "span",
+        "services-arch-index",
+        `PILLAR ${String(idx + 1).padStart(2, "0")}`,
+      ),
+    );
+    card.appendChild(createEl("h3", "services-arch-title", pillar.title || ""));
+    card.appendChild(createEl("p", "services-arch-desc", pillar.description || ""));
+
+    if (pillar.sampleQuery) {
+      const testLink = createEl(
+        "a",
+        "services-arch-cta",
+        pillar.sampleCta || `Query "${pillar.sampleQuery}" →`,
+      );
+      testLink.href = resolveRootPath(
+        `./plant/live/?q=${encodeURIComponent(pillar.sampleQuery)}&source=gateway`,
+      );
+      card.appendChild(testLink);
+    }
+
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+  section.appendChild(container);
+  return section;
+}
+
+function renderSynthesisPipelineSection(pipelineCfg) {
+  const section = createEl("section", "services-section");
+  section.id = "services-synthesis-pipeline";
+  const container = createEl("div", "section-container");
+
+  container.appendChild(
+    buildSectionHeader(
+      pipelineCfg.eyebrow || "08. Interactive Data Synthesis Pipeline",
+      pipelineCfg.heading || "How Live Queries Become Structured 8-Chapter Monographs",
+      pipelineCfg.lead || "",
+    ),
+  );
+
+  const steps = Array.isArray(pipelineCfg.steps) ? pipelineCfg.steps : [];
+  const shell = createEl("div", "services-pipeline-shell");
+  const diagram = createEl("div", "services-pipeline-nodes");
+  diagram.setAttribute("role", "tablist");
+  diagram.setAttribute("aria-label", "Data synthesis pipeline stages");
+
+  const inspector = createEl("div", "services-pipeline-inspector");
+  inspector.setAttribute("role", "tabpanel");
+  inspector.setAttribute("aria-live", "polite");
+
+  const inspHead = createEl("div", "services-pipeline-insp-head");
+  const inspTitleWrap = document.createElement("div");
+  const inspStepBadge = createEl("span", "services-pipeline-insp-badge");
+  const inspTitle = createEl("h3", "services-pipeline-insp-title");
+  inspTitleWrap.appendChild(inspStepBadge);
+  inspTitleWrap.appendChild(inspTitle);
+
+  const inspLatency = createEl("span", "services-pipeline-insp-latency");
+  inspHead.appendChild(inspTitleWrap);
+  inspHead.appendChild(inspLatency);
+
+  const inspDesc = createEl("p", "services-pipeline-insp-desc");
+
+  const inspSpecs = createEl("div", "services-pipeline-specs");
+  const makeSpecBox = (label) => {
+    const box = createEl("div", "services-pipeline-spec-box");
+    const lbl = createEl("span", "services-pipeline-spec-label", label);
+    const val = createEl("p", "services-pipeline-spec-val");
+    box.appendChild(lbl);
+    box.appendChild(val);
+    return { box, val };
+  };
+  const protoSpec = makeSpecBox("Protocol / Engine");
+  const guardSpec = makeSpecBox("Fallback Safeguard");
+  const outSpec = makeSpecBox("Stage Output");
+  inspSpecs.appendChild(protoSpec.box);
+  inspSpecs.appendChild(guardSpec.box);
+  inspSpecs.appendChild(outSpec.box);
+
+  inspector.appendChild(inspHead);
+  inspector.appendChild(inspDesc);
+  inspector.appendChild(inspSpecs);
+
+  const nodeButtons = [];
+  const activateStep = (stepIdx) => {
+    const step = steps[stepIdx];
+    if (!step) return;
+    nodeButtons.forEach((btn, idx) => {
+      const isCurrent = idx === stepIdx;
+      btn.classList.toggle("is-active", isCurrent);
+      btn.setAttribute("aria-selected", String(isCurrent));
+    });
+    inspStepBadge.textContent = `STAGE ${step.stepNumber} OF ${String(steps.length).padStart(2, "0")}`;
+    inspTitle.textContent = step.title;
+    inspLatency.textContent = step.latency || "";
+    inspDesc.textContent = step.description || "";
+    protoSpec.val.textContent = step.protocol || "";
+    guardSpec.val.textContent = step.safeguard || "";
+    outSpec.val.textContent = step.output || "";
+  };
+
+  steps.forEach((step, idx) => {
+    const nodeBtn = createEl(
+      "button",
+      `services-pipeline-node${idx === 0 ? " is-active" : ""}`,
+    );
+    nodeBtn.type = "button";
+    nodeBtn.setAttribute("role", "tab");
+    nodeBtn.setAttribute("aria-selected", String(idx === 0));
+    nodeBtn.appendChild(createEl("span", "services-pipeline-node-num", step.stepNumber));
+    nodeBtn.appendChild(createEl("span", "services-pipeline-node-title", step.shortLabel || step.title));
+    nodeBtn.appendChild(createEl("span", "services-pipeline-node-meta", step.latency || ""));
+
+    nodeBtn.addEventListener("click", () => activateStep(idx));
+    nodeBtn.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        const next = (idx + 1) % steps.length;
+        activateStep(next);
+        nodeButtons[next]?.focus();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        const prev = (idx - 1 + steps.length) % steps.length;
+        activateStep(prev);
+        nodeButtons[prev]?.focus();
+      }
+    });
+
+    diagram.appendChild(nodeBtn);
+    nodeButtons.push(nodeBtn);
+  });
+
+  if (steps.length > 0) {
+    activateStep(0);
+  }
+
+  shell.appendChild(diagram);
+  shell.appendChild(inspector);
+  container.appendChild(shell);
+  section.appendChild(container);
+  return section;
+}
+
+function renderFieldStudioSection(studioCfg) {
+  const section = createEl("section", "services-section");
+  section.id = "services-field-studio";
+  const container = createEl("div", "section-container");
+
+  container.appendChild(
+    buildSectionHeader(
+      studioCfg.eyebrow || "09. Offline PWA & Academic PDF Field-Sheet Studio",
+      studioCfg.heading || "Built for Dark Conservatories and Crisp Paper Field Binders",
+      studioCfg.lead || "",
+    ),
+  );
+
+  const layout = createEl("div", "services-studio-grid");
+
+  // Left: Interactive Screen vs Print Preview Mockup
+  const previewWrap = createEl("div", "services-studio-preview-shell");
+  const modeBar = createEl("div", "services-studio-mode-bar");
+  modeBar.setAttribute("role", "tablist");
+  modeBar.setAttribute("aria-label", "Preview display mode");
+
+  const sheet = createEl("article", "services-studio-sheet is-mode-screen");
+  const sheetHead = createEl("div", "services-studio-sheet-head");
+  const sheetTitleWrap = document.createElement("div");
+  sheetTitleWrap.appendChild(
+    createEl("span", "services-studio-sheet-kicker", "SPECIMEN FIELD DOSSIER · #MANGO-01"),
+  );
+  sheetTitleWrap.appendChild(
+    createEl("h3", "services-studio-sheet-title", "Mango (আম) — Mangifera indica"),
+  );
+  sheetHead.appendChild(sheetTitleWrap);
+
+  const sheetModeBadge = createEl("span", "services-studio-mode-badge", "SCREEN MODE");
+  sheetHead.appendChild(sheetModeBadge);
+  sheet.appendChild(sheetHead);
+
+  const sheetSpecs = createEl("div", "services-studio-sheet-specs");
+  [
+    { label: "Family", value: "Anacardiaceae" },
+    { label: "Soil pH", value: "5.5 – 7.5 (Alluvial Loam)" },
+    { label: "Phenology", value: "বসন্ত Bloom · গ্রীষ্ম Harvest" },
+  ].forEach((spec) => {
+    const cell = createEl("div", "services-studio-spec-cell");
+    cell.appendChild(createEl("span", "services-studio-spec-lbl", spec.label));
+    cell.appendChild(createEl("strong", "services-studio-spec-val", spec.value));
+    sheetSpecs.appendChild(cell);
+  });
+  sheet.appendChild(sheetSpecs);
+
+  sheet.appendChild(
+    createEl(
+      "p",
+      "services-studio-sheet-prose",
+      "8-chapter monograph formatted with deterministic telemetry bars, Linnaean classification matrix, and bilingual glossary annotations ready for lab binders or field export.",
+    ),
+  );
+
+  const sheetFooter = createEl("div", "services-studio-sheet-foot");
+  sheetFooter.appendChild(createEl("span", "", "LocalStorage Herbarium: Saved ✓"));
+  sheetFooter.appendChild(createEl("span", "", "A4 Monochrome @media print Ready"));
+  sheet.appendChild(sheetFooter);
+
+  const modes =
+    Array.isArray(studioCfg.modes) && studioCfg.modes.length > 0
+      ? studioCfg.modes
+      : [
+          { id: "screen", label: "Dark Conservatory Screen Mode" },
+          { id: "print", label: "High-Contrast Print / PDF Field Sheet (@media print)" },
+        ];
+
+  let activeMode = modes[0].id;
+  const modeButtons = [];
+
+  const applyMode = (modeId) => {
+    activeMode = modeId;
+    const isPrint = modeId === "print";
+    sheet.classList.toggle("is-mode-print", isPrint);
+    sheet.classList.toggle("is-mode-screen", !isPrint);
+    sheetModeBadge.textContent = isPrint ? "@MEDIA PRINT A4" : "DARK CONSERVATORY";
+    modeButtons.forEach(({ id, btn }) => {
+      const current = id === modeId;
+      btn.classList.toggle("is-active", current);
+      btn.setAttribute("aria-selected", String(current));
+    });
+  };
+
+  modes.forEach((m) => {
+    const btn = createEl(
+      "button",
+      `services-studio-mode-btn${m.id === activeMode ? " is-active" : ""}`,
+      m.label,
+    );
+    btn.type = "button";
+    btn.setAttribute("role", "tab");
+    btn.setAttribute("aria-selected", String(m.id === activeMode));
+    btn.addEventListener("click", () => applyMode(m.id));
+    modeBar.appendChild(btn);
+    modeButtons.push({ id: m.id, btn });
+  });
+
+  previewWrap.appendChild(modeBar);
+  previewWrap.appendChild(sheet);
+
+  // Right: 3 Studio Feature Cards
+  const featCol = createEl("div", "services-studio-features");
+  (studioCfg.features || []).forEach((feat) => {
+    const fCard = createEl("article", "services-studio-feature-card");
+    fCard.appendChild(createEl("span", "services-studio-feature-badge", feat.badge || ""));
+    fCard.appendChild(createEl("h3", "services-studio-feature-title", feat.title || ""));
+    fCard.appendChild(createEl("p", "services-studio-feature-desc", feat.description || ""));
+    featCol.appendChild(fCard);
+  });
+
+  layout.appendChild(previewWrap);
+  layout.appendChild(featCol);
+  container.appendChild(layout);
+  section.appendChild(container);
+  return section;
+}
+
+function renderStandardsAndCtaSection(standardsCfg) {
+  const section = createEl("section", "services-section services-section--final");
+  section.id = "services-open-standards";
+  const container = createEl("div", "section-container");
+
+  container.appendChild(
+    buildSectionHeader(
+      standardsCfg.eyebrow || "10. Open Botanical Standards & Ecosystem",
+      standardsCfg.heading || "Engineered for Academic Interoperability, Accessibility & Privacy",
+      standardsCfg.lead || "",
+    ),
+  );
+
+  const cardsGrid = createEl("div", "services-standards-grid");
+  (standardsCfg.cards || []).forEach((item) => {
+    const card = createEl("article", "services-standard-card");
+    card.appendChild(createEl("span", "services-standard-badge", item.badge || ""));
+    card.appendChild(createEl("h3", "services-standard-title", item.title || ""));
+    card.appendChild(createEl("p", "services-standard-desc", item.description || ""));
+    cardsGrid.appendChild(card);
+  });
+  container.appendChild(cardsGrid);
+
+  const cta = standardsCfg.ctaBanner || {};
+  const banner = createEl("div", "services-final-cta-banner");
+  const copyCol = createEl("div", "services-final-cta-copy");
+  copyCol.appendChild(
+    createEl(
+      "span",
+      "services-final-cta-eyebrow",
+      cta.eyebrow || "Begin Your Botanical Exploration",
+    ),
+  );
+  copyCol.appendChild(
+    createEl(
+      "h3",
+      "services-final-cta-heading",
+      cta.heading || "Explore 50 Curated Monographs or Query Any Plant Worldwide",
+    ),
+  );
+  copyCol.appendChild(
+    createEl(
+      "p",
+      "services-final-cta-text",
+      cta.copy ||
+        "Move seamlessly between Plantipedia's hand-edited flagship flora archive and the live Worldwide Botanical Server Gateway.",
+    ),
+  );
+
+  const btnGroup = createEl("div", "services-final-cta-actions");
+  const primary = createEl(
+    "a",
+    "specimen-nf-btn specimen-nf-btn--primary",
+    cta.primaryCta?.label || "Explore 50 Curated Species →",
+  );
+  primary.href = sanitizeUrl(cta.primaryCta?.href, "./species/");
+
+  const secondary = createEl(
+    "a",
+    "specimen-nf-btn specimen-nf-btn--gateway",
+    cta.secondaryCta?.label || "Launch Global Server Gateway →",
+  );
+  secondary.href = resolveRootPath(
+    cta.secondaryCta?.href || "./#worldwide-gateway",
+  );
+
+  btnGroup.appendChild(primary);
+  btnGroup.appendChild(secondary);
+  banner.appendChild(copyCol);
+  banner.appendChild(btnGroup);
+
+  container.appendChild(banner);
+  section.appendChild(container);
+  return section;
+}
+
 export function renderServicesPortal(
   mountEl,
   { pageData, speciesIndex = [], seasonsData = null, glossaryData = null } = {},
@@ -846,6 +1322,9 @@ export function renderServicesPortal(
   telemetryBand.appendChild(telemetryContainer);
   portal.appendChild(telemetryBand);
 
+  const indexBarCtrl = renderSectionIndexBar(pageData.sectionIndex);
+  portal.appendChild(indexBarCtrl.bar);
+
   portal.appendChild(renderComparisonSection(pageData.comparison || {}));
   portal.appendChild(renderAnalyticsSection(pageData.analytics || {}, metrics));
   portal.appendChild(renderToolkitSection(pageData.toolkit || {}));
@@ -853,6 +1332,11 @@ export function renderServicesPortal(
     renderSandboxSection(pageData.sandbox || {}, speciesIndex, glossaryData),
   );
   portal.appendChild(renderPathwaysSection(pageData.pathways || {}));
+  portal.appendChild(renderGlobalArchitectureSection(pageData.globalArchitecture || {}));
+  portal.appendChild(renderSynthesisPipelineSection(pageData.pipeline || {}));
+  portal.appendChild(renderFieldStudioSection(pageData.fieldStudio || {}));
+  portal.appendChild(renderStandardsAndCtaSection(pageData.standardsCta || {}));
 
   mountEl.replaceChildren(portal);
+  bindServicesIndexScrollSpy(portal, indexBarCtrl);
 }

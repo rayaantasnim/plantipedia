@@ -100,5 +100,29 @@
         "description": "Structured across Flowers, Fruit Trees, Medicinal Plants, Shrubs & Herbs, Trees & Palms, and Aquatic biomes."
       }
     ]
+  },
+  "globalGateway": {
+    "anchorId": "worldwide-gateway",
+    "eyebrow": "🌐 WORLDWIDE FLORA REGISTRY · LIVE UPLINK",
+    "statusTag": "ZERO-KEY LIVE UPLINK · STRICT LOCAL BYPASS",
+    "heading": "Worldwide Botanical Server Gateway",
+    "paragraphs": [
+      "While Plantipedia's core archive houses 50 deeply curated, eight-chapter botanical monographs, the global plant kingdom spans more than 390,000 documented vascular species. This dedicated gateway connects your research session directly to the Global Botanical Server for live taxonomic, morphological, and bilingual records.",
+      "Every query entered in this console bypasses the local 50-species index entirely—synthesizing real-time global botanical dossiers on demand with automated plant validation, English and বাংলা nomenclature cross-referencing, and instant split-screen comparison readiness."
+    ],
+    "search": {
+      "placeholder": "Query any worldwide species (e.g., Baobab, Ginkgo Biloba, Venus Flytrap, Rafflesia)...",
+      "ariaLabel": "Query Global Botanical Server by plant name",
+      "submitLabel": "Query Global Server →",
+      "validationHint": "Enter at least 2 characters of a common or Latin botanical name to query the Global Botanical Server."
+    },
+    "expeditionsLabel": "Global Expedition Chips",
+    "expeditions": [
+      "Baobab",
+      "Venus Flytrap",
+      "Ginkgo Biloba",
+      "Dragon Blood Tree",
+      "Rafflesia"
+    ]
   }
 }

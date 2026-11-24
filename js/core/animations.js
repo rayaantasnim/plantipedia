@@ -198,6 +198,8 @@ export function animateHydratedSection(sectionKey, mountEl) {
       mountEl.querySelector(".domains-grid") || mountEl,
       mountEl.querySelectorAll(".domain-card"),
     );
+  } else if (sectionKey === "global-gateway") {
+    animateHeaderNodes(mountEl.querySelectorAll(".global-gateway-card"));
   } else if (sectionKey === "trivia") {
     animateHeaderNodes(mountEl.querySelectorAll(".curiosities-header"));
     animateStaggerNodes(
