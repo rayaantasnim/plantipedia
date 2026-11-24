@@ -647,3 +647,249 @@
   line-height: 1.22;
   color: var(--ink-primary);
 }
+
+/* ================= TAXONOMY & 6-SEASON EXPLORER CARDS ================= */
+.taxonomy-explorer-shell,
+.seasons-calendar-shell {
+  padding: 36px 0 88px;
+}
+
+.taxonomy-page-header {
+  margin-top: 22px;
+  margin-bottom: 34px;
+  max-width: 780px;
+}
+
+.family-lineage-grid,
+.seasons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.family-lineage-card,
+.season-card {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1.75rem;
+  border-radius: 16px;
+  background: rgba(7, 31, 19, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  color: #ecfdf5;
+  text-align: left;
+  font: inherit;
+  box-shadow: var(--glass-shadow);
+  transition:
+    transform 0.28s var(--ease-settle),
+    border-color 0.24s ease,
+    box-shadow 0.24s ease,
+    background-color 0.24s ease;
+}
+
+.family-lineage-card::after,
+.season-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    280px circle at 100% 0%,
+    rgba(52, 211, 153, 0.14),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  pointer-events: none;
+}
+
+.family-lineage-card:hover,
+.family-lineage-card:focus-visible,
+.season-card:hover,
+.season-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(52, 211, 153, 0.55);
+  background: rgba(10, 42, 26, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 20px 42px -12px rgba(16, 185, 129, 0.3);
+}
+
+.family-lineage-card:hover::after,
+.season-card:hover::after {
+  opacity: 1;
+}
+
+.family-lineage-card:active,
+.season-card:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.season-card.is-current-season {
+  border-color: rgba(251, 191, 36, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(251, 191, 36, 0.14),
+    0 16px 36px -10px rgba(16, 185, 129, 0.24);
+}
+
+.season-card.is-selected {
+  background: rgba(10, 44, 27, 0.9);
+  border-color: rgba(52, 211, 153, 0.55);
+}
+
+.family-card-top,
+.season-card-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 0.9rem;
+  width: 100%;
+}
+
+.family-card-title {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.16;
+  color: #ecfdf5;
+}
+
+.family-card-bn {
+  margin: 0;
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--accent-gold-soft);
+  letter-spacing: 0.01em;
+}
+
+.family-card-desc {
+  margin: 0.15rem 0 0;
+  flex: 1;
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: var(--ink-secondary);
+}
+
+.season-card-titles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.15rem;
+}
+
+.season-card-en {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.68rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #ecfdf5;
+}
+
+.season-card-bn {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent-gold-soft);
+}
+
+.season-card-bengali-months {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent-emerald-bright);
+  letter-spacing: 0.02em;
+}
+
+.season-card-highlight {
+  margin: 0.1rem 0 0;
+  flex: 1;
+  font-size: 0.93rem;
+  line-height: 1.62;
+  color: var(--ink-secondary);
+}
+
+.family-card-footer,
+.season-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(52, 211, 153, 0.16);
+}
+
+.family-members-preview,
+.season-count-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
+}
+
+.family-diagnostic-card,
+.season-ecological-panel {
+  margin-top: 28px;
+  margin-bottom: 36px;
+  padding: clamp(22px, 3vw, 32px);
+  border-radius: 16px;
+  background: rgba(7, 31, 19, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(52, 211, 153, 0.24);
+  box-shadow: var(--glass-shadow);
+}
+
+.season-eco-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 18px;
+  margin-bottom: 14px;
+}
+
+.family-traits-heading,
+.season-eco-heading {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.22;
+  color: #ecfdf5;
+}
+
+.season-eco-head .season-eco-heading {
+  margin-bottom: 0;
+}
+
+.taxonomy-members-heading {
+  margin: 0 0 22px;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2.05rem);
+  font-weight: 700;
+  color: #ecfdf5;
+}
+
+.season-phenology-note {
+  margin: 2px 0 0;
+  padding: 8px 11px;
+  border-radius: 10px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.22);
+  font-size: 0.83rem;
+  line-height: 1.5;
+  color: #d1fae5;
+}
+

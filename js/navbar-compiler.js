@@ -947,7 +947,7 @@ function bindNavbarShellInteractions(config) {
     window.addEventListener("resize", () => {
       const ov = document.getElementById("mobileNavOverlay");
       const tg = document.getElementById("mobileMenuToggle");
-      if (window.innerWidth > 768 && ov && !ov.hidden) {
+      if (window.innerWidth > 1080 && ov && !ov.hidden) {
         ov.hidden = true;
         if (tg) {
           tg.classList.remove("is-open");

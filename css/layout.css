@@ -242,7 +242,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-shrink: 0;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 .navbar-herbarium-pill {
@@ -259,6 +260,7 @@
   font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
+  flex-shrink: 0;
   transition:
     transform 0.18s var(--ease-settle),
     background-color 0.18s ease,
@@ -283,8 +285,9 @@
 /* Inline Live Navbar Search Bar */
 .navbar-search-wrap {
   position: relative;
-  width: clamp(190px, 20vw, 270px);
-  flex-shrink: 0;
+  width: clamp(190px, 18vw, 270px);
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 .navbar-search-form {
@@ -450,7 +453,7 @@
   text-align: center;
 }
 
-/* Mobile Hamburger Toggler & Full-Screen Overlay (Hidden on Desktop > 768px) */
+/* Mobile Hamburger Toggler & Full-Screen Overlay (Hidden on Desktop > 1080px) */
 .mobile-menu-toggle,
 .mobile-nav-overlay {
   display: none;

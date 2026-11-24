@@ -1130,3 +1130,107 @@
 .floating-back-btn[hidden] {
   display: none;
 }
+
+/* ================= TAXONOMY & SEASON BADGE / TRAIT COMPONENTS ================= */
+.family-order-label,
+.season-months-meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-mint);
+}
+
+.family-count-badge,
+.season-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  color: var(--accent-emerald-bright);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.season-current-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.16);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  color: var(--accent-gold-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.family-inspect-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(52, 211, 153, 0.36);
+  color: #a7f3d0;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s var(--ease-settle);
+}
+
+.family-lineage-card:hover .family-inspect-cta,
+.family-lineage-card:focus-visible .family-inspect-cta,
+.season-card:hover .family-inspect-cta,
+.season-card:focus-visible .family-inspect-cta {
+  background: rgba(16, 185, 129, 0.32);
+  border-color: rgba(52, 211, 153, 0.65);
+  color: #ecfdf5;
+  transform: translateX(2px);
+}
+
+.family-traits-list {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.family-trait-item {
+  position: relative;
+  padding: 12px 14px 12px 32px;
+  border-radius: 12px;
+  background: rgba(4, 20, 12, 0.56);
+  border: 1px solid rgba(52, 211, 153, 0.16);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+}
+
+.family-trait-item::before {
+  content: "•";
+  position: absolute;
+  left: 14px;
+  top: 11px;
+  color: var(--accent-mint);
+  font-weight: 700;
+}
+
