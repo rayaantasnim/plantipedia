@@ -26,8 +26,16 @@ function bindRetryDelegation() {
 async function bootApp() {
   bindGlobalImageFallbackHandler();
   bindRetryDelegation();
-  initGlobalAnimations();
-  await hydrateActivePage(document);
+  try {
+    initGlobalAnimations();
+  } catch {
+    // Non-blocking animation initialization
+  }
+  try {
+    await hydrateActivePage(document);
+  } catch (err) {
+    console.error("Plantipedia page hydration failed:", err);
+  }
 }
 
 if (document.readyState === "loading") {

@@ -40,13 +40,18 @@ import { initNavigationInteractions } from "./navigation.js";
 
 function resolveRequestedSpeciesSlug() {
   const params = new URLSearchParams(window.location.search);
-  const querySlug = params.get("species");
+  const querySlug =
+    params.get("species") || params.get("slug") || params.get("id");
   if (querySlug) return normalizeSpeciesSlug(querySlug);
 
   const hash = window.location.hash || "";
   const match = hash.match(/^#\/plant\/([^/?#]+)/i);
   if (match && match[1]) {
-    return normalizeSpeciesSlug(decodeURIComponent(match[1]));
+    try {
+      return normalizeSpeciesSlug(decodeURIComponent(match[1]));
+    } catch {
+      return normalizeSpeciesSlug(match[1]);
+    }
   }
 
   return "mango";
@@ -277,8 +282,21 @@ export async function hydrateActivePage(root = document) {
     }
   });
 
-  // Load page JSON, species-index.json, and active species monograph concurrently via Promise.allSettled()
-  const dataMap = await fetchDatasetsConcurrently(Array.from(requiredDatasetKeys));
+  let dataMap;
+  try {
+    // Load page JSON, species-index.json, and active species monograph concurrently via Promise.allSettled()
+    dataMap = await fetchDatasetsConcurrently(Array.from(requiredDatasetKeys));
+  } catch (err) {
+    const msg = err?.message || "Unable to fetch botanical archive datasets.";
+    sectionMounts.forEach((el) => {
+      const sectionKey = el.getAttribute("data-section");
+      const entry = SECTION_REGISTRY[sectionKey];
+      if (!entry || typeof entry.render !== "function") return;
+      setMountState(sectionKey, { status: "error", error: err });
+      renderMountError(el, sectionKey, msg);
+    });
+    return;
+  }
 
   const indexOutcome = dataMap.get("speciesIndex");
   if (indexOutcome?.ok) {
@@ -286,7 +304,11 @@ export async function hydrateActivePage(root = document) {
   }
 
   if (activePageKey && dataMap.get(activePageKey)?.ok) {
-    applyPageSeo(dataMap.get(activePageKey).data.seo);
+    try {
+      applyPageSeo(dataMap.get(activePageKey).data.seo);
+    } catch {
+      // Non-blocking: SEO metadata failures must never stall section hydration
+    }
   }
 
   sectionMounts.forEach((el) => {

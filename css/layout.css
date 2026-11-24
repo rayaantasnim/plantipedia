@@ -277,6 +277,23 @@
   color: var(--accent-mint);
 }
 
+.herbarium-pill-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.24);
+  border: 1px solid rgba(110, 231, 183, 0.35);
+  color: var(--accent-mint);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .navbar-herbarium-pill.is-mobile-pill,
 .mobile-quick-search-btn {
   display: none;
@@ -463,6 +480,27 @@
 .page-main {
   flex: 1;
   padding-top: var(--nav-height);
+}
+
+/* Embedded Comparison Frame Mode (?embed=true on plant.html) */
+body.is-embed #global-navbar,
+body.is-embed #global-footer,
+body.is-embed .scroll-progress-track {
+  display: none !important;
+}
+
+body.is-embed .page-main {
+  padding-top: 0;
+}
+
+body.is-embed .section-map-dock {
+  top: 14px;
+  right: 16px;
+}
+
+body.is-embed .detail-container {
+  padding-top: 22px;
+  padding-bottom: 52px;
 }
 
 /* ================= HOME HERO SHELL & AUTOCOMPLETE SEARCH ================= */

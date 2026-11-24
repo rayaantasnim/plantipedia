@@ -55,10 +55,15 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
   let isFocusMode = window.innerWidth <= 768;
   let activeFocusPane = "left";
   let loaderTimerIds = [];
+  let activeResizeHandler = null;
 
   function clearLoaderTimers() {
     loaderTimerIds.forEach((id) => clearTimeout(id));
     loaderTimerIds = [];
+    if (activeResizeHandler) {
+      window.removeEventListener("resize", activeResizeHandler);
+      activeResizeHandler = null;
+    }
   }
 
   function removeFloatingModeButton() {
@@ -233,11 +238,13 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     const leftIframe = document.createElement("iframe");
     leftIframe.className = "compare-iframe compare-iframe--left";
     leftIframe.title = `${leftPlant.commonName} Botanical Monograph`;
+    leftIframe.loading = "eager";
     leftIframe.src = `./plant.html?species=${encodeURIComponent(slugA)}&embed=true`;
 
     const rightIframe = document.createElement("iframe");
     rightIframe.className = "compare-iframe compare-iframe--right";
     rightIframe.title = `${rightPlant.commonName} Botanical Monograph`;
+    rightIframe.loading = "eager";
     rightIframe.src = `./plant.html?species=${encodeURIComponent(slugB)}&embed=true`;
 
     panesContainer.appendChild(leftIframe);
@@ -298,6 +305,14 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           ? wsCfg.splitViewLabel || "Split View"
           : wsCfg.focusModeLabel || "Focus Mode";
         floatBtn.hidden = mobileViewport;
+      }
+
+      const visiblePane =
+        !effectiveFocus || activeFocusPane === "left" ? leftIframe : rightIframe;
+      try {
+        visiblePane.contentWindow?.dispatchEvent(new Event("resize"));
+      } catch {
+        // Ignore cross-frame restrictions if any
       }
     };
 
@@ -360,7 +375,8 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       }, 3000),
     );
 
-    window.addEventListener("resize", syncPaneClasses);
+    activeResizeHandler = syncPaneClasses;
+    window.addEventListener("resize", activeResizeHandler);
     syncPaneClasses();
   }
 

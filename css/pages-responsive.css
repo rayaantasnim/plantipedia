@@ -1247,6 +1247,13 @@
     margin-bottom: 8px;
   }
 
+  .mobile-quick-try,
+  .mobile-category-explore {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
   .mobile-chip-row,
   .mobile-category-pills {
     display: flex;
@@ -1443,8 +1450,26 @@
 @media (max-width: 768px) {
   .species-grid--directory,
   .family-lineage-grid,
-  .seasons-grid {
+  .seasons-grid,
+  .compare-selects-grid {
     grid-template-columns: 1fr;
+  }
+
+  .compare-focus-bar {
+    flex-wrap: wrap;
+    padding: 8px 12px;
+  }
+
+  .compare-pill-switcher {
+    flex: 1;
+    max-width: 100%;
+  }
+
+  .compare-pill-btn {
+    flex: 1;
+    max-width: none;
+    padding: 6px 10px;
+    font-size: 0.8rem;
   }
 
   .directory-pagination-bar {
@@ -1453,7 +1478,8 @@
 }
 
 @media (max-width: 640px) {
-  .domains-grid {
+  .domains-grid,
+  .telemetry-meters-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1569,3 +1595,137 @@
     transform: none !important;
   }
 }
+
+/* ================= ACADEMIC FIELD SHEET PRINT STYLES (plant.html) ================= */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 14mm 16mm;
+  }
+
+  *,
+  *::before,
+  *::after {
+    background-image: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+
+  #global-navbar,
+  #global-footer,
+  .scroll-progress-track,
+  .section-map-dock,
+  .section-map-overlay,
+  .monograph-header-actions,
+  .citation-format-tabs,
+  .citation-copy-btn,
+  .species-pager,
+  .related-species-section,
+  .glossary-tooltip,
+  .floating-back-btn,
+  .herbarium-drawer,
+  .herbarium-drawer-backdrop,
+  .mobile-nav-overlay {
+    display: none !important;
+  }
+
+  .page-main {
+    padding-top: 0 !important;
+  }
+
+  .detail-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .detail-breadcrumb-row {
+    padding-right: 0 !important;
+    margin-bottom: 12px !important;
+    border-bottom: 1px solid #d1d5db;
+    padding-bottom: 8px;
+  }
+
+  .breadcrumb-bar,
+  .overview-hero-card,
+  .chapter-card,
+  .citation-generator-card,
+  .herbarium-specimen-plate,
+  .classification-table-wrap,
+  .subblock-item,
+  .safety-notice-box,
+  .cultivation-telemetry-panel,
+  .telemetry-ph-card,
+  .telemetry-meter-card,
+  .chapter-figure-single,
+  .gallery-figure {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  .overview-hero-card,
+  .chapter-card,
+  .citation-generator-card,
+  .subblock-item,
+  .cultivation-telemetry-panel {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .overview-plant-title,
+  .chapter-title,
+  .citation-card-heading,
+  .classification-val,
+  .telemetry-metric-value,
+  .specimen-plate-id {
+    color: #064e3b !important;
+  }
+
+  .overview-scientific-name,
+  .section-index-label,
+  .telemetry-panel-kicker,
+  .chapter-subtitle,
+  .detail-taxonomy-trail,
+  .detail-taxonomy-trail em,
+  .subblock-item h4,
+  .safety-notice-title {
+    color: #047857 !important;
+  }
+
+  .overview-lead-summary,
+  .chapter-body,
+  .chapter-body p,
+  .subblock-item p,
+  .safety-notice-box,
+  .specimen-plate-caption-text,
+  .specimen-plate-attribution,
+  .citation-preview-box,
+  .telemetry-metric-label {
+    color: #1f2937 !important;
+  }
+
+  .chapter-num,
+  .figcaption-fig,
+  .specimen-plate-rank,
+  .telemetry-drainage-tag {
+    background: #ecfdf5 !important;
+    color: #065f46 !important;
+    border: 1px solid #6ee7b7 !important;
+  }
+
+  .glossary-term {
+    border-bottom: none !important;
+  }
+}
+

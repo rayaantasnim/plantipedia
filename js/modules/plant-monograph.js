@@ -479,6 +479,9 @@ export function renderPlantMonograph(
 ) {
   if (!mountEl || !pageData) return;
 
+  const isEmbed =
+    new URLSearchParams(window.location.search).get("embed") === "true" ||
+    document.body.classList.contains("is-embed");
   const indexList = Array.isArray(speciesIndex) ? speciesIndex : [];
   const monographCfg = pageData.monograph || {};
   const sectionMapCfg = pageData.sectionMap || {};
@@ -504,13 +507,14 @@ export function renderPlantMonograph(
       notFound.ctaLabel || "Browse Available Species",
     );
     backLink.href = sanitizeUrl(notFound.ctaHref, "./species.html");
+    if (isEmbed) backLink.target = "_top";
     errCard.appendChild(backLink);
 
     if (indexList.length > 0) {
       const quickRow = createEl("div", "not-found-quick-links");
       indexList.slice(0, 4).forEach((entry) => {
         const chip = createEl("a", "mobile-quick-chip", entry.commonName);
-        chip.href = `./plant.html?species=${encodeURIComponent(entry.slug)}`;
+        chip.href = `./plant.html?species=${encodeURIComponent(entry.slug)}${isEmbed ? "&embed=true" : ""}`;
         quickRow.appendChild(chip);
       });
       errCard.appendChild(quickRow);
@@ -522,7 +526,11 @@ export function renderPlantMonograph(
     return;
   }
 
-  applyPlantMonographSeo(plant);
+  try {
+    applyPlantMonographSeo(plant);
+  } catch {
+    // Non-blocking: SEO metadata failures must never abort monograph hydration
+  }
 
   const plantIdx = indexList.findIndex((p) => p.slug === plant.slug);
   const hasNeighbors = indexList.length > 1 && plantIdx !== -1;
@@ -572,6 +580,7 @@ export function renderPlantMonograph(
     } else {
       const a = createEl("a", "breadcrumb-link", c.label);
       a.href = c.href;
+      if (isEmbed) a.target = "_top";
       li.appendChild(a);
     }
     ol.appendChild(li);
@@ -705,7 +714,11 @@ export function renderPlantMonograph(
     );
     const relatedGrid = createEl("div", "species-grid species-grid--directory");
     related.forEach((item) => {
-      relatedGrid.appendChild(createSpeciesCardElement(item, "Explore Monograph"));
+      const card = createSpeciesCardElement(item, "Explore Monograph");
+      if (isEmbed && item.slug) {
+        card.href = `./plant.html?species=${encodeURIComponent(item.slug)}&embed=true`;
+      }
+      relatedGrid.appendChild(card);
     });
     relatedSection.appendChild(relatedGrid);
     detailContainer.appendChild(relatedSection);
@@ -718,7 +731,7 @@ export function renderPlantMonograph(
 
     const makePagerLink = (targetPlant, directionClass, directionLabel) => {
       const a = createEl("a", `pager-link ${directionClass}`);
-      a.href = `./plant.html?species=${encodeURIComponent(targetPlant.slug)}`;
+      a.href = `./plant.html?species=${encodeURIComponent(targetPlant.slug)}${isEmbed ? "&embed=true" : ""}`;
       a.appendChild(createEl("span", "pager-direction", directionLabel));
       a.appendChild(
         createEl(
@@ -757,6 +770,10 @@ export function renderPlantMonograph(
 
   // 7. Apply Botanical Glossary Auto-Tooltips across prose
   if (glossaryData) {
-    applyGlossaryTooltips(detailContainer, glossaryData);
+    try {
+      applyGlossaryTooltips(detailContainer, glossaryData);
+    } catch {
+      // Non-blocking enhancement
+    }
   }
 }

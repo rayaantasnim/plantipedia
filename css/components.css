@@ -1234,3 +1234,590 @@
   font-weight: 700;
 }
 
+.pagination-btn--step {
+  font-family: var(--font-sans);
+  letter-spacing: 0.01em;
+}
+
+/* ================= HERBARIUM SPECIMEN PLATE & MONOGRAPH ACTIONS ================= */
+.monograph-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.monograph-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 231, 183, 0.34);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ecfdf5;
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  font-weight: 600;
+  transition:
+    transform 0.18s var(--ease-settle),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.monograph-action-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--accent-mint);
+  box-shadow: 0 10px 22px -10px rgba(16, 185, 129, 0.48);
+}
+
+.monograph-action-btn:active {
+  transform: scale(0.97);
+}
+
+.monograph-bookmark-btn.is-saved {
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.34),
+    rgba(52, 211, 153, 0.22)
+  );
+  border-color: rgba(110, 231, 183, 0.72);
+  color: #ecfdf5;
+  box-shadow: 0 10px 24px -10px rgba(16, 185, 129, 0.55);
+}
+
+.monograph-print-btn svg,
+.bookmark-icon-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-mint);
+  flex-shrink: 0;
+}
+
+.bookmark-btn-label {
+  white-space: nowrap;
+}
+
+.herbarium-specimen-plate {
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(3, 18, 11, 0.78);
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 20px 44px rgba(0, 0, 0, 0.45);
+}
+
+.specimen-plate-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(52, 211, 153, 0.16);
+}
+
+.specimen-plate-id {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-mint);
+}
+
+.specimen-plate-rank {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.34);
+  color: var(--accent-gold-soft);
+}
+
+.specimen-plate-media {
+  position: relative;
+}
+
+.plate-corner-tick {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  z-index: 4;
+  pointer-events: none;
+  border-color: rgba(110, 231, 183, 0.85);
+  border-style: solid;
+  border-width: 0;
+}
+
+.plate-corner-tick.is-tl {
+  top: 10px;
+  left: 10px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.plate-corner-tick.is-tr {
+  top: 10px;
+  right: 10px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.plate-corner-tick.is-bl {
+  bottom: 10px;
+  left: 10px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.plate-corner-tick.is-br {
+  bottom: 10px;
+  right: 10px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+.specimen-plate-zone {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 3;
+  display: flex;
+  justify-content: flex-start;
+  pointer-events: none;
+}
+
+.specimen-zone-label {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(4, 20, 12, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(52, 211, 153, 0.36);
+  color: #ecfdf5;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.specimen-plate-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(52, 211, 153, 0.14);
+}
+
+.specimen-plate-caption-text {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+  font-style: normal;
+}
+
+.specimen-plate-attribution {
+  font-family: var(--font-mono);
+  font-size: 0.71rem;
+  font-style: normal;
+  color: var(--ink-muted);
+}
+
+/* ================= CULTIVATION & ECOLOGICAL TELEMETRY METERS ================= */
+.cultivation-telemetry-panel {
+  margin-top: 28px;
+  padding: 22px 24px;
+  border-radius: 16px;
+  background: rgba(4, 20, 12, 0.72);
+  border: 1px solid rgba(52, 211, 153, 0.24);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.telemetry-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 14px;
+}
+
+.telemetry-panel-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-mint);
+}
+
+.telemetry-drainage-tag {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  color: #a7f3d0;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.telemetry-ph-card,
+.telemetry-meter-card {
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: rgba(7, 31, 19, 0.56);
+  border: 1px solid rgba(52, 211, 153, 0.16);
+}
+
+.telemetry-row-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 12px;
+  margin-bottom: 12px;
+}
+
+.telemetry-metric-label {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
+}
+
+.telemetry-metric-value {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #ecfdf5;
+}
+
+.telemetry-ph-track {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(249, 115, 22, 0.42) 0%,
+    rgba(251, 191, 36, 0.4) 30%,
+    rgba(16, 185, 129, 0.48) 60%,
+    rgba(56, 189, 248, 0.45) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.telemetry-ph-range {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #34d399, #6ee7b7);
+  border: 1px solid #ecfdf5;
+  box-shadow: 0 0 16px rgba(52, 211, 153, 0.65);
+}
+
+.telemetry-ph-neutral-tick {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.72);
+  transform: translateX(-1px);
+  z-index: 2;
+}
+
+.telemetry-ph-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+}
+
+.telemetry-meters-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.telemetry-seg-bar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.telemetry-seg {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.telemetry-seg-fill {
+  display: block;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.telemetry-seg-bar.is-sunlight .telemetry-seg.is-active .telemetry-seg-fill {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+  border-color: rgba(253, 224, 71, 0.7);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.45);
+}
+
+.telemetry-seg-bar.is-irrigation .telemetry-seg.is-active .telemetry-seg-fill {
+  background: linear-gradient(90deg, #059669, #34d399);
+  border-color: rgba(110, 231, 183, 0.7);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.45);
+}
+
+.telemetry-seg-caption {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.telemetry-seg.is-active .telemetry-seg-caption {
+  color: #ecfdf5;
+  font-weight: 600;
+}
+
+/* ================= ACADEMIC CITATION GENERATOR ================= */
+.citation-generator-card {
+  margin-top: 44px;
+  padding: clamp(22px, 3vw, 32px);
+  border-radius: var(--radius-lg);
+  background: rgba(7, 31, 19, 0.74);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(52, 211, 153, 0.24);
+  box-shadow: var(--glass-shadow);
+}
+
+.citation-card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px 20px;
+  margin-bottom: 18px;
+}
+
+.citation-card-heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+  font-weight: 700;
+  color: #ecfdf5;
+}
+
+.citation-format-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(4, 20, 12, 0.78);
+  border: 1px solid rgba(52, 211, 153, 0.22);
+}
+
+.citation-tab-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.citation-tab-btn:hover:not(.is-active) {
+  color: #ecfdf5;
+  background: rgba(16, 185, 129, 0.14);
+}
+
+.citation-tab-btn.is-active {
+  background: rgba(16, 185, 129, 0.28);
+  border-color: rgba(110, 231, 183, 0.52);
+  color: #ecfdf5;
+}
+
+.citation-preview-box {
+  margin: 0;
+  padding: 18px 20px;
+  border-radius: 12px;
+  background: rgba(2, 14, 9, 0.85);
+  border: 1px solid rgba(52, 211, 153, 0.18);
+  color: #d1fae5;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+.citation-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.citation-institution-note {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+}
+
+.citation-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 231, 183, 0.38);
+  background: rgba(16, 185, 129, 0.18);
+  color: #ecfdf5;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition:
+    transform 0.18s var(--ease-settle),
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.citation-copy-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(16, 185, 129, 0.32);
+  border-color: var(--accent-mint);
+}
+
+.citation-copy-btn.is-copied {
+  background: linear-gradient(135deg, #059669, #10b981);
+  border-color: #6ee7b7;
+  color: #03190f;
+}
+
+/* ================= INTERACTIVE BOTANICAL GLOSSARY TOOLTIPS ================= */
+.glossary-term {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-bottom: 1.5px dotted rgba(52, 211, 153, 0.72);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  cursor: help;
+  transition:
+    color 0.16s ease,
+    border-bottom-color 0.16s ease,
+    background-color 0.16s ease;
+}
+
+.glossary-term:hover,
+.glossary-term:focus-visible {
+  color: #a7f3d0;
+  border-bottom-color: var(--accent-mint);
+  background: rgba(16, 185, 129, 0.14);
+  border-radius: 3px;
+  outline: none;
+}
+
+.glossary-tooltip {
+  position: fixed;
+  z-index: 2800;
+  width: min(340px, calc(100vw - 24px));
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(4, 22, 14, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(52, 211, 153, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 20px 44px rgba(0, 0, 0, 0.62);
+  color: #ecfdf5;
+}
+
+.glossary-tooltip[hidden] {
+  display: none;
+}
+
+.glossary-tooltip-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(52, 211, 153, 0.18);
+}
+
+.glossary-tooltip-term {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent-mint);
+}
+
+.glossary-tooltip-cat {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  color: #a7f3d0;
+}
+
+.glossary-tooltip-en {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+}
+
+.glossary-tooltip-bn {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--accent-gold-soft);
+}
+
+

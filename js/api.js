@@ -4,7 +4,7 @@
  */
 
 const SITE_ROOT_URL = new URL("../", import.meta.url);
-const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v1.2.0";
+const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v1.3.0";
 const KEBAB_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const DATASET_ENDPOINTS = Object.freeze({

@@ -133,6 +133,10 @@ export function animateHydratedSection(sectionKey, mountEl) {
   if (!mountEl || animatedMounts.has(mountEl)) return;
   animatedMounts.add(mountEl);
 
+  if (document.body.classList.contains("is-embed")) {
+    return;
+  }
+
   initGlobalAnimations();
 
   if (prefersReducedMotion()) return;
