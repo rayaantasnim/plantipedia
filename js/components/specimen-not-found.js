@@ -81,84 +81,72 @@ function buildQuickChipEl(entry, isEmbed) {
   return chip;
 }
 
-export function renderSpecimenNotFoundCard(
-  mountEl,
-  {
-    speciesIndex = [],
-    requestedSlug = "",
-    isEmbed = false,
-    requestedPath = "",
-    enableAutoRedirect = false,
-  } = {},
-) {
-  if (!mountEl) return;
+function createNotFoundGlobalCta(query) {
+  const cleanQuery = String(query || "").trim();
+  const cta = document.createElement("a");
+  cta.href = resolveSitePath(`./plant/live/?q=${encodeURIComponent(cleanQuery)}`);
+  cta.className = "global-server-cta-item";
+  cta.setAttribute("role", "option");
 
-  const list = Array.isArray(speciesIndex) ? speciesIndex : [];
-  applyNotFoundSeo({ requestedSlug });
+  const label = createEl(
+    "span",
+    "global-server-cta-label",
+    `🌐 Query Global Botanical Server for "${cleanQuery}"`,
+  );
+  const arrow = createEl("span", "global-server-cta-arrow", "→");
+  arrow.setAttribute("aria-hidden", "true");
 
-  if (typeof window.__plantipedia404Cleanup === "function") {
-    window.__plantipedia404Cleanup();
-    window.__plantipedia404Cleanup = null;
+  cta.appendChild(label);
+  cta.appendChild(arrow);
+  return cta;
+}
+
+function resolveNotFoundMessaging({ list, requestedSlug, requestedPath, reason, queryLabel }) {
+  const totalAvailable = list.length > 0 ? list.length : 50;
+  const qLabel = String(queryLabel || requestedSlug || "").trim();
+
+  if (reason === "invalid") {
+    return {
+      badgeText: "GLOBAL BOTANICAL SERVER · TAXON UNRECOGNIZED",
+      headingText: "Unrecognized Botanical Specimen",
+      detailCopy: qLabel
+        ? `"${qLabel}" is not a real plant species or recognized botanical taxon in the Global Botanical Server. Search our documented catalog below or try another botanical query.`
+        : "The submitted query is not a real plant species or recognized botanical taxon in the Global Botanical Server.",
+    };
   }
 
-  const shell = createEl("section", "specimen-not-found-shell");
-  shell.setAttribute("aria-labelledby", "notFoundHeading");
+  if (reason === "network") {
+    return {
+      badgeText: "GLOBAL BOTANICAL SERVER · CONNECTION FAILED",
+      headingText: "Network Connection Failed",
+      detailCopy: qLabel
+        ? `Unable to reach the Global Botanical Server after multiple attempts while searching for "${qLabel}". Please check your internet connection and try again.`
+        : "Unable to reach the Global Botanical Server after multiple attempts. Please check your internet connection and try again.",
+    };
+  }
 
-  const card = createEl("div", "specimen-not-found-card");
-
-  const badge = createEl(
-    "span",
-    "specimen-not-found-badge",
-    "ERROR 404 · HERBARIUM RECORD MISSING",
-  );
-  card.appendChild(badge);
-
-  const heading = createEl("h1", "specimen-not-found-title", "Specimen Not Found in Archive");
-  heading.id = "notFoundHeading";
-  card.appendChild(heading);
-
-  const totalAvailable = list.length > 0 ? list.length : 50;
-  let detailCopy =
-    `The requested botanical monograph or archive route does not exist in our current ${totalAvailable}-species registry. Search our living catalog below or return to the main flora index.`;
+  let detailCopy = `The requested botanical monograph or archive route does not exist in our current ${totalAvailable}-species registry. Search our living catalog below or return to the main flora index.`;
   if (requestedSlug) {
     detailCopy = `No herbarium monograph matched specimen identifier "${requestedSlug}" in the current registry. Search below by English, বাংলা, or Latin name to locate a documented species.`;
   } else if (requestedPath && requestedPath !== "/404.html") {
     detailCopy = `Archive route "${requestedPath}" could not be resolved in Plantipedia. Search our ${totalAvailable} documented botanical monographs below or return to the flora gateway.`;
   }
-  card.appendChild(createEl("p", "specimen-not-found-copy", detailCopy));
 
-  // Inline Bilingual Instant Search Bar
-  const searchWrap = createEl("div", "specimen-not-found-search-wrap");
-  const form = createEl("form", "specimen-not-found-search-form");
-  form.setAttribute("role", "search");
-  form.appendChild(createSearchIconSvg(18));
+  return {
+    badgeText: "ERROR 404 · HERBARIUM RECORD MISSING",
+    headingText: "Specimen Not Found in Archive",
+    detailCopy,
+  };
+}
 
-  const input = document.createElement("input");
-  input.type = "search";
-  input.className = "specimen-not-found-search-input";
-  input.placeholder = "Search species (EN / বাংলা / Latin)...";
-  input.autocomplete = "off";
-  input.setAttribute("aria-label", "Search documented plant species");
-
-  const clearBtn = createEl("button", "navbar-search-clear", "×");
-  clearBtn.type = "button";
-  clearBtn.setAttribute("aria-label", "Clear search query");
-  clearBtn.hidden = true;
-
-  form.appendChild(input);
-  form.appendChild(clearBtn);
-
-  const suggestionsEl = createEl("div", "specimen-not-found-suggestions");
-  suggestionsEl.setAttribute("role", "listbox");
-  suggestionsEl.setAttribute("aria-label", "Matching botanical species");
-  suggestionsEl.hidden = true;
-
-  searchWrap.appendChild(form);
-  searchWrap.appendChild(suggestionsEl);
-  card.appendChild(searchWrap);
+function bindNotFoundAutocomplete({ searchWrap, form, input, clearBtn, suggestionsEl, list, isEmbed }) {
+  if (!searchWrap || !form || !input || !suggestionsEl) return () => {};
 
   let activeIdx = -1;
   let currentMatches = [];
+
+  const getOptionItems = () =>
+    Array.from(suggestionsEl.querySelectorAll('a[role="option"]'));
 
   const hideSuggestions = () => {
     suggestionsEl.hidden = true;
@@ -168,7 +156,7 @@ export function renderSpecimenNotFoundCard(
 
   const renderSuggestions = (query) => {
     const q = query.trim();
-    clearBtn.hidden = q.length === 0;
+    if (clearBtn) clearBtn.hidden = q.length === 0;
     if (!q) {
       currentMatches = [];
       hideSuggestions();
@@ -183,9 +171,12 @@ export function renderSpecimenNotFoundCard(
       const empty = createEl(
         "div",
         "nav-suggestion-empty",
-        `No documented species matched "${q}"`,
+        `No local species matched "${q}"`,
       );
       frag.appendChild(empty);
+      if (q.length >= 2) {
+        frag.appendChild(createNotFoundGlobalCta(q));
+      }
       suggestionsEl.replaceChildren(frag);
       suggestionsEl.hidden = false;
       return;
@@ -232,12 +223,16 @@ export function renderSpecimenNotFoundCard(
       frag.appendChild(link);
     });
 
+    if (q.length >= 2 && currentMatches.length < 2) {
+      frag.appendChild(createNotFoundGlobalCta(q));
+    }
+
     suggestionsEl.replaceChildren(frag);
     suggestionsEl.hidden = false;
   };
 
   const syncSelection = () => {
-    const items = suggestionsEl.querySelectorAll(".nav-suggestion-item");
+    const items = getOptionItems();
     items.forEach((el, idx) => {
       el.classList.toggle("is-active", idx === activeIdx);
     });
@@ -256,32 +251,36 @@ export function renderSpecimenNotFoundCard(
       input.blur();
       return;
     }
-    if (suggestionsEl.hidden || currentMatches.length === 0) return;
+    const optionItems = getOptionItems();
+    if (suggestionsEl.hidden || optionItems.length === 0) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      activeIdx = (activeIdx + 1) % currentMatches.length;
+      activeIdx = (activeIdx + 1) % optionItems.length;
       syncSelection();
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      activeIdx = (activeIdx - 1 + currentMatches.length) % currentMatches.length;
+      activeIdx = (activeIdx - 1 + optionItems.length) % optionItems.length;
       syncSelection();
-    } else if (e.key === "Enter" && activeIdx >= 0 && currentMatches[activeIdx]) {
+    } else if (e.key === "Enter" && activeIdx >= 0 && optionItems[activeIdx]) {
       e.preventDefault();
-      window.location.href = buildSpeciesHref(currentMatches[activeIdx].slug, isEmbed);
+      window.location.href = optionItems[activeIdx].href;
     }
   });
 
-  clearBtn.addEventListener("click", () => {
-    input.value = "";
-    clearBtn.hidden = true;
-    hideSuggestions();
-    input.focus();
-  });
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      input.value = "";
+      clearBtn.hidden = true;
+      hideSuggestions();
+      input.focus();
+    });
+  }
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (activeIdx >= 0 && currentMatches[activeIdx]) {
-      window.location.href = buildSpeciesHref(currentMatches[activeIdx].slug, isEmbed);
+    const optionItems = getOptionItems();
+    if (activeIdx >= 0 && optionItems[activeIdx]) {
+      window.location.href = optionItems[activeIdx].href;
       return;
     }
     const q = input.value.trim();
@@ -291,7 +290,10 @@ export function renderSpecimenNotFoundCard(
       return;
     }
     if (q) {
-      const target = resolveSitePath(`./species/?q=${encodeURIComponent(q)}`);
+      const target =
+        matches.length === 0 && q.length >= 2
+          ? resolveSitePath(`./plant/live/?q=${encodeURIComponent(q)}`)
+          : resolveSitePath(`./species/?q=${encodeURIComponent(q)}`);
       if (isEmbed && window.top) {
         window.top.location.href = target;
       } else {
@@ -307,7 +309,170 @@ export function renderSpecimenNotFoundCard(
   };
   document.addEventListener("click", handleDocumentClick);
 
-  // Quick-jump popular species pill chips
+  return () => {
+    document.removeEventListener("click", handleDocumentClick);
+  };
+}
+
+export function renderSpecimenNotFoundCard(
+  mountEl,
+  {
+    speciesIndex = [],
+    requestedSlug = "",
+    isEmbed = false,
+    requestedPath = "",
+    reason = "",
+    queryLabel = "",
+    fromSource = "",
+  } = {},
+) {
+  if (!mountEl) return;
+
+  const list = Array.isArray(speciesIndex) ? speciesIndex : [];
+  applyNotFoundSeo({ requestedSlug: queryLabel || requestedSlug });
+
+  if (typeof window.__plantipedia404Cleanup === "function") {
+    window.__plantipedia404Cleanup();
+    window.__plantipedia404Cleanup = null;
+  }
+
+  const messaging = resolveNotFoundMessaging({
+    list,
+    requestedSlug,
+    requestedPath,
+    reason,
+    queryLabel,
+  });
+
+  // Non-destructive hydration path for 404.html where .not-found-card & #redirect-timer-box are pre-rendered in HTML
+  const existingTimerBox = mountEl.querySelector("#redirect-timer-box");
+  if (existingTimerBox) {
+    const badgeEl = mountEl.querySelector("#notFoundBadge");
+    const headingEl = mountEl.querySelector("#notFoundHeading");
+    const copyEl = mountEl.querySelector("#notFoundCopy");
+    const compareBtn = mountEl.querySelector("#notFoundCompareReturnBtn");
+    const homeBtn = mountEl.querySelector("#notFoundHomeBtn");
+    const atlasBtn = mountEl.querySelector("#notFoundAtlasBtn");
+    const quickSlot = mountEl.querySelector("#notFoundQuickSlot");
+    const telemetrySlot = mountEl.querySelector("#notFoundTelemetrySlot");
+
+    if (badgeEl) badgeEl.textContent = messaging.badgeText;
+    if (headingEl) headingEl.textContent = messaging.headingText;
+    if (copyEl) copyEl.textContent = messaging.detailCopy;
+
+    if (homeBtn) homeBtn.href = resolveSitePath("./");
+    if (atlasBtn) atlasBtn.href = resolveSitePath("./species/");
+
+    if (compareBtn) {
+      if (fromSource === "compare") {
+        compareBtn.href = resolveSitePath("./compare/");
+        compareBtn.hidden = false;
+      } else {
+        compareBtn.hidden = true;
+      }
+    }
+
+    if (quickSlot && list.length > 0) {
+      const featuredSlugs = ["mango", "water-lily", "lotus", "tulsi"];
+      const chips = featuredSlugs
+        .map((slug) => list.find((s) => s.slug === slug))
+        .filter(Boolean);
+      const chipPool = chips.length > 0 ? chips : list.slice(0, 4);
+
+      const frag = document.createDocumentFragment();
+      frag.appendChild(createEl("span", "specimen-not-found-quick-label", "Quick Specifier"));
+      const quickRow = createEl("div", "not-found-quick-links");
+      chipPool.forEach((entry) => {
+        quickRow.appendChild(buildQuickChipEl(entry, isEmbed));
+      });
+      frag.appendChild(quickRow);
+      quickSlot.replaceChildren(frag);
+      quickSlot.hidden = false;
+    }
+
+    if (telemetrySlot && !isEmbed) {
+      telemetrySlot.replaceChildren(
+        createTelemetryStatsGrid(buildNotFoundTelemetryStats(list), {
+          variant: "compact",
+          ariaLabel: "Explore Plantipedia archive metrics",
+          sectionId: "notFoundTelemetryGrid",
+        }),
+      );
+    }
+
+    const searchWrap = mountEl.querySelector("#notFoundSearchWrap");
+    const form = mountEl.querySelector("#notFoundSearchForm");
+    const input = mountEl.querySelector("#notFoundSearchInput");
+    const clearBtn = mountEl.querySelector("#notFoundSearchClear");
+    const suggestionsEl = mountEl.querySelector("#notFoundSuggestions");
+
+    const cleanupSearch = bindNotFoundAutocomplete({
+      searchWrap,
+      form,
+      input,
+      clearBtn,
+      suggestionsEl,
+      list,
+      isEmbed,
+    });
+
+    window.__plantipedia404Cleanup = cleanupSearch;
+    return;
+  }
+
+  // Dynamic render path (used inside /plant/?species=<invalid> when mountEl starts empty)
+  const shell = createEl("section", "specimen-not-found-shell");
+  shell.setAttribute("aria-labelledby", "notFoundHeading");
+
+  const card = createEl("div", "specimen-not-found-card not-found-card");
+
+  const badge = createEl("span", "specimen-not-found-badge", messaging.badgeText);
+  card.appendChild(badge);
+
+  const heading = createEl("h1", "specimen-not-found-title", messaging.headingText);
+  heading.id = "notFoundHeading";
+  card.appendChild(heading);
+  card.appendChild(createEl("p", "specimen-not-found-copy", messaging.detailCopy));
+
+  const searchWrap = createEl("div", "specimen-not-found-search-wrap");
+  const form = createEl("form", "specimen-not-found-search-form");
+  form.setAttribute("role", "search");
+  form.appendChild(createSearchIconSvg(18));
+
+  const input = document.createElement("input");
+  input.type = "search";
+  input.className = "specimen-not-found-search-input";
+  input.placeholder = "Search species (EN / বাংলা / Latin)...";
+  input.autocomplete = "off";
+  input.setAttribute("aria-label", "Search documented plant species");
+
+  const clearBtn = createEl("button", "navbar-search-clear", "×");
+  clearBtn.type = "button";
+  clearBtn.setAttribute("aria-label", "Clear search query");
+  clearBtn.hidden = true;
+
+  form.appendChild(input);
+  form.appendChild(clearBtn);
+
+  const suggestionsEl = createEl("div", "specimen-not-found-suggestions");
+  suggestionsEl.setAttribute("role", "listbox");
+  suggestionsEl.setAttribute("aria-label", "Matching botanical species");
+  suggestionsEl.hidden = true;
+
+  searchWrap.appendChild(form);
+  searchWrap.appendChild(suggestionsEl);
+  card.appendChild(searchWrap);
+
+  const cleanupSearch = bindNotFoundAutocomplete({
+    searchWrap,
+    form,
+    input,
+    clearBtn,
+    suggestionsEl,
+    list,
+    isEmbed,
+  });
+
   if (list.length > 0) {
     const featuredSlugs = ["mango", "water-lily", "lotus", "tulsi"];
     const chips = featuredSlugs
@@ -325,8 +490,18 @@ export function renderSpecimenNotFoundCard(
     card.appendChild(quickWrap);
   }
 
-  // Primary Action Buttons
   const actionsRow = createEl("div", "specimen-not-found-actions");
+
+  if (fromSource === "compare") {
+    const compareBtn = createEl(
+      "a",
+      "specimen-nf-btn specimen-nf-btn--compare",
+      "⇄ Return to Compare",
+    );
+    compareBtn.href = resolveSitePath("./compare/");
+    if (isEmbed) compareBtn.target = "_top";
+    actionsRow.appendChild(compareBtn);
+  }
 
   const homeBtn = createEl("a", "specimen-nf-btn specimen-nf-btn--secondary", "Return to Home");
   homeBtn.href = resolveSitePath("./");
@@ -344,137 +519,7 @@ export function renderSpecimenNotFoundCard(
   actionsRow.appendChild(atlasBtn);
   card.appendChild(actionsRow);
 
-  // Smart 30-Second Auto-Redirect Timer (on 404.html)
-  let intervalId = null;
-  if (enableAutoRedirect && !isEmbed) {
-    const TOTAL_SECONDS = 30;
-    let remaining = TOTAL_SECONDS;
-    let isPaused = false;
-    let isCancelled = false;
-
-    const timerBox = createEl("div", "redirect-timer-box");
-    timerBox.id = "redirect-timer-box";
-
-    const topRow = createEl("div", "redirect-timer-top");
-    const statusText = createEl(
-      "span",
-      "redirect-timer-text",
-      `Auto-returning to Homepage in ${remaining}s...`,
-    );
-    statusText.id = "redirectTimerStatus";
-
-    const srStatus = createEl(
-      "span",
-      "sr-only",
-      `Auto-returning to Homepage in ${TOTAL_SECONDS} seconds.`,
-    );
-    srStatus.setAttribute("aria-live", "polite");
-
-    const btnGroup = createEl("div", "redirect-timer-controls");
-
-    const resumeBtn = createEl("button", "redirect-timer-btn redirect-timer-btn--resume", "Resume");
-    resumeBtn.type = "button";
-    resumeBtn.hidden = true;
-
-    const cancelBtn = createEl("button", "redirect-timer-btn", "Cancel");
-    cancelBtn.type = "button";
-
-    btnGroup.appendChild(resumeBtn);
-    btnGroup.appendChild(cancelBtn);
-
-    topRow.appendChild(statusText);
-    topRow.appendChild(btnGroup);
-    topRow.appendChild(srStatus);
-
-    const track = createEl("div", "redirect-timer-track");
-    track.setAttribute("aria-hidden", "true");
-    const fill = createEl("div", "redirect-timer-fill");
-    fill.style.width = "100%";
-    track.appendChild(fill);
-
-    timerBox.appendChild(topRow);
-    timerBox.appendChild(track);
-    card.appendChild(timerBox);
-
-    const updateProgressUi = () => {
-      const pct = Math.max(0, Math.min(100, (remaining / TOTAL_SECONDS) * 100));
-      fill.style.width = `${pct}%`;
-    };
-
-    const startInterval = () => {
-      if (intervalId !== null || isCancelled) return;
-      intervalId = window.setInterval(() => {
-        if (isPaused || isCancelled) return;
-        remaining -= 1;
-        if (remaining <= 0) {
-          remaining = 0;
-          updateProgressUi();
-          statusText.textContent = "Auto-returning to Homepage in 0s...";
-          srStatus.textContent = "Returning to Homepage now.";
-          window.clearInterval(intervalId);
-          intervalId = null;
-          window.location.href = resolveSitePath("./");
-          return;
-        }
-        statusText.textContent = `Auto-returning to Homepage in ${remaining}s...`;
-        updateProgressUi();
-        if (remaining === 15 || remaining === 5) {
-          srStatus.textContent = `Auto-returning to Homepage in ${remaining} seconds.`;
-        }
-      }, 1000);
-    };
-
-    const pauseTimer = () => {
-      if (isCancelled || isPaused) return;
-      isPaused = true;
-      timerBox.classList.add("is-paused");
-      statusText.textContent = "Auto-redirect paused while searching";
-      srStatus.textContent = "Auto-redirect paused while searching.";
-      resumeBtn.hidden = false;
-    };
-
-    const resumeTimer = () => {
-      if (isCancelled || !isPaused) return;
-      isPaused = false;
-      timerBox.classList.remove("is-paused");
-      statusText.textContent = `Auto-returning to Homepage in ${remaining}s...`;
-      srStatus.textContent = `Auto-redirect resumed with ${remaining} seconds remaining.`;
-      resumeBtn.hidden = true;
-      startInterval();
-    };
-
-    const cancelTimer = () => {
-      if (isCancelled) return;
-      isCancelled = true;
-      isPaused = false;
-      if (intervalId !== null) {
-        window.clearInterval(intervalId);
-        intervalId = null;
-      }
-      timerBox.classList.remove("is-paused");
-      timerBox.classList.add("is-cancelled");
-      statusText.textContent = "Auto-redirect cancelled.";
-      srStatus.textContent = "Auto-redirect cancelled.";
-      resumeBtn.hidden = true;
-      cancelBtn.hidden = true;
-      track.hidden = true;
-    };
-
-    input.addEventListener("focus", pauseTimer);
-    input.addEventListener("input", pauseTimer);
-    resumeBtn.addEventListener("click", resumeTimer);
-    cancelBtn.addEventListener("click", cancelTimer);
-
-    startInterval();
-  }
-
-  window.__plantipedia404Cleanup = () => {
-    document.removeEventListener("click", handleDocumentClick);
-    if (intervalId !== null) {
-      window.clearInterval(intervalId);
-      intervalId = null;
-    }
-  };
+  window.__plantipedia404Cleanup = cleanupSearch;
 
   shell.appendChild(card);
 
@@ -497,6 +542,12 @@ export async function mountStandalone404Page() {
   const mountEl = document.getElementById("mount-404");
   if (!mountEl) return;
 
+  const params = new URLSearchParams(window.location.search);
+  const requestedSlug = params.get("species") || params.get("slug") || "";
+  const reason = (params.get("reason") || "").trim().toLowerCase();
+  const queryLabel = (params.get("q") || "").trim();
+  const fromSource = (params.get("from") || "").trim().toLowerCase();
+
   let speciesList = getSpeciesIndex();
   if (!Array.isArray(speciesList) || speciesList.length === 0) {
     try {
@@ -509,13 +560,13 @@ export async function mountStandalone404Page() {
     }
   }
 
-  const params = new URLSearchParams(window.location.search);
-  const requestedSlug = params.get("species") || params.get("slug") || "";
   renderSpecimenNotFoundCard(mountEl, {
     speciesIndex: speciesList,
     requestedSlug,
     requestedPath: window.location.pathname,
     isEmbed: false,
-    enableAutoRedirect: true,
+    reason,
+    queryLabel,
+    fromSource,
   });
 }

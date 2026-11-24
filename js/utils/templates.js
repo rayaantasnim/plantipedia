@@ -892,26 +892,50 @@ export function renderHighlightsSection(mountEl, { sectionData }) {
   mountEl.replaceChildren(wrapper);
 }
 
+export function createGlobalServerCtaNode(query) {
+  const cleanQuery = String(query || "").trim();
+  const cta = document.createElement("a");
+  cta.href = resolveRootPath(`./plant/live/?q=${encodeURIComponent(cleanQuery)}`);
+  cta.className = "global-server-cta-item";
+  cta.setAttribute("role", "option");
+
+  const label = createEl(
+    "span",
+    "global-server-cta-label",
+    `🌐 Query Global Botanical Server for "${cleanQuery}"`,
+  );
+  const arrow = createEl("span", "global-server-cta-arrow", "→");
+  arrow.setAttribute("aria-hidden", "true");
+
+  cta.appendChild(label);
+  cta.appendChild(arrow);
+  return cta;
+}
+
 /**
  * Safely populates live search suggestion dropdowns using DocumentFragment & textContent.
  */
 export function renderSearchSuggestionNodes(container, matches, emptyQuery, itemVariant) {
   if (!container) return;
   const fragment = document.createDocumentFragment();
+  const trimmedQuery = String(emptyQuery || "").trim();
 
   if (matches.length === 0) {
     const emptyEl = createEl(
       "div",
-      itemVariant === "home" ? "suggestion-row" : "nav-suggestion-empty",
+      itemVariant === "home" ? "suggestion-empty-row" : "nav-suggestion-empty",
     );
     if (itemVariant === "home") {
       emptyEl.appendChild(
-        createEl("span", "", `No matching species found for "${emptyQuery}"`),
+        createEl("span", "", `No matching local species found for "${trimmedQuery}"`),
       );
     } else {
-      emptyEl.textContent = `No species matched "${emptyQuery}"`;
+      emptyEl.textContent = `No local species matched "${trimmedQuery}"`;
     }
     fragment.appendChild(emptyEl);
+    if (trimmedQuery.length >= 2) {
+      fragment.appendChild(createGlobalServerCtaNode(trimmedQuery));
+    }
     container.replaceChildren(fragment);
     container.hidden = false;
     return;
@@ -967,6 +991,10 @@ export function renderSearchSuggestionNodes(container, matches, emptyQuery, item
 
     fragment.appendChild(link);
   });
+
+  if (trimmedQuery.length >= 2 && matches.length < 2) {
+    fragment.appendChild(createGlobalServerCtaNode(trimmedQuery));
+  }
 
   container.replaceChildren(fragment);
   container.hidden = false;

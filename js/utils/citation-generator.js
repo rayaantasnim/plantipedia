@@ -9,6 +9,13 @@ import { resolveRootPath } from "../core/router.js";
 function getCleanCanonicalHref(plant, cfg = {}) {
   if (cfg.canonicalUrl) return cfg.canonicalUrl;
   try {
+    if (plant?.isGlobalLive) {
+      const q = plant.query || plant.commonName || "";
+      const targetHref = resolveRootPath(
+        `./plant/live/?q=${encodeURIComponent(q)}`,
+      );
+      return new URL(targetHref, window.location.href).href;
+    }
     if (plant?.slug) {
       const targetHref = resolveRootPath(
         `./plant/?species=${encodeURIComponent(plant.slug)}`,
@@ -24,7 +31,9 @@ function getCleanCanonicalHref(plant, cfg = {}) {
 }
 
 function buildCitations(plant, cfg = {}) {
-  const institution = cfg.institution || "Plantipedia Botanical Archive";
+  const institution = plant?.isGlobalLive
+    ? "Plantipedia Global Flora Index"
+    : (cfg.institution || "Plantipedia Botanical Archive");
   const year = String(cfg.year || 2026);
   const title = `${plant.commonName} (${plant.scientificName})`;
   const url = getCleanCanonicalHref(plant, cfg);
@@ -37,7 +46,8 @@ function buildCitations(plant, cfg = {}) {
   const mlaMonth = monthNames[now.getMonth()].slice(0, 3);
   const apaDate = `${monthNames[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
   const mlaDate = `${now.getDate()} ${mlaMonth}. ${now.getFullYear()}`;
-  const bibKey = `plantipedia_${String(plant.slug || "species").replace(/[^a-z0-9]/gi, "_")}_${year}`;
+  const keySeed = plant.slug || plant.query || plant.commonName || "species";
+  const bibKey = `plantipedia_${String(keySeed).replace(/[^a-z0-9]/gi, "_")}_${year}`;
 
   return {
     apa: `${institution}. (${year}). ${title}: Botanical monograph and ecological profile. ${institution}. Retrieved ${apaDate}, from ${url}`,

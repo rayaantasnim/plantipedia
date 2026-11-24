@@ -2880,6 +2880,236 @@
   .services-comparison-table td {
     font-size: 0.86rem;
   }
+
+  .compare-global-form {
+    flex-wrap: wrap;
+  }
+
+  .compare-global-input {
+    flex: 1 1 100%;
+  }
+
+  .compare-global-fetch-btn,
+  .compare-global-reset-btn {
+    flex: 1;
+    min-height: 44px;
+  }
 }
+
+.directory-global-banner {
+  margin-top: 12px;
+}
+
+.directory-global-banner[hidden] {
+  display: none;
+}
+
+.directory-global-banner-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 18px;
+  border-radius: 14px;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  color: #a7f3d0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.directory-global-banner-link:hover,
+.directory-global-banner-link:focus-visible {
+  background: rgba(16, 185, 129, 0.24);
+  border-color: #34d399;
+  color: #ecfdf5;
+}
+
+.directory-global-banner-arrow {
+  font-family: var(--font-mono);
+  color: #34d399;
+  flex-shrink: 0;
+}
+
+/* ================= POLISHED 404 NARROW-SCREEN & MOBILE LAYOUT ================= */
+@media (max-width: 640px) {
+  .page-main--404 {
+    padding: calc(var(--nav-height) + 20px) 14px 32px;
+  }
+
+  .page-main--404 #mount-404 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .page-main--404 .specimen-not-found-shell {
+    padding: 0;
+  }
+
+  .specimen-not-found-card,
+  .not-found-card {
+    padding: 24px 16px;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 540px) {
+  .not-found-quick-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .not-found-pill-chip {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 8px;
+    font-size: 0.78rem;
+    line-height: 1.3;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 440px) {
+  .specimen-not-found-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .specimen-nf-btn {
+    width: 100%;
+  }
+
+  #redirect-timer-box,
+  .redirect-timer-box {
+    padding: 12px 14px;
+    margin-top: 18px;
+  }
+
+  .redirect-timer-row,
+  .redirect-timer-top {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .redirect-cancel-btn {
+    width: 100%;
+  }
+}
+
+/* ================= SPLIT COMPARISON RESULT VIEWPORT (/compare/result/) ================= */
+@media (max-width: 768px) {
+  .compare-result-header-inner {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "back actions"
+      "title title";
+    gap: 10px 12px;
+  }
+
+  .compare-result-back-btn {
+    grid-area: back;
+    justify-self: start;
+  }
+
+  .compare-result-header-actions {
+    grid-area: actions;
+    justify-self: end;
+  }
+
+  .compare-result-title-group {
+    grid-area: title;
+    text-align: left;
+  }
+
+  .compare-hero-grid,
+  .compare-telemetry-grid,
+  .compare-dual-cards,
+  .compare-subblocks-grid,
+  .compare-care-pills {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-taxonomy-table thead {
+    display: none;
+  }
+
+  .compare-taxonomy-table,
+  .compare-taxonomy-table tbody,
+  .compare-taxonomy-table tr,
+  .compare-taxonomy-table th,
+  .compare-taxonomy-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .compare-taxonomy-table tbody tr {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(52, 211, 153, 0.16);
+  }
+
+  .compare-taxonomy-table tbody th,
+  .compare-taxonomy-table tbody td {
+    padding: 4px 0;
+    border-bottom: 0;
+  }
+
+  .compare-tax-val::before {
+    content: attr(data-specimen-label) ": ";
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+
+  .compare-tax-val.is-left::before {
+    color: #6ee7b7;
+  }
+
+  .compare-tax-val.is-right::before {
+    color: #fde68a;
+  }
+}
+
+@media (max-width: 480px) {
+  .compare-result-header-inner {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "back"
+      "actions";
+  }
+
+  .compare-result-back-btn,
+  .compare-result-header-actions,
+  .compare-result-export-btn {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .compare-matrix-shell {
+    margin-top: 18px;
+    gap: 18px;
+  }
+
+  .compare-hero-body {
+    padding: 16px;
+  }
+
+  .compare-matrix-section {
+    padding: 16px 14px;
+  }
+}
+
+
+
 
 

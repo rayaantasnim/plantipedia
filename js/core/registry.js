@@ -33,9 +33,11 @@ import {
   renderDirectoryExplorer,
 } from "../views/species-directory.js";
 import { renderPlantMonograph } from "../views/plant-monograph.js";
+import { renderLiveMonographView } from "../views/live-plant-view.js";
 import { renderTaxonomyExplorer } from "../views/taxonomy-view.js";
 import { renderSeasonsCalendar } from "../views/seasons-view.js";
 import { renderCompareWorkspace } from "../views/compare-view.js";
+import { renderCompareResultWorkspace } from "../views/compare-result-view.js";
 import { renderServicesPortal } from "../views/services-view.js";
 import { animateHydratedSection, refreshScrollTriggers } from "./animations.js";
 import { initNavigationInteractions } from "../utils/navigation.js";
@@ -164,6 +166,17 @@ const SECTION_REGISTRY = {
       });
     },
   },
+  "live-monograph": {
+    datasets: ["page:plant", "speciesIndex"],
+    optionalDatasets: ["glossary"],
+    render: (el, dataMap) => {
+      renderLiveMonographView(el, {
+        pageData: dataMap.get("page:plant")?.data,
+        speciesIndex: dataMap.get("speciesIndex")?.data || [],
+        glossaryData: dataMap.get("glossary")?.data || null,
+      });
+    },
+  },
   "taxonomy-explorer": {
     datasets: ["page:taxonomy", "speciesIndex"],
     render: (el, dataMap) => {
@@ -188,6 +201,17 @@ const SECTION_REGISTRY = {
       renderCompareWorkspace(el, {
         pageData: dataMap.get("page:compare")?.data,
         speciesIndex: dataMap.get("speciesIndex")?.data || [],
+      });
+    },
+  },
+  "compare-result": {
+    datasets: ["page:compare", "speciesIndex"],
+    optionalDatasets: ["page:seasons"],
+    render: (el, dataMap) => {
+      renderCompareResultWorkspace(el, {
+        pageData: dataMap.get("page:compare")?.data,
+        speciesIndex: dataMap.get("speciesIndex")?.data || [],
+        seasonsData: dataMap.get("page:seasons")?.data || null,
       });
     },
   },
@@ -221,9 +245,11 @@ function resolveActivePageKey() {
     home: "page:home",
     species: "page:species",
     plant: "page:plant",
+    "plant-live": "page:plant",
     taxonomy: "page:taxonomy",
     seasons: "page:seasons",
     compare: "page:compare",
+    "compare-result": "page:compare",
     services: "page:services",
   };
   return pageKeyMap[pageName] || null;

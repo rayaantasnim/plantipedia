@@ -71,7 +71,104 @@
     <header id="global-navbar" class="global-navbar"></header>
 
     <main id="app-main" class="page-main page-main--404" data-page="404">
-      <div id="mount-404" class="section-container"></div>
+      <div id="mount-404" class="section-container">
+        <section class="specimen-not-found-shell" aria-labelledby="notFoundHeading">
+          <div class="specimen-not-found-card not-found-card">
+            <span id="notFoundBadge" class="specimen-not-found-badge">
+              ERROR 404 · HERBARIUM RECORD MISSING
+            </span>
+            <h1 id="notFoundHeading" class="specimen-not-found-title">
+              Specimen Not Found in Archive
+            </h1>
+            <p id="notFoundCopy" class="specimen-not-found-copy">
+              The requested botanical monograph or archive route does not exist in our current 50-species registry. Search our living catalog below or return to the main flora index.
+            </p>
+
+            <div id="notFoundSearchWrap" class="specimen-not-found-search-wrap">
+              <form id="notFoundSearchForm" class="specimen-not-found-search-form" role="search">
+                <svg
+                  class="navbar-search-icon"
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.3-4.3"></path>
+                </svg>
+                <input
+                  type="search"
+                  id="notFoundSearchInput"
+                  class="specimen-not-found-search-input"
+                  placeholder="Search species (EN / বাংলা / Latin)..."
+                  autocomplete="off"
+                  aria-label="Search documented plant species"
+                />
+                <button
+                  type="button"
+                  id="notFoundSearchClear"
+                  class="navbar-search-clear"
+                  aria-label="Clear search query"
+                  hidden
+                >
+                  ×
+                </button>
+              </form>
+              <div
+                id="notFoundSuggestions"
+                class="specimen-not-found-suggestions"
+                role="listbox"
+                aria-label="Matching botanical species"
+                hidden
+              ></div>
+            </div>
+
+            <div id="notFoundQuickSlot" class="specimen-not-found-quick" hidden></div>
+
+            <div id="notFoundActionsRow" class="specimen-not-found-actions">
+              <a
+                id="notFoundCompareReturnBtn"
+                href="./compare/"
+                class="specimen-nf-btn specimen-nf-btn--compare"
+                hidden
+              >
+                ⇄ Return to Compare
+              </a>
+              <a
+                id="notFoundHomeBtn"
+                href="./"
+                class="specimen-nf-btn specimen-nf-btn--secondary"
+              >
+                Return to Home
+              </a>
+              <a
+                id="notFoundAtlasBtn"
+                href="./species/"
+                class="specimen-nf-btn specimen-nf-btn--primary"
+              >
+                Browse Species Atlas →
+              </a>
+            </div>
+
+            <div id="redirect-timer-box" class="redirect-timer-box" aria-live="polite">
+              <div class="redirect-timer-row">
+                <span id="redirect-status-text">Auto-returning to Homepage in <strong>30s</strong>...</span>
+                <button type="button" id="redirect-toggle-btn" class="redirect-cancel-btn">Cancel</button>
+              </div>
+              <div class="redirect-progress-track">
+                <div id="redirect-progress-fill" class="redirect-progress-fill" style="width: 100%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="notFoundTelemetrySlot" class="not-found-telemetry-wrap"></div>
+        </section>
+      </div>
     </main>
 
     <footer
@@ -97,6 +194,122 @@
       } else {
         mountStandalone404Page();
       }
+    </script>
+    <script>
+      (function () {
+        try {
+          var TOTAL_SECONDS = 30;
+          var remaining = TOTAL_SECONDS;
+          var isPaused = false;
+          var isCancelled = false;
+          var intervalId = null;
+
+          var timerBox = document.getElementById("redirect-timer-box");
+          var statusText = document.getElementById("redirect-status-text");
+          var toggleBtn = document.getElementById("redirect-toggle-btn");
+          var progressFill = document.getElementById("redirect-progress-fill");
+          var progressTrack = timerBox ? timerBox.querySelector(".redirect-progress-track") : null;
+          var searchInput = document.getElementById("notFoundSearchInput");
+
+          if (!timerBox || !statusText || !toggleBtn || !progressFill) return;
+
+          function renderCountdownText(sec) {
+            statusText.textContent = "";
+            statusText.appendChild(document.createTextNode("Auto-returning to Homepage in "));
+            var strong = document.createElement("strong");
+            strong.textContent = sec + "s";
+            statusText.appendChild(strong);
+            statusText.appendChild(document.createTextNode("..."));
+          }
+
+          function updateBar(sec) {
+            var pct = Math.max(0, Math.min(100, (sec / TOTAL_SECONDS) * 100));
+            progressFill.style.width = pct + "%";
+          }
+
+          function performRedirect() {
+            const homeUrl = window.location.pathname.startsWith("/plantipedia/")
+              ? "/plantipedia/"
+              : "/";
+            window.location.replace(homeUrl);
+          }
+
+          function startTicker() {
+            if (intervalId !== null || isCancelled) return;
+            intervalId = window.setInterval(function () {
+              if (isPaused || isCancelled) return;
+              remaining -= 1;
+              if (remaining <= 0) {
+                remaining = 0;
+                renderCountdownText(0);
+                updateBar(0);
+                window.clearInterval(intervalId);
+                intervalId = null;
+                performRedirect();
+                return;
+              }
+              renderCountdownText(remaining);
+              updateBar(remaining);
+            }, 1000);
+          }
+
+          function pauseCountdown() {
+            if (isCancelled || isPaused) return;
+            isPaused = true;
+            timerBox.classList.add("is-paused");
+            statusText.textContent = "Auto-redirect paused while searching";
+            toggleBtn.textContent = "Resume";
+            toggleBtn.classList.add("is-resume");
+          }
+
+          function resumeCountdown() {
+            if (isCancelled || !isPaused) return;
+            isPaused = false;
+            timerBox.classList.remove("is-paused");
+            renderCountdownText(remaining);
+            toggleBtn.textContent = "Cancel";
+            toggleBtn.classList.remove("is-resume");
+            startTicker();
+          }
+
+          function cancelCountdown() {
+            if (isCancelled) return;
+            isCancelled = true;
+            isPaused = false;
+            if (intervalId !== null) {
+              window.clearInterval(intervalId);
+              intervalId = null;
+            }
+            timerBox.classList.remove("is-paused");
+            timerBox.classList.add("is-cancelled");
+            statusText.textContent = "Auto-redirect cancelled.";
+            toggleBtn.hidden = true;
+            if (progressTrack) {
+              progressTrack.hidden = true;
+            }
+          }
+
+          toggleBtn.addEventListener("click", function () {
+            if (isCancelled) return;
+            if (isPaused) {
+              resumeCountdown();
+            } else {
+              cancelCountdown();
+            }
+          });
+
+          if (searchInput) {
+            searchInput.addEventListener("focus", pauseCountdown);
+            searchInput.addEventListener("input", pauseCountdown);
+          }
+
+          renderCountdownText(remaining);
+          updateBar(remaining);
+          startTicker();
+        } catch (err) {
+          console.error(err);
+        }
+      })();
     </script>
   </body>
 </html>

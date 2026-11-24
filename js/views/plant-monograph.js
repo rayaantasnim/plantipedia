@@ -120,18 +120,24 @@ function mountFloatingCompareButton(plant, isEmbed) {
   const existing = document.getElementById("plant-floating-compare");
   if (existing) existing.remove();
 
-  if (!plant || !plant.slug || isEmbed) return;
+  if (!plant || isEmbed) return;
 
-  const urlSpecies = new URLSearchParams(window.location.search).get("species");
-  const currentSpeciesSlug = (urlSpecies || plant.slug || "").trim();
-  if (!currentSpeciesSlug) return;
+  let compareTarget = "";
+  if (plant.isGlobalLive) {
+    const queryVal = (plant.query || plant.commonName || "").trim();
+    if (!queryVal) return;
+    compareTarget = `./compare/?leftGlobal=${encodeURIComponent(queryVal)}`;
+  } else {
+    const urlSpecies = new URLSearchParams(window.location.search).get("species");
+    const currentSpeciesSlug = (urlSpecies || plant.slug || "").trim();
+    if (!currentSpeciesSlug) return;
+    compareTarget = `./compare/?left=${encodeURIComponent(currentSpeciesSlug)}`;
+  }
 
   const compareLink = document.createElement("a");
   compareLink.id = "plant-floating-compare";
   compareLink.className = "plant-floating-compare-btn";
-  compareLink.href = resolveRootPath(
-    `./compare/?left=${encodeURIComponent(currentSpeciesSlug)}`,
-  );
+  compareLink.href = resolveRootPath(compareTarget);
   compareLink.setAttribute(
     "aria-label",
     `Compare ${plant.commonName} side-by-side with another species`,
@@ -139,7 +145,7 @@ function mountFloatingCompareButton(plant, isEmbed) {
   compareLink.title = `Compare ${plant.commonName} side-by-side`;
 
   compareLink.appendChild(createCompareIconSvg());
-  compareLink.appendChild(createEl("span", "", "⇄ Compare"));
+  compareLink.appendChild(createEl("span", "", "Compare"));
 
   document.body.appendChild(compareLink);
 }
@@ -565,7 +571,10 @@ export function renderPlantMonograph(
     // Non-blocking: SEO metadata failures must never abort monograph hydration
   }
 
-  const plantIdx = indexList.findIndex((p) => p.slug === plant.slug);
+  const isGlobalLive = Boolean(plant.isGlobalLive);
+  const plantIdx = !isGlobalLive && plant.slug
+    ? indexList.findIndex((p) => p.slug === plant.slug)
+    : -1;
   const hasNeighbors = indexList.length > 1 && plantIdx !== -1;
   const prevPlant = hasNeighbors
     ? indexList[(plantIdx - 1 + indexList.length) % indexList.length]
@@ -576,9 +585,9 @@ export function renderPlantMonograph(
 
   const ov = plant.overview || {};
   const labels = monographCfg.tableLabels || {};
-  const categoryHref = resolveRootPath(
-    `./species/?category=${encodeURIComponent(plant.category)}`,
-  );
+  const categoryHref = isGlobalLive
+    ? resolveRootPath("./plant/live/")
+    : resolveRootPath(`./species/?category=${encodeURIComponent(plant.category || "")}`);
 
   const detailContainer = createEl("div", "detail-container");
 
@@ -597,7 +606,10 @@ export function renderPlantMonograph(
       label: monographCfg.directoryLabel || "Available Species",
       href: sanitizeUrl(monographCfg.directoryHref, "./species/"),
     },
-    { label: plant.category, href: categoryHref },
+    {
+      label: isGlobalLive ? "Global Flora Index" : (plant.category || "Flora"),
+      href: categoryHref,
+    },
     { label: plant.commonName, current: true },
   ];
 
@@ -623,7 +635,7 @@ export function renderPlantMonograph(
   breadcrumbNav.appendChild(ol);
 
   const trail = createEl("div", "detail-taxonomy-trail");
-  trail.appendChild(document.createTextNode(`${ov.family || ""} · `));
+  trail.appendChild(document.createTextNode(`${ov.family || "Plantae"} · `));
   const sciEm = createEl("em", "", plant.scientificName);
   trail.appendChild(sciEm);
 
@@ -637,13 +649,28 @@ export function renderPlantMonograph(
 
   const headerGrid = createEl("div", "overview-header-grid");
   const titleBlock = createEl("div", "overview-title-block");
-  titleBlock.appendChild(
-    createEl(
-      "span",
-      "section-index-label",
-      monographCfg.profileLabel || "SECTION 00 · BOTANICAL PROFILE",
-    ),
-  );
+  if (isGlobalLive) {
+    const badgeRow = createEl("div", "monograph-source-row");
+    badgeRow.appendChild(
+      createEl(
+        "span",
+        "section-index-label",
+        "SECTION 00 · GLOBAL BOTANICAL SERVER",
+      ),
+    );
+    badgeRow.appendChild(
+      createEl("span", "global-flora-badge", plant.sourceBadge || "GLOBAL FLORA INDEX"),
+    );
+    titleBlock.appendChild(badgeRow);
+  } else {
+    titleBlock.appendChild(
+      createEl(
+        "span",
+        "section-index-label",
+        monographCfg.profileLabel || "SECTION 00 · BOTANICAL PROFILE",
+      ),
+    );
+  }
   titleBlock.appendChild(createEl("h1", "overview-plant-title", plant.commonName));
 
   const sciLabel = plant.localName
@@ -653,9 +680,21 @@ export function renderPlantMonograph(
       : plant.scientificName;
   titleBlock.appendChild(createEl("p", "overview-scientific-name", sciLabel));
 
-  // Header Action Bar: Bookmark + Export Field Sheet (PDF)
+  // Header Action Bar: Bookmark + Export Field Sheet (PDF) + Compare
   const actionBar = createEl("div", "monograph-header-actions");
-  actionBar.appendChild(createBookmarkButton(plant, "monograph"));
+  if (!isGlobalLive && plant.slug) {
+    actionBar.appendChild(createBookmarkButton(plant, "monograph"));
+  }
+
+  const compareHref = isGlobalLive
+    ? resolveRootPath(`./compare/?leftGlobal=${encodeURIComponent(plant.query || plant.commonName || "")}`)
+    : resolveRootPath(`./compare/?left=${encodeURIComponent(plant.slug || "")}`);
+  const compareBtn = createEl("a", "monograph-action-btn monograph-compare-btn");
+  compareBtn.href = compareHref;
+  if (isEmbed) compareBtn.target = "_top";
+  compareBtn.appendChild(createCompareIconSvg());
+  compareBtn.appendChild(createEl("span", "", "Compare This Species"));
+  actionBar.appendChild(compareBtn);
 
   const printBtn = createEl("button", "monograph-action-btn monograph-print-btn");
   printBtn.type = "button";

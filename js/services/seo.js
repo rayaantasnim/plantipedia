@@ -516,21 +516,37 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
   const baseSeo = pageData?.seo || {};
   const homeUrl = resolveCanonicalPageUrl("");
   const compareBaseUrl = resolveCanonicalPageUrl("compare/");
-  const hasPair = Boolean(leftPlant?.slug && rightPlant?.slug);
+  const leftId = leftPlant?.slug || leftPlant?.query || "";
+  const rightId = rightPlant?.slug || rightPlant?.query || "";
+  const hasPair = Boolean(leftId && rightId);
 
-  const query = hasPair
-    ? `?a=${encodeURIComponent(leftPlant.slug)}&b=${encodeURIComponent(rightPlant.slug)}`
-    : "";
+  let query = "";
+  if (hasPair) {
+    const params = new URLSearchParams();
+    if (leftPlant?.isGlobalLive || !leftPlant?.slug) {
+      params.set("leftGlobal", leftId);
+    } else {
+      params.set("a", leftPlant.slug);
+    }
+    if (rightPlant?.isGlobalLive || !rightPlant?.slug) {
+      params.set("rightGlobal", rightId);
+    } else {
+      params.set("b", rightPlant.slug);
+    }
+    query = `?${params.toString()}`;
+  }
   const pageUrl = resolveCanonicalPageUrl("compare/", query);
 
+  const leftName = leftPlant?.commonName || leftId;
+  const rightName = rightPlant?.commonName || rightId;
   const title = hasPair
-    ? `${leftPlant.commonName} vs. ${rightPlant.commonName} — Compare | Plantipedia`
+    ? `${leftName} vs. ${rightName} — Compare | Plantipedia`
     : baseSeo.title ||
       "Compare Split View — Side-by-Side Botanical Monographs | Plantipedia";
   const description = hasPair
-    ? `Side-by-side botanical comparison of ${leftPlant.commonName} (${leftPlant.scientificName}) and ${rightPlant.commonName} (${rightPlant.scientificName}) across taxonomy, morphology, ecology, and cultivation.`
+    ? `Side-by-side botanical comparison of ${leftName}${leftPlant?.scientificName ? ` (${leftPlant.scientificName})` : ""} and ${rightName}${rightPlant?.scientificName ? ` (${rightPlant.scientificName})` : ""} across taxonomy, morphology, ecology, and cultivation.`
     : baseSeo.description ||
-      "Compare any two curated botanical species side-by-side in an edge-to-edge dual-pane split workspace.";
+      "Compare any two botanical species side-by-side in an edge-to-edge dual-pane split workspace.";
 
   document.title = title;
   setCanonicalHref(pageUrl);
@@ -560,7 +576,7 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
     breadcrumbItems.push({
       "@type": "ListItem",
       position: 3,
-      name: `${leftPlant.commonName} vs. ${rightPlant.commonName}`,
+      name: `${leftName} vs. ${rightName}`,
       item: pageUrl,
     });
   }
@@ -570,7 +586,7 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
       "@type": "WebApplication",
       "@id": `${pageUrl}#webapp`,
       name: hasPair
-        ? `Plantipedia Split Comparator: ${leftPlant.commonName} vs. ${rightPlant.commonName}`
+        ? `Plantipedia Split Comparator: ${leftName} vs. ${rightName}`
         : "Plantipedia Botanical Split-Screen Comparator",
       applicationCategory: "EducationalApplication",
       operatingSystem: "All",
@@ -596,19 +612,18 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
     graph.push({
       "@type": "ItemList",
       "@id": `${pageUrl}#compared-specimens`,
-      name: `${leftPlant.commonName} vs. ${rightPlant.commonName}`,
+      name: `${leftName} vs. ${rightName}`,
       numberOfItems: 2,
       itemListElement: [leftPlant, rightPlant].map((sp, idx) => ({
         "@type": "ListItem",
         position: idx + 1,
-        url: resolveCanonicalPageUrl(
-          "plant/",
-          `?species=${encodeURIComponent(sp.slug)}`,
-        ),
+        url: sp?.isGlobalLive || !sp?.slug
+          ? resolveCanonicalPageUrl("plant/live/", `?q=${encodeURIComponent(sp?.query || sp?.commonName || "")}`)
+          : resolveCanonicalPageUrl("plant/", `?species=${encodeURIComponent(sp.slug)}`),
         item: {
           "@type": "Taxon",
-          name: sp.scientificName,
-          alternateName: sp.commonName,
+          name: sp?.scientificName || sp?.commonName || "",
+          alternateName: sp?.commonName || "",
           taxonRank: "Species",
         },
       })),
@@ -624,19 +639,22 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
 export function applyPlantMonographSeo(plant) {
   if (!plant || typeof plant !== "object") return;
 
+  const isGlobal = Boolean(plant.isGlobalLive);
+  const category = plant.category || "Global Flora";
   const homeUrl = resolveCanonicalPageUrl("");
   const directoryUrl = resolveCanonicalPageUrl("species/");
   const categoryUrl = resolveCanonicalPageUrl(
     "species/",
-    `?category=${encodeURIComponent(plant.category)}`,
+    `?category=${encodeURIComponent(category)}`,
   );
-  const pageUrl = resolveCanonicalPageUrl(
-    "plant/",
-    `?species=${encodeURIComponent(plant.slug)}`,
-  );
+  const pageUrl = isGlobal
+    ? resolveCanonicalPageUrl("plant/live/", `?q=${encodeURIComponent(plant.query || plant.commonName || "")}`)
+    : resolveCanonicalPageUrl("plant/", `?species=${encodeURIComponent(plant.slug || "")}`);
 
-  const seoTitle = `${plant.commonName} (${plant.scientificName}) | Plantipedia`;
-  const seoDesc = plant.shortSummary;
+  const seoTitle = isGlobal
+    ? `${plant.commonName} (${plant.scientificName}) — Global Flora Index | Plantipedia`
+    : `${plant.commonName} (${plant.scientificName}) | Plantipedia`;
+  const seoDesc = plant.shortSummary || plant.leadOverview || "";
   const heroImgUrl = plant.heroImage?.url || DEFAULT_OG_IMAGE;
   const heroImgAlt = plant.heroImage?.alt || plant.commonName;
   const ov = plant.overview || {};
@@ -654,9 +672,9 @@ export function applyPlantMonographSeo(plant) {
       plant.scientificName,
       ov.family,
       ov.genus,
-      plant.category,
+      category,
       "Plantipedia",
-      "botanical monograph",
+      isGlobal ? "Global Botanical Server" : "botanical monograph",
     ]
       .filter(Boolean)
       .join(", "),
@@ -694,7 +712,7 @@ export function applyPlantMonographSeo(plant) {
       {
         "@type": "Taxon",
         "@id": `${pageUrl}#taxon`,
-        name: plant.schemaOrg?.name || plant.scientificName,
+        name: plant.schemaOrg?.name || plant.scientificName || plant.commonName,
         alternateName: plant.schemaOrg?.alternateName || plant.commonName,
         taxonRank: plant.schemaOrg?.taxonRank || "Species",
         description: plant.leadOverview || seoDesc,
@@ -702,7 +720,7 @@ export function applyPlantMonographSeo(plant) {
         url: pageUrl,
         parentTaxon: plant.schemaOrg?.parentTaxon || {
           "@type": "Taxon",
-          name: ov.genus || plant.scientificName.split(" ")[0],
+          name: ov.genus || (plant.scientificName || "").split(" ")[0] || "",
           taxonRank: "Genus",
           parentTaxon: {
             "@type": "Taxon",
@@ -725,7 +743,7 @@ export function applyPlantMonographSeo(plant) {
           {
             "@type": "ListItem",
             position: 3,
-            name: plant.category,
+            name: category,
             item: categoryUrl,
           },
           {
@@ -742,11 +760,24 @@ export function applyPlantMonographSeo(plant) {
   setJsonLdScript("dynamic-plant-jsonld", schemaData);
 }
 
-export function applyNotFoundSeo({ requestedSlug = "" } = {}) {
-  const title = "Specimen Not Found in Archive | Plantipedia";
-  const description = requestedSlug
-    ? `No herbarium record matched "${requestedSlug}". Search all 50 documented botanical monographs in Plantipedia.`
+export function applyNotFoundSeo({ requestedSlug = "", reason = "", query = "" } = {}) {
+  const qLabel = query || requestedSlug;
+  let title = "Specimen Not Found in Archive | Plantipedia";
+  let description = qLabel
+    ? `No herbarium record matched "${qLabel}". Search all 50 documented botanical monographs in Plantipedia.`
     : "The requested botanical monograph or archive route does not exist in Plantipedia.";
+
+  if (reason === "invalid") {
+    title = "Unrecognized Botanical Specimen | Plantipedia";
+    description = qLabel
+      ? `"${qLabel}" is not a real plant species or recognized botanical taxon in the Global Botanical Server.`
+      : "The submitted query is not a recognized botanical taxon in the Global Botanical Server.";
+  } else if (reason === "network") {
+    title = "Network Connection Failed — Global Botanical Server | Plantipedia";
+    description = qLabel
+      ? `Unable to reach the Global Botanical Server after multiple attempts while searching for "${qLabel}".`
+      : "Unable to reach the Global Botanical Server. Check your internet connection and try again.";
+  }
 
   document.title = title;
   setMetaTag("name", "description", description);

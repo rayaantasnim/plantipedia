@@ -228,7 +228,8 @@ function isNavItemActive(item) {
       const cleanMatch = normalizePathnameRoute(p);
       return (
         cleanMatch === currentRoute ||
-        routeBaseName(cleanMatch) === currentBase
+        routeBaseName(cleanMatch) === currentBase ||
+        (cleanMatch && currentRoute.startsWith(`${cleanMatch}/`))
       );
     });
     if (matchedPath && !item.matchHash) {
@@ -994,13 +995,38 @@ function plantMatchesSearchQuery(plant, query) {
   );
 }
 
+function createNavGlobalServerCta(query) {
+  const cta = document.createElement("a");
+  cta.href = resolveSitePath(`./plant/live/?q=${encodeURIComponent(query)}`);
+  cta.className = "global-server-cta-item";
+  cta.setAttribute("role", "option");
+
+  const label = document.createElement("span");
+  label.className = "global-server-cta-label";
+  label.textContent = `🌐 Query Global Botanical Server for "${query}"`;
+
+  const arrow = document.createElement("span");
+  arrow.className = "global-server-cta-arrow";
+  arrow.setAttribute("aria-hidden", "true");
+  arrow.textContent = "→";
+
+  cta.appendChild(label);
+  cta.appendChild(arrow);
+  return cta;
+}
+
 function renderNavSuggestionNodes(container, matches, query) {
   const frag = document.createDocumentFragment();
+  const trimmedQuery = String(query || "").trim();
+
   if (matches.length === 0) {
     const emptyEl = document.createElement("div");
     emptyEl.className = "nav-suggestion-empty";
-    emptyEl.textContent = `No species matched "${query}"`;
+    emptyEl.textContent = `No local species matched "${trimmedQuery}"`;
     frag.appendChild(emptyEl);
+    if (trimmedQuery.length >= 2) {
+      frag.appendChild(createNavGlobalServerCta(trimmedQuery));
+    }
     container.replaceChildren(frag);
     container.hidden = false;
     return;
@@ -1047,6 +1073,10 @@ function renderNavSuggestionNodes(container, matches, query) {
     frag.appendChild(link);
   });
 
+  if (trimmedQuery.length >= 2 && matches.length < 2) {
+    frag.appendChild(createNavGlobalServerCta(trimmedQuery));
+  }
+
   container.replaceChildren(frag);
   container.hidden = false;
 }
@@ -1085,8 +1115,11 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
     renderNavSuggestionNodes(suggestionsEl, currentMatches, q);
   };
 
+  const getOptionItems = () =>
+    Array.from(suggestionsEl.querySelectorAll('a[role="option"]'));
+
   const syncActiveSuggestion = () => {
-    const items = suggestionsEl.querySelectorAll(".nav-suggestion-item");
+    const items = getOptionItems();
     items.forEach((el, idx) => {
       el.classList.toggle("is-active", idx === activeIndex);
     });
@@ -1102,6 +1135,12 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
     );
   };
 
+  const navigateToOption = (linkEl) => {
+    if (!linkEl || !linkEl.href) return;
+    if (typeof onNavigate === "function") onNavigate();
+    window.location.href = linkEl.href;
+  };
+
   input.addEventListener("input", () => renderSuggestions(input.value));
   input.addEventListener("focus", () => {
     if (input.value.trim()) renderSuggestions(input.value);
@@ -1113,24 +1152,25 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
       input.blur();
       return;
     }
-    if (suggestionsEl.hidden || currentMatches.length === 0) return;
+    const optionItems = getOptionItems();
+    if (suggestionsEl.hidden || optionItems.length === 0) return;
 
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      activeIndex = (activeIndex + 1) % currentMatches.length;
+      activeIndex = (activeIndex + 1) % optionItems.length;
       syncActiveSuggestion();
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       activeIndex =
-        (activeIndex - 1 + currentMatches.length) % currentMatches.length;
+        (activeIndex - 1 + optionItems.length) % optionItems.length;
       syncActiveSuggestion();
     } else if (
       e.key === "Enter" &&
       activeIndex >= 0 &&
-      currentMatches[activeIndex]
+      optionItems[activeIndex]
     ) {
       e.preventDefault();
-      navigateToSpecies(currentMatches[activeIndex].slug);
+      navigateToOption(optionItems[activeIndex]);
     }
   });
 
@@ -1151,8 +1191,9 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (activeIndex >= 0 && currentMatches[activeIndex]) {
-      navigateToSpecies(currentMatches[activeIndex].slug);
+    const optionItems = getOptionItems();
+    if (activeIndex >= 0 && optionItems[activeIndex]) {
+      navigateToOption(optionItems[activeIndex]);
       return;
     }
     const q = input.value.trim();

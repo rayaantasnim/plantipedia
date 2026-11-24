@@ -12,6 +12,7 @@ import {
   createSpeciesCardElement,
   sanitizeUrl,
 } from "../utils/templates.js";
+import { resolveRootPath } from "../core/router.js";
 import { animateDynamicSpeciesGrid } from "../core/animations.js";
 import { createBookmarkSvg, getSavedSlugs } from "../services/herbarium.js";
 import { applySpeciesDirectorySeo } from "../services/seo.js";
@@ -242,6 +243,11 @@ export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
   searchSortRow.appendChild(savedToggleBtn);
   searchSortRow.appendChild(sortWrap);
   filterPanel.appendChild(searchSortRow);
+
+  const globalBanner = createEl("div", "directory-global-banner");
+  globalBanner.id = "directoryGlobalServerBanner";
+  globalBanner.hidden = true;
+  filterPanel.appendChild(globalBanner);
 
   const categoryTabsEl = createEl("div", "category-tabs");
   categoryTabsEl.id = "directoryCategoryTabs";
@@ -532,6 +538,29 @@ export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
     }
 
     resetAllBtn.hidden = !hasFilters;
+
+    const trimmedQuery = activeQuery.trim();
+    if (trimmedQuery.length >= 2 && totalMatched < 2) {
+      const ctaLink = createEl("a", "directory-global-banner-link");
+      ctaLink.href = sanitizeUrl(
+        resolveRootPath(`./plant/live/?q=${encodeURIComponent(trimmedQuery)}`),
+      );
+      const labelEl = createEl(
+        "span",
+        "directory-global-banner-text",
+        `🌐 Query Global Botanical Server for "${trimmedQuery}"`,
+      );
+      const arrowEl = createEl("span", "directory-global-banner-arrow", "→");
+      arrowEl.setAttribute("aria-hidden", "true");
+      ctaLink.appendChild(labelEl);
+      ctaLink.appendChild(arrowEl);
+      globalBanner.replaceChildren(ctaLink);
+      globalBanner.hidden = false;
+    } else {
+      globalBanner.hidden = true;
+      globalBanner.replaceChildren();
+    }
+
     renderPaginationControls(totalMatched, totalPages);
 
     if (totalMatched === 0) {

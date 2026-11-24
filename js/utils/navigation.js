@@ -75,8 +75,12 @@ function bindLiveSpeciesSearch(config) {
     );
   }
 
+  function getOptionItems() {
+    return Array.from(suggestionsEl.querySelectorAll('a[role="option"]'));
+  }
+
   function syncActiveSuggestion() {
-    const items = suggestionsEl.querySelectorAll(".suggestion-row, .nav-suggestion-item");
+    const items = getOptionItems();
     items.forEach((el, idx) => {
       el.classList.toggle("is-active", idx === activeIndex);
     });
@@ -105,24 +109,25 @@ function bindLiveSpeciesSearch(config) {
       input.blur();
       return;
     }
-    if (suggestionsEl.hidden || currentMatches.length === 0) return;
+    const optionItems = getOptionItems();
+    if (suggestionsEl.hidden || optionItems.length === 0) return;
 
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      activeIndex = (activeIndex + 1) % currentMatches.length;
+      activeIndex = (activeIndex + 1) % optionItems.length;
       syncActiveSuggestion();
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       activeIndex =
-        (activeIndex - 1 + currentMatches.length) % currentMatches.length;
+        (activeIndex - 1 + optionItems.length) % optionItems.length;
       syncActiveSuggestion();
     } else if (
       e.key === "Enter" &&
       activeIndex >= 0 &&
-      currentMatches[activeIndex]
+      optionItems[activeIndex]
     ) {
       e.preventDefault();
-      navigateToSpecies(currentMatches[activeIndex].slug);
+      window.location.href = optionItems[activeIndex].href;
     }
   });
 
@@ -137,8 +142,9 @@ function bindLiveSpeciesSearch(config) {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (activeIndex >= 0 && currentMatches[activeIndex]) {
-      navigateToSpecies(currentMatches[activeIndex].slug);
+    const optionItems = getOptionItems();
+    if (activeIndex >= 0 && optionItems[activeIndex]) {
+      window.location.href = optionItems[activeIndex].href;
       return;
     }
     const q = input.value.trim();

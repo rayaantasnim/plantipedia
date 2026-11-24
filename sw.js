@@ -4,12 +4,13 @@
  * resolved safely against self.location (compatible with both / and /plantipedia/ GitHub Pages).
  */
 
-const CACHE_VERSION = "plantipedia-v5.0.0";
+const CACHE_VERSION = "plantipedia-v5.1.0";
 
 const CORE_SHELL_PATHS = [
   "./",
   "./species/",
   "./plant/",
+  "./plant/live/",
   "./taxonomy/",
   "./seasons/",
   "./compare/",
