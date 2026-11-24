@@ -14,6 +14,7 @@ import {
 } from "../utils/templates.js";
 import { animateDynamicSpeciesGrid } from "../core/animations.js";
 import { createBookmarkSvg, getSavedSlugs } from "../services/herbarium.js";
+import { applySpeciesDirectorySeo } from "../services/seo.js";
 
 function plantMatchesQuery(plant, query) {
   if (!query) return true;
@@ -127,6 +128,11 @@ export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
   if (!mountEl || !explorer) return;
 
   const allPlants = Array.isArray(speciesIndex) ? speciesIndex : [];
+  try {
+    applySpeciesDirectorySeo({ pageData, speciesList: allPlants });
+  } catch {
+    // Non-blocking SEO update
+  }
   const categories =
     Array.isArray(explorer.categories) && explorer.categories.length > 0
       ? explorer.categories

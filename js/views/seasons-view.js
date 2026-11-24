@@ -11,6 +11,7 @@ import {
   sanitizeUrl,
 } from "../utils/templates.js";
 import { animateDynamicSpeciesGrid } from "../core/animations.js";
+import { applySeasonsSeo } from "../services/seo.js";
 
 function detectCurrentBangladeshiSeasonId(seasons) {
   const now = new Date();
@@ -157,6 +158,21 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
   }
 
   function renderView() {
+    try {
+      const seoSpecies = focusedSeason
+        ? (speciesIndex || []).filter(
+            (p) => Array.isArray(p.seasons) && p.seasons.includes(focusedSeason.id),
+          )
+        : [];
+      applySeasonsSeo({
+        pageData,
+        seasons,
+        focusedSeason,
+        activeSpecies: seoSpecies,
+      });
+    } catch {
+      // Non-blocking SEO update
+    }
     const wrapper = createEl("div", "seasons-calendar-shell");
     const container = createEl("div", "section-container");
 

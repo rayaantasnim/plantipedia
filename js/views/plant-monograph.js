@@ -17,6 +17,7 @@ import {
 } from "../utils/templates.js";
 import { applyPlantMonographSeo } from "../services/seo.js";
 import { createBookmarkButton } from "../services/herbarium.js";
+import { renderSpecimenNotFoundCard } from "../components/specimen-not-found.js";
 import { renderCultivationTelemetry } from "../utils/telemetry-meters.js";
 import { renderCitationGenerator } from "../utils/citation-generator.js";
 import { applyGlossaryTooltips } from "../utils/glossary-tooltips.js";
@@ -487,41 +488,11 @@ export function renderPlantMonograph(
   const sectionMapCfg = pageData.sectionMap || {};
 
   if (!plant) {
-    const notFound = monographCfg.notFound || {};
-    document.title = notFound.seoTitle || "Species Not Found | Plantipedia";
-
-    const detailWrap = createEl("div", "detail-container");
-    const errCard = createEl("div", "app-error-state");
-    errCard.appendChild(
-      createEl("h1", "", notFound.heading || "Species Monograph Not Found"),
-    );
-    const detailMsg = requestedSlug
-      ? `No botanical monograph matched "${requestedSlug}". Browse all 20 documented species in the archive directory.`
-      : notFound.message ||
-        "No plant entry matched the requested species identifier. Browse all documented monographs in the directory.";
-    errCard.appendChild(createEl("p", "", detailMsg));
-
-    const backLink = createEl(
-      "a",
-      "empty-reset-btn empty-reset-link",
-      notFound.ctaLabel || "Browse Available Species",
-    );
-    backLink.href = sanitizeUrl(notFound.ctaHref, "./species.html");
-    if (isEmbed) backLink.target = "_top";
-    errCard.appendChild(backLink);
-
-    if (indexList.length > 0) {
-      const quickRow = createEl("div", "not-found-quick-links");
-      indexList.slice(0, 4).forEach((entry) => {
-        const chip = createEl("a", "mobile-quick-chip", entry.commonName);
-        chip.href = `./plant.html?species=${encodeURIComponent(entry.slug)}${isEmbed ? "&embed=true" : ""}`;
-        quickRow.appendChild(chip);
-      });
-      errCard.appendChild(quickRow);
-    }
-
-    detailWrap.appendChild(errCard);
-    mountEl.replaceChildren(detailWrap);
+    renderSpecimenNotFoundCard(mountEl, {
+      speciesIndex: indexList,
+      requestedSlug,
+      isEmbed,
+    });
     mountAndBindSectionMap(sectionMapCfg, null);
     return;
   }

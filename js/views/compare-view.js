@@ -8,6 +8,7 @@
  */
 
 import { createEl } from "../utils/templates.js";
+import { applyCompareSeo } from "../services/seo.js";
 
 function pickRandomMessage(pool, fallback) {
   if (!Array.isArray(pool) || pool.length === 0) return fallback;
@@ -98,9 +99,35 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     return { field, select };
   }
 
-  function renderSelectorView() {
+  function syncCompareUrlParams(slugA, slugB) {
+    try {
+      const url = new URL(window.location.href);
+      if (slugA && slugB && slugA !== slugB) {
+        url.searchParams.set("a", slugA);
+        url.searchParams.set("b", slugB);
+      } else {
+        url.searchParams.delete("a");
+        url.searchParams.delete("b");
+        url.searchParams.delete("left");
+        url.searchParams.delete("right");
+      }
+      window.history.replaceState({ a: slugA || null, b: slugB || null }, "", url.toString());
+    } catch {
+      // Ignore history restrictions
+    }
+  }
+
+  function renderSelectorView({ resetUrl = false } = {}) {
     clearLoaderTimers();
     removeFloatingModeButton();
+    if (resetUrl) {
+      syncCompareUrlParams("", "");
+    }
+    try {
+      applyCompareSeo({ pageData, leftPlant: null, rightPlant: null });
+    } catch {
+      // Non-blocking SEO update
+    }
 
     const shell = createEl("div", "compare-selector-shell");
     const card = createEl("section", "compare-selector-card");
@@ -187,6 +214,13 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     const leftPlant = speciesBySlug.get(slugA) || { slug: slugA, commonName: slugA };
     const rightPlant = speciesBySlug.get(slugB) || { slug: slugB, commonName: slugB };
 
+    syncCompareUrlParams(slugA, slugB);
+    try {
+      applyCompareSeo({ pageData, leftPlant, rightPlant });
+    } catch {
+      // Non-blocking SEO update
+    }
+
     const stageRoot = createEl("div", "compare-active-root");
 
     // 1. Top Pill Switcher + Reset Bar (Visible on <=768px or when Desktop Focus Mode is active)
@@ -226,7 +260,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       wsCfg.changeSpeciesLabel || "Change Species",
     );
     changeBtn.type = "button";
-    changeBtn.addEventListener("click", renderSelectorView);
+    changeBtn.addEventListener("click", () => renderSelectorView({ resetUrl: true }));
 
     controlStrip.appendChild(pillGroup);
     controlStrip.appendChild(changeBtn);
@@ -380,5 +414,21 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     syncPaneClasses();
   }
 
-  renderSelectorView();
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialA = (urlParams.get("a") || urlParams.get("left") || "").trim().toLowerCase();
+  const initialB = (urlParams.get("b") || urlParams.get("right") || "").trim().toLowerCase();
+
+  if (
+    initialA &&
+    initialB &&
+    initialA !== initialB &&
+    speciesBySlug.has(initialA) &&
+    speciesBySlug.has(initialB)
+  ) {
+    leftSlug = initialA;
+    rightSlug = initialB;
+    launchComparisonWithLoader(initialA, initialB);
+  } else {
+    renderSelectorView();
+  }
 }

@@ -1,7 +1,37 @@
 /**
- * Dynamic Document Head & Structured Schema.org JSON-LD Hydration
- * Updates title, meta tags, canonical URL, OpenGraph, Twitter Cards, and JSON-LD from JSON configs.
+ * Dynamic Document Head & Structured Schema.org JSON-LD Hydration Engine
+ * Updates title, meta tags, canonical URL, OpenGraph, Twitter Cards, and Schema.org JSON-LD
+ * across all Plantipedia pages (Home, Species Atlas, Plant Monograph, Taxonomy, 6-Season Calendar, Compare, & 404).
  */
+
+const PRODUCTION_SITE_URL = "https://rayaantasnim.github.io/plantipedia/";
+const DEFAULT_OG_IMAGE =
+  "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200";
+
+const AUTHOR_ENTITIES = [
+  { "@type": "Person", name: "Jalees Habib" },
+  { "@type": "Person", name: "Rayaan Tasnim" },
+];
+
+export function getCanonicalSiteBase() {
+  try {
+    const { hostname, origin, pathname } = window.location;
+    if (hostname.endsWith("github.io")) {
+      const parts = pathname.split("/").filter(Boolean);
+      const repoSegment = parts.length > 0 ? `${parts[0]}/` : "";
+      return `${origin}/${repoSegment}`;
+    }
+  } catch {
+    // Fallback to production canonical URL
+  }
+  return PRODUCTION_SITE_URL;
+}
+
+function resolveCanonicalPageUrl(fileName, queryString = "") {
+  const base = getCanonicalSiteBase();
+  const cleanFile = String(fileName || "index.html").replace(/^\.?\//, "");
+  return `${base}${cleanFile}${queryString}`;
+}
 
 function setMetaTag(attrName, attrValue, content) {
   if (!content) return;
@@ -37,6 +67,16 @@ function setJsonLdScript(id, schemaData) {
   ldScript.textContent = JSON.stringify(schemaData, null, 2);
 }
 
+function getPublisherOrg(homeUrl) {
+  return {
+    "@type": "EducationalOrganization",
+    "@id": `${homeUrl}#organization`,
+    name: "Plantipedia",
+    url: homeUrl,
+    founder: AUTHOR_ENTITIES,
+  };
+}
+
 export function applyPageSeo(seoConfig) {
   if (!seoConfig || typeof seoConfig !== "object") return;
 
@@ -44,12 +84,19 @@ export function applyPageSeo(seoConfig) {
     document.title = seoConfig.title;
   }
 
-  const canonicalUrl = `${window.location.origin}${window.location.pathname}`;
+  const canonicalUrl = seoConfig.canonicalFile
+    ? resolveCanonicalPageUrl(seoConfig.canonicalFile)
+    : `${getCanonicalSiteBase()}${window.location.pathname.split("/").pop() || "index.html"}`;
   setCanonicalHref(canonicalUrl);
+
+  const ogImage = seoConfig.ogImage || DEFAULT_OG_IMAGE;
+  const ogImageAlt =
+    seoConfig.ogImageAlt || "Plantipedia — Digital Botanical Encyclopedia";
 
   setMetaTag("name", "description", seoConfig.description);
   setMetaTag("name", "keywords", seoConfig.keywords);
-  setMetaTag("name", "author", seoConfig.author);
+  setMetaTag("name", "author", seoConfig.author || "Jalees Habib, Rayaan Tasnim");
+  setMetaTag("name", "robots", seoConfig.robots || "index, follow");
   setMetaTag("property", "og:type", seoConfig.ogType || "website");
   setMetaTag("property", "og:site_name", "Plantipedia");
   setMetaTag("property", "og:title", seoConfig.ogTitle || seoConfig.title);
@@ -59,8 +106,8 @@ export function applyPageSeo(seoConfig) {
     seoConfig.ogDescription || seoConfig.description,
   );
   setMetaTag("property", "og:url", canonicalUrl);
-  setMetaTag("property", "og:image", seoConfig.ogImage);
-  setMetaTag("property", "og:image:alt", seoConfig.ogImageAlt);
+  setMetaTag("property", "og:image", ogImage);
+  setMetaTag("property", "og:image:alt", ogImageAlt);
 
   setMetaTag("name", "twitter:card", "summary_large_image");
   setMetaTag("name", "twitter:title", seoConfig.ogTitle || seoConfig.title);
@@ -69,27 +116,522 @@ export function applyPageSeo(seoConfig) {
     "twitter:description",
     seoConfig.ogDescription || seoConfig.description,
   );
-  setMetaTag("name", "twitter:image", seoConfig.ogImage);
+  setMetaTag("name", "twitter:image", ogImage);
+  setMetaTag("name", "twitter:image:alt", ogImageAlt);
 
   if (seoConfig.jsonLd) {
-    setJsonLdScript("dynamic-page-jsonld", seoConfig.jsonLd);
+    const homeUrl = resolveCanonicalPageUrl("index.html");
+    const enriched =
+      seoConfig.canonicalFile === "index.html" && Array.isArray(seoConfig.jsonLd["@graph"])
+        ? {
+            "@context": "https://schema.org",
+            "@graph": [
+              ...seoConfig.jsonLd["@graph"],
+              {
+                "@type": "Dataset",
+                "@id": `${homeUrl}#dataset`,
+                name: "Plantipedia Curated Botanical Species Archive",
+                description: seoConfig.description,
+                url: homeUrl,
+                license: "https://creativecommons.org/licenses/by-nc/4.0/",
+                creator: AUTHOR_ENTITIES,
+              },
+              {
+                "@type": "BreadcrumbList",
+                "@id": `${homeUrl}#breadcrumb`,
+                itemListElement: [
+                  { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
+                ],
+              },
+            ],
+          }
+        : seoConfig.jsonLd;
+    setJsonLdScript("dynamic-page-jsonld", enriched);
   }
+}
+
+export function applySpeciesDirectorySeo({ pageData, speciesList }) {
+  const seo = pageData?.seo || {};
+  applyPageSeo(seo);
+
+  const homeUrl = resolveCanonicalPageUrl("index.html");
+  const speciesUrl = resolveCanonicalPageUrl("species.html");
+  const list = Array.isArray(speciesList) ? speciesList : [];
+
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${speciesUrl}#collection`,
+        name: seo.title || "Available Species Directory | Plantipedia",
+        description: seo.description || "",
+        url: speciesUrl,
+        isPartOf: { "@id": `${homeUrl}#website` },
+        publisher: getPublisherOrg(homeUrl),
+        author: AUTHOR_ENTITIES,
+        mainEntity: { "@id": `${speciesUrl}#itemlist` },
+      },
+      {
+        "@type": "Dataset",
+        "@id": `${speciesUrl}#dataset`,
+        name: "Plantipedia 20-Species Botanical Index",
+        description:
+          "Structured taxonomic, phenological, and ecological metadata across 20 curated plant species monographs.",
+        url: speciesUrl,
+        creator: AUTHOR_ENTITIES,
+        distribution: {
+          "@type": "DataDownload",
+          encodingFormat: "application/json",
+          contentUrl: `${getCanonicalSiteBase()}data/catalog/species-index.json`,
+        },
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${speciesUrl}#itemlist`,
+        name: "Documented Plant Species Atlas",
+        numberOfItems: list.length,
+        itemListElement: list.map((sp, idx) => ({
+          "@type": "ListItem",
+          position: idx + 1,
+          url: resolveCanonicalPageUrl(
+            "plant.html",
+            `?species=${encodeURIComponent(sp.slug)}`,
+          ),
+          item: {
+            "@type": "Taxon",
+            name: sp.scientificName,
+            alternateName: sp.commonNameBn
+              ? `${sp.commonName} (${sp.commonNameBn})`
+              : sp.commonName,
+            taxonRank: "Species",
+            url: resolveCanonicalPageUrl(
+              "plant.html",
+              `?species=${encodeURIComponent(sp.slug)}`,
+            ),
+          },
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${speciesUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Available Species",
+            item: speciesUrl,
+          },
+        ],
+      },
+    ],
+  };
+
+  setJsonLdScript("dynamic-page-jsonld", schemaData);
+}
+
+export function applyTaxonomySeo({ pageData, families, activeFamily }) {
+  const baseSeo = pageData?.seo || {};
+  const homeUrl = resolveCanonicalPageUrl("index.html");
+  const taxonomyBaseUrl = resolveCanonicalPageUrl("taxonomy.html");
+  const familyList = Array.isArray(families) ? families : [];
+
+  const query = activeFamily
+    ? `?family=${encodeURIComponent(activeFamily.name)}`
+    : "";
+  const pageUrl = resolveCanonicalPageUrl("taxonomy.html", query);
+
+  const title = activeFamily
+    ? `${activeFamily.name} Family Lineage & Species | Plantipedia`
+    : baseSeo.title || "Taxonomic Lineage Explorer — Botanical Families | Plantipedia";
+  const description = activeFamily
+    ? `${activeFamily.description} Explore ${activeFamily.species.length} documented species in ${activeFamily.name} (${activeFamily.order}).`
+    : baseSeo.description ||
+      "Browse documented botanical families, diagnostic traits, and member plant monographs on Plantipedia.";
+
+  document.title = title;
+  setCanonicalHref(pageUrl);
+  setMetaTag("name", "description", description);
+  setMetaTag("name", "robots", "index, follow");
+  setMetaTag("property", "og:type", "website");
+  setMetaTag("property", "og:site_name", "Plantipedia");
+  setMetaTag("property", "og:title", title);
+  setMetaTag("property", "og:description", description);
+  setMetaTag("property", "og:url", pageUrl);
+  setMetaTag("property", "og:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
+  setMetaTag("name", "twitter:card", "summary_large_image");
+  setMetaTag("name", "twitter:title", title);
+  setMetaTag("name", "twitter:description", description);
+  setMetaTag("name", "twitter:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
+
+  const breadcrumbItems = [
+    { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Taxonomic Lineage",
+      item: taxonomyBaseUrl,
+    },
+  ];
+  if (activeFamily) {
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      position: 3,
+      name: activeFamily.name,
+      item: pageUrl,
+    });
+  }
+
+  const graph = [
+    {
+      "@type": "CollectionPage",
+      "@id": `${pageUrl}#collection`,
+      name: title,
+      description,
+      url: pageUrl,
+      publisher: getPublisherOrg(homeUrl),
+      author: AUTHOR_ENTITIES,
+      mainEntity: { "@id": `${pageUrl}#itemlist` },
+    },
+    {
+      "@type": "Dataset",
+      "@id": `${pageUrl}#dataset`,
+      name: activeFamily
+        ? `${activeFamily.name} Botanical Family Dataset`
+        : "Plantipedia Angiosperm & Vascular Family Registry",
+      description,
+      url: pageUrl,
+      creator: AUTHOR_ENTITIES,
+    },
+    activeFamily
+      ? {
+          "@type": "ItemList",
+          "@id": `${pageUrl}#itemlist`,
+          name: `Documented Species in ${activeFamily.name}`,
+          numberOfItems: activeFamily.species.length,
+          itemListElement: activeFamily.species.map((sp, idx) => ({
+            "@type": "ListItem",
+            position: idx + 1,
+            url: resolveCanonicalPageUrl(
+              "plant.html",
+              `?species=${encodeURIComponent(sp.slug)}`,
+            ),
+            item: {
+              "@type": "Taxon",
+              name: sp.scientificName,
+              alternateName: sp.commonName,
+              taxonRank: "Species",
+            },
+          })),
+        }
+      : {
+          "@type": "ItemList",
+          "@id": `${pageUrl}#itemlist`,
+          name: "Documented Botanical Families",
+          numberOfItems: familyList.length,
+          itemListElement: familyList.map((fam, idx) => ({
+            "@type": "ListItem",
+            position: idx + 1,
+            url: resolveCanonicalPageUrl(
+              "taxonomy.html",
+              `?family=${encodeURIComponent(fam.name)}`,
+            ),
+            item: {
+              "@type": "Taxon",
+              name: fam.name,
+              alternateName: fam.familyBn || fam.name,
+              taxonRank: "Family",
+            },
+          })),
+        },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${pageUrl}#breadcrumb`,
+      itemListElement: breadcrumbItems,
+    },
+  ];
+
+  if (activeFamily) {
+    graph.push({
+      "@type": "Taxon",
+      "@id": `${pageUrl}#family-taxon`,
+      name: activeFamily.name,
+      alternateName: activeFamily.familyBn || activeFamily.name,
+      taxonRank: "Family",
+      description: activeFamily.description,
+      url: pageUrl,
+    });
+  }
+
+  setJsonLdScript("dynamic-page-jsonld", {
+    "@context": "https://schema.org",
+    "@graph": graph,
+  });
+}
+
+export function applySeasonsSeo({
+  pageData,
+  seasons,
+  focusedSeason,
+  activeSpecies,
+}) {
+  const baseSeo = pageData?.seo || {};
+  const homeUrl = resolveCanonicalPageUrl("index.html");
+  const seasonsBaseUrl = resolveCanonicalPageUrl("seasons.html");
+  const seasonList = Array.isArray(seasons) ? seasons : [];
+  const floraList = Array.isArray(activeSpecies) ? activeSpecies : [];
+
+  const query = focusedSeason
+    ? `?season=${encodeURIComponent(focusedSeason.id)}`
+    : "";
+  const pageUrl = resolveCanonicalPageUrl("seasons.html", query);
+
+  const title = focusedSeason
+    ? `${focusedSeason.nameEn} (${focusedSeason.nameBn}) Flora Phenology | Plantipedia`
+    : baseSeo.title ||
+      "Bangladeshi 6-Season Botanical Calendar (ষড়ঋতু) | Plantipedia";
+  const description = focusedSeason
+    ? `${focusedSeason.climateSummary} Discover ${floraList.length} active flora species during ${focusedSeason.nameEn} (${focusedSeason.bengaliMonths}).`
+    : baseSeo.description ||
+      "Explore Bengal's six botanical seasons (Shororitu) and track flowering, fruiting, and ecological transitions across 20 species.";
+
+  document.title = title;
+  setCanonicalHref(pageUrl);
+  setMetaTag("name", "description", description);
+  setMetaTag("name", "robots", "index, follow");
+  setMetaTag("property", "og:type", "website");
+  setMetaTag("property", "og:site_name", "Plantipedia");
+  setMetaTag("property", "og:title", title);
+  setMetaTag("property", "og:description", description);
+  setMetaTag("property", "og:url", pageUrl);
+  setMetaTag("property", "og:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
+  setMetaTag("name", "twitter:card", "summary_large_image");
+  setMetaTag("name", "twitter:title", title);
+  setMetaTag("name", "twitter:description", description);
+  setMetaTag("name", "twitter:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
+
+  const breadcrumbItems = [
+    { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "6-Season Calendar",
+      item: seasonsBaseUrl,
+    },
+  ];
+  if (focusedSeason) {
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      position: 3,
+      name: `${focusedSeason.nameEn} (${focusedSeason.nameBn})`,
+      item: pageUrl,
+    });
+  }
+
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${pageUrl}#collection`,
+        name: title,
+        description,
+        url: pageUrl,
+        publisher: getPublisherOrg(homeUrl),
+        author: AUTHOR_ENTITIES,
+        mainEntity: { "@id": `${pageUrl}#itemlist` },
+      },
+      {
+        "@type": "Dataset",
+        "@id": `${pageUrl}#dataset`,
+        name: focusedSeason
+          ? `${focusedSeason.nameEn} (${focusedSeason.nameBn}) Ecological Phenology Dataset`
+          : "Bangladeshi Shororitu 6-Season Botanical Phenology Dataset",
+        description,
+        url: pageUrl,
+        temporalCoverage: focusedSeason
+          ? focusedSeason.gregorianRange
+          : "Annual 6-Season Cycle",
+        spatialCoverage: {
+          "@type": "Place",
+          name: "Bengal Delta & South Asia",
+        },
+        creator: AUTHOR_ENTITIES,
+      },
+      focusedSeason
+        ? {
+            "@type": "ItemList",
+            "@id": `${pageUrl}#itemlist`,
+            name: `Flora Active in ${focusedSeason.nameEn}`,
+            numberOfItems: floraList.length,
+            itemListElement: floraList.map((sp, idx) => ({
+              "@type": "ListItem",
+              position: idx + 1,
+              url: resolveCanonicalPageUrl(
+                "plant.html",
+                `?species=${encodeURIComponent(sp.slug)}`,
+              ),
+              item: {
+                "@type": "Taxon",
+                name: sp.scientificName,
+                alternateName: sp.commonName,
+                taxonRank: "Species",
+              },
+            })),
+          }
+        : {
+            "@type": "ItemList",
+            "@id": `${pageUrl}#itemlist`,
+            name: "Six Bangladeshi Botanical Seasons (Shororitu)",
+            numberOfItems: seasonList.length,
+            itemListElement: seasonList.map((s, idx) => ({
+              "@type": "ListItem",
+              position: idx + 1,
+              name: `${s.nameEn} (${s.nameBn}) — ${s.bengaliMonths}`,
+              url: resolveCanonicalPageUrl(
+                "seasons.html",
+                `?season=${encodeURIComponent(s.id)}`,
+              ),
+            })),
+          },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${pageUrl}#breadcrumb`,
+        itemListElement: breadcrumbItems,
+      },
+    ],
+  };
+
+  setJsonLdScript("dynamic-page-jsonld", schemaData);
+}
+
+export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
+  const baseSeo = pageData?.seo || {};
+  const homeUrl = resolveCanonicalPageUrl("index.html");
+  const compareBaseUrl = resolveCanonicalPageUrl("compare.html");
+  const hasPair = Boolean(leftPlant?.slug && rightPlant?.slug);
+
+  const query = hasPair
+    ? `?a=${encodeURIComponent(leftPlant.slug)}&b=${encodeURIComponent(rightPlant.slug)}`
+    : "";
+  const pageUrl = resolveCanonicalPageUrl("compare.html", query);
+
+  const title = hasPair
+    ? `${leftPlant.commonName} vs. ${rightPlant.commonName} — Compare | Plantipedia`
+    : baseSeo.title ||
+      "Compare Split View — Side-by-Side Botanical Monographs | Plantipedia";
+  const description = hasPair
+    ? `Side-by-side botanical comparison of ${leftPlant.commonName} (${leftPlant.scientificName}) and ${rightPlant.commonName} (${rightPlant.scientificName}) across taxonomy, morphology, ecology, and cultivation.`
+    : baseSeo.description ||
+      "Compare any two curated botanical species side-by-side in an edge-to-edge dual-pane split workspace.";
+
+  document.title = title;
+  setCanonicalHref(pageUrl);
+  setMetaTag("name", "description", description);
+  setMetaTag("name", "robots", "index, follow");
+  setMetaTag("property", "og:type", "website");
+  setMetaTag("property", "og:site_name", "Plantipedia");
+  setMetaTag("property", "og:title", title);
+  setMetaTag("property", "og:description", description);
+  setMetaTag("property", "og:url", pageUrl);
+  setMetaTag("property", "og:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
+  setMetaTag("name", "twitter:card", "summary_large_image");
+  setMetaTag("name", "twitter:title", title);
+  setMetaTag("name", "twitter:description", description);
+  setMetaTag("name", "twitter:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
+
+  const breadcrumbItems = [
+    { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Compare Split View",
+      item: compareBaseUrl,
+    },
+  ];
+  if (hasPair) {
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      position: 3,
+      name: `${leftPlant.commonName} vs. ${rightPlant.commonName}`,
+      item: pageUrl,
+    });
+  }
+
+  const graph = [
+    {
+      "@type": "WebApplication",
+      "@id": `${pageUrl}#webapp`,
+      name: hasPair
+        ? `Plantipedia Split Comparator: ${leftPlant.commonName} vs. ${rightPlant.commonName}`
+        : "Plantipedia Botanical Split-Screen Comparator",
+      applicationCategory: "EducationalApplication",
+      operatingSystem: "All",
+      browserRequirements: "Requires modern ES6+ web browser",
+      description,
+      url: pageUrl,
+      publisher: getPublisherOrg(homeUrl),
+      author: AUTHOR_ENTITIES,
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${pageUrl}#breadcrumb`,
+      itemListElement: breadcrumbItems,
+    },
+  ];
+
+  if (hasPair) {
+    graph.push({
+      "@type": "ItemList",
+      "@id": `${pageUrl}#compared-specimens`,
+      name: `${leftPlant.commonName} vs. ${rightPlant.commonName}`,
+      numberOfItems: 2,
+      itemListElement: [leftPlant, rightPlant].map((sp, idx) => ({
+        "@type": "ListItem",
+        position: idx + 1,
+        url: resolveCanonicalPageUrl(
+          "plant.html",
+          `?species=${encodeURIComponent(sp.slug)}`,
+        ),
+        item: {
+          "@type": "Taxon",
+          name: sp.scientificName,
+          alternateName: sp.commonName,
+          taxonRank: "Species",
+        },
+      })),
+    });
+  }
+
+  setJsonLdScript("dynamic-page-jsonld", {
+    "@context": "https://schema.org",
+    "@graph": graph,
+  });
 }
 
 export function applyPlantMonographSeo(plant) {
   if (!plant || typeof plant !== "object") return;
 
-  const origin = window.location.origin;
-  const basePath = window.location.pathname.replace(/[^/]*$/, "");
-  const baseUrl = origin + basePath;
-  const homeUrl = `${baseUrl}index.html`;
-  const directoryUrl = `${baseUrl}species.html`;
-  const categoryUrl = `${baseUrl}species.html?category=${encodeURIComponent(plant.category)}`;
-  const pageUrl = `${window.location.origin}${window.location.pathname}?species=${encodeURIComponent(plant.slug)}`;
+  const homeUrl = resolveCanonicalPageUrl("index.html");
+  const directoryUrl = resolveCanonicalPageUrl("species.html");
+  const categoryUrl = resolveCanonicalPageUrl(
+    "species.html",
+    `?category=${encodeURIComponent(plant.category)}`,
+  );
+  const pageUrl = resolveCanonicalPageUrl(
+    "plant.html",
+    `?species=${encodeURIComponent(plant.slug)}`,
+  );
 
   const seoTitle = `${plant.commonName} (${plant.scientificName}) | Plantipedia`;
   const seoDesc = plant.shortSummary;
-  const heroImgUrl = plant.heroImage?.url || "";
+  const heroImgUrl = plant.heroImage?.url || DEFAULT_OG_IMAGE;
   const heroImgAlt = plant.heroImage?.alt || plant.commonName;
   const ov = plant.overview || {};
 
@@ -97,6 +639,7 @@ export function applyPlantMonographSeo(plant) {
   setCanonicalHref(pageUrl);
 
   setMetaTag("name", "description", seoDesc);
+  setMetaTag("name", "robots", "index, follow");
   setMetaTag(
     "name",
     "keywords",
@@ -118,14 +661,14 @@ export function applyPlantMonographSeo(plant) {
   setMetaTag("property", "og:title", seoTitle);
   setMetaTag("property", "og:description", seoDesc);
   setMetaTag("property", "og:url", pageUrl);
-  if (heroImgUrl) {
-    setMetaTag("property", "og:image", heroImgUrl);
-    setMetaTag("property", "og:image:alt", heroImgAlt);
-    setMetaTag("name", "twitter:image", heroImgUrl);
-  }
+  setMetaTag("property", "og:image", heroImgUrl);
+  setMetaTag("property", "og:image:alt", heroImgAlt);
+
   setMetaTag("name", "twitter:card", "summary_large_image");
   setMetaTag("name", "twitter:title", seoTitle);
   setMetaTag("name", "twitter:description", seoDesc);
+  setMetaTag("name", "twitter:image", heroImgUrl);
+  setMetaTag("name", "twitter:image:alt", heroImgAlt);
 
   const schemaData = {
     "@context": "https://schema.org",
@@ -138,15 +681,8 @@ export function applyPlantMonographSeo(plant) {
         image: heroImgUrl,
         url: pageUrl,
         mainEntityOfPage: pageUrl,
-        author: [
-          { "@type": "Person", "name": "Jalees Habib" },
-          { "@type": "Person", "name": "Rayaan Tasnim" },
-        ],
-        publisher: {
-          "@type": "EducationalOrganization",
-          name: "Plantipedia",
-          url: homeUrl,
-        },
+        author: AUTHOR_ENTITIES,
+        publisher: getPublisherOrg(homeUrl),
         about: { "@id": `${pageUrl}#taxon` },
       },
       {
@@ -198,4 +734,19 @@ export function applyPlantMonographSeo(plant) {
   };
 
   setJsonLdScript("dynamic-plant-jsonld", schemaData);
+}
+
+export function applyNotFoundSeo({ requestedSlug = "" } = {}) {
+  const title = "Specimen Not Found in Archive | Plantipedia";
+  const description = requestedSlug
+    ? `No herbarium record matched "${requestedSlug}". Search all 20 documented botanical monographs in Plantipedia.`
+    : "The requested botanical monograph or archive route does not exist in Plantipedia.";
+
+  document.title = title;
+  setMetaTag("name", "description", description);
+  setMetaTag("name", "robots", "noindex, follow");
+  setMetaTag("property", "og:title", title);
+  setMetaTag("property", "og:description", description);
+  setMetaTag("name", "twitter:title", title);
+  setMetaTag("name", "twitter:description", description);
 }

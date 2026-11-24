@@ -10,6 +10,7 @@ import {
   sanitizeUrl,
 } from "../utils/templates.js";
 import { animateDynamicSpeciesGrid } from "../core/animations.js";
+import { applyTaxonomySeo } from "../services/seo.js";
 
 function buildFamilyDirectory(speciesIndex, familiesMeta = {}) {
   const map = new Map();
@@ -155,6 +156,11 @@ export function renderTaxonomyExplorer(mountEl, { pageData, speciesIndex }) {
   }
 
   function renderView() {
+    try {
+      applyTaxonomySeo({ pageData, families, activeFamily });
+    } catch {
+      // Non-blocking SEO update
+    }
     const wrapper = createEl("div", "taxonomy-explorer-shell");
     const container = createEl("div", "section-container");
 
