@@ -39,6 +39,11 @@
               "id": "nav-archive-species",
               "label": "All Species Atlas",
               "href": "./species/"
+            },
+            {
+              "id": "nav-global-botanical-server",
+              "label": "Global Botanical Server",
+              "href": "./plant/live/"
             }
           ]
         },
@@ -133,7 +138,15 @@
         "label": "All Species Atlas",
         "href": "./species/",
         "matchPaths": ["/species/", "/species", "/plant/", "/plant"],
+        "excludePaths": ["/plant/live"],
         "sublabel": "50 Curated Flora Monographs"
+      },
+      {
+        "id": "m-global-server",
+        "label": "Global Botanical Server",
+        "href": "./plant/live/",
+        "matchPaths": ["/plant/live/", "/plant/live"],
+        "sublabel": "Worldwide Flora Live Query Gateway"
       },
       {
         "id": "m-taxonomy",

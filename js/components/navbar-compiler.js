@@ -76,7 +76,8 @@ const FALLBACK_NAVBAR_CONFIG = {
         {
           "title": "Archive Views",
           "items": [
-            { "id": "nav-archive-species", "label": "All Species Atlas", "href": "./species/" }
+            { "id": "nav-archive-species", "label": "All Species Atlas", "href": "./species/" },
+            { "id": "nav-global-botanical-server", "label": "Global Botanical Server", "href": "./plant/live/" }
           ]
         },
         {
@@ -136,7 +137,8 @@ const FALLBACK_NAVBAR_CONFIG = {
     ],
     corePages: [
       { id: "m-home", label: "Home", href: "./", matchPaths: ["/", "/index.html"], sublabel: "Botanical Gateway" },
-      { id: "m-species", label: "All Species Atlas", href: "./species/", matchPaths: ["/species/", "/species", "/plant/", "/plant"], sublabel: "50 Curated Flora Monographs" },
+      { id: "m-species", label: "All Species Atlas", href: "./species/", matchPaths: ["/species/", "/species", "/plant/", "/plant"], excludePaths: ["/plant/live"], sublabel: "50 Curated Flora Monographs" },
+      { id: "m-global-server", label: "Global Botanical Server", href: "./plant/live/", matchPaths: ["/plant/live/", "/plant/live"], sublabel: "Worldwide Flora Live Query Gateway" },
       { id: "m-taxonomy", label: "Taxonomic Lineage", href: "./taxonomy/", matchPaths: ["/taxonomy/", "/taxonomy"], sublabel: "Botanical Families & Diagnostic Traits" },
       { id: "m-seasons", label: "6-Season Calendar", href: "./seasons/", matchPaths: ["/seasons/", "/seasons"], sublabel: "Bangladeshi Shororitu Phenology" },
       { id: "m-compare", label: "Compare Split View", href: "./compare/", matchPaths: ["/compare/", "/compare"], sublabel: "Dual-Pane Monograph Comparison" },
@@ -223,7 +225,17 @@ function isNavItemActive(item) {
   const currentBase = routeBaseName(currentRoute);
   const currentHash = window.location.hash || "";
 
-  if (Array.isArray(item.matchPaths)) {
+  const excludedPath =
+    Array.isArray(item.excludePaths) &&
+    item.excludePaths.some((p) => {
+      const cleanExclude = normalizePathnameRoute(p);
+      return (
+        cleanExclude &&
+        (cleanExclude === currentRoute || currentRoute.startsWith(`${cleanExclude}/`))
+      );
+    });
+
+  if (!excludedPath && Array.isArray(item.matchPaths)) {
     const matchedPath = item.matchPaths.some((p) => {
       const cleanMatch = normalizePathnameRoute(p);
       return (
