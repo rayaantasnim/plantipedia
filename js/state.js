@@ -8,7 +8,8 @@ const initialMountState = () => ({
 });
 
 export const appState = {
-  speciesCatalog: [],
+  speciesIndex: [],
+  activeMonograph: null,
   mounts: {},
 };
 
@@ -24,10 +25,22 @@ export function getMountState(mountKey) {
   return appState.mounts[mountKey] || initialMountState();
 }
 
-export function setSpeciesCatalog(speciesList) {
-  appState.speciesCatalog = Array.isArray(speciesList) ? speciesList : [];
+export function setSpeciesIndex(speciesList) {
+  appState.speciesIndex = Array.isArray(speciesList) ? speciesList : [];
 }
 
-export function getSpeciesCatalog() {
-  return appState.speciesCatalog;
+export function getSpeciesIndex() {
+  return appState.speciesIndex;
+}
+
+// Backward-compatible aliases
+export const setSpeciesCatalog = setSpeciesIndex;
+export const getSpeciesCatalog = getSpeciesIndex;
+
+export function setActiveMonograph(monograph) {
+  appState.activeMonograph = monograph || null;
+}
+
+export function getActiveMonograph() {
+  return appState.activeMonograph;
 }

@@ -996,7 +996,10 @@
   font-size: 0.93rem;
   line-height: 1.68;
   text-align: justify;
+  text-justify: inter-word;
+  overflow-wrap: break-word;
   hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .safety-notice-title {

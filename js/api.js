@@ -1,13 +1,18 @@
 /**
- * Centralized JSON Data Fetching, Schema Validation & Request Deduplication Layer.
- * Uses strict relative paths resolved safely for root and GitHub Pages subpath hosting.
+ * Centralized JSON Data Fetching, Schema Validation, SessionStorage Caching & Request Deduplication Layer.
+ * Uses strict relative ./ paths resolved safely for root and GitHub Pages subpath hosting.
  */
 
 const SITE_ROOT_URL = new URL("../", import.meta.url);
+const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v1.1.0";
+const KEBAB_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const DATASET_ENDPOINTS = Object.freeze({
+  navbar: "./data/navbar.json",
+  footer: "./data/footer.json",
   siteShell: "./data/site-shell.json",
-  catalog: "./data/plants.json",
+  speciesIndex: "./data/species-index.json",
+  catalog: "./data/species-index.json",
   "page:home": "./data/pages/home.json",
   "page:species": "./data/pages/species.json",
   "page:plant": "./data/pages/plant.json",
@@ -24,13 +29,23 @@ export const SECTION_ENDPOINTS = Object.freeze({
   highlights: DATASET_ENDPOINTS.highlights,
 });
 
-export const CATALOG_ENDPOINT = DATASET_ENDPOINTS.catalog;
+export const SPECIES_INDEX_ENDPOINT = DATASET_ENDPOINTS.speciesIndex;
+export const CATALOG_ENDPOINT = SPECIES_INDEX_ENDPOINT;
 
 const inFlightCache = new Map();
 
-function resolveDatasetHref(relativePath) {
+export function resolveDatasetHref(relativePath) {
   const clean = relativePath.replace(/^\.\//, "");
   return new URL(clean, SITE_ROOT_URL).href;
+}
+
+export function normalizeSpeciesSlug(rawSlug) {
+  if (typeof rawSlug !== "string") return "";
+  return rawSlug.trim().toLowerCase();
+}
+
+export function isValidSpeciesSlug(slug) {
+  return KEBAB_SLUG_RE.test(slug);
 }
 
 function assertObject(value, label) {
@@ -57,6 +72,21 @@ function assertImageObject(imageObj, contextLabel) {
   );
 }
 
+function validateNavbarPayload(payload) {
+  assertObject(payload, "navbar");
+  assertObject(payload.brand, "navbar.brand");
+  if (!Array.isArray(payload.links)) {
+    throw new Error('Malformed navbar.json payload: "links" must be an array.');
+  }
+  return payload;
+}
+
+function validateFooterPayload(payload) {
+  assertObject(payload, "footer");
+  assertObject(payload.brand, "footer.brand");
+  return payload;
+}
+
 function validateSiteShellPayload(payload) {
   assertObject(payload, "site-shell");
   assertObject(payload.brand, "site-shell.brand");
@@ -65,12 +95,33 @@ function validateSiteShellPayload(payload) {
   return payload;
 }
 
-function validateCatalogPayload(payload) {
-  assertObject(payload, "plants");
+function validateSpeciesIndexPayload(payload) {
+  assertObject(payload, "species-index");
   if (!Array.isArray(payload.species)) {
-    throw new Error('Malformed plants.json payload: "species" must be an array.');
+    throw new Error(
+      'Malformed species-index.json payload: "species" must be an array.',
+    );
   }
+  payload.species.forEach((item, idx) => {
+    assertObject(item, `species-index.species[${idx}]`);
+    assertNonEmptyString(item.slug, "slug");
+    assertNonEmptyString(item.commonName, "commonName");
+    assertNonEmptyString(item.scientificName, "scientificName");
+    assertNonEmptyString(item.category, "category");
+  });
   return payload.species;
+}
+
+function validateSpeciesMonographPayload(payload) {
+  assertObject(payload, "species-monograph");
+  assertNonEmptyString(payload.slug, "slug");
+  assertNonEmptyString(payload.commonName, "commonName");
+  assertNonEmptyString(payload.scientificName, "scientificName");
+  assertObject(payload.overview, "overview");
+  if (!Array.isArray(payload.sections)) {
+    throw new Error('Malformed monograph payload: "sections" must be an array.');
+  }
+  return payload;
 }
 
 function validateHomePagePayload(payload) {
@@ -169,8 +220,11 @@ function validateHighlightsPayload(payload) {
 }
 
 const VALIDATORS = {
+  navbar: validateNavbarPayload,
+  footer: validateFooterPayload,
   siteShell: validateSiteShellPayload,
-  catalog: validateCatalogPayload,
+  speciesIndex: validateSpeciesIndexPayload,
+  catalog: validateSpeciesIndexPayload,
   "page:home": validateHomePagePayload,
   "page:species": validateSpeciesPagePayload,
   "page:plant": validatePlantPagePayload,
@@ -192,34 +246,109 @@ async function fetchJsonResource(url, label) {
   }
 }
 
+function readCachedSpeciesIndex() {
+  try {
+    const raw = window.sessionStorage?.getItem(SPECIES_INDEX_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedSpeciesIndex(speciesList) {
+  try {
+    if (Array.isArray(speciesList) && speciesList.length > 0) {
+      window.sessionStorage?.setItem(
+        SPECIES_INDEX_STORAGE_KEY,
+        JSON.stringify(speciesList),
+      );
+    }
+  } catch {
+    // Ignore sessionStorage quota/privacy errors
+  }
+}
+
 export function fetchDataset(datasetKey, { forceRefresh = false } = {}) {
-  const relPath = DATASET_ENDPOINTS[datasetKey];
-  const validator = VALIDATORS[datasetKey];
+  const normalizedKey = datasetKey === "catalog" ? "speciesIndex" : datasetKey;
+  const relPath = DATASET_ENDPOINTS[normalizedKey];
+  const validator = VALIDATORS[normalizedKey];
   if (!relPath || !validator) {
     return Promise.reject(new Error(`Unknown dataset key: "${datasetKey}".`));
   }
 
-  if (!forceRefresh && inFlightCache.has(datasetKey)) {
-    return inFlightCache.get(datasetKey);
+  if (!forceRefresh && inFlightCache.has(normalizedKey)) {
+    return inFlightCache.get(normalizedKey);
+  }
+
+  if (!forceRefresh && normalizedKey === "speciesIndex") {
+    const cached = readCachedSpeciesIndex();
+    if (cached) {
+      const resolved = Promise.resolve(cached);
+      inFlightCache.set(normalizedKey, resolved);
+      return resolved;
+    }
   }
 
   const requestPromise = fetchJsonResource(resolveDatasetHref(relPath), relPath)
-    .then((raw) => validator(raw))
+    .then((raw) => {
+      const validated = validator(raw);
+      if (normalizedKey === "speciesIndex") {
+        writeCachedSpeciesIndex(validated);
+      }
+      return validated;
+    })
     .catch((err) => {
-      inFlightCache.delete(datasetKey);
+      inFlightCache.delete(normalizedKey);
       throw err;
     });
 
-  inFlightCache.set(datasetKey, requestPromise);
+  inFlightCache.set(normalizedKey, requestPromise);
+  return requestPromise;
+}
+
+/**
+ * On-demand monograph fetcher for ./data/species/<slug>.json.
+ * Enforces lowercase kebab-case slugs for GitHub Pages case-sensitivity safety.
+ */
+export function fetchSpeciesMonograph(rawSlug, { forceRefresh = false } = {}) {
+  const slug = normalizeSpeciesSlug(rawSlug);
+  if (!slug || !isValidSpeciesSlug(slug)) {
+    return Promise.reject(new Error(`Invalid species slug: "${rawSlug}".`));
+  }
+
+  const cacheKey = `species:${slug}`;
+  if (!forceRefresh && inFlightCache.has(cacheKey)) {
+    return inFlightCache.get(cacheKey);
+  }
+
+  const relPath = `./data/species/${slug}.json`;
+  const requestPromise = fetchJsonResource(resolveDatasetHref(relPath), relPath)
+    .then((raw) => validateSpeciesMonographPayload(raw))
+    .catch((err) => {
+      inFlightCache.delete(cacheKey);
+      throw err;
+    });
+
+  inFlightCache.set(cacheKey, requestPromise);
   return requestPromise;
 }
 
 export async function fetchDatasetsConcurrently(datasetKeys, { forceRefresh = false } = {}) {
   const uniqueKeys = Array.from(new Set(datasetKeys)).filter(Boolean);
   const settled = await Promise.allSettled(
-    uniqueKeys.map((key) =>
-      fetchDataset(key, { forceRefresh }).then((data) => ({ key, data })),
-    ),
+    uniqueKeys.map((key) => {
+      if (key.startsWith("species:")) {
+        const slug = key.slice("species:".length);
+        return fetchSpeciesMonograph(slug, { forceRefresh }).then((data) => ({
+          key,
+          data,
+        }));
+      }
+      return fetchDataset(key, { forceRefresh }).then((data) => ({ key, data }));
+    }),
   );
 
   const map = new Map();

@@ -28,13 +28,16 @@
     <link rel="stylesheet" href="./css/sections.css" />
     <link rel="stylesheet" href="./css/components.css" />
     <link rel="stylesheet" href="./css/pages-responsive.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./css/tailwind/tailwind.config.js"></script>
+    <script src="./css/tailwind/load-tailwind-layers.js" defer></script>
   </head>
   <body data-page="species">
     <div class="scroll-progress-track" aria-hidden="true">
       <div class="scroll-progress-bar" id="scrollProgressBar"></div>
     </div>
 
-    <header id="app-navbar" data-shell="navbar" data-mount="navbar" class="global-navbar"></header>
+    <header id="global-navbar" class="global-navbar"></header>
 
     <main id="app-main" class="page-main" data-page="species">
       <section id="mount-directory-banner" data-section="directory-banner" data-mount="directory-banner"></section>
@@ -42,9 +45,7 @@
     </main>
 
     <footer
-      id="app-footer"
-      data-shell="footer"
-      data-mount="footer"
+      id="global-footer"
       class="site-footer site-footer--compact"
       data-footer-variant="compact"
     ></footer>
@@ -57,6 +58,8 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
       defer
     ></script>
+    <script type="module" src="./js/navbar-compiler.js"></script>
+    <script type="module" src="./js/footer-compiler.js"></script>
     <script type="module" src="./js/app.js"></script>
   </body>
 </html>

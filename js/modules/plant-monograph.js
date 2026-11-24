@@ -1,12 +1,14 @@
 /**
  * Plant Monograph Detail Page Renderer & Section Map Overlay Controller (plant.html)
- * Driven 100% by ./data/pages/plant.json and ./data/plants.json.
+ * - Renders the active species from on-demand ./data/species/<slug>.json
+ * - Uses lightweight ./data/species-index.json for Previous/Next Pager, Related Species, and Not Found suggestions
  */
 
 import {
   buildImageElement,
   createCloseIconSvg,
   createEl,
+  createSpeciesCardElement,
   sanitizeUrl,
 } from "../templates.js";
 import { applyPlantMonographSeo } from "./seo.js";
@@ -44,18 +46,6 @@ function createSectionMapIconSvg() {
   return svg;
 }
 
-function getTargetSlug(allPlants) {
-  const params = new URLSearchParams(window.location.search);
-  const querySlug = params.get("species");
-  if (querySlug) return querySlug.trim().toLowerCase();
-
-  const hash = window.location.hash || "";
-  const match = hash.match(/^#\/plant\/([^/?#]+)/i);
-  if (match && match[1]) return decodeURIComponent(match[1]).toLowerCase();
-
-  return allPlants.length > 0 ? allPlants[0].slug : "";
-}
-
 function buildFigureElement(fig, figCode, className) {
   const figure = createEl("figure", className);
   const mediaBox = createEl("div", "figure-media-box");
@@ -79,7 +69,6 @@ function renderTextbookChapter(section, safetyTitle) {
   const article = createEl("article", "chapter-card");
   article.id = `section-${section.number}`;
 
-  // Header
   const header = createEl("header", "chapter-header");
   const titleGroup = createEl("div", "chapter-title-group");
   titleGroup.appendChild(createEl("span", "chapter-num", section.number));
@@ -88,7 +77,6 @@ function renderTextbookChapter(section, safetyTitle) {
   header.appendChild(createEl("span", "chapter-subtitle", section.subtitle || ""));
   article.appendChild(header);
 
-  // Body
   const body = createEl("div", "chapter-body");
   const images = Array.isArray(section.images) ? section.images : [];
   const paragraphs = Array.isArray(section.paragraphs) ? section.paragraphs : [];
@@ -179,7 +167,6 @@ function mountAndBindSectionMap(sectionMapCfg, plant) {
 
   const descriptions = sectionMapCfg.descriptions || {};
 
-  // Floating pill dock
   const dock = createEl("div", "section-map-dock");
   dock.id = "sectionMapDock";
 
@@ -193,7 +180,6 @@ function mountAndBindSectionMap(sectionMapCfg, plant) {
   trigger.appendChild(createEl("span", "", sectionMapCfg.pillLabel || "Section Map"));
   dock.appendChild(trigger);
 
-  // Fullscreen modal overlay
   const overlay = createEl("div", "section-map-overlay");
   overlay.id = "sectionMapOverlay";
   overlay.setAttribute("role", "dialog");
@@ -331,16 +317,40 @@ function mountAndBindSectionMap(sectionMapCfg, plant) {
   }
 }
 
-export function renderPlantMonograph(mountEl, { pageData, catalog }) {
+function getRelatedSpecies(plant, indexList) {
+  if (!plant || !Array.isArray(indexList)) return [];
+  const family = plant.overview?.family || plant.family || "";
+  return indexList
+    .filter((entry) => entry.slug !== plant.slug)
+    .map((entry) => {
+      let score = 0;
+      if (entry.category === plant.category) score += 2;
+      if (entry.family && entry.family === family) score += 3;
+      if (
+        Array.isArray(entry.categories) &&
+        entry.categories.includes(plant.category)
+      ) {
+        score += 1;
+      }
+      return { entry, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 2)
+    .map((item) => item.entry);
+}
+
+export function renderPlantMonograph(
+  mountEl,
+  { pageData, speciesIndex, plant, requestedSlug },
+) {
   if (!mountEl || !pageData) return;
 
-  const allPlants = Array.isArray(catalog) ? catalog : [];
+  const indexList = Array.isArray(speciesIndex) ? speciesIndex : [];
   const monographCfg = pageData.monograph || {};
   const sectionMapCfg = pageData.sectionMap || {};
-  const slug = getTargetSlug(allPlants);
-  const plantIdx = allPlants.findIndex((p) => p.slug === slug);
 
-  if (plantIdx === -1) {
+  if (!plant) {
     const notFound = monographCfg.notFound || {};
     document.title = notFound.seoTitle || "Species Not Found | Plantipedia";
 
@@ -349,14 +359,12 @@ export function renderPlantMonograph(mountEl, { pageData, catalog }) {
     errCard.appendChild(
       createEl("h1", "", notFound.heading || "Species Monograph Not Found"),
     );
-    errCard.appendChild(
-      createEl(
-        "p",
-        "",
-        notFound.message ||
-          "No plant entry matched the requested species identifier. Browse all documented monographs in the directory.",
-      ),
-    );
+    const detailMsg = requestedSlug
+      ? `No botanical monograph matched "${requestedSlug}". Browse all 20 documented species in the archive directory.`
+      : notFound.message ||
+        "No plant entry matched the requested species identifier. Browse all documented monographs in the directory.";
+    errCard.appendChild(createEl("p", "", detailMsg));
+
     const backLink = createEl(
       "a",
       "empty-reset-btn empty-reset-link",
@@ -364,18 +372,33 @@ export function renderPlantMonograph(mountEl, { pageData, catalog }) {
     );
     backLink.href = sanitizeUrl(notFound.ctaHref, "./species.html");
     errCard.appendChild(backLink);
-    detailWrap.appendChild(errCard);
 
+    if (indexList.length > 0) {
+      const quickRow = createEl("div", "not-found-quick-links");
+      indexList.slice(0, 4).forEach((entry) => {
+        const chip = createEl("a", "mobile-quick-chip", entry.commonName);
+        chip.href = `./plant.html?species=${encodeURIComponent(entry.slug)}`;
+        quickRow.appendChild(chip);
+      });
+      errCard.appendChild(quickRow);
+    }
+
+    detailWrap.appendChild(errCard);
     mountEl.replaceChildren(detailWrap);
     mountAndBindSectionMap(sectionMapCfg, null);
     return;
   }
 
-  const plant = allPlants[plantIdx];
-  const prevPlant = allPlants[(plantIdx - 1 + allPlants.length) % allPlants.length];
-  const nextPlant = allPlants[(plantIdx + 1) % allPlants.length];
-
   applyPlantMonographSeo(plant);
+
+  const plantIdx = indexList.findIndex((p) => p.slug === plant.slug);
+  const hasNeighbors = indexList.length > 1 && plantIdx !== -1;
+  const prevPlant = hasNeighbors
+    ? indexList[(plantIdx - 1 + indexList.length) % indexList.length]
+    : null;
+  const nextPlant = hasNeighbors
+    ? indexList[(plantIdx + 1) % indexList.length]
+    : null;
 
   const ov = plant.overview || {};
   const labels = monographCfg.tableLabels || {};
@@ -390,8 +413,14 @@ export function renderPlantMonograph(mountEl, { pageData, catalog }) {
   const ol = createEl("ol", "breadcrumb-list");
 
   const crumbs = [
-    { label: monographCfg.homeLabel || "Home", href: sanitizeUrl(monographCfg.homeHref, "./index.html") },
-    { label: monographCfg.directoryLabel || "Available Species", href: sanitizeUrl(monographCfg.directoryHref, "./species.html") },
+    {
+      label: monographCfg.homeLabel || "Home",
+      href: sanitizeUrl(monographCfg.homeHref, "./index.html"),
+    },
+    {
+      label: monographCfg.directoryLabel || "Available Species",
+      href: sanitizeUrl(monographCfg.directoryHref, "./species.html"),
+    },
     { label: plant.category, href: categoryHref },
     { label: plant.commonName, current: true },
   ];
@@ -439,7 +468,15 @@ export function renderPlantMonograph(mountEl, { pageData, catalog }) {
     ),
   );
   titleBlock.appendChild(createEl("h1", "overview-plant-title", plant.commonName));
-  titleBlock.appendChild(createEl("p", "overview-scientific-name", plant.scientificName));
+  titleBlock.appendChild(
+    createEl(
+      "p",
+      "overview-scientific-name",
+      plant.localName
+        ? `${plant.scientificName} · ${plant.localName}`
+        : plant.scientificName,
+    ),
+  );
   titleBlock.appendChild(createEl("p", "overview-lead-summary", plant.leadOverview));
 
   const heroFigure = createEl("figure", "overview-hero-figure");
@@ -513,26 +550,57 @@ export function renderPlantMonograph(mountEl, { pageData, catalog }) {
   });
   detailContainer.appendChild(chaptersWrap);
 
-  // 4. Previous / Next Pager
-  const pagerNav = createEl("nav", "species-pager");
-  pagerNav.setAttribute("aria-label", "Adjacent plant species");
+  // 4. Related Species Strip (powered by species-index.json)
+  const related = getRelatedSpecies(plant, indexList);
+  if (related.length > 0) {
+    const relatedSection = createEl("section", "related-species-section");
+    relatedSection.setAttribute("aria-label", "Related botanical species");
+    relatedSection.appendChild(
+      createEl("span", "section-eyebrow", "Taxonomic Neighbors"),
+    );
+    relatedSection.appendChild(
+      createEl("h2", "related-species-heading", "Related Species Monographs"),
+    );
+    const relatedGrid = createEl("div", "species-grid species-grid--directory");
+    related.forEach((item) => {
+      relatedGrid.appendChild(createSpeciesCardElement(item, "Explore Monograph"));
+    });
+    relatedSection.appendChild(relatedGrid);
+    detailContainer.appendChild(relatedSection);
+  }
 
-  const makePagerLink = (targetPlant, directionClass, directionLabel) => {
-    const a = createEl("a", `pager-link ${directionClass}`);
-    a.href = `./plant.html?species=${encodeURIComponent(targetPlant.slug)}`;
-    a.appendChild(createEl("span", "pager-direction", directionLabel));
-    a.appendChild(createEl("span", "pager-species-name", targetPlant.commonName));
-    a.appendChild(createEl("span", "pager-species-sci", targetPlant.scientificName));
-    return a;
-  };
+  // 5. Previous / Next Pager (powered by species-index.json)
+  if (prevPlant && nextPlant) {
+    const pagerNav = createEl("nav", "species-pager");
+    pagerNav.setAttribute("aria-label", "Adjacent plant species");
 
-  pagerNav.appendChild(
-    makePagerLink(prevPlant, "prev", monographCfg.previousLabel || "← Previous Monograph"),
-  );
-  pagerNav.appendChild(
-    makePagerLink(nextPlant, "next", monographCfg.nextLabel || "Next Monograph →"),
-  );
-  detailContainer.appendChild(pagerNav);
+    const makePagerLink = (targetPlant, directionClass, directionLabel) => {
+      const a = createEl("a", `pager-link ${directionClass}`);
+      a.href = `./plant.html?species=${encodeURIComponent(targetPlant.slug)}`;
+      a.appendChild(createEl("span", "pager-direction", directionLabel));
+      a.appendChild(createEl("span", "pager-species-name", targetPlant.commonName));
+      a.appendChild(
+        createEl("span", "pager-species-sci", targetPlant.scientificName),
+      );
+      return a;
+    };
+
+    pagerNav.appendChild(
+      makePagerLink(
+        prevPlant,
+        "prev",
+        monographCfg.previousLabel || "← Previous Monograph",
+      ),
+    );
+    pagerNav.appendChild(
+      makePagerLink(
+        nextPlant,
+        "next",
+        monographCfg.nextLabel || "Next Monograph →",
+      ),
+    );
+    detailContainer.appendChild(pagerNav);
+  }
 
   mountEl.replaceChildren(detailContainer);
   mountAndBindSectionMap(sectionMapCfg, plant);

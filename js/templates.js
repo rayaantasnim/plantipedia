@@ -124,8 +124,10 @@ export function createSpeciesCardElement(plant, ctaLabel = "Explore Monograph") 
 
   const mediaBox = createEl("div", "species-card-media");
   const imgConfig = plant.image || plant.heroImage || {};
-  const rawImgUrl = imgConfig.imageUrl || imgConfig.url;
+  const rawImgUrl =
+    plant.thumbnailUrl || imgConfig.imageUrl || imgConfig.url;
   const imgAlt =
+    plant.imageAlt ||
     imgConfig.imageAlt ||
     imgConfig.alt ||
     `${plant.commonName} — ${plant.scientificName}`;
@@ -155,8 +157,11 @@ export function createSpeciesCardElement(plant, ctaLabel = "Explore Monograph") 
   );
 
   const title = createEl("h3", "species-card-title", plant.commonName);
-  const sci = createEl("p", "species-card-sci", plant.scientificName);
-  const excerpt = createEl("p", "species-card-excerpt", plant.shortSummary);
+  const sciText = plant.localName
+    ? `${plant.scientificName} · ${plant.localName}`
+    : plant.scientificName;
+  const sci = createEl("p", "species-card-sci", sciText);
+  const excerpt = createEl("p", "species-card-excerpt", plant.shortSummary || "");
 
   const cta = createEl("div", "species-card-cta");
   cta.appendChild(createEl("span", "", plant.ctaLabel || ctaLabel));
@@ -251,8 +256,16 @@ export function renderMountSkeleton(mountEl, sectionKey) {
     return;
   }
 
-  const useTwoCol = sectionKey === "taxonomy" || sectionKey === "about";
-  const count = sectionKey === "featured-species" || sectionKey === "highlights" ? 3 : sectionKey === "directory-explorer" ? 6 : 4;
+  const useTwoCol =
+    sectionKey === "taxonomy" ||
+    sectionKey === "about" ||
+    sectionKey === "directory-explorer";
+  const count =
+    sectionKey === "featured-species" || sectionKey === "highlights"
+      ? 3
+      : sectionKey === "directory-explorer"
+        ? 4
+        : 4;
   const grid = createEl("div", useTwoCol ? "skeleton-grid-2" : "skeleton-grid-3");
 
   for (let i = 0; i < count; i += 1) {
@@ -398,7 +411,7 @@ export function renderHeroSection(mountEl, { pageData }) {
 }
 
 /**
- * 2. Home About / Botanical Mission Section (./data/pages/home.json + ./data/plants.json)
+ * 2. Home About / Botanical Mission Section (./data/pages/home.json + ./data/species-index.json)
  */
 export function renderAboutSection(mountEl, { pageData, catalog }) {
   const about = pageData?.about;

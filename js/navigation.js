@@ -1,22 +1,26 @@
 /**
- * Shared live species autocomplete interactions for Navbar, Mobile Overlay, and Home Hero.
- * Idempotently binds event handlers as shell and hero mount points hydrate.
+ * Shared live species autocomplete interactions for Home Hero search.
+ * (Navbar & Mobile search are bound independently by js/navbar-compiler.js.)
  */
 
-import { getSpeciesCatalog } from "./state.js";
+import { getSpeciesIndex } from "./state.js";
 import { renderSearchSuggestionNodes } from "./templates.js";
-import { bindGlobalImageFallbackHandler } from "./modules/shell.js";
+import { bindGlobalImageFallbackHandler } from "./navbar-compiler.js";
 
 function plantMatchesQuery(plant, query) {
   if (!query) return true;
   const q = query.toLowerCase();
-  const family = plant.overview?.family || plant.family || "";
-  const plantGroup = plant.overview?.plantGroup || "";
+  const family = plant.family || plant.overview?.family || "";
+  const plantGroup = plant.plantGroup || plant.overview?.plantGroup || "";
+  const localName = plant.localName || "";
+  const domain = plant.taxonomicDomain || "";
   return (
     plant.commonName.toLowerCase().includes(q) ||
     plant.scientificName.toLowerCase().includes(q) ||
+    localName.toLowerCase().includes(q) ||
     family.toLowerCase().includes(q) ||
-    plant.category.toLowerCase().includes(q) ||
+    (plant.category || "").toLowerCase().includes(q) ||
+    domain.toLowerCase().includes(q) ||
     plantGroup.toLowerCase().includes(q)
   );
 }
@@ -50,22 +54,22 @@ function bindLiveSpeciesSearch(config) {
       return;
     }
 
-    const catalog = getSpeciesCatalog();
-    currentMatches = catalog
+    const indexList = getSpeciesIndex();
+    currentMatches = indexList
       .filter((plant) => plantMatchesQuery(plant, q))
-      .slice(0, config.maxResults || 8);
+      .slice(0, config.maxResults || 7);
 
     activeIndex = -1;
     renderSearchSuggestionNodes(
       suggestionsEl,
       currentMatches,
       q,
-      config.itemVariant || "nav",
+      config.itemVariant || "home",
     );
   }
 
   function syncActiveSuggestion() {
-    const items = suggestionsEl.querySelectorAll(".nav-suggestion-item");
+    const items = suggestionsEl.querySelectorAll(".suggestion-row, .nav-suggestion-item");
     items.forEach((el, idx) => {
       el.classList.toggle("is-active", idx === activeIndex);
     });
@@ -75,9 +79,6 @@ function bindLiveSpeciesSearch(config) {
   }
 
   function navigateToSpecies(slug) {
-    if (typeof config.onNavigate === "function") {
-      config.onNavigate();
-    }
     window.location.href = `./plant.html?species=${encodeURIComponent(slug)}`;
   }
 
@@ -118,12 +119,6 @@ function bindLiveSpeciesSearch(config) {
     }
   });
 
-  suggestionsEl.addEventListener("click", (e) => {
-    if (e.target.closest("a") && typeof config.onNavigate === "function") {
-      config.onNavigate();
-    }
-  });
-
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
       input.value = "";
@@ -144,15 +139,12 @@ function bindLiveSpeciesSearch(config) {
       window.location.href = "./species.html";
       return;
     }
-    const matches = getSpeciesCatalog().filter((p) => plantMatchesQuery(p, q));
+    const matches = getSpeciesIndex().filter((p) => plantMatchesQuery(p, q));
     if (matches.length === 1) {
       navigateToSpecies(matches[0].slug);
       return;
     }
     if (q) {
-      if (typeof config.onNavigate === "function") {
-        config.onNavigate();
-      }
       window.location.href = `./species.html?q=${encodeURIComponent(q)}`;
     }
   });
@@ -164,32 +156,8 @@ function bindLiveSpeciesSearch(config) {
   });
 }
 
-function closeMobileOverlayIfOpen() {
-  const overlay = document.getElementById("mobileNavOverlay");
-  const toggleBtn = document.getElementById("mobileMenuToggle");
-  if (!overlay || overlay.hidden) return;
-  overlay.hidden = true;
-  if (toggleBtn) {
-    toggleBtn.classList.remove("is-open");
-    toggleBtn.setAttribute("aria-expanded", "false");
-    toggleBtn.setAttribute("aria-label", "Open navigation menu");
-  }
-  document.documentElement.classList.remove("overlay-locked");
-  document.body.classList.remove("overlay-locked");
-}
-
 export function initNavigationInteractions() {
   bindGlobalImageFallbackHandler();
-
-  bindLiveSpeciesSearch({
-    formId: "navbarSearchForm",
-    inputId: "navbarSearchInput",
-    clearId: "navbarSearchClear",
-    suggestionsId: "navbarSuggestions",
-    wrapSelector: "#navbarSearchWrap",
-    itemVariant: "nav",
-    maxResults: 8,
-  });
 
   bindLiveSpeciesSearch({
     formId: "homeSearchForm",
@@ -200,16 +168,5 @@ export function initNavigationInteractions() {
     itemVariant: "home",
     maxResults: 7,
     emptySubmitToDirectory: true,
-  });
-
-  bindLiveSpeciesSearch({
-    formId: "mobileSearchForm",
-    inputId: "mobileSearchInput",
-    clearId: "mobileSearchClear",
-    suggestionsId: "mobileSuggestions",
-    wrapSelector: "#mobileSearchWrap",
-    itemVariant: "nav",
-    maxResults: 8,
-    onNavigate: closeMobileOverlayIfOpen,
   });
 }

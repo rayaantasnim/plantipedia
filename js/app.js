@@ -5,7 +5,7 @@
  * - Wires section-level retry actions and ScrollTrigger lifecycle
  */
 
-import { bindGlobalImageFallbackHandler } from "./modules/shell.js";
+import { bindGlobalImageFallbackHandler } from "./navbar-compiler.js";
 import { hydrateActivePage, retryMountSection } from "./registry.js";
 import { initGlobalAnimations, refreshScrollTriggers } from "./animations.js";
 

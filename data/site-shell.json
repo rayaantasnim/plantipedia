@@ -129,38 +129,6 @@
   "footer": {
     "summary": "Exploring the fascinating world of plants, one species at a time. Plantipedia is an educational botanical archive dedicated to documenting global flora with scientific accuracy. All original interface architecture, visual design systems, and source code are protected under copyright law, while botanical references and third-party imagery remain the property of their respective owners and are curated strictly for educational purposes.",
     "compactTagline": "Exploring the fascinating world of plants, one species at a time.",
-    "columns": [
-      {
-        "id": "explore",
-        "title": "Explore",
-        "links": [
-          { "label": "Botanical Gateway", "href": "./index.html" },
-          { "label": "About the Archive", "href": "./index.html#about-plantipedia" },
-          { "label": "Available Species (A–Z)", "href": "./species.html" },
-          { "label": "Did You Know?", "href": "./index.html#did-you-know" }
-        ]
-      },
-      {
-        "id": "domains",
-        "title": "Taxonomic Domains",
-        "links": [
-          { "label": "Flowers & Ornamentals", "href": "./species.html?category=Flowers" },
-          { "label": "Tropical Fruit Trees", "href": "./species.html?category=Fruit%20Trees" },
-          { "label": "Medicinal & Ayurvedic", "href": "./species.html?category=Medicinal" },
-          { "label": "Aquatic & Wetland Flora", "href": "./species.html?category=Aquatic" }
-        ]
-      },
-      {
-        "id": "resources",
-        "title": "Stewardship & Resources",
-        "links": [
-          { "label": "Field Notes & Ecology", "href": "./index.html#botanical-highlights" },
-          { "label": "Shrubs & Perennial Herbs", "href": "./species.html?category=Shrubs%20%26%20Herbs" },
-          { "label": "Mango Monograph", "href": "./plant.html?species=mango" },
-          { "label": "Sacred Lotus Monograph", "href": "./plant.html?species=lotus" }
-        ]
-      }
-    ],
     "credits": [
       {
         "role": "Chief Patron & Authorization",

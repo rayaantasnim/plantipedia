@@ -43,8 +43,9 @@
     }
   },
   "explorer": {
-    "batchSize": 24,
-    "searchPlaceholder": "Filter by common name, Latin binomial, or plant family...",
+    "pageSize": 10,
+    "batchSize": 10,
+    "searchPlaceholder": "Filter by common name, Latin binomial, local name, or plant family...",
     "searchAriaLabel": "Filter available plant species",
     "clearLabel": "Clear",
     "sortLabel": "Sort",

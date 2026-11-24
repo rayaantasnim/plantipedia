@@ -118,6 +118,8 @@ button {
   line-height: 1.78;
   color: var(--ink-secondary);
   text-align: justify;
+  text-justify: inter-word;
+  overflow-wrap: break-word;
   hyphens: auto;
   -webkit-hyphens: auto;
 }

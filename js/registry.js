@@ -1,14 +1,22 @@
 /**
  * Declarative Component Registry for Plantipedia Headless Static Architecture.
- * - Scans DOM for [data-shell] and [data-section] mount points on load
+ * - Scans DOM for [data-section] mount points on load
  * - Resolves minimal deduplicated JSON dataset dependencies per active page
+ * - Uses ./data/species-index.json for index/search and on-demand ./data/species/<slug>.json for monographs
  * - Renders skeletons immediately to prevent CLS and hydrates concurrently via Promise.allSettled()
  */
 
-import { fetchDataset, fetchDatasetsConcurrently } from "./api.js";
-import { setMountState, setSpeciesCatalog } from "./state.js";
+import {
+  fetchDatasetsConcurrently,
+  isValidSpeciesSlug,
+  normalizeSpeciesSlug,
+} from "./api.js";
+import {
+  setActiveMonograph,
+  setMountState,
+  setSpeciesIndex,
+} from "./state.js";
 import { applyPageSeo } from "./modules/seo.js";
-import { renderNavbarShell, renderFooterShell } from "./modules/shell.js";
 import {
   renderHeroSection,
   renderAboutSection,
@@ -27,49 +35,48 @@ import { renderPlantMonograph } from "./modules/plant-monograph.js";
 import { animateHydratedSection, refreshScrollTriggers } from "./animations.js";
 import { initNavigationInteractions } from "./navigation.js";
 
-const SHELL_REGISTRY = {
-  navbar: {
-    datasets: ["siteShell"],
-    render: (el, dataMap) => {
-      renderNavbarShell(el, dataMap.get("siteShell")?.data || null);
-    },
-  },
-  footer: {
-    datasets: ["siteShell"],
-    render: (el, dataMap) => {
-      renderFooterShell(el, dataMap.get("siteShell")?.data || null);
-    },
-  },
-};
+function resolveRequestedSpeciesSlug() {
+  const params = new URLSearchParams(window.location.search);
+  const querySlug = params.get("species");
+  if (querySlug) return normalizeSpeciesSlug(querySlug);
+
+  const hash = window.location.hash || "";
+  const match = hash.match(/^#\/plant\/([^/?#]+)/i);
+  if (match && match[1]) {
+    return normalizeSpeciesSlug(decodeURIComponent(match[1]));
+  }
+
+  return "mango";
+}
 
 const SECTION_REGISTRY = {
   hero: {
     datasets: ["page:home"],
-    optionalDatasets: ["catalog"],
+    optionalDatasets: ["speciesIndex"],
     render: (el, dataMap) => {
       renderHeroSection(el, {
         pageData: dataMap.get("page:home")?.data,
-        catalog: dataMap.get("catalog")?.data || [],
+        catalog: dataMap.get("speciesIndex")?.data || [],
       });
     },
   },
   about: {
     datasets: ["page:home"],
-    optionalDatasets: ["catalog"],
+    optionalDatasets: ["speciesIndex"],
     render: (el, dataMap) => {
       renderAboutSection(el, {
         pageData: dataMap.get("page:home")?.data,
-        catalog: dataMap.get("catalog")?.data || [],
+        catalog: dataMap.get("speciesIndex")?.data || [],
       });
     },
   },
   "featured-species": {
     datasets: ["featured"],
-    optionalDatasets: ["catalog"],
+    optionalDatasets: ["speciesIndex"],
     render: (el, dataMap) => {
       renderFeaturedSpeciesSection(el, {
         sectionData: dataMap.get("featured")?.data,
-        catalog: dataMap.get("catalog")?.data || [],
+        catalog: dataMap.get("speciesIndex")?.data || [],
       });
     },
   },
@@ -99,29 +106,40 @@ const SECTION_REGISTRY = {
   },
   "directory-banner": {
     datasets: ["page:species"],
-    optionalDatasets: ["catalog"],
+    optionalDatasets: ["speciesIndex"],
     render: (el, dataMap) => {
       renderDirectoryBanner(el, {
         pageData: dataMap.get("page:species")?.data,
-        catalog: dataMap.get("catalog")?.data || [],
+        catalog: dataMap.get("speciesIndex")?.data || [],
       });
     },
   },
   "directory-explorer": {
-    datasets: ["page:species", "catalog"],
+    datasets: ["page:species", "speciesIndex"],
     render: (el, dataMap) => {
       renderDirectoryExplorer(el, {
         pageData: dataMap.get("page:species")?.data,
-        catalog: dataMap.get("catalog")?.data || [],
+        speciesIndex: dataMap.get("speciesIndex")?.data || [],
       });
     },
   },
   "plant-monograph": {
-    datasets: ["page:plant", "catalog"],
+    datasets: ["page:plant", "speciesIndex"],
+    getDynamicDatasets: () => {
+      const slug = resolveRequestedSpeciesSlug();
+      return isValidSpeciesSlug(slug) ? [`species:${slug}`] : [];
+    },
     render: (el, dataMap) => {
+      const requestedSlug = resolveRequestedSpeciesSlug();
+      const speciesKey = `species:${requestedSlug}`;
+      const plantOutcome = dataMap.get(speciesKey);
+      const plant = plantOutcome?.ok ? plantOutcome.data : null;
+      setActiveMonograph(plant);
       renderPlantMonograph(el, {
         pageData: dataMap.get("page:plant")?.data,
-        catalog: dataMap.get("catalog")?.data || [],
+        speciesIndex: dataMap.get("speciesIndex")?.data || [],
+        plant,
+        requestedSlug,
       });
     },
   },
@@ -179,15 +197,21 @@ export async function retryMountSection(sectionKey) {
   setMountState(sectionKey, { status: "loading", error: null });
   renderMountSkeleton(mountEl, sectionKey);
 
+  const dynamicKeys =
+    typeof entry.getDynamicDatasets === "function"
+      ? entry.getDynamicDatasets()
+      : [];
+
   const keysToLoad = [
     ...(entry.datasets || []),
     ...(entry.optionalDatasets || []),
+    ...dynamicKeys,
   ];
   const dataMap = await fetchDatasetsConcurrently(keysToLoad, { forceRefresh: true });
 
-  const catalogOutcome = dataMap.get("catalog");
-  if (catalogOutcome?.ok) {
-    setSpeciesCatalog(catalogOutcome.data);
+  const indexOutcome = dataMap.get("speciesIndex");
+  if (indexOutcome?.ok) {
+    setSpeciesIndex(indexOutcome.data);
   }
 
   hydrateSectionMount(mountEl, sectionKey, entry, dataMap);
@@ -195,7 +219,6 @@ export async function retryMountSection(sectionKey) {
 }
 
 export async function hydrateActivePage(root = document) {
-  const shellMounts = Array.from(root.querySelectorAll("[data-shell]"));
   const sectionMounts = Array.from(root.querySelectorAll("[data-section]"));
 
   const requiredDatasetKeys = new Set();
@@ -203,13 +226,6 @@ export async function hydrateActivePage(root = document) {
   if (activePageKey) {
     requiredDatasetKeys.add(activePageKey);
   }
-
-  shellMounts.forEach((el) => {
-    const shellKey = el.getAttribute("data-shell");
-    const entry = SHELL_REGISTRY[shellKey];
-    if (!entry) return;
-    (entry.datasets || []).forEach((k) => requiredDatasetKeys.add(k));
-  });
 
   sectionMounts.forEach((el) => {
     const sectionKey = el.getAttribute("data-section");
@@ -221,32 +237,23 @@ export async function hydrateActivePage(root = document) {
     }
     (entry.datasets || []).forEach((k) => requiredDatasetKeys.add(k));
     (entry.optionalDatasets || []).forEach((k) => requiredDatasetKeys.add(k));
+    if (typeof entry.getDynamicDatasets === "function") {
+      entry.getDynamicDatasets().forEach((k) => requiredDatasetKeys.add(k));
+    }
   });
 
-  // Load only datasets needed for the active page concurrently via Promise.allSettled()
+  // Load page JSON, species-index.json, and active species monograph concurrently via Promise.allSettled()
   const dataMap = await fetchDatasetsConcurrently(Array.from(requiredDatasetKeys));
 
-  // Sync shared species catalog first if present
-  const catalogOutcome = dataMap.get("catalog");
-  if (catalogOutcome?.ok) {
-    setSpeciesCatalog(catalogOutcome.data);
+  const indexOutcome = dataMap.get("speciesIndex");
+  if (indexOutcome?.ok) {
+    setSpeciesIndex(indexOutcome.data);
   }
 
-  // Apply page-level SEO / OpenGraph / Schema.org metadata from page JSON
   if (activePageKey && dataMap.get(activePageKey)?.ok) {
     applyPageSeo(dataMap.get(activePageKey).data.seo);
   }
 
-  // Hydrate shell mount points ([data-shell="navbar"], [data-shell="footer"])
-  shellMounts.forEach((el) => {
-    const shellKey = el.getAttribute("data-shell");
-    const entry = SHELL_REGISTRY[shellKey];
-    if (entry && typeof entry.render === "function") {
-      entry.render(el, dataMap);
-    }
-  });
-
-  // Hydrate all section mount points ([data-section="..."])
   sectionMounts.forEach((el) => {
     const sectionKey = el.getAttribute("data-section");
     const entry = SECTION_REGISTRY[sectionKey];
@@ -254,16 +261,6 @@ export async function hydrateActivePage(root = document) {
     hydrateSectionMount(el, sectionKey, entry, dataMap);
   });
 
-  // Bind global search inputs across navbar, mobile overlay, and hero
   initNavigationInteractions();
   refreshScrollTriggers();
-
-  // If species catalog wasn't requested explicitly above (edge cases), ensure warm background fetch isn't needed unless navbar search exists
-  if (!requiredDatasetKeys.has("catalog") && document.getElementById("navbarSearchForm")) {
-    fetchDataset("catalog")
-      .then((speciesList) => setSpeciesCatalog(speciesList))
-      .catch(() => {
-        // Navbar search stays non-blocking on background fetch failure
-      });
-  }
 }

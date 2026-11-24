@@ -152,13 +152,13 @@ export function applyPlantMonographSeo(plant) {
       {
         "@type": "Taxon",
         "@id": `${pageUrl}#taxon`,
-        name: plant.scientificName,
-        alternateName: plant.commonName,
-        taxonRank: "Species",
+        name: plant.schemaOrg?.name || plant.scientificName,
+        alternateName: plant.schemaOrg?.alternateName || plant.commonName,
+        taxonRank: plant.schemaOrg?.taxonRank || "Species",
         description: plant.leadOverview || seoDesc,
         image: heroImgUrl,
         url: pageUrl,
-        parentTaxon: {
+        parentTaxon: plant.schemaOrg?.parentTaxon || {
           "@type": "Taxon",
           name: ov.genus || plant.scientificName.split(" ")[0],
           taxonRank: "Genus",

@@ -1,6 +1,9 @@
 /**
- * Species Directory Renderer & Interactive Filter Controller (species.html)
- * Driven 100% by ./data/pages/species.json and ./data/plants.json.
+ * Species Directory Renderer & Paginated Filter Controller (species.html)
+ * Driven 100% by ./data/pages/species.json and lightweight ./data/species-index.json.
+ * - 2-column botanical specimen card grid (collapsing cleanly to 1-col on <= 768px)
+ * - 10 cards per page with sticky top pagination bar (← Prev, 1, 2, Next → + live result counter)
+ * - Search, category pills, A–Z index, and sort always operate across all 20 species and reset to Page 1
  */
 
 import {
@@ -14,13 +17,17 @@ import { animateDynamicSpeciesGrid } from "../animations.js";
 function plantMatchesQuery(plant, query) {
   if (!query) return true;
   const q = query.toLowerCase();
-  const family = plant.overview?.family || plant.family || "";
-  const plantGroup = plant.overview?.plantGroup || "";
+  const family = plant.family || plant.overview?.family || "";
+  const plantGroup = plant.plantGroup || plant.overview?.plantGroup || "";
+  const localName = plant.localName || "";
+  const domain = plant.taxonomicDomain || "";
   return (
     plant.commonName.toLowerCase().includes(q) ||
     plant.scientificName.toLowerCase().includes(q) ||
+    localName.toLowerCase().includes(q) ||
     family.toLowerCase().includes(q) ||
-    plant.category.toLowerCase().includes(q) ||
+    (plant.category || "").toLowerCase().includes(q) ||
+    domain.toLowerCase().includes(q) ||
     plantGroup.toLowerCase().includes(q)
   );
 }
@@ -41,7 +48,6 @@ export function renderDirectoryBanner(mountEl, { pageData, catalog }) {
   const wrapper = createEl("div", "directory-banner");
   const container = createEl("div", "section-container");
 
-  // Breadcrumb bar
   const breadcrumbNav = createEl("nav", "breadcrumb-bar");
   breadcrumbNav.setAttribute("aria-label", "Breadcrumb");
   const ol = createEl("ol", "breadcrumb-list");
@@ -66,7 +72,6 @@ export function renderDirectoryBanner(mountEl, { pageData, catalog }) {
   breadcrumbNav.appendChild(ol);
   container.appendChild(breadcrumbNav);
 
-  // Banner grid
   const bannerGrid = createEl("div", "directory-banner-grid");
   const left = document.createElement("div");
   left.appendChild(createEl("span", "section-eyebrow", banner.eyebrow));
@@ -110,11 +115,11 @@ export function renderDirectoryBanner(mountEl, { pageData, catalog }) {
   mountEl.replaceChildren(wrapper);
 }
 
-export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
+export function renderDirectoryExplorer(mountEl, { pageData, speciesIndex }) {
   const explorer = pageData?.explorer;
   if (!mountEl || !explorer) return;
 
-  const allPlants = Array.isArray(catalog) ? catalog : [];
+  const allPlants = Array.isArray(speciesIndex) ? speciesIndex : [];
   const categories =
     Array.isArray(explorer.categories) && explorer.categories.length > 0
       ? explorer.categories
@@ -127,15 +132,17 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
           "Trees & Palms",
           "Aquatic",
         ];
-  const batchSize = Number(explorer.batchSize) > 0 ? Number(explorer.batchSize) : 24;
+  const pageSize =
+    Number(explorer.pageSize || explorer.batchSize) > 0
+      ? Number(explorer.pageSize || explorer.batchSize)
+      : 10;
 
   const wrapper = createEl("div", "explorer-section directory-explorer");
   const container = createEl("div", "section-container");
 
-  // Filter Panel
+  // 1. Filter Panel (Search + Sort + Category Tabs + A–Z Strip)
   const filterPanel = createEl("div", "directory-filter-panel");
 
-  // Search + Sort row
   const searchSortRow = createEl("div", "directory-search-sort-row");
   const searchForm = createEl("form", "directory-search-form");
   searchForm.id = "directorySearchForm";
@@ -147,7 +154,7 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
   searchInput.id = "directorySearchInput";
   searchInput.placeholder =
     explorer.searchPlaceholder ||
-    "Filter by common name, Latin binomial, or plant family...";
+    "Filter by common name, Latin binomial, local name, or plant family...";
   searchInput.autocomplete = "off";
   searchInput.setAttribute(
     "aria-label",
@@ -167,17 +174,23 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
   searchForm.appendChild(searchClear);
 
   const sortWrap = createEl("div", "directory-sort-wrap");
-  const sortLabel = createEl("label", "directory-sort-label", explorer.sortLabel || "Sort");
+  const sortLabel = createEl(
+    "label",
+    "directory-sort-label",
+    explorer.sortLabel || "Sort",
+  );
   sortLabel.setAttribute("for", "directorySortSelect");
   const sortSelect = createEl("select", "directory-sort-select");
   sortSelect.id = "directorySortSelect";
   sortSelect.setAttribute("aria-label", explorer.sortAriaLabel || "Sort species");
 
-  (explorer.sortOptions || [
-    { value: "az", label: "Name (A–Z)" },
-    { value: "za", label: "Name (Z–A)" },
-    { value: "family", label: "Plant Family" },
-  ]).forEach((optCfg) => {
+  (
+    explorer.sortOptions || [
+      { value: "az", label: "Name (A–Z)" },
+      { value: "za", label: "Name (Z–A)" },
+      { value: "family", label: "Plant Family" },
+    ]
+  ).forEach((optCfg) => {
     const opt = document.createElement("option");
     opt.value = optCfg.value;
     opt.textContent = optCfg.label;
@@ -190,7 +203,6 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
   searchSortRow.appendChild(sortWrap);
   filterPanel.appendChild(searchSortRow);
 
-  // Category Tabs
   const categoryTabsEl = createEl("div", "category-tabs");
   categoryTabsEl.id = "directoryCategoryTabs";
   categoryTabsEl.setAttribute("role", "tablist");
@@ -209,7 +221,6 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
   });
   filterPanel.appendChild(categoryTabsEl);
 
-  // A–Z Strip
   const azWrap = createEl("div", "az-strip-wrap");
   azWrap.setAttribute("aria-label", explorer.azAriaLabel || "Alphabetical quick jump");
   azWrap.appendChild(createEl("span", "az-strip-label", explorer.azLabel || "A–Z Index"));
@@ -225,8 +236,11 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
   filterPanel.appendChild(azWrap);
   container.appendChild(filterPanel);
 
-  // Status row
-  const statusRow = createEl("div", "directory-status-row");
+  // 2. Sticky Top Pagination Bar (directly above #directorySpeciesGrid)
+  const paginationBar = createEl("div", "directory-pagination-bar");
+  paginationBar.id = "directoryPaginationBar";
+
+  const statusGroup = createEl("div", "directory-pagination-status");
   const countEl = createEl(
     "p",
     "explorer-count",
@@ -244,39 +258,26 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
   resetAllBtn.id = "directoryResetAllBtn";
   resetAllBtn.hidden = true;
 
-  statusRow.appendChild(countEl);
-  statusRow.appendChild(resetAllBtn);
-  container.appendChild(statusRow);
+  statusGroup.appendChild(countEl);
+  statusGroup.appendChild(resetAllBtn);
 
-  // Species Grid & Load More
-  const gridEl = createEl("div", "species-grid");
+  const paginationNav = createEl("nav", "directory-pagination-nav");
+  paginationNav.id = "directoryPaginationNav";
+  paginationNav.setAttribute("aria-label", "Species directory pagination");
+
+  paginationBar.appendChild(statusGroup);
+  paginationBar.appendChild(paginationNav);
+  container.appendChild(paginationBar);
+
+  // 3. Balanced 2-Column Species Grid
+  const gridEl = createEl("div", "species-grid species-grid--directory");
   gridEl.id = "directorySpeciesGrid";
   container.appendChild(gridEl);
-
-  const loadMoreWrap = createEl("div", "load-more-wrap");
-  loadMoreWrap.id = "directoryLoadMoreWrap";
-  loadMoreWrap.hidden = true;
-
-  const loadMoreBtn = createEl("button", "cta-glow-button cta-glow-button--compact");
-  loadMoreBtn.type = "button";
-  loadMoreBtn.id = "directoryLoadMoreBtn";
-  const loadMoreLabel = createEl(
-    "span",
-    "",
-    explorer.loadMoreBaseLabel || "Load More Species",
-  );
-  loadMoreLabel.id = "directoryLoadMoreLabel";
-  const loadMoreArrow = createEl("span", "cta-glow-arrow", "↓");
-  loadMoreArrow.setAttribute("aria-hidden", "true");
-  loadMoreBtn.appendChild(loadMoreLabel);
-  loadMoreBtn.appendChild(loadMoreArrow);
-  loadMoreWrap.appendChild(loadMoreBtn);
-  container.appendChild(loadMoreWrap);
 
   wrapper.appendChild(container);
   mountEl.replaceChildren(wrapper);
 
-  // Interactive controller state
+  // Controller state
   const params = new URLSearchParams(window.location.search);
   const paramCat = params.get("category");
   const paramQuery = params.get("q");
@@ -290,7 +291,7 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
       ? paramLetter.trim().toUpperCase()
       : "All";
   let activeSort = "az";
-  let visibleLimit = batchSize;
+  let currentPage = 1;
   let isUserInteraction = false;
 
   if (activeQuery) {
@@ -348,13 +349,87 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
         return b.commonName.localeCompare(a.commonName);
       }
       if (activeSort === "family") {
-        const famCmp = (a.overview?.family || "").localeCompare(
-          b.overview?.family || "",
-        );
+        const famA = a.family || a.overview?.family || "";
+        const famB = b.family || b.overview?.family || "";
+        const famCmp = famA.localeCompare(famB);
         return famCmp !== 0 ? famCmp : a.commonName.localeCompare(b.commonName);
       }
       return a.commonName.localeCompare(b.commonName);
     });
+  }
+
+  function scrollToGridTop() {
+    const navEl = document.getElementById("global-navbar");
+    const navH = navEl ? navEl.getBoundingClientRect().height : 68;
+    const barH = paginationBar ? paginationBar.getBoundingClientRect().height : 56;
+    const targetTop =
+      gridEl.getBoundingClientRect().top + window.scrollY - navH - barH - 24;
+    window.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior: "smooth",
+    });
+  }
+
+  function renderPaginationControls(totalMatched, totalPages) {
+    if (totalMatched === 0) {
+      paginationNav.replaceChildren();
+      paginationNav.hidden = true;
+      return;
+    }
+
+    paginationNav.hidden = false;
+    const frag = document.createDocumentFragment();
+
+    const prevBtn = createEl("button", "pagination-btn pagination-btn--step", "← Prev");
+    prevBtn.type = "button";
+    prevBtn.disabled = currentPage <= 1;
+    prevBtn.setAttribute("aria-label", "Previous page");
+    prevBtn.addEventListener("click", () => {
+      if (currentPage <= 1) return;
+      currentPage -= 1;
+      isUserInteraction = true;
+      renderDirectory();
+      scrollToGridTop();
+    });
+    frag.appendChild(prevBtn);
+
+    const pillsWrap = createEl("div", "pagination-pills");
+    for (let page = 1; page <= totalPages; page += 1) {
+      const pill = createEl(
+        "button",
+        `pagination-pill${page === currentPage ? " active" : ""}`,
+        String(page),
+      );
+      pill.type = "button";
+      pill.setAttribute("aria-label", `Page ${page}`);
+      if (page === currentPage) {
+        pill.setAttribute("aria-current", "page");
+      }
+      pill.addEventListener("click", () => {
+        if (page === currentPage) return;
+        currentPage = page;
+        isUserInteraction = true;
+        renderDirectory();
+        scrollToGridTop();
+      });
+      pillsWrap.appendChild(pill);
+    }
+    frag.appendChild(pillsWrap);
+
+    const nextBtn = createEl("button", "pagination-btn pagination-btn--step", "Next →");
+    nextBtn.type = "button";
+    nextBtn.disabled = currentPage >= totalPages;
+    nextBtn.setAttribute("aria-label", "Next page");
+    nextBtn.addEventListener("click", () => {
+      if (currentPage >= totalPages) return;
+      currentPage += 1;
+      isUserInteraction = true;
+      renderDirectory();
+      scrollToGridTop();
+    });
+    frag.appendChild(nextBtn);
+
+    paginationNav.replaceChildren(frag);
   }
 
   function resetAllFilters() {
@@ -362,7 +437,7 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
     activeQuery = "";
     activeLetter = "All";
     activeSort = "az";
-    visibleLimit = batchSize;
+    currentPage = 1;
     searchInput.value = "";
     searchClear.hidden = true;
     sortSelect.value = "az";
@@ -374,7 +449,11 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
   function renderDirectory() {
     const sorted = getFilteredAndSorted();
     const totalMatched = sorted.length;
-    const sliced = sorted.slice(0, visibleLimit);
+    const totalPages = Math.max(1, Math.ceil(totalMatched / pageSize));
+    if (currentPage > totalPages) currentPage = 1;
+
+    const startIdx = (currentPage - 1) * pageSize;
+    const sliced = sorted.slice(startIdx, startIdx + pageSize);
     const hasFilters =
       activeCategory !== "All" || activeQuery !== "" || activeLetter !== "All";
 
@@ -388,8 +467,18 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
       totalStatEl.textContent = String(allPlants.length);
     }
 
-    countEl.textContent = `Displaying ${sliced.length} of ${totalMatched} matching species (${allPlants.length} total in archive)`;
+    if (totalMatched === 0) {
+      countEl.textContent = `Showing 0 of 0 matching species (${allPlants.length} total)`;
+    } else {
+      const rangeStart = startIdx + 1;
+      const rangeEnd = startIdx + sliced.length;
+      countEl.textContent = hasFilters
+        ? `Showing ${rangeStart}–${rangeEnd} of ${totalMatched} matching species (${allPlants.length} total)`
+        : `Showing ${rangeStart}–${rangeEnd} of ${totalMatched} species`;
+    }
+
     resetAllBtn.hidden = !hasFilters;
+    renderPaginationControls(totalMatched, totalPages);
 
     if (totalMatched === 0) {
       const emptyBox = createEl("div", "empty-search-state");
@@ -421,7 +510,6 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
       });
       emptyBox.appendChild(resetBtn);
       gridEl.replaceChildren(emptyBox);
-      loadMoreWrap.hidden = true;
       return;
     }
 
@@ -436,21 +524,13 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
     if (isUserInteraction) {
       animateDynamicSpeciesGrid(gridEl);
     }
-
-    const remaining = totalMatched - sliced.length;
-    if (remaining > 0) {
-      loadMoreWrap.hidden = false;
-      loadMoreLabel.textContent = `${explorer.loadMoreBaseLabel || "Load More Species"} (${Math.min(batchSize, remaining)} more of ${remaining} remaining)`;
-    } else {
-      loadMoreWrap.hidden = true;
-    }
   }
 
   categoryTabsEl.addEventListener("click", (e) => {
     const tab = e.target.closest("[data-category]");
     if (!tab) return;
     activeCategory = tab.getAttribute("data-category");
-    visibleLimit = batchSize;
+    currentPage = 1;
     isUserInteraction = true;
     syncCategoryTabs();
     renderDirectory();
@@ -460,7 +540,7 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
     const btn = e.target.closest("[data-letter]");
     if (!btn || btn.disabled) return;
     activeLetter = btn.getAttribute("data-letter");
-    visibleLimit = batchSize;
+    currentPage = 1;
     isUserInteraction = true;
     renderAzStrip();
     renderDirectory();
@@ -468,7 +548,7 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
 
   searchInput.addEventListener("input", () => {
     activeQuery = searchInput.value.trim();
-    visibleLimit = batchSize;
+    currentPage = 1;
     isUserInteraction = true;
     searchClear.hidden = activeQuery.length === 0;
     renderDirectory();
@@ -477,7 +557,7 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
   searchClear.addEventListener("click", () => {
     searchInput.value = "";
     activeQuery = "";
-    visibleLimit = batchSize;
+    currentPage = 1;
     isUserInteraction = true;
     searchClear.hidden = true;
     renderDirectory();
@@ -486,13 +566,14 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
 
   searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
+    currentPage = 1;
     isUserInteraction = true;
     renderDirectory();
   });
 
   sortSelect.addEventListener("change", () => {
     activeSort = sortSelect.value;
-    visibleLimit = batchSize;
+    currentPage = 1;
     isUserInteraction = true;
     renderDirectory();
   });
@@ -502,16 +583,10 @@ export function renderDirectoryExplorer(mountEl, { pageData, catalog }) {
     resetAllFilters();
   });
 
-  loadMoreBtn.addEventListener("click", () => {
-    visibleLimit += batchSize;
-    isUserInteraction = true;
-    renderDirectory();
-  });
-
   window.__plantipediaSelectDirectoryCategory = (category) => {
     if (!categories.includes(category)) return;
     activeCategory = category;
-    visibleLimit = batchSize;
+    currentPage = 1;
     isUserInteraction = true;
     syncCategoryTabs();
     renderDirectory();

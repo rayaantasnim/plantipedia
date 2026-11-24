@@ -84,7 +84,6 @@ const FALLBACK_SHELL_CONFIG = {
       "Exploring the fascinating world of plants, one species at a time. Plantipedia is an educational botanical archive dedicated to documenting global flora with scientific accuracy.",
     compactTagline:
       "Exploring the fascinating world of plants, one species at a time.",
-    columns: [],
     credits: [
       { role: "Chief Patron & Authorization", name: "JALEES HABIB" },
       { role: "Lead Design & UX Collaboration", name: "RAYAAN TASNIM" },
@@ -674,40 +673,6 @@ function buildFooterDom(host, config) {
     : footer.summary || brand.tagline;
   overview.appendChild(copy);
   container.appendChild(overview);
-
-  // Multi-column navigation directory
-  if (Array.isArray(footer.columns) && footer.columns.length > 0) {
-    const colsGrid = document.createElement("div");
-    colsGrid.className = "footer-columns-grid";
-
-    footer.columns.forEach((col) => {
-      const colWrap = document.createElement("div");
-      colWrap.className = "footer-col";
-
-      const heading = document.createElement("h3");
-      heading.className = "footer-col-title";
-      heading.textContent = col.title;
-      colWrap.appendChild(heading);
-
-      const list = document.createElement("ul");
-      list.className = "footer-col-list";
-
-      (col.links || []).forEach((linkItem) => {
-        const li = document.createElement("li");
-        const a = document.createElement("a");
-        a.href = resolveSitePath(linkItem.href);
-        a.className = "footer-col-link";
-        a.textContent = linkItem.label;
-        li.appendChild(a);
-        list.appendChild(li);
-      });
-
-      colWrap.appendChild(list);
-      colsGrid.appendChild(colWrap);
-    });
-
-    container.appendChild(colsGrid);
-  }
 
   const divider = document.createElement("div");
   divider.className = "footer-divider";
