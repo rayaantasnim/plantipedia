@@ -64,7 +64,8 @@
   #mount-directory-explorer,
   #mount-plant-monograph,
   #mount-compare-workspace,
-  #mount-services-portal {
+  #mount-services-portal,
+  #mount-sources-portal {
     display: block !important;
     height: auto !important;
     min-height: 0 !important;
@@ -119,6 +120,17 @@
   .services-map-matrix-btn,
   #services-matrix-overlay,
   .services-matrix-overlay,
+  .sources-hero-actions,
+  .sources-card-actions,
+  .sources-btn,
+  #sources-map-matrix-btn,
+  .sources-map-matrix-btn,
+  #sources-matrix-overlay,
+  .sources-matrix-overlay,
+  .copy-scientific-btn,
+  .scientific-copy-toast,
+  #scientificCopyToast,
+  .footer-quick-links,
   .directory-controls-bar,
   .directory-filter-panel,
   .directory-search-form,
@@ -186,6 +198,8 @@
   .services-studio-feature-card,
   .services-standard-card,
   .services-final-cta-banner,
+  .sources-section-card,
+  .sources-endpoint-card,
   .specimen-not-found-card {
     background: #ffffff !important;
     color: #0f172a !important;

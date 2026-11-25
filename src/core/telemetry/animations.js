@@ -46,7 +46,7 @@ function revealWithCssFallback(scopeEl) {
   if (!scopeEl) return;
   const elements = Array.from(
     scopeEl.querySelectorAll(
-      ".mission-stat-card, .highlight-card, .domain-card, .curiosity-strip, .species-card, .chapter-card, .pager-link",
+      ".mission-stat-card, .highlight-card, .domain-card, .curiosity-strip, .species-card, .chapter-card, .pager-link, .next-milestone-card",
     ),
   );
   if (!elements.length) return;
@@ -109,24 +109,49 @@ function animateHeaderNodes(headers) {
   });
 }
 
+let syncProgressCallback = null;
+
 export function initGlobalAnimations() {
-  if (prefersReducedMotion() || progressInitialized) return;
-  if (!ensureGsapReady() || typeof window.ScrollTrigger === "undefined") return;
+  if (progressInitialized) {
+    if (syncProgressCallback) syncProgressCallback();
+    return;
+  }
 
   const progressBar = document.getElementById("scrollProgressBar");
-  if (progressBar) {
-    progressInitialized = true;
-    window.gsap.to(progressBar, {
-      scaleX: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: document.documentElement,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.2,
-      },
-    });
+  if (!progressBar) return;
+  progressInitialized = true;
+
+  if (prefersReducedMotion()) {
+    progressBar.style.transform = "scaleX(0)";
+    return;
   }
+
+  let rafPending = false;
+  const updateProgress = () => {
+    rafPending = false;
+    const docEl = document.documentElement;
+    const maxScroll = Math.max(
+      1,
+      (docEl.scrollHeight || document.body.scrollHeight || 0) - window.innerHeight,
+    );
+    const ratio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+    progressBar.style.transform = `scaleX(${ratio.toFixed(4)})`;
+  };
+
+  syncProgressCallback = () => {
+    if (!rafPending) {
+      rafPending = true;
+      requestAnimationFrame(updateProgress);
+    }
+  };
+
+  window.addEventListener("scroll", syncProgressCallback, { passive: true });
+  window.addEventListener("resize", syncProgressCallback, { passive: true });
+  if (typeof ResizeObserver === "function" && document.body) {
+    const ro = new ResizeObserver(syncProgressCallback);
+    ro.observe(document.body);
+  }
+  syncProgressCallback();
 }
 
 export function animateHydratedSection(sectionKey, mountEl) {
@@ -200,6 +225,12 @@ export function animateHydratedSection(sectionKey, mountEl) {
     );
   } else if (sectionKey === "global-gateway") {
     animateHeaderNodes(mountEl.querySelectorAll(".global-gateway-card"));
+  } else if (sectionKey === "next-milestone") {
+    animateHeaderNodes(mountEl.querySelectorAll(".next-milestone-card"));
+    animateStaggerNodes(
+      mountEl.querySelector(".next-milestone-pillars") || mountEl,
+      mountEl.querySelectorAll(".next-milestone-pillar"),
+    );
   } else if (sectionKey === "trivia") {
     animateHeaderNodes(mountEl.querySelectorAll(".curiosities-header"));
     animateStaggerNodes(
@@ -331,9 +362,26 @@ export function animateHydratedSection(sectionKey, mountEl) {
       mountEl.querySelector(".species-pager") || mountEl,
       mountEl.querySelectorAll(".pager-link"),
     );
+  } else if (sectionKey === "sources-portal") {
+    animateHeaderNodes(mountEl.querySelectorAll(".sources-hero-copy"));
+    mountEl.querySelectorAll(".sources-section-card").forEach((card) => {
+      gsap.from(card, {
+        y: 26,
+        opacity: 0,
+        duration: 0.72,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 86%",
+          once: true,
+        },
+      });
+    });
   }
 
   ScrollTrigger.refresh();
+  if (syncProgressCallback) syncProgressCallback();
 }
 
 export function animateDynamicSpeciesGrid(gridScope) {
@@ -367,4 +415,5 @@ export function refreshScrollTriggers() {
   if (window.ScrollTrigger) {
     window.ScrollTrigger.refresh();
   }
+  if (syncProgressCallback) syncProgressCallback();
 }

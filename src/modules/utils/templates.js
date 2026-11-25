@@ -334,7 +334,7 @@ export function renderMountSkeleton(mountEl, sectionKey) {
     return;
   }
 
-  if (sectionKey === "global-gateway") {
+  if (sectionKey === "global-gateway" || sectionKey === "next-milestone") {
     const band = createEl("div", "skeleton-section-band");
     band.setAttribute("aria-hidden", "true");
     const card = createEl("div", "skeleton-card skeleton-card--panel");
@@ -770,7 +770,7 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
   const paragraphs = Array.isArray(gateway.paragraphs) && gateway.paragraphs.length > 0
     ? gateway.paragraphs
     : [
-        "While Plantipedia's core archive houses 50 deeply curated, eight-chapter botanical monographs, the global plant kingdom spans more than 390,000 documented vascular species. This dedicated gateway connects your research session directly to the Global Botanical Server for live taxonomic, morphological, and bilingual records.",
+        "While Plantipedia's core archive houses 50 deeply curated, fifteen-chapter botanical monographs, the global plant kingdom spans more than 400,000+ documented vascular species and trees. This dedicated gateway connects your research session directly to the Global Botanical Server for live taxonomic, morphological, and bilingual records.",
         "Every query entered in this console bypasses the local 50-species index entirely—synthesizing real-time global botanical dossiers on demand with automated plant validation, English and বাংলা nomenclature cross-referencing, and instant split-screen comparison readiness.",
       ];
 
@@ -926,6 +926,140 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
   });
   expRow.appendChild(chipsWrap);
   card.appendChild(expRow);
+
+  container.appendChild(card);
+  wrapper.appendChild(container);
+  mountEl.replaceChildren(wrapper);
+}
+
+/**
+ * 4c. Home "Next Milestone" Spotlight Section (Strictly Version 3.2 preview + Roadmap CTA)
+ */
+export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
+  if (!mountEl) return;
+  const milestone = pageData?.nextMilestone || {};
+
+  const pillars =
+    Array.isArray(milestone.pillars) && milestone.pillars.length > 0
+      ? milestone.pillars
+      : [
+          {
+            kicker: "MULTI-SOURCE ENGINE",
+            title: "GBIF + Global Flora Index + Wikidata + iNaturalist",
+            description:
+              "Parallel multi-source resolution cross-validates global vascular names, herbarium occurrences, conservation statuses, and vernacular aliases in real time.",
+          },
+          {
+            kicker: "IMAGE AGGREGATOR",
+            title: "Multi-Angle Field Specimen Plates",
+            description:
+              "Automated botanical plate curation blends open herbarium observations with habitat, floral macro, bark, and fruiting imagery across every query.",
+          },
+          {
+            kicker: "INSTANT DISCOVERY",
+            title: "Sub-Millisecond Fuzzy Search & '/' Shortcut",
+            description:
+              "Typo-tolerant bilingual search indexing paired with a global '/' keyboard shortcut lets researchers jump directly to any taxon from anywhere on the site.",
+          },
+        ];
+
+  const timelineSteps =
+    Array.isArray(milestone.timeline) && milestone.timeline.length > 0
+      ? milestone.timeline
+      : [
+          { version: "v1.0", state: "past" },
+          { version: "v2.0", state: "past" },
+          { version: "v3.0", state: "past" },
+          { version: "v3.1 (Current)", state: "current" },
+          { version: "v3.2 (Next)", state: "next" },
+          { version: "v4.0", state: "future" },
+          { version: "v4.1", state: "future" },
+          { version: "v4.2", state: "future" },
+          { version: "v4.3", state: "future" },
+        ];
+
+  const wrapper = createEl("div", "next-milestone-section");
+  wrapper.id = milestone.anchorId || "next-milestone";
+
+  const container = createEl("div", "section-container");
+  const card = createEl("div", "next-milestone-card");
+
+  const metaRow = createEl("div", "next-milestone-meta-row");
+  metaRow.appendChild(
+    createEl(
+      "span",
+      "next-milestone-badge",
+      milestone.eyebrow || "NEXT MILESTONE · VERSION 3.2 SPOTLIGHT",
+    ),
+  );
+  metaRow.appendChild(
+    createEl(
+      "span",
+      "next-milestone-version-tag",
+      milestone.statusTag || "SCHEDULED NEXT DECIMAL RELEASE · v3.2",
+    ),
+  );
+  card.appendChild(metaRow);
+
+  const head = createEl("div", "next-milestone-head");
+  const copyCol = createEl("div", "next-milestone-copy");
+  copyCol.appendChild(
+    createEl(
+      "h2",
+      "section-heading",
+      milestone.heading || "Next Up: Version 3.2 — Multi-Source Parallel Botanical Engine",
+    ),
+  );
+  copyCol.appendChild(
+    createEl(
+      "p",
+      "justified-prose",
+      milestone.description ||
+        "Immediately following our Version 3.1 ecosystem upgrade, Plantipedia Version 3.2 introduces parallel multi-source botanical querying across GBIF, Global Flora Index, Wikidata, and iNaturalist, paired with a multi-angle specimen image aggregator and typo-tolerant fuzzy search triggered by the '/' shortcut.",
+    ),
+  );
+  head.appendChild(copyCol);
+
+  const ctaBtn = createEl("a", "cta-glow-button");
+  ctaBtn.href = sanitizeUrl(milestone.ctaHref || "./roadmap/", "./roadmap/");
+  ctaBtn.appendChild(
+    createEl("span", "", milestone.ctaLabel || "Inspect Full Roadmap"),
+  );
+  const arrow = createEl("span", "cta-glow-arrow", "→");
+  arrow.setAttribute("aria-hidden", "true");
+  ctaBtn.appendChild(arrow);
+  head.appendChild(ctaBtn);
+  card.appendChild(head);
+
+  const pillarsGrid = createEl("div", "next-milestone-pillars");
+  pillars.forEach((pillar) => {
+    const pCard = createEl("article", "next-milestone-pillar");
+    pCard.appendChild(createEl("span", "next-milestone-pillar-kicker", pillar.kicker || ""));
+    pCard.appendChild(createEl("h3", "next-milestone-pillar-title", pillar.title || ""));
+    pCard.appendChild(createEl("p", "next-milestone-pillar-desc", pillar.description || ""));
+    pillarsGrid.appendChild(pCard);
+  });
+  card.appendChild(pillarsGrid);
+
+  const timeline = createEl("div", "next-milestone-timeline");
+  timeline.setAttribute("aria-label", "Plantipedia release timeline from v1.0 to v4.3");
+  timelineSteps.forEach((step, idx) => {
+    if (idx > 0) {
+      const sep = createEl("span", "timeline-arrow", "→");
+      sep.setAttribute("aria-hidden", "true");
+      timeline.appendChild(sep);
+    }
+    const stateCls =
+      step.state === "current"
+        ? " is-current"
+        : step.state === "next"
+          ? " is-next"
+          : step.state === "past"
+            ? " is-past"
+            : "";
+    timeline.appendChild(createEl("span", `timeline-step-pill${stateCls}`, step.version));
+  });
+  card.appendChild(timeline);
 
   container.appendChild(card);
   wrapper.appendChild(container);

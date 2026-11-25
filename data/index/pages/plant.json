@@ -2,15 +2,15 @@
   "schemaVersion": "1.0.0",
   "page": "plant",
   "seo": {
-    "title": "Botanical Species Monograph — 50 Curated Flora Entries | Plantipedia",
-    "description": "Explore detailed 8-chapter botanical monographs from Plantipedia's 50-species archive covering classification, morphology, natural habitat, ecology, medicinal properties, and cultivation.",
-    "keywords": "botanical monograph, 50 curated plant species, plant classification, plant morphology, taxonomy, cultivation guide, medicinal plants, Plantipedia",
+    "title": "Botanical Species Monograph — 15-Chapter Dossiers | Plantipedia",
+    "description": "Explore deeply curated 15-chapter botanical monographs from Plantipedia Version 3.1 paired with a live Global Botanical Server uplink connecting 400,000+ worldwide vascular plants and trees, bilingual EN / বাংলা telemetry, and print-ready field sheets.",
+    "keywords": "botanical monograph, 50 curated plant species, 15 botanical chapters, plant classification, plant morphology, taxonomy, cultivation guide, medicinal plants, Plantipedia",
     "author": "Jalees Habib, Rayaan Tasnim",
     "canonicalFile": "plant/",
     "ogType": "article",
-    "ogTitle": "Botanical Species Monograph — 50 Curated Flora Entries | Plantipedia",
-    "ogDescription": "Explore detailed 8-chapter botanical monographs from Plantipedia's 50-species archive covering classification, morphology, natural habitat, ecology, medicinal properties, and cultivation.",
-    "ogImage": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "ogTitle": "Botanical Species Monograph — 15-Chapter Flora Dossiers | Plantipedia",
+    "ogDescription": "Explore 15-chapter botanical monographs featuring Linnaean taxonomy, morphology, bilingual EN / বাংলা telemetry, and print-ready field sheets in Plantipedia Version 3.1.",
+    "ogImage": "https://images.pexels.com/photos/34507862/pexels-photo-34507862/free-photo-of-vibrant-rose-garden-in-full-bloom.jpeg?auto=compress&cs=tinysrgb&w=1200",
     "ogImageAlt": "Botanical species monograph plate from Plantipedia"
   },
   "sectionMap": {
@@ -58,7 +58,7 @@
     },
     "telemetry": {
       "heading": "Ecological & Cultivation Telemetry",
-      "phLabel": "Optimal Soil pH Spectrum (4.0 – 9.0)",
+      "phLabel": "Optimal Soil pH Spectrum (3.5 – 9.0)",
       "sunlightLabel": "Sunlight Intensity",
       "irrigationLabel": "Irrigation Frequency"
     },

@@ -2345,6 +2345,10 @@ body.is-embed .plant-floating-compare-btn {
   overflow: hidden;
 }
 
+.plantipedia-telemetry-grid--six {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .telemetry-stat-card {
   position: relative;
   min-width: 0;
@@ -2358,6 +2362,14 @@ body.is-embed .plant-floating-compare-btn {
 
 .telemetry-stat-card:last-child {
   border-right: none;
+}
+
+.plantipedia-telemetry-grid--six .telemetry-stat-card:nth-child(3n) {
+  border-right: none;
+}
+
+.plantipedia-telemetry-grid--six .telemetry-stat-card:nth-child(-n + 3) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .telemetry-stat-card:hover {
@@ -2424,6 +2436,14 @@ body.is-embed .plant-floating-compare-btn {
   background: #a78bfa;
 }
 
+.telemetry-stat-card--teal .telemetry-stat-accent {
+  background: #2dd4bf;
+}
+
+.telemetry-stat-card--rose .telemetry-stat-accent {
+  background: #fb7185;
+}
+
 .telemetry-stat-card.is-primary-stat .telemetry-stat-accent {
   opacity: 1;
   box-shadow: 0 -2px 14px rgba(52, 211, 153, 0.45);
@@ -2442,37 +2462,62 @@ body.is-embed .plant-floating-compare-btn {
 }
 
 @media (max-width: 960px) {
-  .plantipedia-telemetry-grid {
+  .plantipedia-telemetry-grid,
+  .plantipedia-telemetry-grid--six {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .telemetry-stat-card:nth-child(2n) {
+  .plantipedia-telemetry-grid--six .telemetry-stat-card:nth-child(3n) {
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .telemetry-stat-card:nth-child(2n),
+  .plantipedia-telemetry-grid--six .telemetry-stat-card:nth-child(2n) {
     border-right: none;
   }
 
   .telemetry-stat-card:nth-child(-n + 2) {
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
+
+  .plantipedia-telemetry-grid--six .telemetry-stat-card:nth-child(-n + 4) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
 }
 
 @media (max-width: 600px) {
+  .plantipedia-telemetry-grid--six {
+    grid-template-columns: 1fr;
+  }
+
+  .plantipedia-telemetry-grid--six .telemetry-stat-card,
+  .plantipedia-telemetry-grid--six .telemetry-stat-card:nth-child(3n),
+  .plantipedia-telemetry-grid--six .telemetry-stat-card:nth-child(2n) {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .plantipedia-telemetry-grid--six .telemetry-stat-card:last-child {
+    border-bottom: none;
+  }
+
   .telemetry-stat-card,
   .plantipedia-telemetry-grid--compact .telemetry-stat-card {
-    padding: 18px 14px 18px;
+    padding: 18px 16px;
   }
 
   .telemetry-stat-value,
   .plantipedia-telemetry-grid--compact .telemetry-stat-value {
-    font-size: clamp(1.48rem, 5.5vw, 1.95rem);
+    font-size: clamp(1.55rem, 5.5vw, 2.05rem);
   }
 
   .telemetry-stat-label {
-    font-size: 0.66rem;
+    font-size: 0.68rem;
     letter-spacing: 0.1em;
   }
 
   .telemetry-stat-subtext {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
   }
 }
 
@@ -2488,6 +2533,431 @@ body.is-embed .plant-floating-compare-btn {
 
   .telemetry-stat-card:last-child {
     border-bottom: none;
+  }
+}
+
+/* ================= HOME NEXT MILESTONE SPOTLIGHT (v3.2) ================= */
+.next-milestone-section {
+  position: relative;
+  padding: 64px 0;
+  background:
+    radial-gradient(
+      ellipse 65% 60% at 15% 20%,
+      rgba(56, 189, 248, 0.1),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 60% 55% at 88% 80%,
+      rgba(52, 211, 153, 0.1),
+      transparent 65%
+    ),
+    linear-gradient(180deg, #051614 0%, var(--canvas-bg) 100%);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.next-milestone-card {
+  padding: clamp(26px, 4.2vw, 44px);
+  border-radius: var(--radius-lg);
+  background: rgba(6, 26, 19, 0.86);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(56, 189, 248, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 24px 52px rgba(0, 0, 0, 0.42);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.next-milestone-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+
+.next-milestone-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.42);
+  color: #7dd3fc;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.next-milestone-version-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6ee7b7;
+  letter-spacing: 0.06em;
+}
+
+.next-milestone-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px 28px;
+}
+
+.next-milestone-copy {
+  max-width: 72ch;
+}
+
+.next-milestone-copy .section-heading {
+  margin-bottom: 12px;
+}
+
+.next-milestone-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.next-milestone-pillar {
+  padding: 20px 22px;
+  border-radius: var(--radius-md);
+  background: rgba(4, 18, 12, 0.72);
+  border: 1px solid rgba(110, 231, 183, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.next-milestone-pillar-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.71rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+}
+
+.next-milestone-pillar-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.24rem;
+  color: var(--ink-primary);
+}
+
+.next-milestone-pillar-desc {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.next-milestone-timeline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(110, 231, 183, 0.16);
+}
+
+.timeline-step-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  border: 1px solid rgba(110, 231, 183, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink-muted);
+}
+
+.timeline-step-pill.is-past {
+  color: #a7f3d0;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.timeline-step-pill.is-current {
+  color: #ecfdf5;
+  background: rgba(16, 185, 129, 0.28);
+  border-color: rgba(52, 211, 153, 0.65);
+}
+
+.timeline-step-pill.is-next {
+  color: #e0f2fe;
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.25);
+}
+
+.timeline-arrow {
+  color: rgba(110, 231, 183, 0.45);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+}
+
+/* ================= UNDER MAINTENANCE PLACEHOLDER ROUTES ================= */
+.maintenance-section {
+  padding: clamp(40px, 6vw, 76px) 0 clamp(64px, 8vw, 96px);
+}
+
+.maintenance-card {
+  max-width: 920px;
+  margin: 24px auto 0;
+  padding: clamp(28px, 5vw, 48px);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      ellipse 70% 60% at 88% 12%,
+      rgba(251, 191, 36, 0.12),
+      transparent 65%
+    ),
+    rgba(6, 26, 18, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(251, 191, 36, 0.36);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 24px 56px rgba(0, 0, 0, 0.44);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.maintenance-status-pill {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.14);
+  border: 1px solid rgba(251, 191, 36, 0.44);
+  color: #fde68a;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.maintenance-headline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink-primary);
+}
+
+.maintenance-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.maintenance-spec-card {
+  padding: 18px;
+  border-radius: var(--radius-md);
+  background: rgba(4, 18, 12, 0.72);
+  border: 1px solid rgba(110, 231, 183, 0.2);
+}
+
+.maintenance-spec-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-mint);
+  margin-bottom: 6px;
+}
+
+.maintenance-spec-title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--ink-primary);
+}
+
+.maintenance-spec-desc {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.maintenance-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+/* ================= DEDICATED /roadmap/ RELEASE PIPELINE PAGE ================= */
+.roadmap-page-shell {
+  padding: 36px 0 88px;
+}
+
+.roadmap-active-banner {
+  margin-top: 26px;
+  margin-bottom: 34px;
+  padding: clamp(24px, 3.8vw, 36px);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      ellipse 70% 65% at 88% 15%,
+      rgba(52, 211, 153, 0.2),
+      transparent 62%
+    ),
+    rgba(6, 34, 21, 0.9);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.roadmap-active-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.roadmap-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.22);
+  border: 1px solid rgba(52, 211, 153, 0.55);
+  color: #6ee7b7;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.roadmap-timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.roadmap-release-card {
+  position: relative;
+  padding: 26px;
+  border-radius: var(--radius-lg);
+  background: rgba(6, 26, 18, 0.84);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(110, 231, 183, 0.22);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition:
+    transform 0.26s var(--ease-settle),
+    border-color 0.24s ease,
+    box-shadow 0.24s ease;
+}
+
+.roadmap-release-card--next {
+  grid-column: 1 / -1;
+  border-color: rgba(56, 189, 248, 0.48);
+  background: rgba(6, 30, 32, 0.88);
+}
+
+.roadmap-release-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(110, 231, 183, 0.48);
+  box-shadow: var(--glass-shadow-hover);
+}
+
+.roadmap-release-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.roadmap-version-badge {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 5px 13px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(52, 211, 153, 0.36);
+  color: #6ee7b7;
+}
+
+.roadmap-release-card--next .roadmap-version-badge {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: rgba(56, 189, 248, 0.45);
+  color: #7dd3fc;
+}
+
+.roadmap-status-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fde68a;
+}
+
+.roadmap-release-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.42rem, 2.2vw, 1.8rem);
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.roadmap-feature-list {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.roadmap-feature-list li {
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+@media (max-width: 900px) {
+  .next-milestone-pillars,
+  .maintenance-specs-grid,
+  .roadmap-timeline-grid {
+    grid-template-columns: 1fr;
   }
 }
 

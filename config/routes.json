@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "3.0.0",
+  "schemaVersion": "3.1.0",
   "routes": [
     {
       "id": "home",
@@ -63,6 +63,41 @@
       "dataPage": "services",
       "rootDepth": "../",
       "datasets": ["page:services", "speciesIndex", "page:seasons", "glossary"]
+    },
+    {
+      "id": "sources",
+      "path": "./sources/",
+      "dataPage": "sources",
+      "rootDepth": "../",
+      "datasets": ["speciesIndex"]
+    },
+    {
+      "id": "roadmap",
+      "path": "./roadmap/",
+      "dataPage": "roadmap",
+      "rootDepth": "../",
+      "datasets": ["speciesIndex"]
+    },
+    {
+      "id": "identify",
+      "path": "./identify/",
+      "dataPage": "identify",
+      "rootDepth": "../",
+      "datasets": ["speciesIndex"]
+    },
+    {
+      "id": "qr-studio",
+      "path": "./qr-studio/",
+      "dataPage": "qr-studio",
+      "rootDepth": "../",
+      "datasets": ["speciesIndex"]
+    },
+    {
+      "id": "install",
+      "path": "./install/",
+      "dataPage": "install",
+      "rootDepth": "../",
+      "datasets": ["speciesIndex"]
     },
     {
       "id": "not-found",

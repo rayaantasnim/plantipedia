@@ -88,6 +88,67 @@ function createPrintIconSvg() {
   return svg;
 }
 
+function createCopyIconSvg() {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", "14");
+  svg.setAttribute("height", "14");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "2");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+
+  const r = document.createElementNS(SVG_NS, "rect");
+  r.setAttribute("x", "9");
+  r.setAttribute("y", "9");
+  r.setAttribute("width", "13");
+  r.setAttribute("height", "13");
+  r.setAttribute("rx", "2");
+  r.setAttribute("ry", "2");
+
+  const p = document.createElementNS(SVG_NS, "path");
+  p.setAttribute("d", "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1");
+
+  svg.appendChild(r);
+  svg.appendChild(p);
+  return svg;
+}
+
+async function copyScientificBinomialSafe(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "");
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  ta.remove();
+}
+
+function showScientificCopyToast(labelText) {
+  let toast = document.getElementById("scientificCopyToast");
+  if (!toast) {
+    toast = createEl("div", "scientific-copy-toast");
+    toast.id = "scientificCopyToast";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    document.body.appendChild(toast);
+  }
+  toast.textContent = labelText;
+  toast.classList.add("is-visible");
+  clearTimeout(window.__plantipediaCopyToastTimer);
+  window.__plantipediaCopyToastTimer = setTimeout(() => {
+    toast.classList.remove("is-visible");
+  }, 2100);
+}
+
 function createCompareIconSvg() {
   const svg = document.createElementNS(SVG_NS, "svg");
   svg.setAttribute("viewBox", "0 0 24 24");
@@ -169,7 +230,7 @@ function buildFigureElement(fig, figCode, className) {
   return figure;
 }
 
-function renderTextbookChapter(section, plant, monographCfg) {
+function renderTextbookChapter(section, plant, monographCfg, hasExplicitCultivation) {
   const safetyTitle = monographCfg.safetyTitle;
   const article = createEl("article", "chapter-card");
   article.id = `section-${section.number}`;
@@ -177,6 +238,11 @@ function renderTextbookChapter(section, plant, monographCfg) {
   const header = createEl("header", "chapter-header");
   const titleGroup = createEl("div", "chapter-title-group");
   titleGroup.appendChild(createEl("span", "chapter-num", section.number));
+  if (section.icon) {
+    const iconSpan = createEl("span", "chapter-title-icon", section.icon);
+    iconSpan.setAttribute("aria-hidden", "true");
+    titleGroup.appendChild(iconSpan);
+  }
   titleGroup.appendChild(createEl("h2", "chapter-title", section.title));
   header.appendChild(titleGroup);
   header.appendChild(createEl("span", "chapter-subtitle", section.subtitle || ""));
@@ -269,8 +335,11 @@ function renderTextbookChapter(section, plant, monographCfg) {
     if (safetyEl) body.appendChild(safetyEl);
   }
 
-  // Chapter 07: Visual Cultivation & Ecological Telemetry Meters
-  if (section.number === "07") {
+  // Visual Cultivation & Ecological Telemetry Meters (mounted on explicit cultivation chapter or curated Chapter 07)
+  const shouldMountTelemetry =
+    Boolean(section.isCultivationTelemetry) ||
+    (!hasExplicitCultivation && section.number === "07");
+  if (shouldMountTelemetry) {
     body.appendChild(renderCultivationTelemetry(plant, monographCfg.telemetry));
   }
 
@@ -342,17 +411,24 @@ function mountAndBindSectionMap(sectionMapCfg, plant) {
   const grid = createEl("div", "section-map-grid");
   grid.id = "sectionMapGrid";
 
+  const isLive = Boolean(plant.isGlobalLive);
+  const overviewDesc = isLive
+    ? `${plant.commonName} (${plant.scientificName}) — overview, biogeographic plate, and taxonomic matrix`
+    : (descriptions["00"] || "");
+
   const mapItems = [
     {
       number: "00",
       title: sectionMapCfg.overviewTitle || "Hero & Botanical Classification",
-      desc: descriptions["00"] || "",
+      desc: overviewDesc,
       targetId: "section-00",
     },
     ...(plant.sections || []).map((sec) => ({
       number: sec.number,
-      title: sec.title,
-      desc: sec.summary || descriptions[sec.number] || sec.subtitle || "",
+      title: sec.icon ? `${sec.icon} ${sec.title}` : sec.title,
+      desc: isLive
+        ? (sec.summary || sec.subtitle || "")
+        : (sec.summary || descriptions[sec.number] || sec.subtitle || ""),
       targetId: `section-${sec.number}`,
     })),
   ];
@@ -678,7 +754,38 @@ export function renderPlantMonograph(
     : plant.commonNameBn
       ? `${plant.scientificName} · ${plant.commonNameBn}`
       : plant.scientificName;
-  titleBlock.appendChild(createEl("p", "overview-scientific-name", sciLabel));
+  const sciRow = createEl("div", "overview-scientific-row");
+  sciRow.appendChild(createEl("p", "overview-scientific-name", sciLabel));
+
+  if (plant.scientificName) {
+    const copySciBtn = createEl("button", "copy-scientific-btn");
+    copySciBtn.type = "button";
+    copySciBtn.setAttribute(
+      "aria-label",
+      `Copy scientific binomial ${plant.scientificName}`,
+    );
+    copySciBtn.title = `Copy ${plant.scientificName}`;
+    copySciBtn.appendChild(createCopyIconSvg());
+    const copyTextSpan = createEl("span", "", "Copy Binomial");
+    copySciBtn.appendChild(copyTextSpan);
+
+    copySciBtn.addEventListener("click", async () => {
+      try {
+        await copyScientificBinomialSafe(plant.scientificName);
+        copySciBtn.classList.add("is-copied");
+        copyTextSpan.textContent = "Copied ✓";
+        showScientificCopyToast(`📋 Copied "${plant.scientificName}"`);
+        setTimeout(() => {
+          copySciBtn.classList.remove("is-copied");
+          copyTextSpan.textContent = "Copy Binomial";
+        }, 2000);
+      } catch {
+        showScientificCopyToast(plant.scientificName);
+      }
+    });
+    sciRow.appendChild(copySciBtn);
+  }
+  titleBlock.appendChild(sciRow);
 
   // Header Action Bar: Bookmark + Export Field Sheet (PDF) + Compare
   const actionBar = createEl("div", "monograph-header-actions");
@@ -739,12 +846,21 @@ export function renderPlantMonograph(
       val: plant.familyBn ? `${ov.family} · ${plant.familyBn}` : ov.family,
       italic: false,
     },
+    ...(ov.order ? [{ key: labels.order || "Taxonomic Order", val: ov.order, italic: false }] : []),
     { key: labels.genus || "Genus", val: ov.genus, italic: true },
     { key: labels.species || "Species", val: ov.species, italic: true },
     { key: labels.growthForm || "Growth Form", val: ov.growthForm, italic: false },
     { key: labels.nativeOrigin || "Native Origin", val: ov.nativeOrigin, italic: false },
     { key: labels.commonUses || "Common Uses", val: ov.commonUses, italic: false },
+    ...(ov.biomeGuild ? [{ key: labels.biomeGuild || "Ecological Guild", val: ov.biomeGuild, italic: false }] : []),
   ];
+  if (overviewRows.length % 2 === 1 && ov.order && !ov.biomeGuild) {
+    overviewRows.push({
+      key: "Specimen Source",
+      val: isGlobalLive ? "Global Flora Index" : "Plantipedia Curated Archive",
+      italic: false,
+    });
+  }
 
   overviewRows.forEach((row) => {
     const rowEl = createEl("div", "classification-row");
@@ -780,10 +896,14 @@ export function renderPlantMonograph(
     detailContainer.appendChild(telemetryBand);
   }
 
-  // 3. Chapters 01–07
+  // 3. Dynamic Monograph Chapters (01–14 on Global Server / 01–07 curated)
   const chaptersWrap = createEl("div", "encyclopedia-chapters");
-  (plant.sections || []).forEach((sec) => {
-    chaptersWrap.appendChild(renderTextbookChapter(sec, plant, monographCfg));
+  const sectionsList = Array.isArray(plant.sections) ? plant.sections : [];
+  const hasExplicitCultivation = sectionsList.some((sec) => Boolean(sec.isCultivationTelemetry));
+  sectionsList.forEach((sec) => {
+    chaptersWrap.appendChild(
+      renderTextbookChapter(sec, plant, monographCfg, hasExplicitCultivation),
+    );
   });
   detailContainer.appendChild(chaptersWrap);
 

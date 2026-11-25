@@ -24,6 +24,7 @@ import {
   renderFeaturedSpeciesSection,
   renderTaxonomySection,
   renderGlobalGatewaySection,
+  renderNextMilestoneSection,
   renderTriviaSection,
   renderHighlightsSection,
   renderMountSkeleton,
@@ -40,6 +41,7 @@ import { renderSeasonsCalendar } from "../../modules/pages/seasons-view.js";
 import { renderCompareWorkspace } from "../../modules/pages/compare-view.js";
 import { renderCompareResultWorkspace } from "../../modules/pages/compare-result-view.js";
 import { renderServicesPortal } from "../../modules/pages/services-controller.js";
+import { renderSourcesPortal } from "../../modules/pages/sources-view.js";
 import { animateHydratedSection, refreshScrollTriggers } from "../telemetry/animations.js";
 import { initNavigationInteractions } from "../../engines/search/navigation.js";
 
@@ -114,6 +116,14 @@ const SECTION_REGISTRY = {
     datasets: ["page:home"],
     render: (el, dataMap) => {
       renderGlobalGatewaySection(el, {
+        pageData: dataMap.get("page:home")?.data,
+      });
+    },
+  },
+  "next-milestone": {
+    datasets: ["page:home"],
+    render: (el, dataMap) => {
+      renderNextMilestoneSection(el, {
         pageData: dataMap.get("page:home")?.data,
       });
     },
@@ -233,6 +243,15 @@ const SECTION_REGISTRY = {
         speciesIndex: dataMap.get("speciesIndex")?.data || [],
         seasonsData: dataMap.get("page:seasons")?.data || null,
         glossaryData: dataMap.get("glossary")?.data || null,
+      });
+    },
+  },
+  "sources-portal": {
+    datasets: [],
+    optionalDatasets: ["speciesIndex"],
+    render: (el, dataMap) => {
+      renderSourcesPortal(el, {
+        speciesIndex: dataMap.get("speciesIndex")?.data || [],
       });
     },
   },

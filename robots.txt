@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rayaantasnim.github.io/plantipedia/sitemap.xml
+Sitemap: https://plantipedia.rayaantasnim.workers.dev/sitemap.xml

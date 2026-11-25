@@ -6,12 +6,15 @@
  */
 
 import {
+  buildImageElement,
   createEl,
   createSpeciesCardElement,
   sanitizeUrl,
 } from "../utils/templates.js";
 import { animateDynamicSpeciesGrid } from "../../core/telemetry/animations.js";
 import { applySeasonsSeo } from "../utils/seo.js";
+
+const SPECIES_PER_PAGE = 5;
 
 function detectCurrentBangladeshiSeasonId(seasons) {
   const now = new Date();
@@ -71,6 +74,7 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
 
   let focusedSeason = resolveFocusedSeasonFromUrl();
   let highlightedSeasonId = focusedSeason?.id || currentSeasonId;
+  let seasonPage = 1;
 
   function syncFloatingBackButton(visible, onBack) {
     let btn = document.getElementById("seasonsFloatingBackBtn");
@@ -100,6 +104,57 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
     } catch {
       // Ignore history restrictions
     }
+  }
+
+  function buildSeasonPaginationBar(totalItems, totalPages, onPageChange) {
+    const bar = createEl("div", "directory-pagination-bar");
+    const status = createEl("div", "directory-pagination-status");
+    const startIdx = totalItems === 0 ? 0 : (seasonPage - 1) * SPECIES_PER_PAGE + 1;
+    const endIdx = Math.min(seasonPage * SPECIES_PER_PAGE, totalItems);
+    status.appendChild(
+      createEl(
+        "p",
+        "explorer-count",
+        `Showing ${startIdx}–${endIdx} of ${totalItems} active seasonal flora species`,
+      ),
+    );
+    bar.appendChild(status);
+
+    const nav = createEl("nav", "directory-pagination-nav");
+    nav.setAttribute("aria-label", "Seasonal flora pagination");
+    if (totalPages <= 1) {
+      nav.hidden = true;
+    } else {
+      const prevBtn = createEl("button", "pagination-btn", "← Prev");
+      prevBtn.type = "button";
+      prevBtn.disabled = seasonPage <= 1;
+      prevBtn.addEventListener("click", () => onPageChange(seasonPage - 1));
+      nav.appendChild(prevBtn);
+
+      const pillsWrap = createEl("div", "pagination-pills");
+      for (let p = 1; p <= totalPages; p += 1) {
+        const pill = createEl(
+          "button",
+          `pagination-pill${p === seasonPage ? " active" : ""}`,
+          String(p),
+        );
+        pill.type = "button";
+        pill.setAttribute("aria-label", `Seasonal species page ${p}`);
+        if (p === seasonPage) pill.setAttribute("aria-current", "page");
+        pill.addEventListener("click", () => onPageChange(p));
+        pillsWrap.appendChild(pill);
+      }
+      nav.appendChild(pillsWrap);
+
+      const nextBtn = createEl("button", "pagination-btn", "Next →");
+      nextBtn.type = "button";
+      nextBtn.disabled = seasonPage >= totalPages;
+      nextBtn.addEventListener("click", () => onPageChange(seasonPage + 1));
+      nav.appendChild(nextBtn);
+    }
+
+    bar.appendChild(nav);
+    return bar;
   }
 
   function renderSeasonDetailBlock(container, seasonObj) {
@@ -152,9 +207,30 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
     );
     container.appendChild(floraTitle);
 
-    const grid = renderSeasonSpeciesGrid(activeSpecies, seasonObj);
-    container.appendChild(grid);
-    animateDynamicSpeciesGrid(grid);
+    const listMount = createEl("div", "season-species-paginated-mount");
+
+    const renderPage = () => {
+      const totalPages = Math.max(1, Math.ceil(activeSpecies.length / SPECIES_PER_PAGE));
+      if (seasonPage > totalPages) seasonPage = 1;
+      const start = (seasonPage - 1) * SPECIES_PER_PAGE;
+      const pageItems = activeSpecies.slice(start, start + SPECIES_PER_PAGE);
+
+      const frag = document.createDocumentFragment();
+      frag.appendChild(
+        buildSeasonPaginationBar(activeSpecies.length, totalPages, (nextP) => {
+          seasonPage = nextP;
+          renderPage();
+          floraTitle.scrollIntoView({ behavior: "smooth", block: "start" });
+        }),
+      );
+      const grid = renderSeasonSpeciesGrid(pageItems, seasonObj);
+      frag.appendChild(grid);
+      listMount.replaceChildren(frag);
+      animateDynamicSpeciesGrid(grid);
+    };
+
+    renderPage();
+    container.appendChild(listMount);
   }
 
   function renderView() {
@@ -258,6 +334,18 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
         card.type = "button";
         card.setAttribute("data-season-id", s.id);
 
+        if (s.imageUrl) {
+          const mediaBox = createEl("div", "season-card-media");
+          mediaBox.appendChild(
+            buildImageElement(
+              s.imageUrl,
+              s.imageAlt || `${s.nameEn} (${s.nameBn}) seasonal botanical habitat`,
+              `${s.nameEn} — ${s.nameBn}`,
+            ),
+          );
+          card.appendChild(mediaBox);
+        }
+
         const top = createEl("div", "season-card-top");
         top.appendChild(createEl("span", "season-number", s.number));
         if (isCurrent) {
@@ -296,6 +384,7 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
         card.addEventListener("click", () => {
           focusedSeason = s;
           highlightedSeasonId = s.id;
+          seasonPage = 1;
           updateSeasonParam(s.id);
           renderView();
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -305,18 +394,14 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
       });
 
       container.appendChild(seasonGrid);
-
-      const previewSeason = seasonMap.get(highlightedSeasonId) || seasons[0];
-      if (previewSeason) {
-        renderSeasonDetailBlock(container, previewSeason);
-      }
     } else {
-      // Individual Focused Season View + Floating Go Back
+      // Individual Focused Season View + Floating Go Back + 5-per-page pagination
       renderSeasonDetailBlock(container, focusedSeason);
 
       syncFloatingBackButton(true, () => {
         focusedSeason = null;
         highlightedSeasonId = currentSeasonId;
+        seasonPage = 1;
         updateSeasonParam(null);
         renderView();
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -330,6 +415,7 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
   window.addEventListener("popstate", () => {
     focusedSeason = resolveFocusedSeasonFromUrl();
     highlightedSeasonId = focusedSeason?.id || currentSeasonId;
+    seasonPage = 1;
     renderView();
   });
 

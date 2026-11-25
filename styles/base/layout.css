@@ -10,6 +10,14 @@
   background: rgba(4, 20, 12, 0.35);
 }
 
+body[data-page="plant"] .scroll-progress-track,
+body[data-page="plant-live"] .scroll-progress-track,
+body[data-page="sources"] .scroll-progress-track {
+  top: var(--nav-height);
+  z-index: 995;
+  background: rgba(4, 20, 12, 0.55);
+}
+
 .scroll-progress-bar {
   width: 100%;
   height: 100%;
@@ -90,28 +98,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(16px, 2.2vw, 30px);
+  gap: clamp(10px, 1.5vw, 22px);
 }
 
 .nav-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--ink-secondary);
   white-space: nowrap;
   flex-shrink: 0;
   position: relative;
-  padding: 6px 2px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
   transition:
     color 0.2s var(--ease-settle),
-    text-shadow 0.2s ease;
+    text-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .nav-text-link::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: 1px;
-  width: 100%;
+  left: 14px;
+  right: 14px;
+  bottom: 2px;
   height: 2px;
   border-radius: 2px;
   background: linear-gradient(
@@ -125,15 +141,36 @@
   transition: transform 0.22s var(--ease-settle);
 }
 
-.nav-text-link:hover,
-.nav-text-link.active {
+/* Soft hover state: brightness shift + bottom animated underline, NO filled pill */
+.nav-text-link:not(.nav-active):hover,
+.nav-text-link:not(.nav-active):focus-visible {
   color: var(--ink-primary);
-  text-shadow: 0 0 14px rgba(74, 222, 128, 0.32);
+  background: transparent;
+  border-color: transparent;
+  text-shadow: 0 0 14px rgba(74, 222, 128, 0.34);
 }
 
-.nav-text-link:hover::after,
-.nav-text-link.active::after {
+.nav-text-link:not(.nav-active):hover::after,
+.nav-text-link:not(.nav-active):focus-visible::after {
   transform: scaleX(1);
+}
+
+/* Distinct active page indicator: filled emerald glass pill */
+.nav-text-link.nav-active,
+.nav-dropdown-trigger-btn.nav-active {
+  background: rgba(52, 211, 153, 0.16);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  color: #6ee7b7;
+  font-weight: 600;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 6px 18px -6px rgba(16, 185, 129, 0.35);
+}
+
+.nav-text-link.nav-active::after,
+.nav-dropdown-trigger-btn.nav-active::after {
+  transform: scaleX(0);
+  opacity: 0;
 }
 
 /* Navbar Dropdown Sub-Menu */
@@ -141,30 +178,15 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 2px;
 }
 
-.nav-dropdown-trigger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: none;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--ink-secondary);
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    transform 0.2s var(--ease-settle);
+.nav-dropdown-trigger-btn {
+  cursor: pointer;
+  font-family: inherit;
 }
 
-.nav-dropdown-trigger:hover,
-.nav-dropdown-group.is-open .nav-dropdown-trigger {
+.nav-dropdown-group.is-open .nav-dropdown-trigger-btn:not(.nav-active) {
   color: var(--accent-mint);
-  background: rgba(16, 185, 129, 0.14);
 }
 
 .nav-dropdown-group.is-open .nav-dropdown-caret {
@@ -172,6 +194,7 @@
 }
 
 .nav-dropdown-caret {
+  flex-shrink: 0;
   transition: transform 0.22s var(--ease-settle);
 }
 
@@ -179,7 +202,7 @@
   position: absolute;
   top: calc(100% + 12px);
   left: 0;
-  min-width: 260px;
+  min-width: 280px;
   padding: 8px;
   border-radius: 14px;
   background: rgba(4, 22, 14, 0.97);
@@ -192,7 +215,7 @@
   z-index: 1250;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .nav-dropdown-menu[hidden] {
@@ -216,25 +239,52 @@
 }
 
 .nav-dropdown-item {
-  display: block;
-  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
   border-radius: 9px;
+  border: 1px solid transparent;
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--ink-secondary);
   white-space: nowrap;
   transition:
     background-color 0.16s ease,
+    border-color 0.16s ease,
     color 0.16s ease,
     transform 0.16s ease;
 }
 
 .nav-dropdown-item:hover,
-.nav-dropdown-item:focus-visible,
-.nav-dropdown-item.is-current-route {
-  background: rgba(16, 185, 129, 0.2);
+.nav-dropdown-item:focus-visible {
+  background: rgba(16, 185, 129, 0.14);
   color: var(--ink-primary);
   transform: translateX(2px);
+}
+
+.nav-dropdown-item.is-current-route {
+  background: rgba(52, 211, 153, 0.16);
+  border-color: rgba(52, 211, 153, 0.42);
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
+.nav-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.14);
+  border: 1px solid rgba(251, 191, 36, 0.36);
+  color: #fde68a;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
 }
 
 /* Right Utility Cluster: Search + Herbarium Pill + Mobile Controls */

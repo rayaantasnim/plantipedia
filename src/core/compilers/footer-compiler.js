@@ -8,9 +8,39 @@
 
 import { fetchDataset } from "../../engines/global-server/api.js";
 import { resolveSitePath } from "./navbar-compiler.js";
+import { normalizePathnameRoute } from "../bootstrap/router.js";
 import { ensureGsapWithScrollTrigger } from "../telemetry/telemetry-stats.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
+const SITE_ROOT_URL = new URL("../../../", import.meta.url);
+
+function normalizeFooterRoutePath(pathname) {
+  if (!pathname) return "";
+  const rootPath = SITE_ROOT_URL.pathname.replace(/\/+$/, "");
+  let stripped = String(pathname);
+  if (rootPath && stripped.startsWith(rootPath)) {
+    stripped = stripped.slice(rootPath.length);
+  }
+  return normalizePathnameRoute(stripped);
+}
+
+function isFooterQuickLinkActive(resolvedHref) {
+  if (!resolvedHref) return false;
+  try {
+    const currentRoute = normalizeFooterRoutePath(window.location.pathname);
+    const targetUrl = new URL(resolvedHref, window.location.href);
+    const targetRoute = normalizeFooterRoutePath(targetUrl.pathname);
+    if (!targetRoute) {
+      return currentRoute === "";
+    }
+    return (
+      currentRoute === targetRoute ||
+      currentRoute.startsWith(`${targetRoute}/`)
+    );
+  } catch {
+    return false;
+  }
+}
 
 const FALLBACK_FOOTER_CONFIG = {
   brand: {
@@ -33,7 +63,14 @@ const FALLBACK_FOOTER_CONFIG = {
     { prefix: "Powered by", name: "Olympiad Edge" },
   ],
   disclaimer:
-    "Educational & Botanical Disclaimer: Monographs, taxonomic notes, and Pexels photography are curated strictly for non-commercial academic reference and do not constitute clinical or medical advice.",
+    "Educational & Botanical Disclaimer: Monographs, taxonomic notes, and botanical photography are curated strictly for non-commercial academic reference and do not constitute clinical or medical advice.",
+  quickLinks: [
+    { label: "📚 Species Atlas", href: "./species/" },
+    { label: "🌐 Global Botanical Server", href: "./plant/live/" },
+    { label: "📖 Sources & References", href: "./sources/" },
+    { label: "🧭 Capabilities Suite", href: "./services/" },
+    { label: "🚀 Upcoming Releases", href: "./roadmap/" },
+  ],
   copyright: {
     autoYear: true,
     owner: "Plantipedia",
@@ -244,6 +281,52 @@ function buildFooterDom(host, config) {
     legal.className = "footer-legal-note";
     legal.textContent = disclaimerText;
     creditsBar.appendChild(legal);
+  }
+
+  const quickLinksList =
+    Array.isArray(config.quickLinks) && config.quickLinks.length > 0
+      ? config.quickLinks
+      : FALLBACK_FOOTER_CONFIG.quickLinks;
+
+  if (Array.isArray(quickLinksList) && quickLinksList.length > 0) {
+    const quickNav = document.createElement("nav");
+    quickNav.className = "footer-quick-links";
+    quickNav.setAttribute("aria-label", "Footer quick navigation");
+    quickLinksList.forEach((ql) => {
+      if (!ql?.href || !ql?.label) return;
+      const a = document.createElement("a");
+      const resolvedHref = resolveSitePath(ql.href);
+      const isActive = isFooterQuickLinkActive(resolvedHref);
+
+      a.className = isActive
+        ? "footer-quick-link footer-active"
+        : "footer-quick-link";
+      a.href = resolvedHref;
+      if (isActive) {
+        a.setAttribute("aria-current", "page");
+      }
+
+      const rawLabel = String(ql.label).trim();
+      const firstSpace = rawLabel.indexOf(" ");
+      if (firstSpace > 0) {
+        const iconSpan = document.createElement("span");
+        iconSpan.className = "footer-quick-link-icon";
+        iconSpan.setAttribute("aria-hidden", "true");
+        iconSpan.textContent = rawLabel.slice(0, firstSpace);
+
+        const textSpan = document.createElement("span");
+        textSpan.className = "footer-quick-link-label";
+        textSpan.textContent = rawLabel.slice(firstSpace + 1).trim();
+
+        a.appendChild(iconSpan);
+        a.appendChild(textSpan);
+      } else {
+        a.textContent = rawLabel;
+      }
+
+      quickNav.appendChild(a);
+    });
+    creditsBar.appendChild(quickNav);
   }
 
   const copyCfg = config.copyright || {};

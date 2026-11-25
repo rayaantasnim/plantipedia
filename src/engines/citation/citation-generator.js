@@ -4,29 +4,24 @@
  */
 
 import { createEl } from "../../modules/utils/templates.js";
-import { resolveRootPath } from "../../core/bootstrap/router.js";
+import { getCanonicalSiteBase } from "../../modules/utils/seo.js";
 
 function getCleanCanonicalHref(plant, cfg = {}) {
   if (cfg.canonicalUrl) return cfg.canonicalUrl;
+  const base = getCanonicalSiteBase();
   try {
     if (plant?.isGlobalLive) {
       const q = plant.query || plant.commonName || "";
-      const targetHref = resolveRootPath(
-        `./plant/live/?q=${encodeURIComponent(q)}`,
-      );
-      return new URL(targetHref, window.location.href).href;
+      return `${base}plant/live/?q=${encodeURIComponent(q)}`;
     }
     if (plant?.slug) {
-      const targetHref = resolveRootPath(
-        `./plant/?species=${encodeURIComponent(plant.slug)}`,
-      );
-      return new URL(targetHref, window.location.href).href;
+      return `${base}plant/?species=${encodeURIComponent(plant.slug)}`;
     }
     const url = new URL(window.location.href);
     url.searchParams.delete("embed");
-    return url.href;
+    return `${base}${url.pathname.replace(/^\/+/, "")}${url.search}`;
   } catch {
-    return window.location.href;
+    return base;
   }
 }
 

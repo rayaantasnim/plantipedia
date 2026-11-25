@@ -4,7 +4,7 @@
  * across all Clean-URL folder routes (/, /species/, /plant/, /taxonomy/, /seasons/, /compare/, & 404).
  */
 
-const PRODUCTION_SITE_URL = "https://rayaantasnim.github.io/plantipedia/";
+const PRODUCTION_SITE_URL = "https://plantipedia.rayaantasnim.workers.dev/";
 const DEFAULT_OG_IMAGE =
   "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200";
 
@@ -14,16 +14,6 @@ const AUTHOR_ENTITIES = [
 ];
 
 export function getCanonicalSiteBase() {
-  try {
-    const { hostname, origin, pathname } = window.location;
-    if (hostname.endsWith("github.io")) {
-      const parts = pathname.split("/").filter(Boolean);
-      const repoSegment = parts.length > 0 ? `${parts[0]}/` : "";
-      return `${origin}/${repoSegment}`;
-    }
-  } catch {
-    // Fallback to production canonical URL
-  }
   return PRODUCTION_SITE_URL;
 }
 
@@ -118,6 +108,7 @@ export function applyPageSeo(seoConfig) {
   setMetaTag("property", "og:image:alt", ogImageAlt);
 
   setMetaTag("name", "twitter:card", "summary_large_image");
+  setMetaTag("name", "twitter:url", canonicalUrl);
   setMetaTag("name", "twitter:title", seoConfig.ogTitle || seoConfig.title);
   setMetaTag(
     "name",
@@ -270,6 +261,7 @@ export function applyTaxonomySeo({ pageData, families, activeFamily }) {
   setMetaTag("property", "og:url", pageUrl);
   setMetaTag("property", "og:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
   setMetaTag("name", "twitter:card", "summary_large_image");
+  setMetaTag("name", "twitter:url", pageUrl);
   setMetaTag("name", "twitter:title", title);
   setMetaTag("name", "twitter:description", description);
   setMetaTag("name", "twitter:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
@@ -416,6 +408,7 @@ export function applySeasonsSeo({
   setMetaTag("property", "og:url", pageUrl);
   setMetaTag("property", "og:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
   setMetaTag("name", "twitter:card", "summary_large_image");
+  setMetaTag("name", "twitter:url", pageUrl);
   setMetaTag("name", "twitter:title", title);
   setMetaTag("name", "twitter:description", description);
   setMetaTag("name", "twitter:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
@@ -562,6 +555,7 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
   setMetaTag("property", "og:url", pageUrl);
   setMetaTag("property", "og:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
   setMetaTag("name", "twitter:card", "summary_large_image");
+  setMetaTag("name", "twitter:url", pageUrl);
   setMetaTag("name", "twitter:title", title);
   setMetaTag("name", "twitter:description", description);
   setMetaTag("name", "twitter:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
@@ -707,6 +701,7 @@ export function applyPlantMonographSeo(plant) {
   setMetaTag("property", "og:image:alt", heroImgAlt);
 
   setMetaTag("name", "twitter:card", "summary_large_image");
+  setMetaTag("name", "twitter:url", pageUrl);
   setMetaTag("name", "twitter:title", seoTitle);
   setMetaTag("name", "twitter:description", seoDesc);
   setMetaTag("name", "twitter:image", heroImgUrl);

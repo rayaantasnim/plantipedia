@@ -1,6 +1,6 @@
 /**
  * Dedicated "Digital Botanical Research Suite & Services" Page (/services/)
- * 10 Interactive Sections built 100% natively with XSS-safe DOM builders & custom SVG analytics:
+ * 11 Interactive Sections built 100% natively with XSS-safe DOM builders & custom SVG analytics:
  *  01. Visual Hero & Live Archive Telemetry
  *  02. Interactive Filterable Platform Comparison Table
  *  03. Live Data Visualization & Interactive Charts (Category Distribution + 6-Season Curve)
@@ -11,6 +11,7 @@
  *  08. Interactive Data Synthesis Pipeline (Clickable 4-Step Node Diagram + Inspector)
  *  09. Offline PWA & Academic PDF Field-Sheet Studio (Dark Screen vs. Print Mode Toggle)
  *  10. Open Botanical Standards & Ecosystem Dual-CTA
+ *  11. Worldwide Botanical Scale — 400,000+ Indexed Taxa
  */
 
 import {
@@ -878,7 +879,7 @@ const DEFAULT_SERVICES_MATRIX = [
     num: "08",
     targetId: "services-synthesis-pipeline",
     title: "08. Interactive Synthesis Pipeline",
-    desc: "Inspect how live queries normalize into structured 8-chapter monographs.",
+    desc: "Inspect how live queries normalize into structured 15-chapter monographs.",
     theme: "lime",
   },
   {
@@ -894,6 +895,13 @@ const DEFAULT_SERVICES_MATRIX = [
     title: "10. Open Standards & CTA",
     desc: "Schema.org JSON-LD, WCAG AA+ contrast, zero-tracking privacy, and launch CTAs.",
     theme: "emerald",
+  },
+  {
+    num: "11",
+    targetId: "services-worldwide-scale",
+    title: "11. Worldwide Botanical Scale",
+    desc: "50 15-chapter local monographs paired with 400,000+ live Global Server taxa.",
+    theme: "teal",
   },
 ];
 
@@ -994,7 +1002,7 @@ function renderServicesMapMatrix(portal, indexItems) {
   const titleEl = createEl(
     "h2",
     "services-matrix-title",
-    "Services Architecture · Map Matrix (10 Sections)",
+    "Services Architecture · Map Matrix (11 Sections)",
   );
   titleEl.id = "servicesMatrixTitle";
   const subtitleEl = createEl(
@@ -1343,7 +1351,7 @@ async function initServicesAnimations(portal) {
     );
   }
 
-  // Section 10: Open Standards Cards & Final CTA Banner
+  // Section 10: Open Standards Cards & CTA Banner
   const standardsSec = portal.querySelector("#services-open-standards");
   if (standardsSec) {
     animateScrollGroup(
@@ -1355,6 +1363,16 @@ async function initServicesAnimations(portal) {
     if (finalBanner) {
       animateScrollGroup(finalBanner, [finalBanner], 0);
     }
+  }
+
+  // Section 11: Worldwide Botanical Scale
+  const scaleSec = portal.querySelector("#services-worldwide-scale");
+  if (scaleSec) {
+    animateScrollGroup(
+      scaleSec,
+      scaleSec.querySelectorAll(".services-scale-card, .services-scale-metric-box"),
+      0.08,
+    );
   }
 
   ScrollTrigger.refresh();
@@ -1423,7 +1441,7 @@ function renderSynthesisPipelineSection(pipelineCfg) {
   container.appendChild(
     buildSectionHeader(
       pipelineCfg.eyebrow || "08. Interactive Data Synthesis Pipeline",
-      pipelineCfg.heading || "How Live Queries Become Structured 8-Chapter Monographs",
+      pipelineCfg.heading || "How Live Queries Become Structured 15-Chapter Monographs",
       pipelineCfg.lead || "",
     ),
   );
@@ -1584,7 +1602,7 @@ function renderFieldStudioSection(studioCfg) {
     createEl(
       "p",
       "services-studio-sheet-prose",
-      "8-chapter monograph formatted with deterministic telemetry bars, Linnaean classification matrix, and bilingual glossary annotations ready for lab binders or field export.",
+      "15-chapter monograph formatted with deterministic telemetry bars, Linnaean classification matrix, and bilingual glossary annotations ready for lab binders or field export.",
     ),
   );
 
@@ -1652,7 +1670,7 @@ function renderFieldStudioSection(studioCfg) {
 }
 
 function renderStandardsAndCtaSection(standardsCfg) {
-  const section = createEl("section", "services-section services-section--final");
+  const section = createEl("section", "services-section");
   section.id = "services-open-standards";
   const container = createEl("div", "section-container");
 
@@ -1727,6 +1745,122 @@ function renderStandardsAndCtaSection(standardsCfg) {
   return section;
 }
 
+function renderWorldwideScaleSection(scaleCfg = {}, metrics = {}) {
+  const section = createEl("section", "services-section services-section--final");
+  section.id = "services-worldwide-scale";
+  const container = createEl("div", "section-container");
+
+  container.appendChild(
+    buildSectionHeader(
+      scaleCfg.eyebrow || "11 · Worldwide Botanical Scale — 400,000+ Indexed Taxa",
+      scaleCfg.heading || "Dual-Layer Scale: Curated Depth Meets Global Vascular Breadth",
+      scaleCfg.lead ||
+        "Plantipedia Version 3.1 bridges peer-structured local South Asian & tropical monographs with live, zero-key querying across Earth's global plant and tree diversity.",
+    ),
+  );
+
+  const card = createEl("div", "services-scale-card");
+  const content = createEl("div", "services-scale-content");
+
+  const metricsGrid = createEl("div", "services-scale-metrics");
+  const localBox = createEl("div", "services-scale-metric-box");
+  localBox.appendChild(
+    createEl("span", "services-scale-metric-num", String(metrics.speciesCount || 50)),
+  );
+  localBox.appendChild(
+    createEl(
+      "span",
+      "services-scale-metric-label",
+      scaleCfg.localLabel || "Curated Local Monographs",
+    ),
+  );
+  localBox.appendChild(
+    createEl(
+      "span",
+      "services-scale-metric-note",
+      scaleCfg.localNote || "15-chapter scholarly dossiers · EN & বাংলা verified",
+    ),
+  );
+
+  const globalBox = createEl("div", "services-scale-metric-box services-scale-metric-box--global");
+  globalBox.appendChild(
+    createEl("span", "services-scale-metric-num", scaleCfg.globalValue || "400,000+"),
+  );
+  globalBox.appendChild(
+    createEl(
+      "span",
+      "services-scale-metric-label",
+      scaleCfg.globalLabel || "Live Global Server Flora & Tree Taxa",
+    ),
+  );
+  globalBox.appendChild(
+    createEl(
+      "span",
+      "services-scale-metric-note",
+      scaleCfg.globalNote || "Zero-key on-demand Global Flora Index uplink",
+    ),
+  );
+
+  metricsGrid.appendChild(localBox);
+  metricsGrid.appendChild(globalBox);
+  content.appendChild(metricsGrid);
+
+  const proseList =
+    Array.isArray(scaleCfg.paragraphs) && scaleCfg.paragraphs.length > 0
+      ? scaleCfg.paragraphs
+      : [
+          "Every curated specimen inside Plantipedia opens into a 15-chapter monograph covering Linnaean classification, vegetative anatomy, phenology, ethnobotany, soil pH telemetry, and cultivation protocols.",
+          "Whenever your study moves beyond the 50-species core archive—spanning boreal conifers, desert caudiciforms, or 400,000+ worldwide vascular flora and trees—the Global Botanical Server renders a structured live dossier ready for split comparison and field export.",
+        ];
+  proseList.forEach((pText) => {
+    content.appendChild(createEl("p", "services-scale-prose", pText));
+  });
+
+  const actions = createEl("div", "services-scale-actions");
+  const primary = createEl(
+    "a",
+    "specimen-nf-btn specimen-nf-btn--primary",
+    scaleCfg.primaryCta?.label || "Launch Worldwide Gateway →",
+  );
+  primary.href = sanitizeUrl(scaleCfg.primaryCta?.href, "./plant/live/");
+  const secondary = createEl(
+    "a",
+    "specimen-nf-btn specimen-nf-btn--gateway",
+    scaleCfg.secondaryCta?.label || "Inspect v3.2 Roadmap →",
+  );
+  secondary.href = sanitizeUrl(scaleCfg.secondaryCta?.href, "./roadmap/");
+  actions.appendChild(primary);
+  actions.appendChild(secondary);
+  content.appendChild(actions);
+
+  const media = createEl("figure", "services-scale-media");
+  const mediaBox = createEl("div", "services-scale-media-box");
+  const imgCfg = scaleCfg.image || {};
+  mediaBox.appendChild(
+    buildImageElement(
+      imgCfg.imageUrl ||
+        "https://images.pexels.com/photos/9219974/pexels-photo-9219974.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      imgCfg.imageAlt || "Lush botanical woodland foliage canopy illustrating worldwide vascular flora scale",
+      "Worldwide Botanical Scale Canopy",
+    ),
+  );
+  media.appendChild(mediaBox);
+  media.appendChild(
+    createEl(
+      "figcaption",
+      "services-scale-figcaption",
+      imgCfg.caption ||
+        "Canopy giants & worldwide vascular lineages unified inside Plantipedia's dual-layer Botanical Server architecture.",
+    ),
+  );
+
+  card.appendChild(content);
+  card.appendChild(media);
+  container.appendChild(card);
+  section.appendChild(container);
+  return section;
+}
+
 export function renderServicesPortal(
   mountEl,
   { pageData, speciesIndex = [], seasonsData = null, glossaryData = null } = {},
@@ -1770,6 +1904,7 @@ export function renderServicesPortal(
   portal.appendChild(renderSynthesisPipelineSection(pageData.pipeline || {}));
   portal.appendChild(renderFieldStudioSection(pageData.fieldStudio || {}));
   portal.appendChild(renderStandardsAndCtaSection(pageData.standardsCta || {}));
+  portal.appendChild(renderWorldwideScaleSection(pageData.worldwideScale || {}, metrics));
 
   mountEl.replaceChildren(portal);
   renderServicesMapMatrix(portal, pageData.sectionIndex);

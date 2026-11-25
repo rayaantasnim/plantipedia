@@ -53,66 +53,47 @@ const FALLBACK_NAVBAR_CONFIG = {
   ariaLabel: "Primary navigation",
   links: [
     {
-      "id": "nav-home",
-      "label": "Home",
-      "href": "./",
-      "matchPaths": ["/", "/index.html"],
-      "sublabel": "Botanical Gateway"
+      id: "nav-home",
+      label: "🏡 Home",
+      href: "./",
+      matchPaths: ["/", "/index.html"],
+      sublabel: "Botanical Gateway",
     },
     {
-      "id": "nav-taxonomy",
-      "label": "Taxonomy",
-      "href": "./taxonomy/",
-      "matchPaths": ["/taxonomy/", "/taxonomy"],
-      "sublabel": "Families & Diagnostic Traits"
+      id: "nav-explore",
+      label: "🌿 Explore Flora",
+      matchPaths: ["/species/", "/species", "/plant/", "/plant", "/taxonomy/", "/taxonomy", "/seasons/", "/seasons"],
+      sublabel: "Species Atlas, Global Server, Taxonomy & Seasons",
+      children: [
+        { id: "nav-archive-species", label: "📚 All Species Atlas", href: "./species/", matchPaths: ["/species/", "/species", "/plant/", "/plant"], excludePaths: ["/plant/live"] },
+        { id: "nav-global-botanical-server", label: "🌐 Global Botanical Server", href: "./plant/live/", matchPaths: ["/plant/live/", "/plant/live"] },
+        { id: "nav-archive-taxonomy", label: "🧬 Taxonomic Lineage", href: "./taxonomy/", matchPaths: ["/taxonomy/", "/taxonomy"] },
+        { id: "nav-archive-seasons", label: "🗓️ 6-Season Calendar", href: "./seasons/", matchPaths: ["/seasons/", "/seasons"] },
+      ],
     },
     {
-      "id": "nav-explore",
-      "label": "Explore Flora",
-      "href": "./species/",
-      "matchPaths": ["/species/", "/species", "/plant/", "/plant"],
-      "sublabel": "Species Atlas & Quick Categories",
-      "dropdownSections": [
-        {
-          "title": "Archive Views",
-          "items": [
-            { "id": "nav-archive-species", "label": "All Species Atlas", "href": "./species/" },
-            { "id": "nav-global-botanical-server", "label": "Global Botanical Server", "href": "./plant/live/" }
-          ]
-        },
-        {
-          "title": "Quick Categories",
-          "items": [
-            { "id": "nav-species-flowers", "label": "Flowers & Ornamentals", "href": "./species/?category=Flowers" },
-            { "id": "nav-species-fruit", "label": "Fruit Trees & Palms", "href": "./species/?category=Fruit%20Trees" },
-            { "id": "nav-species-medicinal", "label": "Medicinal Herbs", "href": "./species/?category=Medicinal" },
-            { "id": "nav-species-shrubs", "label": "Shrubs & Herbs", "href": "./species/?category=Shrubs%20%26%20Herbs" },
-            { "id": "nav-species-aquatic", "label": "Aquatic & Wetland Flora", "href": "./species/?category=Aquatic" }
-          ]
-        }
-      ]
+      id: "nav-tools",
+      label: "🔬 Botanical Tools",
+      matchPaths: ["/identify/", "/identify", "/compare/", "/compare", "/qr-studio/", "/qr-studio"],
+      sublabel: "Comparator, Akinator & Garden QR Tags",
+      children: [
+        { id: "nav-identify", label: "🔮 Botanical Akinator", href: "./identify/", matchPaths: ["/identify/", "/identify"], badge: "v4.2 · SOON" },
+        { id: "nav-compare", label: "⚖️ Split Specimen Comparator", href: "./compare/", matchPaths: ["/compare/", "/compare"] },
+        { id: "nav-qr-studio", label: "🏷️ Garden QR Tag Studio", href: "./qr-studio/", matchPaths: ["/qr-studio/", "/qr-studio"], badge: "v4.1 · SOON" },
+      ],
     },
     {
-      "id": "nav-calendar",
-      "label": "Calendar",
-      "href": "./seasons/",
-      "matchPaths": ["/seasons/", "/seasons"],
-      "sublabel": "6-Season Ecological Phenology"
+      id: "nav-services-app",
+      label: "⚡ Services & App",
+      matchPaths: ["/services/", "/services", "/sources/", "/sources", "/roadmap/", "/roadmap", "/install/", "/install"],
+      sublabel: "Capabilities, Sources, Roadmap & Offline App",
+      children: [
+        { id: "nav-services", label: "🧭 Capabilities Suite", href: "./services/", matchPaths: ["/services/", "/services"] },
+        { id: "nav-sources", label: "📖 Sources & References", href: "./sources/", matchPaths: ["/sources/", "/sources"] },
+        { id: "nav-roadmap", label: "🚀 Upcoming Releases", href: "./roadmap/", matchPaths: ["/roadmap/", "/roadmap"] },
+        { id: "nav-install", label: "📲 Install Offline App", href: "./install/", matchPaths: ["/install/", "/install"], badge: "v4.0 · SOON" },
+      ],
     },
-    {
-      "id": "nav-compare",
-      "label": "Compare",
-      "href": "./compare/",
-      "matchPaths": ["/compare/", "/compare"],
-      "sublabel": "Side-by-Side Split View"
-    },
-    {
-      "id": "nav-services",
-      "label": "Services",
-      "href": "./services/",
-      "matchPaths": ["/services/", "/services"],
-      "sublabel": "Digital Ecosystem & Live Tools"
-    }
   ],
   search: {
     placeholder: "Search species (EN / বাংলা)...",
@@ -134,15 +115,6 @@ const FALLBACK_NAVBAR_CONFIG = {
       { label: "Water Lily · শাপলা", href: "./plant/?species=water-lily" },
       { label: "Sacred Lotus · পদ্ম", href: "./plant/?species=lotus" },
       { label: "Tulsi · তুলসী", href: "./plant/?species=tulsi" },
-    ],
-    corePages: [
-      { id: "m-home", label: "Home", href: "./", matchPaths: ["/", "/index.html"], sublabel: "Botanical Gateway" },
-      { id: "m-species", label: "All Species Atlas", href: "./species/", matchPaths: ["/species/", "/species", "/plant/", "/plant"], excludePaths: ["/plant/live"], sublabel: "50 Curated Flora Monographs" },
-      { id: "m-global-server", label: "Global Botanical Server", href: "./plant/live/", matchPaths: ["/plant/live/", "/plant/live"], sublabel: "Worldwide Flora Live Query Gateway" },
-      { id: "m-taxonomy", label: "Taxonomic Lineage", href: "./taxonomy/", matchPaths: ["/taxonomy/", "/taxonomy"], sublabel: "Botanical Families & Diagnostic Traits" },
-      { id: "m-seasons", label: "6-Season Calendar", href: "./seasons/", matchPaths: ["/seasons/", "/seasons"], sublabel: "Bangladeshi Shororitu Phenology" },
-      { id: "m-compare", label: "Compare Split View", href: "./compare/", matchPaths: ["/compare/", "/compare"], sublabel: "Dual-Pane Monograph Comparison" },
-      { id: "m-services", label: "Services", href: "./services/", matchPaths: ["/services/", "/services"], sublabel: "Ecosystem Telemetry, Charts & Live Tools" },
     ],
     categoriesTitle: "Explore by Category",
     categories: [
@@ -221,6 +193,7 @@ function routeBaseName(route) {
 }
 
 function isNavItemActive(item) {
+  if (!item || typeof item !== "object") return false;
   const currentRoute = normalizeRoutePath(window.location.pathname);
   const currentBase = routeBaseName(currentRoute);
   const currentHash = window.location.hash || "";
@@ -235,7 +208,15 @@ function isNavItemActive(item) {
       );
     });
 
-  if (!excludedPath && Array.isArray(item.matchPaths)) {
+  if (excludedPath) {
+    return false;
+  }
+
+  if (Array.isArray(item.children) && item.children.some((child) => isNavItemActive(child))) {
+    return true;
+  }
+
+  if (Array.isArray(item.matchPaths)) {
     const matchedPath = item.matchPaths.some((p) => {
       const cleanMatch = normalizePathnameRoute(p);
       return (
@@ -252,6 +233,8 @@ function isNavItemActive(item) {
   if (item.matchHash && currentBase === "index" && currentHash === item.matchHash) {
     return true;
   }
+
+  if (!item.href) return false;
 
   try {
     const targetUrl = new URL(
@@ -405,9 +388,32 @@ function createHerbariumPillButton(herbariumCfg, extraClass = "") {
   return btn;
 }
 
-function buildDropdownMenuNodes(menuEl, item) {
-  const currentRoute = normalizeRoutePath(window.location.pathname);
+function createDropdownItemNode(child, className = "nav-dropdown-item") {
+  const childLink = document.createElement("a");
+  childLink.href = resolveSitePath(child.href);
+  childLink.className = className;
+  childLink.setAttribute("role", "menuitem");
 
+  const labelSpan = document.createElement("span");
+  labelSpan.className = "nav-dropdown-item-label";
+  labelSpan.textContent = child.label;
+  childLink.appendChild(labelSpan);
+
+  if (child.badge) {
+    const badgeSpan = document.createElement("span");
+    badgeSpan.className = "nav-soon-badge";
+    badgeSpan.textContent = child.badge;
+    childLink.appendChild(badgeSpan);
+  }
+
+  if (isNavItemActive(child)) {
+    childLink.classList.add("is-current-route");
+    childLink.setAttribute("aria-current", "page");
+  }
+  return childLink;
+}
+
+function buildDropdownMenuNodes(menuEl, item) {
   if (Array.isArray(item.dropdownSections) && item.dropdownSections.length > 0) {
     item.dropdownSections.forEach((sec, secIdx) => {
       if (secIdx > 0) {
@@ -423,30 +429,14 @@ function buildDropdownMenuNodes(menuEl, item) {
         menuEl.appendChild(heading);
       }
       (sec.items || []).forEach((child) => {
-        const childLink = document.createElement("a");
-        childLink.href = resolveSitePath(child.href);
-        childLink.className = "nav-dropdown-item";
-        childLink.setAttribute("role", "menuitem");
-        childLink.textContent = child.label;
-
-        const cleanTarget = normalizePathnameRoute(String(child.href || "").split("?")[0]);
-        if (cleanTarget === currentRoute && !window.location.search) {
-          childLink.classList.add("is-current-route");
-          childLink.setAttribute("aria-current", "page");
-        }
-        menuEl.appendChild(childLink);
+        menuEl.appendChild(createDropdownItemNode(child));
       });
     });
     return;
   }
 
   (item.children || []).forEach((child) => {
-    const childLink = document.createElement("a");
-    childLink.href = resolveSitePath(child.href);
-    childLink.className = "nav-dropdown-item";
-    childLink.setAttribute("role", "menuitem");
-    childLink.textContent = child.label;
-    menuEl.appendChild(childLink);
+    menuEl.appendChild(createDropdownItemNode(child));
   });
 }
 
@@ -475,7 +465,7 @@ function buildNavbarDom(host, config) {
     if (!hasDropdown) {
       const a = document.createElement("a");
       a.href = resolveSitePath(item.href);
-      a.className = active ? "nav-text-link active" : "nav-text-link";
+      a.className = active ? "nav-text-link nav-active" : "nav-text-link";
       a.textContent = item.label;
       if (item.id) a.id = item.id;
       if (active) a.setAttribute("aria-current", "page");
@@ -486,20 +476,20 @@ function buildNavbarDom(host, config) {
     const group = document.createElement("div");
     group.className = "nav-dropdown-group";
 
-    const a = document.createElement("a");
-    a.href = resolveSitePath(item.href);
-    a.className = active ? "nav-text-link active" : "nav-text-link";
-    a.textContent = item.label;
-    if (item.id) a.id = item.id;
-    if (active) a.setAttribute("aria-current", "page");
+    const triggerBtn = document.createElement("button");
+    triggerBtn.type = "button";
+    triggerBtn.className = active
+      ? "nav-text-link nav-dropdown-trigger nav-dropdown-trigger-btn nav-active"
+      : "nav-text-link nav-dropdown-trigger nav-dropdown-trigger-btn";
+    if (item.id) triggerBtn.id = item.id;
+    triggerBtn.setAttribute("aria-expanded", "false");
+    triggerBtn.setAttribute("aria-haspopup", "true");
+    if (active) triggerBtn.setAttribute("aria-current", "true");
 
-    const toggle = document.createElement("button");
-    toggle.type = "button";
-    toggle.className = "nav-dropdown-trigger";
-    toggle.setAttribute("aria-expanded", "false");
-    toggle.setAttribute("aria-haspopup", "true");
-    toggle.setAttribute("aria-label", `${item.label} menu`);
-    toggle.appendChild(createChevronDownSvg());
+    const triggerLabel = document.createElement("span");
+    triggerLabel.textContent = item.label;
+    triggerBtn.appendChild(triggerLabel);
+    triggerBtn.appendChild(createChevronDownSvg());
 
     const menu = document.createElement("div");
     menu.className = "nav-dropdown-menu";
@@ -507,8 +497,7 @@ function buildNavbarDom(host, config) {
     menu.hidden = true;
     buildDropdownMenuNodes(menu, item);
 
-    group.appendChild(a);
-    group.appendChild(toggle);
+    group.appendChild(triggerBtn);
     group.appendChild(menu);
     navEl.appendChild(group);
   });
@@ -733,16 +722,70 @@ function buildMobileOverlayDom(navbarHost, config) {
 
   const mobileNav = document.createElement("nav");
   mobileNav.className = "mobile-overlay-cards";
-  mobileNav.setAttribute("aria-label", "Core pages navigation");
+  mobileNav.setAttribute("aria-label", "Primary categories navigation");
 
-  corePages.forEach((item, idx) => {
-    const card = document.createElement("a");
-    card.href = resolveSitePath(item.href);
+  const navCategories = Array.isArray(config.links) && config.links.length > 0
+    ? config.links
+    : FALLBACK_NAVBAR_CONFIG.links;
+
+  let expandedAccordionAssigned = false;
+
+  navCategories.forEach((item, idx) => {
     const active = isNavItemActive(item);
-    card.className = active ? "mobile-nav-card active" : "mobile-nav-card";
-    if (active) {
-      card.setAttribute("aria-current", "page");
+    const children = Array.isArray(item.children) ? item.children : [];
+
+    if (children.length === 0) {
+      const card = document.createElement("a");
+      card.href = resolveSitePath(item.href || "./");
+      card.className = active ? "mobile-nav-card nav-active" : "mobile-nav-card";
+      if (active) {
+        card.setAttribute("aria-current", "page");
+      }
+
+      const badge = document.createElement("span");
+      badge.className = "mobile-nav-badge";
+      badge.textContent = String(idx + 1).padStart(2, "0");
+
+      const textWrap = document.createElement("span");
+      textWrap.className = "mobile-nav-card-text";
+
+      const title = document.createElement("span");
+      title.className = "mobile-nav-card-title";
+      title.textContent = item.label;
+
+      const sub = document.createElement("span");
+      sub.className = "mobile-nav-card-sub";
+      sub.textContent = item.sublabel || "";
+
+      textWrap.appendChild(title);
+      textWrap.appendChild(sub);
+
+      const arrow = document.createElement("span");
+      arrow.className = "mobile-nav-arrow";
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.textContent = "→";
+
+      card.appendChild(badge);
+      card.appendChild(textWrap);
+      card.appendChild(arrow);
+      mobileNav.appendChild(card);
+      return;
     }
+
+    const shouldStartOpen = active && !expandedAccordionAssigned;
+    if (shouldStartOpen) expandedAccordionAssigned = true;
+
+    const accGroup = document.createElement("div");
+    accGroup.className = `mobile-accordion-group${shouldStartOpen ? " is-open" : ""}`;
+
+    const panelId = `mobile-acc-panel-${idx}`;
+    const trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.className = active
+      ? "mobile-nav-card mobile-accordion-trigger nav-active"
+      : "mobile-nav-card mobile-accordion-trigger";
+    trigger.setAttribute("aria-expanded", String(shouldStartOpen));
+    trigger.setAttribute("aria-controls", panelId);
 
     const badge = document.createElement("span");
     badge.className = "mobile-nav-badge";
@@ -762,15 +805,52 @@ function buildMobileOverlayDom(navbarHost, config) {
     textWrap.appendChild(title);
     textWrap.appendChild(sub);
 
-    const arrow = document.createElement("span");
-    arrow.className = "mobile-nav-arrow";
-    arrow.setAttribute("aria-hidden", "true");
-    arrow.textContent = "→";
+    const caretWrap = document.createElement("span");
+    caretWrap.className = "mobile-accordion-caret";
+    caretWrap.setAttribute("aria-hidden", "true");
+    caretWrap.appendChild(createChevronDownSvg());
 
-    card.appendChild(badge);
-    card.appendChild(textWrap);
-    card.appendChild(arrow);
-    mobileNav.appendChild(card);
+    trigger.appendChild(badge);
+    trigger.appendChild(textWrap);
+    trigger.appendChild(caretWrap);
+
+    const panel = document.createElement("div");
+    panel.className = "mobile-accordion-panel";
+    panel.id = panelId;
+
+    const panelInner = document.createElement("div");
+    panelInner.className = "mobile-accordion-inner";
+
+    children.forEach((child) => {
+      const childLink = document.createElement("a");
+      childLink.href = resolveSitePath(child.href);
+      const childActive = isNavItemActive(child);
+      childLink.className = childActive
+        ? "mobile-accordion-item is-current-route"
+        : "mobile-accordion-item";
+      if (childActive) {
+        childLink.setAttribute("aria-current", "page");
+      }
+
+      const labelSpan = document.createElement("span");
+      labelSpan.className = "mobile-accordion-item-label";
+      labelSpan.textContent = child.label;
+      childLink.appendChild(labelSpan);
+
+      if (child.badge) {
+        const badgeSpan = document.createElement("span");
+        badgeSpan.className = "nav-soon-badge";
+        badgeSpan.textContent = child.badge;
+        childLink.appendChild(badgeSpan);
+      }
+
+      panelInner.appendChild(childLink);
+    });
+
+    panel.appendChild(panelInner);
+    accGroup.appendChild(trigger);
+    accGroup.appendChild(panel);
+    mobileNav.appendChild(accGroup);
   });
 
   overlayBody.appendChild(mobileNav);
@@ -918,9 +998,34 @@ function bindNavbarShellInteractions(config) {
 
   closeBtn.addEventListener("click", () => closeOverlay(true));
 
+  // Single-Open Exclusive Accordion behavior inside mobile drawer
+  const mobileAccordionGroups = Array.from(
+    overlay.querySelectorAll(".mobile-accordion-group"),
+  );
+  const setAccordionState = (groupEl, open) => {
+    const trig = groupEl.querySelector(".mobile-accordion-trigger");
+    groupEl.classList.toggle("is-open", open);
+    if (trig) {
+      trig.setAttribute("aria-expanded", String(open));
+    }
+  };
+  mobileAccordionGroups.forEach((accGroup) => {
+    const trig = accGroup.querySelector(".mobile-accordion-trigger");
+    if (!trig) return;
+    trig.addEventListener("click", () => {
+      const willOpen = !accGroup.classList.contains("is-open");
+      mobileAccordionGroups.forEach((otherGroup) => {
+        if (otherGroup !== accGroup) {
+          setAccordionState(otherGroup, false);
+        }
+      });
+      setAccordionState(accGroup, willOpen);
+    });
+  });
+
   overlay.addEventListener("click", (e) => {
     const link = e.target.closest(
-      ".mobile-nav-card, .mobile-overlay-brand, .mobile-quick-chip, .mobile-category-pill",
+      "a.mobile-nav-card, a.mobile-accordion-item, .mobile-overlay-brand, .mobile-quick-chip, .mobile-category-pill",
     );
     if (!link) return;
     const dirCat = link.getAttribute("data-directory-category");
@@ -974,9 +1079,9 @@ function bindNavbarShellInteractions(config) {
         const el = document.getElementById(item.id);
         if (!el) return;
         const active = isNavItemActive(item);
-        el.classList.toggle("active", active);
+        el.classList.toggle("nav-active", active);
         if (active) {
-          el.setAttribute("aria-current", "page");
+          el.setAttribute("aria-current", item.children?.length ? "true" : "page");
         } else {
           el.removeAttribute("aria-current");
         }

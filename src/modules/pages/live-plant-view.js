@@ -8,12 +8,16 @@ import {
   runGlobalServerTelemetry,
 } from "../../engines/global-server/global-botanical-server.js";
 import { applyPageSeo } from "../utils/seo.js";
+import {
+  initGlobalAnimations,
+  refreshScrollTriggers,
+} from "../../core/telemetry/animations.js";
 
 function renderLiveQueryPrompt(mountEl, { initialQuery = "", aborted = false } = {}) {
   try {
     applyPageSeo({
       title: "Global Botanical Server — Live Taxon Query | Plantipedia",
-      description: "Query any worldwide plant species from the Global Botanical Server and render a live 8-chapter Plantipedia monograph.",
+      description: "Query any worldwide plant species from the Global Botanical Server and render a live 15-chapter Plantipedia monograph across 400,000+ vascular taxa.",
       canonicalFile: "plant/live/",
     });
   } catch {
@@ -148,6 +152,8 @@ export async function renderLiveMonographView(mountEl, { pageData, speciesIndex,
       requestedSlug: rawQuery,
       glossaryData,
     });
+    initGlobalAnimations();
+    refreshScrollTriggers();
     return;
   }
 
@@ -177,6 +183,8 @@ export async function renderLiveMonographView(mountEl, { pageData, speciesIndex,
       requestedSlug: rawQuery,
       glossaryData,
     });
+    initGlobalAnimations();
+    refreshScrollTriggers();
     return;
   }
 

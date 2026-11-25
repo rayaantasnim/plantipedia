@@ -13,7 +13,7 @@ const GSAP_CDN_URL =
 const SCROLLTRIGGER_CDN_URL =
   "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js";
 
-const ACCENT_TONES = ["emerald", "sky", "amber", "violet"];
+const ACCENT_TONES = ["emerald", "sky", "amber", "violet", "teal", "rose"];
 
 let cdnLoadPromise = null;
 let scrollTriggerRegistered = false;
@@ -98,7 +98,7 @@ export async function ensureGsapWithScrollTrigger() {
 export function parseNumericMetric(rawText, { mode = "max", defaultUnit = "" } = {}) {
   if (typeof rawText !== "string" || !rawText.trim()) return null;
   const rangeMatch = rawText.match(
-    /(\d+(?:\.\d+)?)\s*(?:-|–|—|to)\s*(\d+(?:\.\d+)?)(?:\s*(cm|mm|m|metres|meters|°C|hrs|hours|yrs|years|%|s|ms))?/i,
+    /(\d+(?:\.\d+)?)\s*(?:-|–|—|to)\s*(\d+(?:\.\d+)?)(?:\s*(centimetres|centimeters|cm|mm|m|metres|meters|°C|hrs|hours|yrs|years|%|s|ms))?/i,
   );
   if (rangeMatch) {
     const minVal = parseFloat(rangeMatch[1]);
@@ -116,7 +116,7 @@ export function parseNumericMetric(rawText, { mode = "max", defaultUnit = "" } =
   }
 
   const singleMatch = rawText.match(
-    /(\d+(?:\.\d+)?)(?:\s*(cm|mm|m|metres|meters|°C|hrs|hours|yrs|years|%|s|ms))?/i,
+    /(\d+(?:\.\d+)?)(?:\s*(centimetres|centimeters|cm|mm|m|metres|meters|°C|hrs|hours|yrs|years|%|s|ms))?/i,
   );
   if (singleMatch) {
     const val = parseFloat(singleMatch[1]);
@@ -130,6 +130,7 @@ export function parseNumericMetric(rawText, { mode = "max", defaultUnit = "" } =
 
 function normalizeUnit(rawUnit) {
   if (!rawUnit) return "";
+  if (rawUnit === "centimetres" || rawUnit === "centimeters" || rawUnit === "cm") return "cm";
   if (rawUnit === "metres" || rawUnit === "meters" || rawUnit === "m") return "m";
   if (rawUnit === "hours" || rawUnit === "hrs") return "hrs";
   if (rawUnit === "years" || rawUnit === "yrs") return "+";
@@ -143,7 +144,13 @@ function formatStatNumber(num, stat) {
     : Number.isInteger(stat.value)
       ? 0
       : 1;
-  const formatted = decimals > 0 ? Number(num).toFixed(decimals) : String(Math.round(num));
+  let formatted;
+  if (decimals > 0) {
+    formatted = Number(num).toFixed(decimals);
+  } else {
+    const rounded = Math.round(num);
+    formatted = stat.useLocale ? rounded.toLocaleString("en-US") : String(rounded);
+  }
   return `${stat.prefix || ""}${formatted}${stat.suffix || ""}`;
 }
 
@@ -292,10 +299,13 @@ export function createTelemetryStatsGrid(
   statsList,
   { variant = "default", ariaLabel = "Archive telemetry metrics", sectionId = "" } = {},
 ) {
-  const items = Array.isArray(statsList) ? statsList.slice(0, 4) : [];
+  const rawList = Array.isArray(statsList) ? statsList : [];
+  const items = rawList.length > 4 ? rawList.slice(0, 6) : rawList.slice(0, 4);
+  const isCompact = variant === "compact";
+  const isSixGrid = items.length > 4;
   const grid = createEl(
     "div",
-    `plantipedia-telemetry-grid${variant === "compact" ? " plantipedia-telemetry-grid--compact" : ""}`,
+    `plantipedia-telemetry-grid${isCompact ? " plantipedia-telemetry-grid--compact" : ""}${isSixGrid ? " plantipedia-telemetry-grid--six" : ""}`,
   );
   if (sectionId) grid.id = sectionId;
   grid.setAttribute("role", "region");
@@ -336,29 +346,49 @@ export function createTelemetryStatsGrid(
 /* ==================== PAGE-SPECIFIC TELEMETRY MAPPINGS ==================== */
 
 export function buildHomeTelemetryStats(speciesIndex = []) {
-  const count = Array.isArray(speciesIndex) && speciesIndex.length > 0 ? speciesIndex.length : 50;
+  const list = Array.isArray(speciesIndex) ? speciesIndex : [];
+  const count = list.length > 0 ? list.length : 50;
+  const familySet = new Set();
+  list.forEach((sp) => {
+    const fam = sp.family || sp.overview?.family;
+    if (fam) familySet.add(fam);
+  });
+  const familyCount = familySet.size > 0 ? familySet.size : 34;
+
   return [
     {
       value: count,
       suffix: "+",
       label: "CURATED MONOGRAPHS",
-      subtext: "Peer-verified botanical records",
+      subtext: "Peer-verified local botanical records",
     },
     {
-      value: 8,
+      value: 400000,
+      useLocale: true,
+      suffix: "+",
+      label: "GLOBAL BOTANICAL TAXA",
+      subtext: "Live Worldwide Botanical Server flora & tree index",
+    },
+    {
+      value: 15,
       label: "CHAPTERS / SPECIES",
-      subtext: "Standardized scientific structure",
+      subtext: "Dynamic context-matched monograph architecture",
+    },
+    {
+      value: familyCount,
+      label: "BOTANICAL FAMILIES",
+      subtext: "Phylogenetic clade & taxonomic coverage",
     },
     {
       value: 6,
       label: "BENGALI SEASONS",
-      subtext: "Complete phenology coverage",
+      subtext: "Complete Shororitu phenology coverage",
     },
     {
       value: 100,
       suffix: "%",
       label: "OPEN ACCESS",
-      subtext: "Offline-ready botanical archive",
+      subtext: "Bilingual EN / বাংলা & print-ready field sheets",
     },
   ];
 }
@@ -789,27 +819,42 @@ export function extractPlantTelemetryStats(plant) {
   if (!plant || typeof plant !== "object") return [];
 
   const profile = PLANT_TRAIT_PROFILES[plant.slug] || {};
+  const hints = plant.telemetryHints || {};
   const corpus = [
     plant.leadOverview || "",
     ...(plant.sections || []).flatMap((sec) => sec.paragraphs || []),
   ].join(" ");
 
-  // 1. Height / Canopy Stature from overview.growthForm (or curated profile fallback)
+  // 1. Height / Canopy Stature from telemetryHints, overview.growthForm, or curated profile
   const parsedHeight = parseNumericMetric(plant.overview?.growthForm || "", {
     mode: "max",
   });
-  const heightStat = {
-    value: parsedHeight?.value ?? profile.height?.value ?? 5,
-    decimals: parsedHeight?.decimals ?? profile.height?.decimals ?? 0,
-    suffix: parsedHeight?.suffix || profile.height?.suffix || "m",
-    label: profile.height?.label || "MATURE PLANT STATURE",
-    subtext: profile.height?.subtext || plant.overview?.growthForm || "Botanical growth habit",
-  };
+  const heightStat = hints.stature
+    ? {
+        value: Number(hints.stature.value) || 1,
+        decimals: Number.isFinite(hints.stature.decimals)
+          ? hints.stature.decimals
+          : Number.isInteger(Number(hints.stature.value))
+            ? 0
+            : 1,
+        suffix: hints.stature.suffix || "m",
+        label: hints.stature.label || "MATURE PLANT STATURE",
+        subtext: hints.stature.subtext || plant.overview?.growthForm || "Botanical growth habit",
+      }
+    : {
+        value: parsedHeight?.value ?? profile.height?.value ?? 5,
+        decimals: parsedHeight?.decimals ?? profile.height?.decimals ?? 0,
+        suffix: parsedHeight?.suffix || profile.height?.suffix || "m",
+        label: profile.height?.label || "MATURE PLANT STATURE",
+        subtext: profile.height?.subtext || plant.overview?.growthForm || "Botanical growth habit",
+      };
 
-  // 2. Optimal Soil pH extracted from monograph prose or cultivationTelemetry
-  let phVal = profile.ph?.value ?? 6.5;
-  let phDecimals = profile.ph?.decimals ?? 1;
-  if (
+  // 2. Optimal Soil pH extracted from telemetryHints, cultivationTelemetry, curated profile, or prose
+  let phVal = hints.ph?.value ?? profile.ph?.value ?? 6.5;
+  let phDecimals = hints.ph?.decimals ?? profile.ph?.decimals ?? 1;
+  if (hints.ph?.value !== undefined) {
+    phVal = Number(hints.ph.value);
+  } else if (
     plant.cultivationTelemetry?.phMin &&
     plant.cultivationTelemetry?.phMax
   ) {
@@ -835,27 +880,38 @@ export function extractPlantTelemetryStats(plant) {
   const phStat = {
     value: phVal,
     decimals: phDecimals,
-    label: profile.ph?.label || "OPTIMAL SOIL pH",
+    label: hints.ph?.label || profile.ph?.label || "OPTIMAL SOIL pH",
     subtext:
+      hints.ph?.subtext ||
       profile.ph?.subtext ||
-      (phVal < 6.0
-        ? "Acidic organic substrate"
-        : phVal > 7.2
-          ? "Neutral to mildly alkaline"
-          : "Slightly acidic to neutral"),
+      (phVal < 5.5
+        ? "Strongly acidic bog / peat substrate"
+        : phVal < 6.2
+          ? "Acidic organic substrate"
+          : phVal > 7.2
+            ? "Neutral to mildly alkaline"
+            : "Slightly acidic to neutral"),
   };
 
   // 3. Lifespan / Growth Speed / Harvest Cycle
-  const vitalityStat = {
-    value: profile.vitality?.value ?? 25,
-    decimals: profile.vitality?.decimals ?? 0,
-    suffix: profile.vitality?.suffix ?? "+",
-    label: profile.vitality?.label || "LIFESPAN (YEARS)",
-    subtext: profile.vitality?.subtext || `${plant.overview?.family || "Botanical"} specimen longevity`,
-  };
+  const vitalityStat = hints.vitality
+    ? {
+        value: Number(hints.vitality.value) || 20,
+        decimals: Number.isFinite(hints.vitality.decimals) ? hints.vitality.decimals : 0,
+        suffix: hints.vitality.suffix ?? "+",
+        label: hints.vitality.label || "LIFESPAN (YEARS)",
+        subtext: hints.vitality.subtext || `${plant.overview?.family || "Botanical"} specimen longevity`,
+      }
+    : {
+        value: profile.vitality?.value ?? 25,
+        decimals: profile.vitality?.decimals ?? 0,
+        suffix: profile.vitality?.suffix ?? "+",
+        label: profile.vitality?.label || "LIFESPAN (YEARS)",
+        subtext: profile.vitality?.subtext || `${plant.overview?.family || "Botanical"} specimen longevity`,
+      };
 
   // 4. Thermal Tolerance / Daily Sunlight Hours
-  let climateStat = profile.climate;
+  let climateStat = hints.climate || profile.climate;
   if (!climateStat) {
     const tempMatch = corpus.match(/(\d+(?:[–-]\d+)?)\s*°C/i);
     const sunMatch = corpus.match(/(\d+(?:[–-]\d+)?)\s*(?:hours|hrs)/i);
@@ -865,7 +921,7 @@ export function extractPlantTelemetryStats(plant) {
         value: parsedT?.value ?? 30,
         suffix: "°C",
         label: "PEAK THERMAL TOLERANCE",
-        subtext: "Tropical & subtropical adaptation",
+        subtext: "Habitat thermal adaptation",
       };
     } else if (sunMatch) {
       const parsedS = parseNumericMetric(sunMatch[0], { mode: "max", defaultUnit: "hrs" });

@@ -1,23 +1,24 @@
 {
-  "schemaVersion": "3.0.0",
+  "schemaVersion": "3.1.0",
   "application": {
     "name": "Plantipedia",
-    "version": "3.0.0",
+    "version": "3.1.0",
+    "canonicalUrl": "https://plantipedia.rayaantasnim.workers.dev/",
     "tagline": "Exploring the fascinating world of plants, one species at a time.",
-    "datasetCacheBust": "v50",
+    "datasetCacheBust": "v51",
     "defaultLocale": "en",
     "supportedLocales": ["en", "bn"]
   },
   "archive": {
     "curatedMonographsCount": 50,
     "documentedFamiliesCount": 34,
-    "monographChapters": 8,
+    "monographChapters": 15,
     "phenologicalSeasons": 6
   },
   "globalBotanicalServer": {
     "enabled": true,
     "zeroKeyClientSide": true,
-    "estimatedGlobalTaxa": "390,000+",
+    "estimatedGlobalTaxa": "400,000+",
     "timeoutMs": 12000,
     "maxRetries": 2
   },

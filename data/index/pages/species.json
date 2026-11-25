@@ -2,26 +2,26 @@
   "schemaVersion": "1.0.0",
   "page": "species",
   "seo": {
-    "title": "Available Species Directory — 50 Curated Flora Monographs | Plantipedia",
-    "description": "Browse the complete Plantipedia species directory of 50 curated botanical monographs featuring A-Z alphabetical indexing, taxonomic category filters, and instant search.",
-    "keywords": "plant directory, 50 plant species, A-Z plant list, botanical atlas, Plantipedia species, taxonomy search, medicinal flora, fruit trees, ornamental flowers",
+    "title": "Available Species Directory — 50 Curated 15-Chapter Monographs | Plantipedia",
+    "description": "Browse Plantipedia Version 3.1's directory of 50 curated 15-chapter local monographs alongside a live Global Botanical Server uplink indexing 400,000+ worldwide vascular plants and trees, bilingual EN / বাংলা search, and field sheets.",
+    "keywords": "plant directory, 50 plant species, 15 botanical chapters, 400000 global taxa, A-Z plant list, botanical atlas, Plantipedia species, taxonomy search, medicinal flora",
     "author": "Jalees Habib, Rayaan Tasnim",
     "canonicalFile": "species/",
     "ogType": "website",
-    "ogTitle": "Available Species Directory — 50 Curated Flora Monographs | Plantipedia",
-    "ogDescription": "Search and filter all 50 documented botanical species across Flowers, Fruit Trees, Medicinal Plants, Shrubs & Herbs, Trees & Palms, and Aquatic Flora.",
-    "ogImage": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "ogTitle": "Available Species Directory — 50 Curated 15-Chapter Monographs | Plantipedia",
+    "ogDescription": "Search and filter 50 curated 15-chapter monographs in English and বাংলা alongside a live Global Botanical Server uplink indexing 400,000+ worldwide species.",
+    "ogImage": "https://images.pexels.com/photos/40222323/pexels-photo-40222323.jpeg?auto=compress&cs=tinysrgb&w=1200",
     "ogImageAlt": "Plantipedia Botanical Species Directory",
     "jsonLd": {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       "name": "Plantipedia Available Species Directory",
-      "description": "Searchable and filterable atlas of 50 curated botanical species monographs on Plantipedia.",
-      "url": "https://rayaantasnim.github.io/plantipedia/species/",
+      "description": "Searchable and filterable atlas of 50 curated 15-chapter botanical monographs paired with 400,000+ worldwide taxa via Global Botanical Server on Plantipedia Version 3.1.",
+      "url": "https://plantipedia.rayaantasnim.workers.dev/species/",
       "isPartOf": {
         "@type": "WebSite",
         "name": "Plantipedia",
-        "url": "https://rayaantasnim.github.io/plantipedia/"
+        "url": "https://plantipedia.rayaantasnim.workers.dev/"
       },
       "author": [
         { "@type": "Person", "name": "Jalees Habib" },

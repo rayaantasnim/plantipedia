@@ -25,7 +25,14 @@
     { "prefix": "Special Thanks to", "name": "IDAI Universe" },
     { "prefix": "Powered by", "name": "Olympiad Edge" }
   ],
-  "disclaimer": "Educational & Botanical Disclaimer: Monographs, taxonomic notes, and Pexels photography are curated strictly for non-commercial academic reference and do not constitute clinical or medical advice.",
+  "disclaimer": "Educational & Botanical Disclaimer: Monographs, taxonomic notes, and botanical photography are curated strictly for non-commercial academic reference and do not constitute clinical or medical advice.",
+  "quickLinks": [
+    { "label": "📚 Species Atlas", "href": "./species/" },
+    { "label": "🌐 Global Botanical Server", "href": "./plant/live/" },
+    { "label": "📖 Sources & References", "href": "./sources/" },
+    { "label": "🧭 Capabilities Suite", "href": "./services/" },
+    { "label": "🚀 Upcoming Releases", "href": "./roadmap/" }
+  ],
   "copyright": {
     "autoYear": true,
     "owner": "Plantipedia",

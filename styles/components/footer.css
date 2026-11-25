@@ -1,0 +1,130 @@
+/* ==========================================================================
+   PLANTIPEDIA — GLOBAL FOOTER QUICK-NAVIGATION PILL BUTTONS
+   Frosted Emerald-Obsidian Pill Geometry, Active Route Highlighting & Motion
+   ========================================================================== */
+
+.footer-quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 22px auto;
+  max-width: 880px;
+  width: 100%;
+}
+
+.footer-quick-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(52, 211, 153, 0.24);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  color: #d1fae5;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  transition:
+    transform 0.24s var(--ease-settle, cubic-bezier(0.16, 1, 0.3, 1)),
+    background-color 0.24s ease,
+    border-color 0.24s ease,
+    color 0.24s ease,
+    box-shadow 0.24s ease;
+}
+
+.footer-quick-link-icon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  transition: transform 0.24s var(--ease-settle, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.footer-quick-link:hover,
+.footer-quick-link:focus-visible {
+  transform: translateY(-2px);
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(52, 211, 153, 0.6);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 8px 20px -6px rgba(16, 185, 129, 0.35);
+}
+
+.footer-quick-link:hover .footer-quick-link-icon,
+.footer-quick-link:focus-visible .footer-quick-link-icon {
+  transform: scale(1.08);
+}
+
+.footer-quick-link:focus-visible {
+  outline: 2px solid #34d399;
+  outline-offset: 2px;
+}
+
+.footer-quick-link.footer-active {
+  border-color: #34d399;
+  background: rgba(52, 211, 153, 0.22);
+  color: #6ee7b7;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 6px 18px -6px rgba(16, 185, 129, 0.28);
+}
+
+.footer-quick-link.footer-active:hover,
+.footer-quick-link.footer-active:focus-visible {
+  background: rgba(52, 211, 153, 0.28);
+  border-color: #6ee7b7;
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 8px 20px -6px rgba(16, 185, 129, 0.38);
+}
+
+.footer-quick-link:active,
+.footer-quick-link.footer-active:active {
+  transform: translateY(0) scale(0.97);
+}
+
+@media (max-width: 600px) {
+  .footer-quick-links {
+    gap: 10px;
+    margin: 18px auto;
+  }
+
+  .footer-quick-link {
+    padding: 9px 15px;
+    min-height: 40px;
+    font-size: 0.835rem;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .footer-quick-link {
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-quick-link,
+  .footer-quick-link-icon {
+    transition: none !important;
+  }
+
+  .footer-quick-link:hover,
+  .footer-quick-link:focus-visible,
+  .footer-quick-link:active,
+  .footer-quick-link.footer-active:active,
+  .footer-quick-link:hover .footer-quick-link-icon {
+    transform: none !important;
+  }
+}

@@ -1,6 +1,6 @@
 /* ==========================================================================
    PLANTIPEDIA — /services/ DIGITAL ECOSYSTEM & RESEARCH SUITE STYLESHEET
-   10-Section Research Portal, Telemetry Charts, Live Sandbox, & Map Matrix
+   11-Section Research Portal, Telemetry Charts, Live Sandbox, & Map Matrix
    ========================================================================== */
 
 /* ================= /services/ DIGITAL ECOSYSTEM & RESEARCH SUITE ================= */
@@ -1834,6 +1834,147 @@
   padding-bottom: clamp(56px, 7vw, 88px);
 }
 
+.services-hero-subcopy,
+.services-section-lead,
+.services-toolkit-desc,
+.services-pathway-desc,
+.services-arch-desc,
+.services-pipeline-insp-desc,
+.services-studio-sheet-prose,
+.services-studio-feature-desc,
+.services-standard-desc,
+.services-final-cta-text,
+.services-scale-prose {
+  text-align: justify;
+  text-justify: inter-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* Section 11: Worldwide Botanical Scale — 400,000+ Indexed Taxa */
+.services-scale-card {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 28px;
+  align-items: center;
+  padding: clamp(24px, 4vw, 38px);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      ellipse 70% 70% at 90% 10%,
+      rgba(52, 211, 153, 0.14),
+      transparent 65%
+    ),
+    rgba(6, 28, 19, 0.86);
+  border: 1px solid rgba(52, 211, 153, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 20px 46px rgba(0, 0, 0, 0.36);
+}
+
+.services-scale-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.services-scale-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.services-scale-metric-box {
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: rgba(4, 20, 12, 0.72);
+  border: 1px solid rgba(110, 231, 183, 0.24);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.services-scale-metric-box--global {
+  border-color: rgba(56, 189, 248, 0.34);
+  background: rgba(6, 26, 36, 0.7);
+}
+
+.services-scale-metric-num {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.2vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: #6ee7b7;
+  font-variant-numeric: tabular-nums;
+}
+
+.services-scale-metric-box--global .services-scale-metric-num {
+  color: #7dd3fc;
+}
+
+.services-scale-metric-label {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-primary);
+}
+
+.services-scale-metric-note {
+  font-size: 0.82rem;
+  color: var(--ink-secondary);
+  line-height: 1.45;
+}
+
+.services-scale-prose {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.72;
+  color: var(--ink-secondary);
+}
+
+.services-scale-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.services-scale-media {
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(110, 231, 183, 0.28);
+  background: #051c12;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.38);
+}
+
+.services-scale-media-box {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.services-scale-media-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.services-scale-card:hover .services-scale-media-box img {
+  transform: scale(1.04);
+}
+
+.services-scale-figcaption {
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+  border-top: 1px solid rgba(110, 231, 183, 0.14);
+  background: rgba(3, 14, 9, 0.7);
+}
+
 .services-standards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1955,7 +2096,8 @@
 @media (max-width: 1024px) {
   .services-arch-grid,
   .services-standards-grid,
-  .services-studio-grid {
+  .services-studio-grid,
+  .services-scale-card {
     grid-template-columns: 1fr;
   }
 
@@ -1966,7 +2108,8 @@
 
 @media (max-width: 768px) {
   .services-pipeline-specs,
-  .services-studio-sheet-specs {
+  .services-studio-sheet-specs,
+  .services-scale-metrics {
     grid-template-columns: 1fr;
   }
 }
@@ -1990,12 +2133,14 @@
     grid-template-columns: 1fr;
   }
 
-  .services-final-cta-actions {
+  .services-final-cta-actions,
+  .services-scale-actions {
     width: 100%;
     flex-direction: column;
   }
 
-  .services-final-cta-actions .specimen-nf-btn {
+  .services-final-cta-actions .specimen-nf-btn,
+  .services-scale-actions .specimen-nf-btn {
     width: 100%;
     text-align: center;
     justify-content: center;

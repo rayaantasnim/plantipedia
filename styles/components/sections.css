@@ -113,6 +113,11 @@
   font-size: 0.91rem;
   line-height: 1.6;
   color: #cbd5e1;
+  text-align: justify;
+  text-justify: inter-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 /* ================= HOME SECTION 02: FEATURED SPECIES & EXPLORER SHOWCASE ================= */
@@ -709,14 +714,87 @@
 
 .taxonomy-page-header {
   margin-top: 22px;
-  margin-bottom: 34px;
+  margin-bottom: 28px;
   max-width: 780px;
+}
+
+.taxonomy-controls-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  border-radius: 16px;
+  background: rgba(6, 26, 17, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(52, 211, 153, 0.22);
+}
+
+.taxonomy-controls-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+}
+
+.taxonomy-clade-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.taxonomy-clade-pill {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 231, 183, 0.22);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.16s ease;
+}
+
+.taxonomy-clade-pill:hover {
+  transform: translateY(-1px);
+  border-color: rgba(110, 231, 183, 0.48);
+  color: var(--ink-primary);
+}
+
+.taxonomy-clade-pill.is-active {
+  background: rgba(52, 211, 153, 0.18);
+  border-color: rgba(52, 211, 153, 0.52);
+  color: #6ee7b7;
+}
+
+.taxonomy-search-input {
+  min-width: 240px;
+  flex: 0 1 320px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(110, 231, 183, 0.24);
+  background: rgba(4, 18, 12, 0.82);
+  color: var(--ink-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.taxonomy-search-input:focus {
+  border-color: var(--accent-mint);
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.16);
 }
 
 .family-lineage-grid,
 .seasons-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
 }
 
@@ -731,7 +809,7 @@
   align-items: stretch;
   gap: 0.75rem;
   width: 100%;
-  padding: 1.75rem;
+  padding: 1.45rem;
   border-radius: 16px;
   background: rgba(7, 31, 19, 0.72);
   backdrop-filter: blur(12px);
@@ -746,6 +824,44 @@
     border-color 0.24s ease,
     box-shadow 0.24s ease,
     background-color 0.24s ease;
+}
+
+.family-card-media,
+.season-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #062115;
+  border: 1px solid rgba(52, 211, 153, 0.22);
+  margin-bottom: 0.25rem;
+}
+
+.family-card-media::after,
+.season-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 20, 12, 0.04) 40%,
+    rgba(4, 20, 12, 0.56) 100%
+  );
+  pointer-events: none;
+}
+
+.family-card-media img,
+.season-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s var(--ease-settle);
+}
+
+.family-lineage-card:hover .family-card-media img,
+.season-card:hover .season-card-media img {
+  transform: scale(1.05);
 }
 
 .family-lineage-card::after,
@@ -830,6 +946,11 @@
   font-size: 0.93rem;
   line-height: 1.65;
   color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .season-card-titles {
@@ -869,6 +990,11 @@
   font-size: 0.93rem;
   line-height: 1.62;
   color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .family-card-footer,
@@ -944,6 +1070,10 @@
   font-size: 0.83rem;
   line-height: 1.5;
   color: #d1fae5;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 /* ================= COMPARE SPLIT VIEW WORKSPACE (compare.html) ================= */

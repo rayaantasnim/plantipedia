@@ -2,31 +2,32 @@
   "schemaVersion": "1.0.0",
   "page": "services",
   "seo": {
-    "title": "Digital Botanical Research Suite & Services | Plantipedia",
-    "description": "Explore Plantipedia's 10-section botanical research suite—Global Botanical Server Engine, bilingual search, split comparator, 6-season calendar, and citation sandbox.",
-    "keywords": "Plantipedia services, botanical research suite, Global Botanical Server, bilingual plant search, species comparison tool, Bengali 6-season calendar, plant citation generator",
+    "title": "Digital Botanical Research Suite & Services v3.1 | Plantipedia",
+    "description": "Explore Plantipedia Version 3.1's 11-section botanical research suite: 50 deeply curated 15-chapter monographs paired with a live Global Botanical Server uplink connecting 400,000+ worldwide vascular plants and tree species, bilingual EN / বাংলা telemetry, and print-ready field sheets.",
+    "keywords": "Plantipedia services, botanical research suite, Global Botanical Server, 400000 flora, 15 chapters, bilingual plant search, species comparison tool, Bengali 6-season calendar, plant citation generator",
     "author": "Jalees Habib, Rayaan Tasnim",
     "canonicalFile": "services/",
     "ogType": "website",
-    "ogTitle": "Digital Botanical Research Suite & Services | Plantipedia",
-    "ogDescription": "Explore Plantipedia's 10-section botanical research suite, Global Botanical Server Engine, live SVG visualizations, and citation/glossary sandboxes.",
-    "ogImage": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "ogTitle": "Digital Botanical Research Suite & Services v3.1 | Plantipedia",
+    "ogDescription": "Explore Plantipedia Version 3.1's 11-section botanical research suite uniting 50 curated 15-chapter monographs, 400,000+ live Global Server taxa, interactive SVG analytics, and citation sandboxes.",
+    "ogImage": "https://images.pexels.com/photos/36868557/pexels-photo-36868557.jpeg?auto=compress&cs=tinysrgb&w=1200",
     "ogImageAlt": "Plantipedia Digital Botanical Research Suite",
     "jsonLd": {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": ["WebApplication", "SoftwareApplication"],
-          "@id": "https://rayaantasnim.github.io/plantipedia/services/#webapp",
+          "@id": "https://plantipedia.rayaantasnim.workers.dev/services/#webapp",
           "name": "Plantipedia Digital Botanical Research Suite",
           "applicationCategory": "EducationalApplication",
           "operatingSystem": "All",
           "browserRequirements": "Requires modern ES6+ web browser",
-          "url": "https://rayaantasnim.github.io/plantipedia/services/",
+          "url": "https://plantipedia.rayaantasnim.workers.dev/services/",
           "inLanguage": ["en", "bn"],
-          "description": "10-section botanical research suite combining 50 curated 8-chapter monographs, the Zero-Key Global Botanical Server Engine, bilingual EN/বাংলা search, split comparator, and academic citation tools.",
+          "description": "11-section botanical research suite combining 50 curated 15-chapter local monographs, a live Global Botanical Server uplink connecting 400,000+ worldwide vascular plants and tree species, bilingual EN / বাংলা telemetry, split comparator, and academic citation tools.",
           "featureList": [
-            "Zero-Key Global Botanical Server Engine",
+            "Zero-Key Global Botanical Server Engine (400,000+ Taxa)",
+            "50 Curated 15-Chapter Local Monographs",
             "Bilingual EN / বাংলা Instant Search",
             "Side-by-Side Split Specimen Comparator",
             "6-Season Bengali Phenology Calendar",
@@ -45,19 +46,19 @@
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://rayaantasnim.github.io/plantipedia/services/#breadcrumb",
+          "@id": "https://plantipedia.rayaantasnim.workers.dev/services/#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://rayaantasnim.github.io/plantipedia/"
+              "item": "https://plantipedia.rayaantasnim.workers.dev/"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "Services & Tools",
-              "item": "https://rayaantasnim.github.io/plantipedia/services/"
+              "item": "https://plantipedia.rayaantasnim.workers.dev/services/"
             }
           ]
         }
@@ -71,10 +72,10 @@
     ],
     "eyebrow": "01. Digital Botanical Research Suite · ডিজিটাল উদ্ভিদবিজ্ঞান সেবা",
     "headline": "Open-Access Botanical Tools Built for Field & Scholarship",
-    "subcopy": "Plantipedia pairs peer-structured eight-chapter species monographs with real-time bilingual search, seasonal delta phenology, soil telemetry meters, and instant academic citations—zero logins, zero paywalls.",
+    "subcopy": "Plantipedia pairs peer-structured 15-chapter species monographs with a live Global Botanical Server indexing 400,000+ worldwide vascular species, real-time bilingual search, seasonal delta phenology, soil telemetry meters, and instant academic citations—zero logins, zero paywalls.",
     "heroImage": {
-      "imageUrl": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      "imageAlt": "Lush tropical emerald canopy leaves representing Plantipedia's digital botanical research suite"
+      "imageUrl": "https://images.pexels.com/photos/13995284/pexels-photo-13995284.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "imageAlt": "Lush botanical foliage canopy representing Plantipedia's digital botanical research suite"
     },
     "primaryCta": { "label": "Browse Species Atlas →", "href": "./species/" },
     "secondaryCta": { "label": "Try Live Sandbox", "href": "#services-sandbox" }
@@ -89,7 +90,8 @@
     { "num": "07", "label": "Global Server", "href": "#services-global-architecture" },
     { "num": "08", "label": "Synthesis Pipeline", "href": "#services-synthesis-pipeline" },
     { "num": "09", "label": "Field-Sheet Studio", "href": "#services-field-studio" },
-    { "num": "10", "label": "Standards & CTA", "href": "#services-open-standards" }
+    { "num": "10", "label": "Standards & CTA", "href": "#services-open-standards" },
+    { "num": "11", "label": "Worldwide Scale", "href": "#services-worldwide-scale" }
   ],
   "telemetry": [
     {
@@ -108,7 +110,7 @@
     },
     {
       "id": "kpi-chapters",
-      "value": "08",
+      "value": "15",
       "label": "Chapters Per Monograph",
       "note": "Morphology to Ethnobotany"
     },
@@ -221,7 +223,7 @@
       },
       {
         "id": "monographs",
-        "meta": "8-Chapter Reference",
+        "meta": "15-Chapter Reference",
         "title": "Curated Species Directory & Monographs",
         "description": "Browse 50 illustrated botanical dossiers featuring herbarium plates, telemetry meters, bilingual terminology tooltips, and print-ready field sheets.",
         "ctaLabel": "Browse Species Atlas →",
@@ -282,7 +284,7 @@
   "globalArchitecture": {
     "eyebrow": "07. Global Botanical Server Architecture",
     "heading": "Zero-Key Worldwide Flora Uplink & Botanical Validation",
-    "lead": "Beyond the 50 curated monographs, Plantipedia's Zero-Key Global Server Engine resolves 390,000+ worldwide vascular species on demand with automated taxonomic verification.",
+    "lead": "Beyond the 50 curated monographs, Plantipedia's Zero-Key Global Server Engine resolves 400,000+ worldwide vascular species and trees on demand with automated taxonomic verification.",
     "pillars": [
       {
         "id": "taxonomic-resolution",
@@ -315,7 +317,7 @@
   },
   "pipeline": {
     "eyebrow": "08. Interactive Data Synthesis Pipeline",
-    "heading": "How Live Queries Become Structured 8-Chapter Monographs",
+    "heading": "How Live Queries Become Structured 15-Chapter Monographs",
     "lead": "Select any stage in the pipeline diagram below to inspect its telemetry targets, schema mapping rules, and fallback safeguards.",
     "steps": [
       {
@@ -343,13 +345,13 @@
       {
         "id": "structuring",
         "stepNumber": "03",
-        "title": "8-Chapter Schema Structuring",
-        "shortLabel": "8-Chapter Structuring",
+        "title": "15-Chapter Schema Structuring",
+        "shortLabel": "15-Chapter Structuring",
         "latency": "< 40ms Deterministic Synthesis",
-        "protocol": "Plantipedia Monograph Schema v1",
-        "description": "Transforms raw global records into Plantipedia's standardized eight-chapter monograph structure covering Overview, Morphology, Taxonomy, Habitat, Ecology, Ethnobotany, Medicinal Profile, and Horticultural Care—enriched with glossary tooltip parsing.",
+        "protocol": "Plantipedia Monograph Schema v3.1",
+        "description": "Transforms raw global records into Plantipedia's standardized 15-chapter monograph architecture covering Overview, Morphology, Taxonomy, Habitat, Ecology, Ethnobotany, Medicinal Profile, and Horticultural Care—enriched with glossary tooltip parsing.",
         "safeguard": "Missing ecological telemetry fields degrade gracefully to verified family-level defaults without blank UI panels.",
-        "output": "Complete 8-Chapter DOM-Safe Dossier"
+        "output": "Complete 15-Chapter DOM-Safe Dossier"
       },
       {
         "id": "comparator",
@@ -417,6 +419,27 @@
       "copy": "Move seamlessly between Plantipedia's hand-edited flagship flora archive and the live Worldwide Botanical Server Gateway.",
       "primaryCta": { "label": "Explore 50 Curated Species →", "href": "./species/" },
       "secondaryCta": { "label": "Launch Global Server Gateway →", "href": "./#worldwide-gateway" }
+    }
+  },
+  "worldwideScale": {
+    "eyebrow": "11 · Worldwide Botanical Scale — 400,000+ Indexed Taxa",
+    "heading": "Dual-Layer Scale: Curated Depth Meets Global Vascular Breadth",
+    "lead": "Plantipedia Version 3.1 bridges peer-structured local South Asian & tropical monographs with live, zero-key querying across Earth's global plant and tree diversity.",
+    "localLabel": "Curated Local Monographs",
+    "localNote": "15-chapter scholarly dossiers · EN & বাংলা verified",
+    "globalValue": "400,000+",
+    "globalLabel": "Live Global Server Flora & Tree Taxa",
+    "globalNote": "Zero-key on-demand Global Flora Index uplink",
+    "paragraphs": [
+      "Every curated specimen inside Plantipedia opens into a 15-chapter monograph covering Linnaean classification, vegetative anatomy, phenology, ethnobotany, soil pH telemetry, and cultivation protocols.",
+      "Whenever your study moves beyond the 50-species core archive—spanning boreal conifers, desert caudiciforms, or 400,000+ worldwide vascular flora and trees—the Global Botanical Server renders a structured live dossier ready for split comparison and field export."
+    ],
+    "primaryCta": { "label": "Launch Worldwide Gateway →", "href": "./plant/live/" },
+    "secondaryCta": { "label": "Inspect v3.2 Roadmap →", "href": "./roadmap/" },
+    "image": {
+      "imageUrl": "https://images.pexels.com/photos/9219974/pexels-photo-9219974.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "imageAlt": "Lush botanical woodland foliage canopy illustrating worldwide vascular flora scale",
+      "caption": "Canopy giants & worldwide vascular lineages unified inside Plantipedia's dual-layer Botanical Server architecture."
     }
   }
 }

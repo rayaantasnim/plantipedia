@@ -6,7 +6,9 @@
 import { createEl } from "../../modules/utils/templates.js";
 
 function inferTelemetryFromText(plant) {
-  const sec07 = (plant?.sections || []).find((s) => s.number === "07");
+  const sec07 =
+    (plant?.sections || []).find((s) => s.isCultivationTelemetry) ||
+    (plant?.sections || []).find((s) => s.number === "07");
   const corpus = [
     ...(sec07?.paragraphs || []),
     ...((sec07?.subblocks || []).map((b) => `${b.heading} ${b.text}`)),
@@ -18,7 +20,7 @@ function inferTelemetryFromText(plant) {
   let phMax = 7.2;
   const phMatch = corpus.match(/ph\s*(\d+(?:\.\d+)?)\s*(?:-|–|to)\s*(\d+(?:\.\d+)?)/i);
   if (phMatch) {
-    phMin = Math.max(4.0, Math.min(9.0, parseFloat(phMatch[1])));
+    phMin = Math.max(3.5, Math.min(9.0, parseFloat(phMatch[1])));
     phMax = Math.max(phMin, Math.min(9.0, parseFloat(phMatch[2])));
   }
 
@@ -70,11 +72,11 @@ function buildSegmentedBar(level, labels, toneClass) {
 
 export function renderCultivationTelemetry(plant, telemetryCfg = {}) {
   const data = plant?.cultivationTelemetry || inferTelemetryFromText(plant);
-  const phMin = Math.max(4.0, Math.min(9.0, Number(data.phMin) || 6.0));
+  const phMin = Math.max(3.5, Math.min(9.0, Number(data.phMin) || 6.0));
   const phMax = Math.max(phMin, Math.min(9.0, Number(data.phMax) || 7.2));
 
-  const leftPct = ((phMin - 4.0) / 5.0) * 100;
-  const widthPct = Math.max(6, ((phMax - phMin) / 5.0) * 100);
+  const leftPct = ((phMin - 3.5) / 5.5) * 100;
+  const widthPct = Math.max(6, ((phMax - phMin) / 5.5) * 100);
 
   const panel = createEl("div", "cultivation-telemetry-panel");
   const head = createEl("div", "telemetry-panel-head");
@@ -92,14 +94,14 @@ export function renderCultivationTelemetry(plant, telemetryCfg = {}) {
   }
   panel.appendChild(head);
 
-  // 1. Soil pH Spectrum Meter (4.0 – 9.0)
+  // 1. Soil pH Spectrum Meter (3.5 – 9.0)
   const phCard = createEl("div", "telemetry-ph-card");
   const phTop = createEl("div", "telemetry-row-top");
   phTop.appendChild(
     createEl(
       "span",
       "telemetry-metric-label",
-      telemetryCfg.phLabel || "Optimal Soil pH Spectrum (4.0 – 9.0)",
+      telemetryCfg.phLabel || "Optimal Soil pH Spectrum (3.5 – 9.0)",
     ),
   );
   phTop.appendChild(
@@ -114,13 +116,13 @@ export function renderCultivationTelemetry(plant, telemetryCfg = {}) {
   phTrack.appendChild(phRange);
 
   const neutralMarker = createEl("div", "telemetry-ph-neutral-tick");
-  neutralMarker.style.left = "60%"; // 7.0 on 4.0–9.0 scale
+  neutralMarker.style.left = "63.6%"; // 7.0 on 3.5–9.0 scale
   neutralMarker.setAttribute("aria-hidden", "true");
   phTrack.appendChild(neutralMarker);
   phCard.appendChild(phTrack);
 
   const scaleTicks = createEl("div", "telemetry-ph-scale");
-  scaleTicks.appendChild(createEl("span", "", "4.0 Acidic"));
+  scaleTicks.appendChild(createEl("span", "", "3.5 Acidic"));
   scaleTicks.appendChild(createEl("span", "", "7.0 Neutral"));
   scaleTicks.appendChild(createEl("span", "", "9.0 Alkaline"));
   phCard.appendChild(scaleTicks);

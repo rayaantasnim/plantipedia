@@ -3,14 +3,14 @@
   "page": "taxonomy",
   "seo": {
     "title": "Taxonomic Lineage Explorer — Botanical Families | Plantipedia",
-    "description": "Browse Plantipedia's documented botanical families—from Anacardiaceae and Meliaceae to Nymphaeaceae and Orchidaceae—with diagnostic family traits and live species filtering.",
+    "description": "Explore 34 botanical families across Plantipedia Version 3.1's 50 curated 15-chapter local monographs and 400,000+ global flora index with clade filtering, diagnostic family traits, and bilingual EN / বাংলা search.",
     "keywords": "plant taxonomy, botanical families, Anacardiaceae, Meliaceae, Malvaceae, Moraceae, Lamiaceae, Asteraceae, Plantipedia",
     "author": "Plantipedia Botanical Archive",
     "canonicalFile": "taxonomy/",
     "ogType": "website",
     "ogTitle": "Taxonomic Lineage Explorer — Botanical Families | Plantipedia",
-    "ogDescription": "Explore evolutionary plant families, Linnaean orders, diagnostic floral morphology, and member species monographs.",
-    "ogImage": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "ogDescription": "Explore evolutionary plant families, Linnaean orders, diagnostic floral morphology, and 15-chapter species monographs in Plantipedia Version 3.1.",
+    "ogImage": "https://images.pexels.com/photos/18702246/pexels-photo-18702246/free-photo-of-close-up-of-sunflowers-in-paper.jpeg?auto=compress&cs=tinysrgb&w=1200",
     "ogImageAlt": "Plantipedia Taxonomic Lineage Explorer"
   },
   "banner": {

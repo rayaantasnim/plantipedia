@@ -3,14 +3,14 @@
   "page": "seasons",
   "seo": {
     "title": "Bangladeshi 6-Season Botanical Calendar (ষড়ঋতু) | Plantipedia",
-    "description": "Explore Bengal's six traditional botanical seasons—Summer (গ্রীষ্ম), Monsoon (বর্ষা), Autumn (শরৎ), Late Autumn (হেমন্ত), Winter (শীত), and Spring (বসন্ত)—and discover when local flora bloom, fruit, and flush.",
+    "description": "Explore Bengal's six botanical seasons—Summer (গ্রীষ্ম), Monsoon (বর্ষা), Autumn (শরৎ), Late Autumn (হেমন্ত), Winter (শীত), and Spring (বসন্ত)—across Plantipedia Version 3.1's 50 curated 15-chapter monographs and 400,000+ global flora index.",
     "keywords": "Bangladeshi 6 seasons, Shororitu, Bengal flora calendar, Grishmo, Borsha, Shorot, Hemonto, Sheet, Boshonto, seasonal blooming plants, Plantipedia",
     "author": "Plantipedia Botanical Archive",
     "canonicalFile": "seasons/",
     "ogType": "website",
     "ogTitle": "Bangladeshi 6-Season Botanical Calendar (ষড়ঋতু) | Plantipedia",
-    "ogDescription": "Interactive phenological calendar tracking blooming, fruiting, and canopy transitions across the six Bengali seasons.",
-    "ogImage": "https://images.pexels.com/photos/36002741/pexels-photo-36002741.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "ogDescription": "Interactive phenological calendar tracking blooming, fruiting, and canopy transitions across the six Bengali seasons in Plantipedia Version 3.1.",
+    "ogImage": "https://images.pexels.com/photos/30994370/pexels-photo-30994370/free-photo-of-vibrant-sunflower-in-thailand-close-up.jpeg?auto=compress&cs=tinysrgb&w=1200",
     "ogImageAlt": "Bangladeshi 6-Season Botanical Calendar"
   },
   "banner": {
@@ -40,6 +40,8 @@
       "bengaliMonths": "বৈশাখ – জ্যৈষ্ঠ (Boishakh – Jyoishtho)",
       "gregorianRange": "Mid-April to Mid-June",
       "monthWindows": [[4, 14, 6, 14]],
+      "imageUrl": "https://images.pexels.com/photos/41095533/pexels-photo-41095533.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "imageAlt": "Fiery scarlet Krishnochura blossoms flaring across sunlit summer skies during Grishmo",
       "climateSummary": "Intense solar radiation, warm westerly winds, and pre-monsoon Nor'wester storms (Kalboishakhi) catalyze rapid fruit sugar accumulation and intense essential-oil synthesis.",
       "phenologyHighlight": "Peak Fruit Ripening (Madhumas) · Mango, Jackfruit, & Nocturnal Jasmine",
       "ecologicalNotes": [
@@ -56,6 +58,8 @@
       "bengaliMonths": "আষাঢ় – শ্রাবণ (Asharh – Shrabon)",
       "gregorianRange": "Mid-June to Mid-August",
       "monthWindows": [[6, 15, 8, 15]],
+      "imageUrl": "https://images.pexels.com/photos/38093946/pexels-photo-38093946.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "imageAlt": "Golden-white Kadamba pincushion flowers blooming during rainy Borsha monsoon showers",
       "climateSummary": "Moisture-laden southwest monsoon winds inundate floodplains and haor basins, recharging soil aquifers and driving explosive vegetative growth.",
       "phenologyHighlight": "Aquatic Macrophyte Spread · Bamboo Shoot Elongation · Rain-Lush Shrubs",
       "ecologicalNotes": [
@@ -72,6 +76,8 @@
       "bengaliMonths": "ভাদ্র – আশ্বিন (Bhadro – Ashwin)",
       "gregorianRange": "Mid-August to Mid-October",
       "monthWindows": [[8, 16, 10, 15]],
+      "imageUrl": "https://images.pexels.com/photos/40463625/pexels-photo-40463625.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "imageAlt": "Coral-tubed night-flowering Shiuli stars ushering in crisp Shorot autumn dawns",
       "climateSummary": "Crystal-clear skies dotted with white clouds alternate with warm humid sunshine as floodwaters gently recede across alluvial plains.",
       "phenologyHighlight": "Mass Wetland Blooming · Sacred Lotus & National Water Lily Peak",
       "ecologicalNotes": [
@@ -88,6 +94,8 @@
       "bengaliMonths": "কার্তিক – অগ্রহায়ণ (Kartik – Agrohayon)",
       "gregorianRange": "Mid-October to Mid-December",
       "monthWindows": [[10, 16, 12, 15]],
+      "imageUrl": "https://images.pexels.com/photos/28337842/pexels-photo-28337842.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "imageAlt": "Vivid papery Bougainvillea bracts stimulated by cooling late-autumn Hemonto winds",
       "climateSummary": "Morning mist, crisp night cooling, and drying post-monsoon soils trigger physiological stress cues that initiate winter flower buds.",
       "phenologyHighlight": "Post-Rain Floral Induction · Bougainvillea Bracts & Marigold Beds",
       "ecologicalNotes": [
@@ -104,6 +112,8 @@
       "bengaliMonths": "পৌষ – মাঘ (Poush – Magh)",
       "gregorianRange": "Mid-December to Mid-February",
       "monthWindows": [[12, 16, 12, 31], [1, 1, 2, 12]],
+      "imageUrl": "https://images.pexels.com/photos/14304140/pexels-photo-14304140.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "imageAlt": "Golden Marigold petals blooming richly during cool sunny Sheet winter mornings",
       "climateSummary": "Dry, cool northern breezes and mild sunlit afternoons create ideal conditions for long-lasting exhibition blooms and vernalization cues.",
       "phenologyHighlight": "Cool-Season Ornamental Peak · Rose, Marigold, Orchid Spikes & Bougainvillea",
       "ecologicalNotes": [
@@ -120,6 +130,8 @@
       "bengaliMonths": "ফাল্গুন – চৈত্র (Falgun – Choitro)",
       "gregorianRange": "Mid-February to Mid-April",
       "monthWindows": [[2, 13, 4, 13]],
+      "imageUrl": "https://images.pexels.com/photos/31510582/pexels-photo-31510582.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "imageAlt": "Golden Champaca spring blossoms awakening under warm Boshonto southern breezes",
       "climateSummary": "Gentle southern breezes ('Dokhina Batash') and warming golden days awaken dormant buds, copper foliage flushes, and pollinator guilds.",
       "phenologyHighlight": "Orchard Panicle Emergence · Mango Mukul, Neem Blossoms & First-Flush Tea",
       "ecologicalNotes": [

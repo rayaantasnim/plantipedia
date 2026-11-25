@@ -5,12 +5,24 @@
  */
 
 import {
+  buildImageElement,
   createEl,
   createSpeciesCardElement,
   sanitizeUrl,
 } from "../utils/templates.js";
 import { animateDynamicSpeciesGrid } from "../../core/telemetry/animations.js";
 import { applyTaxonomySeo } from "../utils/seo.js";
+
+const FAMILIES_PER_PAGE = 10;
+
+function matchesCladeFilter(cladeStr, filterId) {
+  if (filterId === "all") return true;
+  const lc = String(cladeStr || "").toLowerCase();
+  if (filterId === "eudicot") return lc.includes("eudicot") && !lc.includes("basal");
+  if (filterId === "monocot") return lc.includes("monocot");
+  if (filterId === "basal") return lc.includes("basal") || lc.includes("magnoliid");
+  return true;
+}
 
 function buildFamilyDirectory(speciesIndex, familiesMeta = {}) {
   const map = new Map();
@@ -28,13 +40,23 @@ function buildFamilyDirectory(speciesIndex, familiesMeta = {}) {
           meta.description ||
           `Documented monographs belonging to the ${familyName} botanical family.`,
         traits: Array.isArray(meta.traits) ? meta.traits : [],
+        imageUrl:
+          meta.imageUrl ||
+          plant.thumbnailUrl ||
+          "./assets/images/placeholder-botanical.svg",
+        imageAlt:
+          meta.imageAlt ||
+          `${familyName} representative specimen: ${plant.commonName} (${plant.scientificName})`,
         species: [],
       });
     }
     map.get(familyName).species.push(plant);
   });
 
-  return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
+  // Sort strictly descending by documented monograph count, then alphabetically
+  return Array.from(map.values()).sort(
+    (a, b) => b.species.length - a.species.length || a.name.localeCompare(b.name),
+  );
 }
 
 function renderTaxonomyBanner(container, bannerCfg, activeFamilyObj) {
@@ -124,6 +146,9 @@ export function renderTaxonomyExplorer(mountEl, { pageData, speciesIndex }) {
   }
 
   let activeFamily = resolveUrlFamily();
+  let activeClade = "all";
+  let searchTerm = "";
+  let currentPage = 1;
 
   function syncFloatingBackButton(visible, onBack) {
     let btn = document.getElementById("taxonomyFloatingBackBtn");
@@ -155,6 +180,57 @@ export function renderTaxonomyExplorer(mountEl, { pageData, speciesIndex }) {
     }
   }
 
+  function buildPaginationBar(totalItems, totalPages, onPageChange) {
+    const bar = createEl("div", "directory-pagination-bar");
+    const status = createEl("div", "directory-pagination-status");
+    const startIdx = totalItems === 0 ? 0 : (currentPage - 1) * FAMILIES_PER_PAGE + 1;
+    const endIdx = Math.min(currentPage * FAMILIES_PER_PAGE, totalItems);
+    status.appendChild(
+      createEl(
+        "p",
+        "explorer-count",
+        `Showing ${startIdx}–${endIdx} of ${totalItems} botanical families (sorted by monograph count)`,
+      ),
+    );
+    bar.appendChild(status);
+
+    const nav = createEl("nav", "directory-pagination-nav");
+    nav.setAttribute("aria-label", "Botanical families pagination");
+    if (totalPages <= 1) {
+      nav.hidden = true;
+    } else {
+      const prevBtn = createEl("button", "pagination-btn", "← Prev");
+      prevBtn.type = "button";
+      prevBtn.disabled = currentPage <= 1;
+      prevBtn.addEventListener("click", () => onPageChange(currentPage - 1));
+      nav.appendChild(prevBtn);
+
+      const pillsWrap = createEl("div", "pagination-pills");
+      for (let p = 1; p <= totalPages; p += 1) {
+        const pill = createEl(
+          "button",
+          `pagination-pill${p === currentPage ? " active" : ""}`,
+          String(p),
+        );
+        pill.type = "button";
+        pill.setAttribute("aria-label", `Family archive page ${p}`);
+        if (p === currentPage) pill.setAttribute("aria-current", "page");
+        pill.addEventListener("click", () => onPageChange(p));
+        pillsWrap.appendChild(pill);
+      }
+      nav.appendChild(pillsWrap);
+
+      const nextBtn = createEl("button", "pagination-btn", "Next →");
+      nextBtn.type = "button";
+      nextBtn.disabled = currentPage >= totalPages;
+      nextBtn.addEventListener("click", () => onPageChange(currentPage + 1));
+      nav.appendChild(nextBtn);
+    }
+
+    bar.appendChild(nav);
+    return bar;
+  }
+
   function renderView() {
     try {
       applyTaxonomySeo({ pageData, families, activeFamily });
@@ -169,49 +245,179 @@ export function renderTaxonomyExplorer(mountEl, { pageData, speciesIndex }) {
     if (!activeFamily) {
       syncFloatingBackButton(false);
 
-      const grid = createEl("div", "family-lineage-grid");
-      families.forEach((fam) => {
-        const card = createEl("button", "family-lineage-card");
-        card.type = "button";
-        card.setAttribute("data-family-select", fam.name);
+      const controlsBar = createEl("div", "taxonomy-controls-bar");
+      const controlsTop = createEl("div", "taxonomy-controls-top");
 
-        const topRow = createEl("div", "family-card-top");
-        topRow.appendChild(createEl("span", "family-order-label", `${fam.order} · ${fam.clade}`));
-        const countText =
-          fam.species.length === 1
-            ? ui.speciesCountSingular || "1 Documented Species"
-            : (ui.speciesCountPlural || "{count} Documented Species").replace(
-                "{count}",
-                String(fam.species.length),
-              );
-        topRow.appendChild(createEl("span", "family-count-badge", countText));
-        card.appendChild(topRow);
+      const cladePills = createEl("div", "taxonomy-clade-pills");
+      cladePills.setAttribute("role", "tablist");
+      cladePills.setAttribute("aria-label", "Filter families by evolutionary clade");
 
-        card.appendChild(createEl("h2", "family-card-title", fam.name));
-        if (fam.familyBn) {
-          card.appendChild(createEl("p", "family-card-bn", fam.familyBn));
-        }
-        card.appendChild(createEl("p", "family-card-desc", fam.description));
+      const clades = [
+        { id: "all", label: `All Clades (${families.length})` },
+        {
+          id: "eudicot",
+          label: `Eudicots (${families.filter((f) => matchesCladeFilter(f.clade, "eudicot")).length})`,
+        },
+        {
+          id: "monocot",
+          label: `Monocots (${families.filter((f) => matchesCladeFilter(f.clade, "monocot")).length})`,
+        },
+        {
+          id: "basal",
+          label: `Basal & Magnoliids (${families.filter((f) => matchesCladeFilter(f.clade, "basal")).length})`,
+        },
+      ];
 
-        const footer = createEl("div", "family-card-footer");
-        const previewNames = fam.species.map((s) => s.commonName).slice(0, 3).join(", ");
-        footer.appendChild(createEl("span", "family-members-preview", previewNames));
-        footer.appendChild(
-          createEl("span", "family-inspect-cta", ui.viewFamilyCta || "Inspect Lineage →"),
+      clades.forEach((c) => {
+        const pill = createEl(
+          "button",
+          `taxonomy-clade-pill${activeClade === c.id ? " is-active" : ""}`,
+          c.label,
         );
-        card.appendChild(footer);
-
-        card.addEventListener("click", () => {
-          activeFamily = fam;
-          updateQueryParam(fam.name);
+        pill.type = "button";
+        pill.setAttribute("role", "tab");
+        pill.setAttribute("aria-selected", String(activeClade === c.id));
+        pill.addEventListener("click", () => {
+          activeClade = c.id;
+          currentPage = 1;
           renderView();
-          window.scrollTo({ top: 0, behavior: "smooth" });
         });
-
-        grid.appendChild(card);
+        cladePills.appendChild(pill);
       });
 
-      container.appendChild(grid);
+      const searchInput = createEl("input", "taxonomy-search-input");
+      searchInput.type = "search";
+      searchInput.value = searchTerm;
+      searchInput.placeholder = "Filter family, order, বাংলা, or member species...";
+      searchInput.setAttribute("aria-label", "Filter botanical families");
+
+      controlsTop.appendChild(cladePills);
+      controlsTop.appendChild(searchInput);
+      controlsBar.appendChild(controlsTop);
+      container.appendChild(controlsBar);
+
+      const resultsMount = createEl("div", "taxonomy-results-mount");
+
+      const renderFamilyGridResults = () => {
+        const q = searchTerm.trim().toLowerCase();
+        const filtered = families.filter((fam) => {
+          if (!matchesCladeFilter(fam.clade, activeClade)) return false;
+          if (!q) return true;
+          const haystack = [
+            fam.name,
+            fam.familyBn,
+            fam.order,
+            fam.clade,
+            ...fam.species.map((s) => `${s.commonName} ${s.scientificName} ${s.commonNameBn || ""}`),
+          ]
+            .join(" ")
+            .toLowerCase();
+          return haystack.includes(q);
+        });
+
+        const totalPages = Math.max(1, Math.ceil(filtered.length / FAMILIES_PER_PAGE));
+        if (currentPage > totalPages) currentPage = 1;
+
+        const start = (currentPage - 1) * FAMILIES_PER_PAGE;
+        const pageItems = filtered.slice(start, start + FAMILIES_PER_PAGE);
+
+        const frag = document.createDocumentFragment();
+        frag.appendChild(
+          buildPaginationBar(filtered.length, totalPages, (newPage) => {
+            currentPage = newPage;
+            renderFamilyGridResults();
+            controlsBar.scrollIntoView({ behavior: "smooth", block: "start" });
+          }),
+        );
+
+        if (pageItems.length === 0) {
+          const empty = createEl("div", "section-error-card");
+          empty.appendChild(createEl("h2", "section-error-title", "No Matching Families"));
+          empty.appendChild(
+            createEl(
+              "p",
+              "section-error-message",
+              "Try switching the clade filter or clearing your search query.",
+            ),
+          );
+          const resetBtn = createEl("button", "section-retry-btn", "Reset Filters");
+          resetBtn.type = "button";
+          resetBtn.addEventListener("click", () => {
+            activeClade = "all";
+            searchTerm = "";
+            currentPage = 1;
+            renderView();
+          });
+          empty.appendChild(resetBtn);
+          frag.appendChild(empty);
+          resultsMount.replaceChildren(frag);
+          return;
+        }
+
+        const grid = createEl("div", "family-lineage-grid");
+        pageItems.forEach((fam) => {
+          const card = createEl("button", "family-lineage-card");
+          card.type = "button";
+          card.setAttribute("data-family-select", fam.name);
+
+          const mediaBox = createEl("div", "family-card-media");
+          mediaBox.appendChild(
+            buildImageElement(
+              fam.imageUrl,
+              fam.imageAlt || `${fam.name} botanical specimen`,
+              fam.name,
+            ),
+          );
+          card.appendChild(mediaBox);
+
+          const topRow = createEl("div", "family-card-top");
+          topRow.appendChild(createEl("span", "family-order-label", `${fam.order} · ${fam.clade}`));
+          const countText =
+            fam.species.length === 1
+              ? ui.speciesCountSingular || "1 Documented Species"
+              : (ui.speciesCountPlural || "{count} Documented Species").replace(
+                  "{count}",
+                  String(fam.species.length),
+                );
+          topRow.appendChild(createEl("span", "family-count-badge", countText));
+          card.appendChild(topRow);
+
+          card.appendChild(createEl("h2", "family-card-title", fam.name));
+          if (fam.familyBn) {
+            card.appendChild(createEl("p", "family-card-bn", fam.familyBn));
+          }
+          card.appendChild(createEl("p", "family-card-desc", fam.description));
+
+          const footer = createEl("div", "family-card-footer");
+          const previewNames = fam.species.map((s) => s.commonName).slice(0, 4).join(", ");
+          footer.appendChild(createEl("span", "family-members-preview", previewNames));
+          footer.appendChild(
+            createEl("span", "family-inspect-cta", ui.viewFamilyCta || "Inspect Lineage →"),
+          );
+          card.appendChild(footer);
+
+          card.addEventListener("click", () => {
+            activeFamily = fam;
+            updateQueryParam(fam.name);
+            renderView();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+
+          grid.appendChild(card);
+        });
+
+        frag.appendChild(grid);
+        resultsMount.replaceChildren(frag);
+      };
+
+      searchInput.addEventListener("input", () => {
+        searchTerm = searchInput.value;
+        currentPage = 1;
+        renderFamilyGridResults();
+      });
+
+      renderFamilyGridResults();
+      container.appendChild(resultsMount);
     } else {
       // Step 2: Family Diagnostic Traits + Filtered Species Cards
       if (activeFamily.traits.length > 0) {
