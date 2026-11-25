@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "aloe-vera",
   "commonName": "Aloe Vera",
   "scientificName": "Aloe vera",
@@ -14,9 +14,9 @@
   "shortSummary": "CAM-photosynthetic succulent rosette famous for hydrating acemannan inner leaf gel, yellow anthraquinone latex, and burn skincare.",
   "leadOverview": "Aloe vera (synonym Aloe barbadensis)—known in South Asia as Ghritakumari—is a stemless succulent perennial in the family Asphodelaceae. Adapted to arid sun via Crassulacean Acid Metabolism (CAM) and water-storing parenchyma rosettes, its inner translucent gel ranks among the most widely cultivated botanical skincare and cosmetic ingredients worldwide.",
   "heroImage": {
-    "url": "https://images.pexels.com/photos/19797887/pexels-photo-19797887.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Fleshy green Aloe vera succulent rosette with marginal teeth",
-    "caption": "Compact basal rosette of Aloe vera showing thick water-storing leaves edged with pale cartilaginous teeth."
+    "url": "https://static.inaturalist.org/photos/448464854/large.jpeg",
+    "alt": "Aloe Vera (Aloe vera) botanical herbarium specimen",
+    "caption": "Aloe Vera (Aloe vera) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Monocot)",
@@ -57,14 +57,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/19659890/pexels-photo-19659890.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Close-up of thick spiny Aloe vera leaves",
-          "caption": "Waxy succulent blades engineered for prolonged arid moisture conservation."
-        },
-        {
-          "url": "https://images.pexels.com/photos/11751920/pexels-photo-11751920.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Potted Aloe vera rosettes in bright daylight",
-          "caption": "Basal clonal offsets emerging naturally around established mother rosettes."
+          "url": "https://images.pexels.com/photos/19797887/pexels-photo-19797887.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Aloe Vera (Aloe vera) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Aloe Vera (Aloe vera): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -79,9 +74,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/19797887/pexels-photo-19797887.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Aloe vera botanical rosette structure",
-          "caption": "Soft toothed succulent leaves diagnostic of Old World Asphodelaceae."
+          "url": "https://images.pexels.com/photos/19659890/pexels-photo-19659890.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Aloe Vera (Aloe vera) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Aloe Vera (Aloe vera): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -96,9 +91,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/19659890/pexels-photo-19659890.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Sun-grown desert succulent Aloe vera",
-          "caption": "Arid-adapted CAM physiology flourishing in gritty mineral soils and intense warmth."
+          "url": "https://images.pexels.com/photos/11751920/pexels-photo-11751920.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Aloe Vera (Aloe vera) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Aloe Vera (Aloe vera): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -110,13 +105,6 @@
       "paragraphs": [
         "During cool winter-to-spring blooms, tall Aloe racemes open sequentially from base to tip, offering copious dilute nectar tailored to hovering sunbirds, hummingbirds (in introduced ranges), and carpenter bees.",
         "In rocky arid habitats, dense spiny clumps trap wind-blown organic detritus and moisture, acting as micro-nurse sites where tiny desert lizards shelter and annual herbs germinate."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Pollinating bees gathering nectar",
-          "caption": "Nectar-seeking bees supported by warm-climate flowering perennials."
-        }
       ]
     },
     {
@@ -130,9 +118,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/11751920/pexels-photo-11751920.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Healthy potted Aloe vera harvest plants",
-          "caption": "Cleanly cultivated outer leaves ready for filleting inner translucent gel."
+          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Aloe Vera (Aloe vera) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Aloe Vera (Aloe vera): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -145,14 +133,7 @@
         "Clinical dermatology supports fresh or properly stabilized inner Aloe gel for cooling mild first-degree sunburns, thermal scalds, and skin dryness: its acetylated mannose polysaccharide acemannan and glycoproteins soothe inflammation and support keratinocyte hydration.",
         "By contrast, the bitter yellow latex just beneath the green rind contains aloin (barbaloin) and aloe-emodin anthraquinones—potent stimulant laxatives whose chronic oral use carries serious clinical restrictions."
       ],
-      "safetyNote": "Never ingest raw yellow aloin latex from the green rind: oral non-decolorized whole-leaf aloe latex causes abdominal cramping, electrolyte loss, and carries FDA/EFSA safety warnings regarding renal and carcinogenic risk in animal studies. Always trim away the outer rind and rinse clear inner gel thoroughly if preparing culinary juice, and avoid internal aloe during pregnancy or alongside laxatives/diuretics.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/19797887/pexels-photo-19797887.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Thick Aloe vera leaves for gel extraction",
-          "caption": "Mature outer leaves containing clear inner acemannan gel distinct from yellow rind latex."
-        }
-      ]
+      "safetyNote": "Never ingest raw yellow aloin latex from the green rind: oral non-decolorized whole-leaf aloe latex causes abdominal cramping, electrolyte loss, and carries FDA/EFSA safety warnings regarding renal and carcinogenic risk in animal studies. Always trim away the outer rind and rinse clear inner gel thoroughly if preparing culinary juice, and avoid internal aloe during pregnancy or alongside laxatives/diuretics."
     },
     {
       "number": "07",
@@ -165,9 +146,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/11751920/pexels-photo-11751920.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Aloe vera growing cleanly in terracotta pots",
-          "caption": "Gritty aerated substrate and bright filtered light yielding firm, upright leaves."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605899973/original.jpg",
+          "alt": "Aloe Vera (Aloe vera) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Aloe Vera (Aloe vera): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Summer (গ্রীষ্ম), Winter (শীত)).",
+      "paragraphs": [
+        "Aloe Vera (Aloe vera) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Summer (গ্রীষ্ম), Winter (শীত).",
+        "Summer (গ্রীষ্ম): Thick acemannan-gel rosettes conserve moisture via nocturnal CAM photosynthesis while cooling summer tonics peak. Winter (শীত): Dry winter sunlight keeps succulent rosettes compact and free of monsoon crown rot, occasionally sending up yellow flower spikes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Summer (গ্রীষ্ম) · Winter (শীত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605899989/original.jpg",
+          "alt": "Aloe Vera (Aloe vera) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Aloe Vera (Aloe vera): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Aloe Vera.",
+      "paragraphs": [
+        "Aloe Vera (Aloe vera) exhibits dual reproductive versatility through wind-, pollinator-, or gravity-dispersed seed cohorts alongside rapid vegetative renewal via herbaceous stem cuttings, rhizome splits, or nodal rooting. Mature seed capsules collected just prior to dehiscence retain strong vigor in dry shaded storage for moderate periods.",
+        "Rooting auxin pre-treatment on semi-ripe nodal cuttings during warm humid months accelerates adventitious root initiation within 10 to 21 days in porous coco-peat and vermicompost propagation trays."
+      ],
+      "subblocks": [
+        {
+          "heading": "Seed Germination",
+          "text": "Surface-sown or lightly covered in sterile porous mix; germinates in 7–21 days under ambient humidity."
+        },
+        {
+          "heading": "Vegetative Method",
+          "text": "Two-node terminal cuttings or clump division rooted in misted, filtered-light benches."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Aloe vera.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Aloe Vera (Aloe vera) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605899996/original.jpg",
+          "alt": "Aloe Vera (Aloe vera) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Aloe Vera (Aloe vera): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Aloe Vera.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Arabian Peninsula), Aloe Vera (Aloe vera) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Arabian Peninsula thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Aloe Vera (Aloe vera) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605900006/original.jpg",
+          "alt": "Aloe Vera (Aloe vera) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Aloe Vera (Aloe vera): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Asparagales clade divergence and Asphodelaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Aloe within order Asparagales (Monocot).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Aloe vera inside family Asphodelaceae (অ্যাসফোডেলাসি (ঘৃতকুমারী গোত্র)), order Asparagales, clade Monocot. Arid-adapted succulent monocots storing mucilaginous acemannan water gel in thick basal leaf rosettes and utilizing nocturnal CAM photosynthesis.",
+        "Within genus Aloe, specialized morphological adaptations—such as basal rosettes of spiralled fleshy leaves with cartilaginous marginal teeth—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Aloe vera (Ghritokumari (ঘৃতকুমারী)).",
+      "paragraphs": [
+        "Field verification of Aloe Vera (Aloe vera) rests on recognizing key Asphodelaceae family markers: Basal rosettes of spiralled fleshy leaves with cartilaginous marginal teeth; Dual-layer leaf anatomy: clear inner gel parenchymal + bitter anthraquinone rind; Crassulacean Acid Metabolism (CAM) conserving desert moisture. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Cuticle & Teeth: Thick waxy outer epidermis minimizing daytime evaporation, rimmed with soft whitish marginal prickles. Aloin Sap Layer: Vascular bundle sheath just inside the green rind secreting bitter yellow latex upon slicing. Inner Gel Parenchyma: Translucent water-storage tissue rich in acemannan mucopolysaccharides, amino acids, and malic acid. Raceme & Pups: Tall spikes of yellow tubular monocot blossoms; prolific rhizomatous basal offshoots forming clumps."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Basal rosettes of spiralled fleshy leaves with cartilaginous marginal teeth"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Dual-layer leaf anatomy: clear inner gel parenchymal + bitter anthraquinone rind"
         }
       ]
     }

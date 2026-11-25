@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "arjun",
   "commonName": "Arjun Tree",
   "scientificName": "Terminalia arjuna",
@@ -14,9 +14,9 @@
   "shortSummary": "Riparian shade tree celebrated across South Asia for smooth pale flaking bark, five-winged woody fruits, and arjunolic-acid cardioprotective pharmacology.",
   "leadOverview": "Terminalia arjuna—known across Bengal and India as Arjun—is an imposing evergreen-to-semi-deciduous riverside tree prized equally for ecological embankment stabilization and centuries-old Ayurvedic cardiology. Recognized immediately by its buttressed pale-grey trunk and flaky pinkish-buff bark, its inner stem bark ranks among the most researched botanical cardioprotectants in South Asian medicine.",
   "heroImage": {
-    "url": "https://images.pexels.com/photos/216668/pexels-photo-216668.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Buttressed pale trunk bark of mature Terminalia arjuna",
-    "caption": "Smooth pale-grey exfoliating trunk architecture characteristic of riverside Terminalia arjuna trees."
+    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/286873266/large.jpg",
+    "alt": "Arjun Tree (Terminalia arjuna) botanical herbarium specimen",
+    "caption": "Arjun Tree (Terminalia arjuna) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -28,7 +28,7 @@
     "commonUses": "Cardiotonic bark medicine, roadside & riverbank shade, tussar silkworm host, timber"
   },
   "cultivationTelemetry": {
-    "phMin": 6.0,
+    "phMin": 6,
     "phMax": 7.8,
     "phOptimalLabel": "pH 6.0 – 7.8",
     "sunlightLevel": 3,
@@ -68,13 +68,8 @@
       "images": [
         {
           "url": "https://images.pexels.com/photos/216668/pexels-photo-216668.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Smooth mature tree trunk bark",
-          "caption": "Mature trunk structure storing bioactive triterpenoid saponins and tannins in outer cortex."
-        },
-        {
-          "url": "https://images.pexels.com/photos/36537544/pexels-photo-36537544.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Lush green woodland leaves",
-          "caption": "Drooping evergreen foliage providing dense riparian canopy shade."
+          "alt": "Arjun Tree (Terminalia arjuna) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Arjun Tree (Terminalia arjuna): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -89,9 +84,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/12067501/pexels-photo-12067501.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Tall Combretaceae forest canopy",
-          "caption": "Broadleaf canopy form shared with South Asian Terminalia timber allies."
+          "url": "https://images.pexels.com/photos/36537544/pexels-photo-36537544.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Arjun Tree (Terminalia arjuna) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Arjun Tree (Terminalia arjuna): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -106,9 +101,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Moist tropical riparian greenery",
-          "caption": "Humid alluvial stream margins ideal for Terminalia arjuna establishment."
+          "url": "https://images.pexels.com/photos/12067501/pexels-photo-12067501.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Arjun Tree (Terminalia arjuna) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Arjun Tree (Terminalia arjuna): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -120,13 +115,6 @@
       "paragraphs": [
         "Mature five-winged drupes drop during late winter and spring winds, tumbling onto river margins where buoyant corky wings keep seeds afloat along monsoon currents (hydrochory) until deposited on fertile silt bars. Extrafloral nectary glands on leaf bases recruit protective ants that deter defoliating caterpillars.",
         "In agroforestry belts across eastern India and northern Bengal, Arjun leaves additionally serve as a premier food plant for Antheraea mylitta, the wild tussar silk moth."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Pollinator bees visiting small blooms",
-          "caption": "Honeybees and syrphid flies foraging on nectariferous Terminalia arjuna spikes."
-        }
       ]
     },
     {
@@ -140,9 +128,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/216668/pexels-photo-216668.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Harvestable pale Arjun bark",
-          "caption": "Sustainable bark panels harvested selectively without interrupting vascular cambium flow."
+          "url": "https://images.pexels.com/photos/28511113/pexels-photo-28511113.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Arjun Tree (Terminalia arjuna) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Arjun Tree (Terminalia arjuna): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -155,14 +143,7 @@
         "Since Vagbhata's classical Ayurvedic treatises over 1,400 years ago, 'Arjuna Chhaal' (bark boiled in milk as Kshirapaka) has served as South Asia's signature heart tonic ('Hridya'). Modern chemical profiling isolates unique triterpenoid saponins—arjunic acid, arjunolic acid, arjungenin, and arjunetin—alongside luteolin flavonoids, oligomeric proanthocyanidins, and coenzyme Q10.",
         "Controlled clinical trials in India have examined standardized Terminalia arjuna bark extract as an adjunct therapy in stable angina and mild heart failure, noting supportive antioxidant, nitric-oxide endothelial, and left-ventricular contractile benefits."
       ],
-      "safetyNote": "Never substitute Arjun bark preparations for prescribed cardiovascular drugs (beta-blockers, ACE inhibitors, anticoagulants, or nitrates); consult a cardiologist before concurrent use due to potential additive blood-pressure or clotting effects.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/28511113/pexels-photo-28511113.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Medicinal botanical bark and herbal preparation",
-          "caption": "Dried inner bark rich in arjunolic acid triterpenoids and cardioprotective polyphenols."
-        }
-      ]
+      "safetyNote": "Never substitute Arjun bark preparations for prescribed cardiovascular drugs (beta-blockers, ACE inhibitors, anticoagulants, or nitrates); consult a cardiologist before concurrent use due to potential additive blood-pressure or clotting effects."
     },
     {
       "number": "07",
@@ -175,9 +156,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/12067501/pexels-photo-12067501.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Thriving riverbank avenue tree",
-          "caption": "Full-sun riparian plantings rapidly establish windfirm shade crowns."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/227849870/large.jpeg",
+          "alt": "Arjun Tree (Terminalia arjuna) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Arjun Tree (Terminalia arjuna): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Summer (গ্রীষ্ম), Late Autumn (হেমন্ত)).",
+      "paragraphs": [
+        "Arjun Tree (Terminalia arjuna) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Summer (গ্রীষ্ম), Late Autumn (হেমন্ত).",
+        "Summer (গ্রীষ্ম): Pendulous creamy-yellow apetalous flower spikes attract bees along sunny riverbanks and Natore farms. Late Autumn (হেমন্ত): Hard woody five-winged drupes ripen brown, awaiting dry-winter wind drop and flood flotation."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Summer (গ্রীষ্ম) · Late Autumn (হেমন্ত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605856995/original.jpg",
+          "alt": "Arjun Tree (Terminalia arjuna) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Arjun Tree (Terminalia arjuna): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Arjun Tree.",
+      "paragraphs": [
+        "Arjun Tree (Terminalia arjuna) combines sexual seed propagation—useful for raising sturdy heterozygous rootstocks—with elite clonal techniques such as veneer grafting, air layering (gootee), and semi-hardwood stem cuttings. Fresh recalcitrant or semi-orthodox seeds typically germinate within 14 to 35 days when depulped and sown in warm organic loam.",
+        "Clonal orchards standardize crown architecture, early precocity, and uniform biochemical profiles across generations within Combretaceae."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Depulped seed sown cleanly in 2:1 loam-compost media; high viability when fresh."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Approach/veneer grafting or monsoon air-layering onto vigorous local rootstocks."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Terminalia arjuna.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Arjun Tree (Terminalia arjuna) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/606804159/original.jpg",
+          "alt": "Arjun Tree (Terminalia arjuna) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Arjun Tree (Terminalia arjuna): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Arjun Tree.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Indian Subcontinent (South Asia)), Arjun Tree (Terminalia arjuna) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Indian Subcontinent (South Asia) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.8, Full Tropical Sun, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Arjun Tree (Terminalia arjuna) calibrates root-zone chemistry around pH 6.0 – 7.8 inside deep moist riverine loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full tropical sun.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moist alluvial / riparian) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.8 · Deep Moist Riverine Loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Tropical Sun · Moist Alluvial / Riparian"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/606804250/original.jpg",
+          "alt": "Arjun Tree (Terminalia arjuna) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Arjun Tree (Terminalia arjuna): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Myrtales clade divergence and Combretaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Terminalia within order Myrtales (Eudicot (Malvids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Terminalia arjuna inside family Combretaceae (কমব্রেটাসি (অর্জুন-হরীতকী গোত্র)), order Myrtales, clade Eudicot (Malvids). Riparian and dry-forest trees and lianas marked by sub-opposite leaves with basal petiole glands, apetalous stamen-rich spikes, and ribbed or five-winged woody drupes.",
+        "Within genus Terminalia, specialized morphological adaptations—such as pair of extrafloral nectar glands at the petiole-blade junction—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Terminalia arjuna (Arjun (অর্জুন)).",
+      "paragraphs": [
+        "Field verification of Arjun Tree (Terminalia arjuna) rests on recognizing key Combretaceae family markers: Pair of extrafloral nectar glands at the petiole-blade junction; Dense tannin- and triterpenoid-rich flaking inner bark; Fibrous multi-winged or angled drupes adapted for floodwater dispersal. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Smooth Exfoliating Bark: Buttressed silvery-grey outer bark flaking in flat plates over pinkish-tan tannin-dense inner cortex. Sub-Opposite Glandular Leaves: Oblong-lanceolate dark green leaves displaying two distinctive extrafloral nectar glands at the blade base. Spicate Apetalous Blooms: Creamy-yellow petal-less flowers with exserted golden stamens crowded on pendulous spring-summer spikes. Five-Winged Woody Drupe: Fibrous brown stone fruit flanged by five hard curved wings adapted for floodwater flotation dispersal."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Pair of extrafloral nectar glands at the petiole-blade junction"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Dense tannin- and triterpenoid-rich flaking inner bark"
         }
       ]
     }

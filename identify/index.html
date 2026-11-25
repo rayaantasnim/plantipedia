@@ -26,9 +26,9 @@
     <meta property="og:url" content="https://plantipedia.rayaantasnim.workers.dev/identify/" />
     <meta
       property="og:image"
-      content="https://images.pexels.com/photos/33030613/pexels-photo-33030613.jpeg?auto=compress&cs=tinysrgb&w=1200"
+      content="https://inaturalist-open-data.s3.amazonaws.com/photos/328450763/large.jpg"
     />
-    <meta property="og:image:alt" content="Plantipedia Botanical Akinator Preview" />
+    <meta property="og:image:alt" content="Plantipedia Botanical Akinator Taxonomic Herbarium Specimen" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Botanical Akinator (Scheduled v4.2) — Interactive Plant Key | Plantipedia" />
     <meta
@@ -38,9 +38,9 @@
     <meta name="twitter:url" content="https://plantipedia.rayaantasnim.workers.dev/identify/" />
     <meta
       name="twitter:image"
-      content="https://images.pexels.com/photos/33030613/pexels-photo-33030613.jpeg?auto=compress&cs=tinysrgb&w=1200"
+      content="https://inaturalist-open-data.s3.amazonaws.com/photos/655267538/original.jpg"
     />
-    <meta name="twitter:image:alt" content="Plantipedia Botanical Akinator" />
+    <meta name="twitter:image:alt" content="Botanical Microscopy Specimen Preview for Version 4.2 Akinator" />
     <script type="application/ld+json" id="page-jsonld">
       {
         "@context": "https://schema.org",
@@ -102,48 +102,119 @@
 
           <article class="maintenance-card">
             <span class="maintenance-status-pill">
-              UNDER MAINTENANCE · SCHEDULED RELEASE: VERSION 4.2 · IN DEVELOPMENT
+              <span class="maintenance-status-dot" aria-hidden="true"></span>
+              <span>🚧 UNDER MAINTENANCE · SCHEDULED FOR VERSION 4.2</span>
             </span>
             <h1 id="identifyHeading" class="maintenance-headline">
               🔮 Botanical Akinator — Interactive Dichotomous Specimen Identifier
             </h1>
             <p class="justified-prose">
-              Plantipedia's upcoming Botanical Akinator is currently under active engineering for Version 4.2. Designed for students, field naturalists, and curious gardeners, it replaces guesswork with a rapid 20-question dichotomous diagnostic tree—evaluating leaf arrangement, venation, floral symmetry, sap presence, and regional habitat to pinpoint matching specimens across our 50 curated 15-chapter monographs and 400,000+ Global Botanical Server taxa.
+              Plantipedia's upcoming Botanical Akinator is under active architectural development for Version 4.2. Built for field naturalists, botany students, and growers, the decision engine guides observers through rapid morphological traits—inspecting phyllotaxy, leaf margin serration, venation architecture, floral symmetry, and latex secretions—to isolate exact matches across our 50 curated monographs and the 400,000+ Global Botanical Server index.
             </p>
+
+            <div class="maintenance-hero-split">
+              <figure class="maintenance-figure">
+                <div class="maintenance-figure-media">
+                  <img
+                    src="https://inaturalist-open-data.s3.amazonaws.com/photos/397250612/large.jpeg"
+                    alt="Ginkgo biloba dichotomous leaf venation specimen plate"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <figcaption class="maintenance-figure-caption">
+                  Fig. 4.2-A — Dichotomous fan-vein morphology of Ginkgo biloba illustrating character states encoded into the upcoming visual key.
+                </figcaption>
+              </figure>
+
+              <aside class="maintenance-telemetry-box" aria-label="Version 4.2 Engineering Telemetry">
+                <h2 class="maintenance-telemetry-heading">Release Telemetry · Version 4.2 Blueprint</h2>
+                <div class="maintenance-telemetry-rows">
+                  <div class="maintenance-telemetry-cell">
+                    <span class="maintenance-telemetry-key">Release Target</span>
+                    <span class="maintenance-telemetry-val">Version 4.2</span>
+                  </div>
+                  <div class="maintenance-telemetry-cell">
+                    <span class="maintenance-telemetry-key">Diagnostic Depth</span>
+                    <span class="maintenance-telemetry-val">20 Trait Nodes</span>
+                  </div>
+                  <div class="maintenance-telemetry-cell">
+                    <span class="maintenance-telemetry-key">Coverage Target</span>
+                    <span class="maintenance-telemetry-val">50 Local + 400K+ Live</span>
+                  </div>
+                  <div class="maintenance-telemetry-cell">
+                    <span class="maintenance-telemetry-key">Scoring Model</span>
+                    <span class="maintenance-telemetry-val">Bayesian Trait Weights</span>
+                  </div>
+                </div>
+                <div class="maintenance-progress-wrap">
+                  <div class="maintenance-progress-label">
+                    <span>Morphological Matrix Encoding</span>
+                    <span>48% Complete</span>
+                  </div>
+                  <div class="maintenance-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="48">
+                    <div class="maintenance-progress-fill" style="width: 48%;"></div>
+                  </div>
+                </div>
+              </aside>
+            </div>
 
             <div class="maintenance-specs-grid">
               <div class="maintenance-spec-card">
                 <span class="maintenance-spec-label">ENGINE TIER 01</span>
                 <h2 class="maintenance-spec-title">20-Question Diagnostic Key</h2>
                 <p class="maintenance-spec-desc">
-                  Adaptive branching questions inspect habit, phyllotaxy, stipules, petal count, fruit type, and phenology season without requiring technical Latin fluency upfront.
+                  Adaptive branching prompts inspect growth habit, leaf attachment, venation pattern, petal merosity, fruit syndrome, and seasonal habitat without requiring specialized Latin fluency upfront.
                 </p>
               </div>
               <div class="maintenance-spec-card">
                 <span class="maintenance-spec-label">ENGINE TIER 02</span>
                 <h2 class="maintenance-spec-title">Live Confidence Scoring</h2>
                 <p class="maintenance-spec-desc">
-                  Each answer recalculates probability weights in real time, ranking top botanical candidates alongside diagnostic differentiating traits and instant split-screen comparison links.
+                  Every user response recalculates candidate probability distributions dynamically, highlighting separating diagnostic characters alongside one-click split comparison triggers.
                 </p>
               </div>
               <div class="maintenance-spec-card">
                 <span class="maintenance-spec-label">ENGINE TIER 03</span>
                 <h2 class="maintenance-spec-title">Global Server Fallback</h2>
                 <p class="maintenance-spec-desc">
-                  Unmatched regional cultivars escalate seamlessly into Plantipedia's Global Botanical Server so rare ornamental or wild vascular species remain discoverable.
+                  Ambiguous or extra-regional specimens escalate cleanly into Plantipedia's Global Botanical Server so uncommon ornamentals and wild vascular plants remain resolvable.
+                </p>
+              </div>
+            </div>
+
+            <div class="maintenance-feature-plate">
+              <figure class="maintenance-figure">
+                <div class="maintenance-figure-media">
+                  <img
+                    src="https://inaturalist-open-data.s3.amazonaws.com/photos/655267504/original.jpg"
+                    alt="Equisetum arvense structural stem and node study for botanical character analysis"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <figcaption class="maintenance-figure-caption">
+                  Fig. 4.2-B — Microscopic internode ribbing and whorled appendages used to differentiate vascular clades inside the Version 4.2 diagnostic workflow.
+                </figcaption>
+              </figure>
+              <div class="maintenance-feature-plate-copy">
+                <span class="maintenance-spec-label">SCHOLARLY & FIELD ARCHITECTURE</span>
+                <h2 class="maintenance-spec-title">Bilingual Trait Hints Paired With Glossary Tooltips</h2>
+                <p class="justified-prose">
+                  When encountering unfamiliar anatomical terms such as stipules, actinomorphic corollas, or verticillate phyllotaxy, observers can reveal bilingual English and বাংলা visual cues linked directly to Plantipedia's curated glossary. Unresolved candidates preserve the active character vector so botanists can jump directly into live Global Botanical Server dossiers or compare top runners side by side.
                 </p>
               </div>
             </div>
 
             <div class="maintenance-actions">
-              <a class="specimen-nf-btn specimen-nf-btn--primary" href="../species/">
-                Explore 50 Curated Species →
-              </a>
-              <a class="specimen-nf-btn specimen-nf-btn--secondary" href="../plant/live/">
-                Open Global Server
+              <a class="specimen-nf-btn specimen-nf-btn--primary" href="../">
+                🏡 Return Home
               </a>
               <a class="specimen-nf-btn specimen-nf-btn--secondary" href="../roadmap/">
-                View Full Roadmap
+                🚀 View Full Release Roadmap
+              </a>
+              <a class="specimen-nf-btn specimen-nf-btn--secondary" href="../plant/live/">
+                🌐 Launch Global Botanical Server
               </a>
             </div>
           </article>

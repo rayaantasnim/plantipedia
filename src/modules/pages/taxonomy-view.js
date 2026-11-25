@@ -121,12 +121,32 @@ function renderTaxonomyBanner(container, bannerCfg, activeFamilyObj) {
   header.appendChild(
     createEl(
       "p",
-      "directory-subcopy",
+      "justified-prose directory-subcopy",
       activeFamilyObj
         ? activeFamilyObj.description
         : bannerCfg.subcopy || "",
     ),
   );
+  if (!activeFamilyObj) {
+    const plate = createEl("figure", "page-preview-plate");
+    const media = createEl("div", "page-preview-plate-media");
+    media.appendChild(
+      buildImageElement(
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/605486422/original.jpg",
+        "Magnolia grandiflora basal angiosperm floral specimen representing comparative botanical taxonomy",
+        "Taxonomic Lineage Specimen",
+      ),
+    );
+    plate.appendChild(media);
+    plate.appendChild(
+      createEl(
+        "figcaption",
+        "page-preview-plate-caption",
+        "Fig. TX-01 — Basal angiosperm floral morphology of Magnolia grandiflora anchoring Plantipedia's 34-family phylogenetic classification.",
+      ),
+    );
+    header.appendChild(plate);
+  }
   container.appendChild(header);
 }
 

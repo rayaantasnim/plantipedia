@@ -131,6 +131,64 @@ function getSpecimenImageUrl(plant) {
   return sanitizeUrl(candidate, PLACEHOLDER_PLATE);
 }
 
+function findSecondarySpecimenImage(plant, excludeUrls = new Set(), preferredRe = null) {
+  const sections = Array.isArray(plant?.sections) ? plant.sections : [];
+  const heroUrl = getSpecimenImageUrl(plant);
+  const candidates = [];
+
+  if (preferredRe) {
+    sections.forEach((sec) => {
+      const tagText = `${sec.title || ""} ${sec.subtitle || ""}`;
+      if (preferredRe.test(tagText) && Array.isArray(sec.images)) {
+        sec.images.forEach((im) => candidates.push(im));
+      }
+    });
+  }
+
+  sections.forEach((sec) => {
+    if (Array.isArray(sec.images)) {
+      sec.images.forEach((im) => candidates.push(im));
+    }
+  });
+
+  for (const im of candidates) {
+    const rawUrl = im?.url || im?.imageUrl || "";
+    if (!rawUrl) continue;
+    const cleanUrl = sanitizeUrl(rawUrl, "");
+    if (!cleanUrl || cleanUrl === PLACEHOLDER_PLATE || cleanUrl === heroUrl) continue;
+    if (excludeUrls && excludeUrls.has(cleanUrl)) continue;
+    return {
+      url: cleanUrl,
+      alt: im.alt || `${plant.commonName} botanical plate`,
+      caption: im.caption || im.alt || `${plant.commonName} comparative specimen plate`,
+    };
+  }
+  return null;
+}
+
+function buildSecondaryPlateFigure(imgObj, figCode) {
+  if (!imgObj?.url) return null;
+  const fig = createEl("figure", "compare-secondary-plate");
+  const media = createEl("div", "compare-secondary-plate-media");
+  const img = document.createElement("img");
+  img.src = imgObj.url;
+  img.alt = imgObj.alt || "";
+  img.loading = "lazy";
+  img.decoding = "async";
+  img.addEventListener("error", () => {
+    fig.remove();
+  });
+  media.appendChild(img);
+  fig.appendChild(media);
+
+  const cap = document.createElement("figcaption");
+  cap.className = "compare-secondary-plate-cap";
+  cap.appendChild(createEl("span", "figcaption-fig", figCode));
+  cap.appendChild(document.createTextNode(` ${imgObj.caption || ""}`));
+  fig.appendChild(cap);
+  return fig;
+}
+
 function getSpecimenMonographHref(spec) {
   if (spec.type === "global" || spec.plant.isGlobalLive) {
     const q = spec.query || spec.plant.query || spec.plant.commonName;
@@ -462,7 +520,7 @@ function buildTelemetrySection(leftPlant, rightPlant) {
   return sec;
 }
 
-function buildMorphologySection(leftPlant, rightPlant) {
+function buildMorphologySection(leftPlant, rightPlant, usedImageUrls) {
   const sec = buildSectionShell(
     "03",
     "Morphology & Structural Architecture",
@@ -511,6 +569,13 @@ function buildMorphologySection(leftPlant, rightPlant) {
       card.appendChild(subGrid);
     }
 
+    const morphPlate = findSecondarySpecimenImage(plant, usedImageUrls, /morpholog|vegetative|foliar/i);
+    if (morphPlate) {
+      usedImageUrls.add(morphPlate.url);
+      const figEl = buildSecondaryPlateFigure(morphPlate, side === "left" ? "Fig. 03.L" : "Fig. 03.R");
+      if (figEl) card.appendChild(figEl);
+    }
+
     dualGrid.appendChild(card);
   });
 
@@ -518,7 +583,7 @@ function buildMorphologySection(leftPlant, rightPlant) {
   return sec;
 }
 
-function buildHabitatSection(leftPlant, rightPlant) {
+function buildHabitatSection(leftPlant, rightPlant, usedImageUrls) {
   const sec = buildSectionShell(
     "04",
     "Habitat & Cultivation Envelope",
@@ -567,6 +632,69 @@ function buildHabitatSection(leftPlant, rightPlant) {
     });
     card.appendChild(specsGrid);
 
+    const habPlate = findSecondarySpecimenImage(plant, usedImageUrls, /habitat|biogeograph|cultivat|ecology/i);
+    if (habPlate) {
+      usedImageUrls.add(habPlate.url);
+      const figEl = buildSecondaryPlateFigure(habPlate, side === "left" ? "Fig. 04.L" : "Fig. 04.R");
+      if (figEl) card.appendChild(figEl);
+    }
+
+    dualGrid.appendChild(card);
+  });
+
+  sec.appendChild(dualGrid);
+  return sec;
+}
+
+function buildPhytochemistrySection(leftPlant, rightPlant) {
+  const sec = buildSectionShell(
+    "05",
+    "Phytochemistry & Medicinal Profile",
+    "Bioactive secondary metabolites, ethnobotanical traditions, and clinical safety notes",
+  );
+
+  const dualGrid = createEl("div", "compare-dual-cards");
+
+  [
+    { plant: leftPlant, side: "left" },
+    { plant: rightPlant, side: "right" },
+  ].forEach(({ plant, side }) => {
+    const card = createEl("article", `compare-detail-card compare-detail-card--${side}`);
+    const cardHead = createEl("div", "compare-detail-head");
+    cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, plant.commonName));
+    const phytoSec = findPlantSection(plant, /medicin|phytochem|compound/i, "06");
+    cardHead.appendChild(
+      createEl(
+        "h3",
+        "compare-detail-heading",
+        phytoSec?.subtitle || phytoSec?.title || "Phytochemistry & Ethnomedicine",
+      ),
+    );
+    card.appendChild(cardHead);
+
+    const paragraphs = Array.isArray(phytoSec?.paragraphs) ? phytoSec.paragraphs : [];
+    if (paragraphs.length > 0) {
+      paragraphs.slice(0, 2).forEach((p) => {
+        card.appendChild(createEl("p", "compare-detail-prose", p));
+      });
+    } else {
+      card.appendChild(
+        createEl(
+          "p",
+          "compare-detail-prose",
+          `${plant.commonName} (${plant.scientificName}) contains lineage-specific polyphenols and bioactive metabolites documented in its full monograph.`,
+        ),
+      );
+    }
+
+    if (phytoSec?.safetyNote) {
+      const noteBox = createEl("div", "safety-notice-box");
+      noteBox.setAttribute("role", "note");
+      noteBox.appendChild(createEl("span", "safety-notice-title", "Safety Advisory"));
+      noteBox.appendChild(document.createTextNode(phytoSec.safetyNote));
+      card.appendChild(noteBox);
+    }
+
     dualGrid.appendChild(card);
   });
 
@@ -576,7 +704,7 @@ function buildHabitatSection(leftPlant, rightPlant) {
 
 function buildPhenologySection(leftPlant, rightPlant, seasonsData) {
   const sec = buildSectionShell(
-    "05",
+    "06",
     "Seasonal Phenology",
     "Flowering, fruiting, vegetative flush, and dormancy cadence across Bengal's six ecological seasons (ষড়ঋতু)",
   );
@@ -793,10 +921,16 @@ export async function renderCompareResultWorkspace(
   heroGrid.appendChild(buildHeroCard(rightSpec, "RIGHT SPECIMEN"));
   matrix.appendChild(heroGrid);
 
+  const usedImageUrls = new Set([
+    getSpecimenImageUrl(leftPlant),
+    getSpecimenImageUrl(rightPlant),
+  ]);
+
   matrix.appendChild(buildTaxonomySection(leftPlant, rightPlant));
   matrix.appendChild(buildTelemetrySection(leftPlant, rightPlant));
-  matrix.appendChild(buildMorphologySection(leftPlant, rightPlant));
-  matrix.appendChild(buildHabitatSection(leftPlant, rightPlant));
+  matrix.appendChild(buildMorphologySection(leftPlant, rightPlant, usedImageUrls));
+  matrix.appendChild(buildHabitatSection(leftPlant, rightPlant, usedImageUrls));
+  matrix.appendChild(buildPhytochemistrySection(leftPlant, rightPlant));
   matrix.appendChild(buildPhenologySection(leftPlant, rightPlant, seasonsData));
 
   workspace.appendChild(matrix);
@@ -1004,7 +1138,7 @@ async function animateCompareResultWorkspace(workspace) {
     });
   }
 
-  // 2. Scroll-choreographed Comparison Sections (01 - 05)
+  // 2. Scroll-choreographed Comparison Sections (01 - 06)
   const matrixSections = Array.from(workspace.querySelectorAll(".compare-matrix-section"));
   matrixSections.forEach((sec) => {
     gsap.from(sec, {

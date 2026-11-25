@@ -310,10 +310,30 @@ export function renderSeasonsCalendar(mountEl, { pageData, speciesIndex }) {
     header.appendChild(
       createEl(
         "p",
-        "directory-subcopy",
+        "justified-prose directory-subcopy",
         focusedSeason ? focusedSeason.climateSummary : bannerCfg.subcopy || "",
       ),
     );
+    if (!focusedSeason) {
+      const plate = createEl("figure", "page-preview-plate");
+      const media = createEl("div", "page-preview-plate-media");
+      media.appendChild(
+        buildImageElement(
+          "https://inaturalist-open-data.s3.amazonaws.com/photos/407168966/large.jpg",
+          "Rhizophora mangle coastal mangrove biome reflecting tidal and monsoon seasonality",
+          "Shororitu Wetland Phenology",
+        ),
+      );
+      plate.appendChild(media);
+      plate.appendChild(
+        createEl(
+          "figcaption",
+          "page-preview-plate-caption",
+          "Fig. SN-01 — Estuarine Rhizophora mangle root and canopy guild demonstrating monsoon rainfall and tidal phenological shifts across Bengal's six seasons.",
+        ),
+      );
+      header.appendChild(plate);
+    }
     container.appendChild(header);
 
     if (!focusedSeason) {

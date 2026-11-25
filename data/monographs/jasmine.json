@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "jasmine",
   "commonName": "Jasmine (Beli)",
   "scientificName": "Jasminum sambac",
@@ -15,8 +15,8 @@
   "leadOverview": "Arabian Jasmine (Jasminum sambac)—beloved across Bengal and South Asia as Beli or Bela—is a compact scrambling shrub in the olive family (Oleaceae). Opening waxy star-like white blossoms at dusk that release an intoxicating indole-linalool perfume, it anchors Asia's luxury floral perfumery and traditional jasmine tea harvests.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/54608/flower-jasmine-bush-white-54608.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Clusters of pure white Jasminum sambac jasmine flowers",
-    "caption": "Star-like pure white Jasminum sambac flowers opening amid glossy opposite leaves."
+    "alt": "Jasmine (Beli) (Jasminum sambac) botanical herbarium specimen",
+    "caption": "Jasmine (Beli) (Jasminum sambac) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -58,13 +58,8 @@
       "images": [
         {
           "url": "https://images.pexels.com/photos/33030613/pexels-photo-33030613.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Close-up of delicate white jasmine blossoms",
-          "caption": "Waxy salverform corollas releasing volatile benzyl acetate and linalool at dusk."
-        },
-        {
-          "url": "https://images.pexels.com/photos/32718726/pexels-photo-32718726.png?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Jasmine leaves and opening floral buds",
-          "caption": "Terminal cymes of pointed pearl-white buds prior to evening anthesis."
+          "alt": "Jasmine (Beli) (Jasminum sambac) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Jasmine (Beli) (Jasminum sambac): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -79,9 +74,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/54608/flower-jasmine-bush-white-54608.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "White Jasminum sambac specimen",
-          "caption": "Diagnostic pure white corolla lobes of Jasminum sambac 'Maid of Orleans'."
+          "url": "https://images.pexels.com/photos/32718726/pexels-photo-32718726.png?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Jasmine (Beli) (Jasminum sambac) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Jasmine (Beli) (Jasminum sambac): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -96,9 +91,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/32718726/pexels-photo-32718726.png?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Jasmine shrub growing in sunlit foliage",
-          "caption": "Warm humid garden conditions ideal for continuous warm-season bud flush."
+          "url": "https://images.pexels.com/photos/40222323/pexels-photo-40222323.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Jasmine (Beli) (Jasminum sambac) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Jasmine (Beli) (Jasminum sambac): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -110,13 +105,6 @@
       "paragraphs": [
         "Jasminum sambac regulates its perfume biosynthesis via a strict circadian clock: unopened buds harvested in late afternoon remain nearly scentless until twilight temperatures cool, triggering enzymatic release of benzyl acetate, indole, cis-jasmone, and linalool.",
         "Pure white petals gleam in moonlight while narrow floral tubes guide nocturnal sphinx moths and crepuscular bees straight to deep basal nectar rewards."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/40222323/pexels-photo-40222323.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Moth pollinator on pale blossom",
-          "caption": "Nocturnal lepidopteran pollinators navigated by twilight terpene plumes and white petals."
-        }
       ]
     },
     {
@@ -130,9 +118,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/33030613/pexels-photo-33030613.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Picked white jasmine blooms",
-          "caption": "Freshly opened white corollas prized for tea scenting, attar, and ceremonial gajras."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/607093287/original.jpg",
+          "alt": "Jasmine (Beli) (Jasminum sambac) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Jasmine (Beli) (Jasminum sambac): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -145,14 +133,7 @@
         "Traditional Unani and Ayurvedic medicine utilize jasmine flower compresses and gentle floral waters (Ruh-e-Motia) to cool irritated eyes, soothe nervous tension, and calm minor skin inflammation. Essential-oil constituents include linalool, benzyl benzoate, farnesene, and phytol.",
         "Psychophysiological aromatherapy trials indicate that inhaling jasmine volatiles can modestly elevate parasympathetic calm and alertness balance, while leaf extracts demonstrate mild antimicrobial properties in vitro."
       ],
-      "safetyNote": "True Jasminum sambac flowers are food-safe for tea scenting, whereas ornamental lookalikes such as Carolina Jessamine (Gelsemium sempervirens) are highly poisonous. Always verify botanical identity and keep concentrated jasmine absolute oils properly diluted before skin contact.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/54608/flower-jasmine-bush-white-54608.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Medicinal white jasmine blossoms",
-          "caption": "Linalool-rich blossoms applied in soothing aromatherapy and traditional herbal washes."
-        }
-      ]
+      "safetyNote": "True Jasminum sambac flowers are food-safe for tea scenting, whereas ornamental lookalikes such as Carolina Jessamine (Gelsemium sempervirens) are highly poisonous. Always verify botanical identity and keep concentrated jasmine absolute oils properly diluted before skin contact."
     },
     {
       "number": "07",
@@ -165,9 +146,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/32718726/pexels-photo-32718726.png?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Healthy potted or garden jasmine",
-          "caption": "Regular deadheading and bright sun sustain continuous waves of evening buds."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/607093807/original.jpg",
+          "alt": "Jasmine (Beli) (Jasminum sambac) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Jasmine (Beli) (Jasminum sambac): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Spring (বসন্ত), Summer (গ্রীষ্ম), Monsoon (বর্ষা)).",
+      "paragraphs": [
+        "Jasmine (Beli) (Jasminum sambac) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Spring (বসন্ত), Summer (গ্রীষ্ম), Monsoon (বর্ষা).",
+        "Spring (বসন্ত): Spring warmth awakens pruned woody canes into prolific white bud initiation. Summer (গ্রীষ্ম): Peak dusk opening releases intoxicating benzyl acetate perfume prized for summer evening garlands. Monsoon (বর্ষা): Monsoon moisture extends successive flushes of star-white corollas amidst deep green leaves."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Spring (বসন্ত) · Summer (গ্রীষ্ম) · Monsoon (বর্ষা)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/611929510/original.jpg",
+          "alt": "Jasmine (Beli) (Jasminum sambac) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Jasmine (Beli) (Jasminum sambac): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Jasmine (Beli).",
+      "paragraphs": [
+        "Jasmine (Beli) (Jasminum sambac) exhibits dual reproductive versatility through wind-, pollinator-, or gravity-dispersed seed cohorts alongside rapid vegetative renewal via herbaceous stem cuttings, rhizome splits, or nodal rooting. Mature seed capsules collected just prior to dehiscence retain strong vigor in dry shaded storage for moderate periods.",
+        "Rooting auxin pre-treatment on semi-ripe nodal cuttings during warm humid months accelerates adventitious root initiation within 10 to 21 days in porous coco-peat and vermicompost propagation trays."
+      ],
+      "subblocks": [
+        {
+          "heading": "Seed Germination",
+          "text": "Surface-sown or lightly covered in sterile porous mix; germinates in 7–21 days under ambient humidity."
+        },
+        {
+          "heading": "Vegetative Method",
+          "text": "Two-node terminal cuttings or clump division rooted in misted, filtered-light benches."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Jasminum sambac.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Jasmine (Beli) (Jasminum sambac) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/625948133/original.jpg",
+          "alt": "Jasmine (Beli) (Jasminum sambac) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Jasmine (Beli) (Jasminum sambac): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Jasmine (Beli).",
+      "paragraphs": [
+        "Across its native and naturalized distribution (South & Southeast Asia), Jasmine (Beli) (Jasminum sambac) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to South & Southeast Asia thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Jasmine (Beli) (Jasminum sambac) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/625948207/original.jpg",
+          "alt": "Jasmine (Beli) (Jasminum sambac) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Jasmine (Beli) (Jasminum sambac): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Lamiales clade divergence and Oleaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Jasminum within order Lamiales (Eudicot (Lamiids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Jasminum sambac inside family Oleaceae (ওলিয়াসি (বেলি-জলপাই গোত্র)), order Lamiales, clade Eudicot (Lamiids). Olive and jasmine woody climbers and trees recognized by opposite leaves and intensely fragrant, star-like white corollas rich in benzyl acetate.",
+        "Within genus Jasminum, specialized morphological adaptations—such as opposite simple or trifoliate leaves without stipules—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Jasminum sambac (Beli (বেলি)).",
+      "paragraphs": [
+        "Field verification of Jasmine (Beli) (Jasminum sambac) rests on recognizing key Oleaceae family markers: Opposite simple or trifoliate leaves without stipules; Nocturnal fragrance release timed for crepuscular moth pollination; Paired stamens attached inside slender tubular floral throats. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Scrambling Stems: Slender woody-based green shoots displaying mild pubescence and arching climbing habit. Leaves & Nodes: Ovate-elliptic glossy blades arranged oppositely or in ternate whorls of three with short curved petioles. Nocturnal Corolla: Waxy white salverform flowers opening at twilight with two concealed stamens inside the floral tube. Berries & Roots: Rarely set twin globose black berries (many double forms are sterile); vigorous fibrous root system."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Opposite simple or trifoliate leaves without stipules"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Nocturnal fragrance release timed for crepuscular moth pollination"
         }
       ]
     }

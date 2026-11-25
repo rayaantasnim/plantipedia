@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "palmyra-palm",
   "commonName": "Palmyra Palm (Taal)",
   "scientificName": "Borassus flabellifer",
@@ -14,9 +14,9 @@
   "shortSummary": "Majestic unbranched fan palm of South Asia prized for translucent cooling 'taal-shash' jelly seeds, fragrant golden fruit pulp, and lightning-resilient rural trunks.",
   "leadOverview": "The Palmyra Palm (Borassus flabellifer)—revered across rural Bengal as Taal—is a towering dioecious fan palm that silhouettes rice paddies, earthen embankments, and village ponds. Providing sweet immature jelly endosperms in Grishmo heat, golden fibrous fruit pulp for Bhadro pitha cakes, palm jaggery (taal-er gur), and durable bridge timber, it sustains rural livelihoods for more than a century per tree.",
   "heroImage": {
-    "url": "https://images.pexels.com/photos/37615014/pexels-photo-37615014.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Tall Borassus flabellifer palm silhouettes rising against tropical golden sunset sky",
-    "caption": "Unbranched vertical trunks crowned with rigid costapalmate fan fronds of Borassus flabellifer."
+    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/37326538/large.jpeg",
+    "alt": "Palmyra Palm (Taal) (Borassus flabellifer) botanical herbarium specimen",
+    "caption": "Palmyra Palm (Taal) (Borassus flabellifer) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Monocot)",
@@ -29,7 +29,7 @@
   },
   "cultivationTelemetry": {
     "phMin": 5.5,
-    "phMax": 8.0,
+    "phMax": 8,
     "phOptimalLabel": "pH 5.5 – 8.0",
     "sunlightLevel": 3,
     "sunlightLabel": "Full Tropical Sun",
@@ -67,14 +67,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/37615014/pexels-photo-37615014.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Tall solitary palm crowns silhouetted against warm horizon",
-          "caption": "Distinctive upright habit and radiating fan crowns typical of Borassus flabellifer stands."
-        },
-        {
-          "url": "https://images.pexels.com/photos/30601566/pexels-photo-30601566.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Group of towering palms at twilight",
-          "caption": "Elevated monocot stems anchoring agricultural bunds and skyline edges."
+          "url": "https://static.inaturalist.org/photos/287099615/large.jpeg",
+          "alt": "Palmyra Palm (Taal) (Borassus flabellifer) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Palmyra Palm (Taal) (Borassus flabellifer): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -89,9 +84,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/36328462/pexels-photo-36328462.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Arecaceae palm fronds and fruiting canopy",
-          "caption": "Dense fibrous palm crown illustrating Coryphoideae frond geometry and vascular resilience."
+          "url": "https://static.inaturalist.org/photos/380054053/large.jpg",
+          "alt": "Palmyra Palm (Taal) (Borassus flabellifer) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Palmyra Palm (Taal) (Borassus flabellifer): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -106,9 +101,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/30601566/pexels-photo-30601566.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Tall palm trees lining rural horizon",
-          "caption": "Palmyra palms colonizing open agricultural horizons and elevated monsoon bunds."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/58635075/large.jpeg",
+          "alt": "Palmyra Palm (Taal) (Borassus flabellifer) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Palmyra Palm (Taal) (Borassus flabellifer): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -120,13 +115,6 @@
       "paragraphs": [
         "In Bangladesh and eastern India, Palmyra palm fronds are inseparably linked with the Baya Weaverbird (Ploceus philippinus / বাবুই পাখি), which expertly strips tough leaf-blade fibres to weave intricately suspended flask-shaped nests swaying safely from high frond tips beyond predator reach.",
         "Beetles, bees, and wind cross-pollinate dioecious palm inflorescences, while palm civets, jackals, and flying foxes scatter heavy fallen drupes after feeding on fragrant ripe orange mesocarp."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/37615014/pexels-photo-37615014.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "High palm canopy supporting bird nesting",
-          "caption": "Elevated spiny fronds offering unmatched safe nesting anchorage for Baya Weaverbirds."
-        }
       ]
     },
     {
@@ -140,9 +128,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/36328462/pexels-photo-36328462.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Arecaceae palm crown bearing seasonal bounty",
-          "caption": "Multipurpose palm resource yielding jelly endosperm, sweet inflorescence sap, and leaf thatch."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/267041172/large.jpeg",
+          "alt": "Palmyra Palm (Taal) (Borassus flabellifer) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Palmyra Palm (Taal) (Borassus flabellifer): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -155,14 +143,7 @@
         "Folk and Unani practitioners prize immature 'taal-shash' jelly as a natural heat-stroke coolant rich in potassium, phosphorus, B-vitamins, and soothing mucilage. Crystallized palm sugar ('Taal Mishri') remains a cherished Bengali household demulcent dissolved in warm water or ginger tea to soothe dry winter coughs.",
         "Laboratory analysis of Borassus flabellifer pulp and male flower extracts reports carotenoid pigments, phenolic acids, and spirostane-type steroidal saponins (borassosides) with antioxidant capacity."
       ],
-      "safetyNote": "Freshly tapped unboiled palm sap ferments rapidly in tropical heat into alcoholic toddy and can harbor airborne wild microbes if stored unrefrigerated; consume only freshly harvested sap or hygienically boiled jaggery, and moderate high-sugar pulp intake in diabetes.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/30601566/pexels-photo-30601566.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Standing Borassus palms in warm light",
-          "caption": "Long-lived palms providing seasonal electrolytes and soothing traditional palm candy."
-        }
-      ]
+      "safetyNote": "Freshly tapped unboiled palm sap ferments rapidly in tropical heat into alcoholic toddy and can harbor airborne wild microbes if stored unrefrigerated; consume only freshly harvested sap or hygienically boiled jaggery, and moderate high-sugar pulp intake in diabetes."
     },
     {
       "number": "07",
@@ -176,8 +157,160 @@
       "images": [
         {
           "url": "https://images.pexels.com/photos/37615014/pexels-photo-37615014.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Palmyra palms silhouetted along clear skyline",
-          "caption": "Direct-seeded embankment palms maturing into wind-firm centenarian giants."
+          "alt": "Palmyra Palm (Taal) (Borassus flabellifer) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Palmyra Palm (Taal) (Borassus flabellifer): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Summer (গ্রীষ্ম), Monsoon (বর্ষা)).",
+      "paragraphs": [
+        "Palmyra Palm (Taal) (Borassus flabellifer) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Summer (গ্রীষ্ম), Monsoon (বর্ষা).",
+        "Summer (গ্রীষ্ম): Translucent cooling jelly kernels ('taal-shash') fill young husks amidst peak summer heat. Monsoon (বর্ষা): Mature purple-black drupes ripen fragrant orange-gold pulp in Bhadro for traditional Taal Pitha feasts."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Summer (গ্রীষ্ম) · Monsoon (বর্ষা)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/30601566/pexels-photo-30601566.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Palmyra Palm (Taal) (Borassus flabellifer) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Palmyra Palm (Taal) (Borassus flabellifer): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Palmyra Palm (Taal).",
+      "paragraphs": [
+        "Palmyra Palm (Taal) (Borassus flabellifer) regenerates strictly or primarily from mature fibrous seeds or basal suckers, since arborescent palms lack vascular cambium for conventional bark grafting. Fresh ripe pyrenes or stones exhibit highest germination vigor when sown immediately in moist, well-aerated sand-humus beds under filtered shade.",
+        "During early nursery rearing, seedlings develop deep haustorial roots requiring tall nursery polybags to prevent coiling prior to monsoon transplanting."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Sown fresh at 28–32 °C in sterile river sand with constant mist."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Sucker division or selected superior mother-palm seed progeny."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Borassus flabellifer.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Palmyra Palm (Taal) (Borassus flabellifer) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/36328462/pexels-photo-36328462.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Palmyra Palm (Taal) (Borassus flabellifer) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Palmyra Palm (Taal) (Borassus flabellifer): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Palmyra Palm (Taal).",
+      "paragraphs": [
+        "Across its native and naturalized distribution (South & Southeast Asia (Indian Subcontinent to Indochina)), Palmyra Palm (Taal) (Borassus flabellifer) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to South & Southeast Asia (Indian Subcontinent to Indochina) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 5.5 – 8.0, Full Tropical Sun, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Palmyra Palm (Taal) (Borassus flabellifer) calibrates root-zone chemistry around pH 5.5 – 8.0 inside alluvial clay-loam to sandy bunds. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full tropical sun.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (low / deep-rooted drought hardy) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 5.5 – 8.0 · Alluvial Clay-Loam to Sandy Bunds"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Tropical Sun · Low / Deep-Rooted Drought Hardy"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/604458345/original.jpg",
+          "alt": "Palmyra Palm (Taal) (Borassus flabellifer) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Palmyra Palm (Taal) (Borassus flabellifer): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Arecales clade divergence and Arecaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Borassus within order Arecales (Monocot (Commelinids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Borassus flabellifer inside family Arecaceae (অ্যারেকাসি (তাল-নারিকেল গোত্র)), order Arecales, clade Monocot (Commelinids). Unbranched woody monocot palms crowned with rosettes of giant pinnate fronds, ringed cylindrical trunks, and fibrous coastal drupes.",
+        "Within genus Borassus, specialized morphological adaptations—such as solitary cylindrical trunk lacking secondary cambial wood rings—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Borassus flabellifer (Taal (তাল)).",
+      "paragraphs": [
+        "Field verification of Palmyra Palm (Taal) (Borassus flabellifer) rests on recognizing key Arecaceae family markers: Solitary cylindrical trunk lacking secondary cambial wood rings; Giant pinnate crown fronds protected by woven fibrous leaf bases; Liquid-to-solid endosperm nutrition inside buoyant husk drupes. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Columnar Ringed Trunk: Unbranched monocot stem lacking true wood rings, hardened externally by dense lignified vascular bundles resistant to rot. Costapalmate Fan Fronds: Rigid greyish-green pleated palmate blades divided into 60–80 stiff segments atop thick spiny-edged petioles. Dioecious Inflorescences: Separate male pollen spikes ('tapped' in spring for sweet sap) and female fruit-bearing stalks. Triple-Seeded Drupes: Dark purple-black rounded fruits containing aromatic golden fibre pulp and three stony kernels yielding gelatinous endosperm."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Solitary cylindrical trunk lacking secondary cambial wood rings"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Giant pinnate crown fronds protected by woven fibrous leaf bases"
         }
       ]
     }

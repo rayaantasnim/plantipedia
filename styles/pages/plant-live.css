@@ -1,0 +1,118 @@
+/* ==========================================================================
+   PLANTIPEDIA — /plant/ & /plant/live/ MONOGRAPH & GLOBAL SERVER POLISH
+   Responsive Hero Plate, Telemetry Grid (2x2 Tablet / 1x4 Mobile), & 00-14 Flow
+   ========================================================================== */
+
+:is([data-page="plant-live"], [data-page="plant"]) .overview-plant-title,
+:is([data-page="plant-live"], [data-page="plant"]) .overview-scientific-name,
+:is([data-page="plant-live"], [data-page="plant"]) .specimen-plate-caption,
+:is([data-page="plant-live"], [data-page="plant"]) .specimen-zone-label {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+:is([data-page="plant-live"], [data-page="plant"]) .overview-lead-summary,
+:is([data-page="plant-live"], [data-page="plant"]) .chapter-body p,
+:is([data-page="plant-live"], [data-page="plant"]) .subblock-item p,
+:is([data-page="plant-live"], [data-page="plant"]) .chapter-figure-single figcaption,
+:is([data-page="plant-live"], [data-page="plant"]) .gallery-figure figcaption,
+:is([data-page="plant-live"], [data-page="plant"]) .specimen-plate-caption-text,
+:is([data-page="plant-live"], [data-page="plant"]) .gbs-live-prompt-copy,
+:is([data-page="plant-live"], [data-page="plant"]) .app-error-state p {
+  text-align: justify;
+  text-justify: inter-word;
+  line-height: 1.75;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+:is([data-page="plant-live"], [data-page="plant"]) .specimen-plate-media,
+:is([data-page="plant-live"], [data-page="plant"]) .chapter-figure-single .figure-media-box,
+:is([data-page="plant-live"], [data-page="plant"]) .gallery-figure .figure-media-box {
+  aspect-ratio: 16 / 10;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+:is([data-page="plant-live"], [data-page="plant"]) .specimen-plate-media img,
+:is([data-page="plant-live"], [data-page="plant"]) .chapter-figure-single .figure-media-box img,
+:is([data-page="plant-live"], [data-page="plant"]) .gallery-figure .figure-media-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+:is([data-page="plant-live"], [data-page="plant"]) .chapter-card {
+  padding: clamp(22px, 3vw, 34px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(155deg, rgba(6, 20, 14, 0.88), rgba(11, 33, 23, 0.86));
+  border: 1px solid rgba(52, 211, 153, 0.24);
+  transition:
+    transform 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+:is([data-page="plant-live"], [data-page="plant"]) .chapter-card:hover {
+  border-color: rgba(52, 211, 153, 0.48);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.36);
+}
+
+:is([data-page="plant-live"], [data-page="plant"]) .plantipedia-telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+:is([data-page="plant-live"], [data-page="plant"]) .telemetry-stat-card {
+  min-width: 0;
+  word-break: break-word;
+}
+
+:is([data-page="plant-live"], [data-page="plant"]) .monograph-source-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  :is([data-page="plant-live"], [data-page="plant"]) .plantipedia-telemetry-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  :is([data-page="plant-live"], [data-page="plant"]) .overview-header-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  :is([data-page="plant-live"], [data-page="plant"]) .chapter-split-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  :is([data-page="plant-live"], [data-page="plant"]) .plantipedia-telemetry-grid {
+    grid-template-columns: 1fr;
+  }
+
+  :is([data-page="plant-live"], [data-page="plant"]) .chapter-gallery-two {
+    grid-template-columns: 1fr;
+  }
+
+  :is([data-page="plant-live"], [data-page="plant"]) .monograph-header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  :is([data-page="plant-live"], [data-page="plant"]) .monograph-header-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
+
+  :is([data-page="plant-live"], [data-page="plant"]) .chapter-card {
+    padding: 18px 14px;
+  }
+}

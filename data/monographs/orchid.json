@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "orchid",
   "commonName": "Orchid",
   "scientificName": "Phalaenopsis & Orchidaceae",
@@ -13,9 +13,9 @@
   "shortSummary": "Hyper-diverse epiphytic monocot family featuring bilateral zygomorphic blooms, specialized labellum petals, and spongy velamen roots.",
   "leadOverview": "Orchids (family Orchidaceae, exemplified in horticulture by the Moth Orchid Phalaenopsis and native Vanda/Dendrobium species) represent one of the two largest flowering plant families on Earth with over 28,000 species. Distinguished by symmetrical three-petalled blooms bearing a modified landing-platform lip (labellum) and fused reproductive column, epiphytic orchids thrive suspended on monsoon tree bark.",
   "heroImage": {
-    "url": "https://images.pexels.com/photos/30313199/pexels-photo-30313199.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Delicate orchid blossoms showing symmetrical petals and central labellum lip",
-    "caption": "Zygomorphic orchid blossoms displaying sculpted central labellum and waxy enduring tepals."
+    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/368194406/large.jpeg",
+    "alt": "Orchid (Phalaenopsis & Orchidaceae) botanical herbarium specimen",
+    "caption": "Orchid (Phalaenopsis & Orchidaceae) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Monocot)",
@@ -56,14 +56,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/8503261/pexels-photo-8503261.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Close-up of pink Phalaenopsis orchid flower structure",
-          "caption": "Zygomorphic Phalaenopsis corolla featuring lateral wings, dorsal sepal, and three-lobed lip."
-        },
-        {
-          "url": "https://images.pexels.com/photos/4136888/pexels-photo-4136888.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Graceful cascading arching orchid spray",
-          "caption": "Arching raceme inflorescence sustaining long-lived waxy blossoms for up to three months."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/149979702/large.jpeg",
+          "alt": "Orchid (Phalaenopsis & Orchidaceae) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Orchid (Phalaenopsis & Orchidaceae): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -78,9 +73,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/30313199/pexels-photo-30313199.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Vibrant blooming orchids",
-          "caption": "Representative tropical orchid morphology showcasing diverse petal pigmentation."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/149979718/large.jpeg",
+          "alt": "Orchid (Phalaenopsis & Orchidaceae) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Orchid (Phalaenopsis & Orchidaceae): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -95,9 +90,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Humid tropical forest canopy",
-          "caption": "Misty forest canopy habitat providing bright dappled light and buoyant air circulation."
+          "url": "https://static.inaturalist.org/photos/71242678/large.jpg",
+          "alt": "Orchid (Phalaenopsis & Orchidaceae) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Orchid (Phalaenopsis & Orchidaceae): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -109,13 +104,6 @@
       "paragraphs": [
         "Because orchid seeds are microscopic specks lacking endosperm food reserves, wild germination is impossible without infection by compatible basidiomycete mycorrhizal fungi (such as Rhizoctonia relatives) that feed sugars and minerals to the swelling protocorm embryo.",
         "At bloom, flowers demonstrate Darwin's famous evolutionary precision: moths, orchid bees, and hoverflies brushing past the column receive sticky twin pollinia glued cleanly onto their heads or backs for cross-pollination on the next blossom."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/39665142/pexels-photo-39665142.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Bee foraging on delicate flower",
-          "caption": "Specialized insect pollination transferring coherent waxy pollinia between flowers."
-        }
       ]
     },
     {
@@ -129,9 +117,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/4136888/pexels-photo-4136888.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Cultivated decorative orchid stem",
-          "caption": "Long-lasting tissue-cultured orchid sprays sustaining modern ethical floriculture."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/199858760/large.jpeg",
+          "alt": "Orchid (Phalaenopsis & Orchidaceae) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Orchid (Phalaenopsis & Orchidaceae): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -144,14 +132,7 @@
         "In East Asian and Ayurvedic traditions, cultivated stems of Dendrobium nobile ('Shi Hu') and tubers of Gastrodia elata are valued for soothing dry throat irritation and supporting cellular hydration, containing alkaloids such as dendrobine and phenolic bibenzyls.",
         "Modern pharmacology also investigates orchid-derived polysaccharides for mucosal protection, while strictly emphasizing cultivation over wild collection."
       ],
-      "safetyNote": "Never wild-harvest terrestrial or epiphytic orchids for salep starch or herbal remedies—overcollection has driven numerous native Asian and Mediterranean orchids toward extinction, and wild-dug roots violate CITES conservation laws. Only use documented, nursery-grown food-grade Vanilla or certified cultivated herbs.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/8503261/pexels-photo-8503261.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Detailed Phalaenopsis orchid flower",
-          "caption": "Conservation-protected Orchidaceae treasured for biodiversity and ethical propagation."
-        }
-      ]
+      "safetyNote": "Never wild-harvest terrestrial or epiphytic orchids for salep starch or herbal remedies—overcollection has driven numerous native Asian and Mediterranean orchids toward extinction, and wild-dug roots violate CITES conservation laws. Only use documented, nursery-grown food-grade Vanilla or certified cultivated herbs."
     },
     {
       "number": "07",
@@ -164,9 +145,161 @@
       ],
       "images": [
         {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/3031284/large.jpg",
+          "alt": "Orchid (Phalaenopsis & Orchidaceae) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Orchid (Phalaenopsis & Orchidaceae): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Autumn (শরৎ), Winter (শীত)).",
+      "paragraphs": [
+        "Orchid (Phalaenopsis & Orchidaceae) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Autumn (শরৎ), Winter (শীত).",
+        "Autumn (শরৎ): Humid post-monsoon air fuels spongy velamen aerial root growth across epiphytic bark mounts. Winter (শীত): Cool night temperature drops trigger long-lasting arching Phalaenopsis flower spikes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Autumn (শরৎ) · Winter (শীত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
           "url": "https://images.pexels.com/photos/30313199/pexels-photo-30313199.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Well-tended blooming indoor orchids",
-          "caption": "Bright filtered window light and airy bark aeration encouraging annual spike rebloom."
+          "alt": "Orchid (Phalaenopsis & Orchidaceae) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Orchid (Phalaenopsis & Orchidaceae): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Orchid.",
+      "paragraphs": [
+        "Orchid (Phalaenopsis & Orchidaceae) exhibits dual reproductive versatility through wind-, pollinator-, or gravity-dispersed seed cohorts alongside rapid vegetative renewal via herbaceous stem cuttings, rhizome splits, or nodal rooting. Mature seed capsules collected just prior to dehiscence retain strong vigor in dry shaded storage for moderate periods.",
+        "Rooting auxin pre-treatment on semi-ripe nodal cuttings during warm humid months accelerates adventitious root initiation within 10 to 21 days in porous coco-peat and vermicompost propagation trays."
+      ],
+      "subblocks": [
+        {
+          "heading": "Seed Germination",
+          "text": "Surface-sown or lightly covered in sterile porous mix; germinates in 7–21 days under ambient humidity."
+        },
+        {
+          "heading": "Vegetative Method",
+          "text": "Two-node terminal cuttings or clump division rooted in misted, filtered-light benches."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Phalaenopsis & Orchidaceae.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Orchid (Phalaenopsis & Orchidaceae) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/8503261/pexels-photo-8503261.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Orchid (Phalaenopsis & Orchidaceae) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Orchid (Phalaenopsis & Orchidaceae): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Orchid.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Pan-tropical & Temperate Global (SE Asia, Himalayas, Americas)), Orchid (Phalaenopsis & Orchidaceae) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Pan-tropical & Temperate Global (SE Asia, Himalayas, Americas) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Orchid (Phalaenopsis & Orchidaceae) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/4136888/pexels-photo-4136888.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Orchid (Phalaenopsis & Orchidaceae) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Orchid (Phalaenopsis & Orchidaceae): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Asparagales clade divergence and Orchidaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Phalaenopsis (representative) within order Asparagales (Monocot).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Phalaenopsis & Orchidaceae inside family Orchidaceae (অর্কিডাসি (অর্কিড গোত্র)), order Asparagales, clade Monocot. Hyper-diverse epiphytic and terrestrial monocots featuring zygomorphic blossoms with a modified landing-platform petal (labellum) and spongy velamen roots.",
+        "Within genus Phalaenopsis (representative), specialized morphological adaptations—such as bilateral symmetry with fused stamen-pistil column and labellum lip—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Phalaenopsis & Orchidaceae (Orchid / Rasna (অর্কিড)).",
+      "paragraphs": [
+        "Field verification of Orchid (Phalaenopsis & Orchidaceae) rests on recognizing key Orchidaceae family markers: Bilateral symmetry with fused stamen-pistil column and labellum lip; Silvery spongy velamen root epidermis absorbing atmospheric mist; Symbiotic mycorrhizal dependence for microscopic dust-seed germination. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Velamen Roots: Chlorophyll-bearing aerial roots coated in silvery porous velamen epidermis that turns bright emerald when wet. Leaves & Pseudobulbs: Succulent distichous leaves (monopodial Phalaenopsis) or swollen stem water-reservoirs (sympodial Dendrobium). Labellum & Column: Modified lower petal lip guiding pollinators directly beneath the fused stamen-pistil column. Dust-Like Seeds: Minute dehiscent capsules releasing hundreds of thousands of microscopic endosperm-free seeds."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Bilateral symmetry with fused stamen-pistil column and labellum lip"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Silvery spongy velamen root epidermis absorbing atmospheric mist"
         }
       ]
     }

@@ -758,20 +758,60 @@ export function renderTaxonomySection(mountEl, { sectionData }) {
 
 /**
  * 4b. Worldwide Botanical Server Gateway Section (./data/pages/home.json)
- * Strict Local Bypass: Queries route directly to /plant/live/?q=...&source=gateway without local filtering.
+ * 2-Column Architectural Split: Left federated backbones + lookup console; Right 16/10 plate + Quick-Launch + Dual CTAs.
  */
 export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
   if (!mountEl) return;
   const gateway = pageData?.globalGateway || {};
   const searchCfg = gateway.search || {};
+  const backbones = Array.isArray(gateway.backbones) && gateway.backbones.length > 0
+    ? gateway.backbones
+    : [
+        {
+          id: "gbif",
+          label: "GBIF Backbone",
+          detail: "Resolves accepted Kingdom Plantae binomials, synonym keys, and authoritative global occurrence hierarchies.",
+        },
+        {
+          id: "global-flora-index",
+          label: "Global Flora Index",
+          detail: "Synthesizes structured 15-chapter morphological, ecological, and ethnobotanical prose across worldwide taxa.",
+        },
+        {
+          id: "wikidata",
+          label: "Wikidata Graph",
+          detail: "Bridges persistent P225 taxonomic nodes with bilingual EN / বাংলা nomenclature and IUCN Red List statuses.",
+        },
+        {
+          id: "inaturalist",
+          label: "iNaturalist Taxa",
+          detail: "Supplies research-grade field specimen plates covering floral structures, foliage, bark, and natural habitats.",
+        },
+        {
+          id: "kew-powo",
+          label: "Kew POWO",
+          detail: "Cross-verifies APG IV family placements, native biogeographic distributions, and botanical synonymy.",
+        },
+      ];
   const expeditions = Array.isArray(gateway.expeditions) && gateway.expeditions.length > 0
     ? gateway.expeditions
-    : ["Baobab", "Venus Flytrap", "Ginkgo Biloba", "Dragon Blood Tree", "Rafflesia"];
+    : ["Welwitschia mirabilis", "Dionaea muscipula", "Adansonia digitata", "Ginkgo biloba", "Rafflesia arnoldii"];
   const paragraphs = Array.isArray(gateway.paragraphs) && gateway.paragraphs.length > 0
     ? gateway.paragraphs
     : [
-        "While Plantipedia's core archive houses 50 deeply curated, fifteen-chapter botanical monographs, the global plant kingdom spans more than 400,000+ documented vascular species and trees. This dedicated gateway connects your research session directly to the Global Botanical Server for live taxonomic, morphological, and bilingual records.",
-        "Every query entered in this console bypasses the local 50-species index entirely—synthesizing real-time global botanical dossiers on demand with automated plant validation, English and বাংলা nomenclature cross-referencing, and instant split-screen comparison readiness.",
+        "While Plantipedia's core archive curates 50 deeply authored 15-chapter botanical monographs, the living plant kingdom encompasses more than 400,000 vascular plant and tree taxa worldwide. This federated lookup console links directly to the Global Botanical Server so every search resolves accepted Linnaean binomials, hierarchical classifications, and verified field photography on demand.",
+        "Every query bypasses the local 50-species index without API keys or paywalls—aggregating multi-source taxonomic graphs, cross-script English and বাংলা vernacular matching, and biome-calibrated cultivation telemetry ready for full-page reading or split-screen comparison.",
+      ];
+  const imgCfg = gateway.image || {
+    url: "https://inaturalist-open-data.s3.amazonaws.com/photos/625322666/original.jpg",
+    alt: "Welwitschia mirabilis field specimen representing the 400,000+ Worldwide Flora Registry",
+    caption: "Fig. GW-01 — Endemic arid gymnosperm Welwitschia mirabilis indexed on demand through the 400K+ Global Botanical Server.",
+  };
+  const ctas = Array.isArray(gateway.ctas) && gateway.ctas.length > 0
+    ? gateway.ctas
+    : [
+        { label: "🌐 Open Global Botanical Server", href: "./plant/live/", variant: "primary" },
+        { label: "📖 Explore Sources & References", href: "./sources/", variant: "secondary" },
       ];
 
   const wrapper = createEl("div", "global-gateway-section");
@@ -779,13 +819,16 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
 
   const container = createEl("div", "section-container");
   const card = createEl("div", "global-gateway-card");
+  const split = createEl("div", "global-gateway-split");
 
+  // Left Architectural Column
+  const leftCol = createEl("div", "global-gateway-left");
   const topMeta = createEl("div", "global-gateway-meta-row");
   topMeta.appendChild(
     createEl(
       "span",
       "global-gateway-eyebrow",
-      gateway.eyebrow || "🌐 WORLDWIDE FLORA REGISTRY · LIVE UPLINK",
+      gateway.eyebrow || "WORLDWIDE FLORA REGISTRY · 400K+ INDEXED TAXA",
     ),
   );
   topMeta.appendChild(
@@ -795,13 +838,13 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
       gateway.statusTag || "ZERO-KEY LIVE UPLINK · STRICT LOCAL BYPASS",
     ),
   );
-  card.appendChild(topMeta);
+  leftCol.appendChild(topMeta);
 
-  card.appendChild(
+  leftCol.appendChild(
     createEl(
       "h2",
       "section-heading global-gateway-heading",
-      gateway.heading || "Worldwide Botanical Server Gateway",
+      gateway.heading || "Global Botanical Server Gateway",
     ),
   );
 
@@ -809,7 +852,50 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
   paragraphs.forEach((pText) => {
     proseWrap.appendChild(createEl("p", "justified-prose global-gateway-p", pText));
   });
-  card.appendChild(proseWrap);
+  leftCol.appendChild(proseWrap);
+
+  const backboneBlock = createEl("div", "global-backbone-block");
+  backboneBlock.appendChild(
+    createEl(
+      "span",
+      "global-backbone-label",
+      gateway.backboneLabel || "Federated Botanical Backbone",
+    ),
+  );
+  const backbonePills = createEl("div", "global-backbone-pills");
+  backbonePills.setAttribute("role", "tablist");
+  backbonePills.setAttribute("aria-label", "Federated botanical sources");
+
+  const backboneCaption = createEl(
+    "p",
+    "global-backbone-caption",
+    backbones[0]?.detail || "",
+  );
+  backboneCaption.setAttribute("aria-live", "polite");
+
+  backbones.forEach((bb, idx) => {
+    const pill = createEl(
+      "button",
+      `global-backbone-pill${idx === 0 ? " is-active" : ""}`,
+      bb.label,
+    );
+    pill.type = "button";
+    pill.setAttribute("role", "tab");
+    pill.setAttribute("aria-selected", idx === 0 ? "true" : "false");
+    pill.addEventListener("click", () => {
+      backbonePills.querySelectorAll(".global-backbone-pill").forEach((el) => {
+        el.classList.remove("is-active");
+        el.setAttribute("aria-selected", "false");
+      });
+      pill.classList.add("is-active");
+      pill.setAttribute("aria-selected", "true");
+      backboneCaption.textContent = bb.detail || "";
+    });
+    backbonePills.appendChild(pill);
+  });
+  backboneBlock.appendChild(backbonePills);
+  backboneBlock.appendChild(backboneCaption);
+  leftCol.appendChild(backboneBlock);
 
   const form = createEl("form", "global-gateway-form");
   form.id = "globalGatewayForm";
@@ -846,7 +932,7 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
   input.className = "global-gateway-input";
   input.placeholder =
     searchCfg.placeholder ||
-    "Query any worldwide species (e.g., Baobab, Ginkgo Biloba, Venus Flytrap, Rafflesia)...";
+    "Query any worldwide species (e.g., Welwitschia mirabilis, Adansonia digitata, Ginkgo biloba)...";
   input.autocomplete = "off";
   input.spellcheck = false;
   input.setAttribute(
@@ -898,17 +984,37 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
     launchGatewayQuery(input.value);
   });
 
-  card.appendChild(form);
-  card.appendChild(hintEl);
+  leftCol.appendChild(form);
+  leftCol.appendChild(hintEl);
 
-  const expRow = createEl("div", "global-gateway-expeditions");
-  expRow.appendChild(
+  // Right Architectural Column (16/10 specimen figure + Quick-Launch Chips + Dual CTAs)
+  const rightCol = createEl("div", "global-gateway-right");
+
+  const fig = createEl("figure", "global-gateway-figure");
+  const mediaBox = createEl("div", "global-gateway-media-box");
+  const plateImg = buildImageElement(
+    imgCfg.url,
+    imgCfg.alt || "Worldwide botanical specimen",
+    "Worldwide Flora Registry Specimen",
+  );
+  mediaBox.appendChild(plateImg);
+  fig.appendChild(mediaBox);
+  if (imgCfg.caption) {
+    fig.appendChild(createEl("figcaption", "global-gateway-figcaption", imgCfg.caption));
+  }
+  rightCol.appendChild(fig);
+
+  const quickPanel = createEl("div", "global-quicklaunch-panel");
+  const quickHead = createEl("div", "global-quicklaunch-head");
+  quickHead.appendChild(
     createEl(
       "span",
-      "global-gateway-exp-label",
-      gateway.expeditionsLabel || "Global Expedition Chips",
+      "global-quicklaunch-title",
+      gateway.expeditionsLabel || "Instant Global Taxon Quick-Launch",
     ),
   );
+  quickHead.appendChild(createEl("span", "global-quicklaunch-badge", "LIVE MONOGRAPH →"));
+  quickPanel.appendChild(quickHead);
 
   const chipsWrap = createEl("div", "global-expedition-chips");
   expeditions.forEach((speciesName) => {
@@ -924,42 +1030,65 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
     });
     chipsWrap.appendChild(chipBtn);
   });
-  expRow.appendChild(chipsWrap);
-  card.appendChild(expRow);
+  quickPanel.appendChild(chipsWrap);
+  rightCol.appendChild(quickPanel);
 
+  const ctaRow = createEl("div", "global-gateway-cta-row");
+  ctas.forEach((cta) => {
+    const link = createEl(
+      "a",
+      `global-gateway-cta-btn global-gateway-cta-btn--${cta.variant === "primary" ? "primary" : "secondary"}`,
+      cta.label,
+    );
+    link.href = sanitizeUrl(cta.href, "./plant/live/");
+    ctaRow.appendChild(link);
+  });
+  rightCol.appendChild(ctaRow);
+
+  split.appendChild(leftCol);
+  split.appendChild(rightCol);
+  card.appendChild(split);
   container.appendChild(card);
   wrapper.appendChild(container);
   mountEl.replaceChildren(wrapper);
 }
 
 /**
- * 4c. Home "Next Milestone" Spotlight Section (Strictly Version 3.2 preview + Roadmap CTA)
+ * 4c. Home "Next Milestone" Spotlight Section (Strictly Version 3.2 preview + Readiness Bar + Dual CTAs)
  */
 export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
   if (!mountEl) return;
   const milestone = pageData?.nextMilestone || {};
+  const readiness = milestone.readiness || {
+    label: "Version 3.2 Core Architecture Readiness",
+    percent: 72,
+    statusText: "72% Spec Locked · Next After v3.1",
+  };
 
   const pillars =
     Array.isArray(milestone.pillars) && milestone.pillars.length > 0
       ? milestone.pillars
       : [
           {
-            kicker: "MULTI-SOURCE ENGINE",
-            title: "GBIF + Global Flora Index + Wikidata + iNaturalist",
+            number: "1",
+            kicker: "CONCURRENT RESOLUTION",
+            title: "⚡ 5-Source Parallel Aggregation",
             description:
-              "Parallel multi-source resolution cross-validates global vascular names, herbarium occurrences, conservation statuses, and vernacular aliases in real time.",
+              "Executes simultaneous browser requests across GBIF Backbone, Global Flora Index, Wikidata P225, iNaturalist Taxa, and Kew POWO to assemble unified botanical dossiers without single-endpoint bottlenecks.",
           },
           {
-            kicker: "IMAGE AGGREGATOR",
-            title: "Multi-Angle Field Specimen Plates",
+            number: "2",
+            kicker: "BILINGUAL LEXICON",
+            title: "🌐 Cross-Script EN / বাংলা Alignment",
             description:
-              "Automated botanical plate curation blends open herbarium observations with habitat, floral macro, bark, and fruiting imagery across every query.",
+              "Expands semantic sitelink mapping between Linnaean binomials, English vernaculars, and Bengali Unicode nomenclature so every global taxon renders accurate bilingual headers and phonetic cues.",
           },
           {
-            kicker: "INSTANT DISCOVERY",
-            title: "Sub-Millisecond Fuzzy Search & '/' Shortcut",
+            number: "3",
+            kicker: "INSTANT NAVIGATION",
+            title: "🔍 Typo-Tolerant Fuzzy Search & Shortcuts",
             description:
-              "Typo-tolerant bilingual search indexing paired with a global '/' keyboard shortcut lets researchers jump directly to any taxon from anywhere on the site.",
+              "Combines client-side edit-distance matching for misspelled Latin or local plant names with an instant '/' keyboard focus shortcut active across every Plantipedia archive page.",
           },
         ];
 
@@ -969,7 +1098,7 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
       : [
           { version: "v1.0", state: "past" },
           { version: "v2.0", state: "past" },
-          { version: "v3.0", state: "past" },
+          { "version": "v3.0", "state": "past" },
           { version: "v3.1 (Current)", state: "current" },
           { version: "v3.2 (Next)", state: "next" },
           { version: "v4.0", state: "future" },
@@ -985,18 +1114,19 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
   const card = createEl("div", "next-milestone-card");
 
   const metaRow = createEl("div", "next-milestone-meta-row");
-  metaRow.appendChild(
-    createEl(
-      "span",
-      "next-milestone-badge",
-      milestone.eyebrow || "NEXT MILESTONE · VERSION 3.2 SPOTLIGHT",
-    ),
+  const badge = createEl("span", "next-milestone-badge");
+  const pulseDot = createEl("span", "next-milestone-badge-dot");
+  pulseDot.setAttribute("aria-hidden", "true");
+  badge.appendChild(pulseDot);
+  badge.appendChild(
+    createEl("span", "", milestone.eyebrow || "NEXT MILESTONE · VERSION 3.2 SPOTLIGHT"),
   );
+  metaRow.appendChild(badge);
   metaRow.appendChild(
     createEl(
       "span",
       "next-milestone-version-tag",
-      milestone.statusTag || "SCHEDULED NEXT DECIMAL RELEASE · v3.2",
+      milestone.statusTag || "IN ACTIVE ARCHITECTURE · SCHEDULED NEXT RELEASE",
     ),
   );
   card.appendChild(metaRow);
@@ -1013,30 +1143,39 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
   copyCol.appendChild(
     createEl(
       "p",
-      "justified-prose",
+      "justified-prose next-milestone-overview",
       milestone.description ||
-        "Immediately following our Version 3.1 ecosystem upgrade, Plantipedia Version 3.2 introduces parallel multi-source botanical querying across GBIF, Global Flora Index, Wikidata, and iNaturalist, paired with a multi-angle specimen image aggregator and typo-tolerant fuzzy search triggered by the '/' shortcut.",
+        "Immediately following Version 3.1, Plantipedia Version 3.2 upgrades the live lookup stack into a parallel multi-source botanical engine uniting GBIF, the Global Flora Index, Wikidata, iNaturalist, and Kew POWO. Alongside concurrent resolution across 400,000+ vascular taxa, v3.2 introduces automated cross-script EN / বাংলা alignment and typo-tolerant Levenshtein fuzzy search bound to the global '/' shortcut.",
     ),
   );
   head.appendChild(copyCol);
-
-  const ctaBtn = createEl("a", "cta-glow-button");
-  ctaBtn.href = sanitizeUrl(milestone.ctaHref || "./roadmap/", "./roadmap/");
-  ctaBtn.appendChild(
-    createEl("span", "", milestone.ctaLabel || "Inspect Full Roadmap"),
-  );
-  const arrow = createEl("span", "cta-glow-arrow", "→");
-  arrow.setAttribute("aria-hidden", "true");
-  ctaBtn.appendChild(arrow);
-  head.appendChild(ctaBtn);
   card.appendChild(head);
 
+  const readinessBar = createEl("div", "next-milestone-readiness");
+  const readinessHead = createEl("div", "next-milestone-readiness-head");
+  readinessHead.appendChild(createEl("span", "", readiness.label || "Version 3.2 Core Architecture Readiness"));
+  readinessHead.appendChild(createEl("span", "", readiness.statusText || `${readiness.percent || 72}% Spec Locked`));
+  const readinessTrack = createEl("div", "next-milestone-readiness-track");
+  readinessTrack.setAttribute("role", "progressbar");
+  readinessTrack.setAttribute("aria-valuemin", "0");
+  readinessTrack.setAttribute("aria-valuemax", "100");
+  readinessTrack.setAttribute("aria-valuenow", String(readiness.percent || 72));
+  const readinessFill = createEl("div", "next-milestone-readiness-fill");
+  readinessFill.style.width = `${Math.min(100, Math.max(10, Number(readiness.percent) || 72))}%`;
+  readinessTrack.appendChild(readinessFill);
+  readinessBar.appendChild(readinessHead);
+  readinessBar.appendChild(readinessTrack);
+  card.appendChild(readinessBar);
+
   const pillarsGrid = createEl("div", "next-milestone-pillars");
-  pillars.forEach((pillar) => {
+  pillars.forEach((pillar, idx) => {
     const pCard = createEl("article", "next-milestone-pillar");
-    pCard.appendChild(createEl("span", "next-milestone-pillar-kicker", pillar.kicker || ""));
+    const pTop = createEl("div", "next-milestone-pillar-top");
+    pTop.appendChild(createEl("span", "next-milestone-pillar-kicker", pillar.kicker || ""));
+    pTop.appendChild(createEl("span", "next-milestone-pillar-num", pillar.number || String(idx + 1)));
+    pCard.appendChild(pTop);
     pCard.appendChild(createEl("h3", "next-milestone-pillar-title", pillar.title || ""));
-    pCard.appendChild(createEl("p", "next-milestone-pillar-desc", pillar.description || ""));
+    pCard.appendChild(createEl("p", "justified-prose next-milestone-pillar-desc", pillar.description || ""));
     pillarsGrid.appendChild(pCard);
   });
   card.appendChild(pillarsGrid);
@@ -1060,6 +1199,26 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
     timeline.appendChild(createEl("span", `timeline-step-pill${stateCls}`, step.version));
   });
   card.appendChild(timeline);
+
+  const ctaRow = createEl("div", "next-milestone-cta-row");
+  const primaryBtn = createEl("a", "cta-glow-button");
+  primaryBtn.href = sanitizeUrl(milestone.ctaHref || "./roadmap/", "./roadmap/");
+  primaryBtn.appendChild(
+    createEl("span", "", milestone.ctaLabel || "🚀 View Full Release Roadmap (v3.1 → v4.3)"),
+  );
+  const arrow = createEl("span", "cta-glow-arrow", "→");
+  arrow.setAttribute("aria-hidden", "true");
+  primaryBtn.appendChild(arrow);
+  ctaRow.appendChild(primaryBtn);
+
+  const secBtn = createEl(
+    "a",
+    "next-milestone-cta-secondary",
+    milestone.secondaryCtaLabel || "🧭 Explore Current v3.1 Capabilities",
+  );
+  secBtn.href = sanitizeUrl(milestone.secondaryCtaHref || "./services/", "./services/");
+  ctaRow.appendChild(secBtn);
+  card.appendChild(ctaRow);
 
   container.appendChild(card);
   wrapper.appendChild(container);

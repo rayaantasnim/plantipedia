@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "lychee",
   "commonName": "Lychee",
   "scientificName": "Litchi chinensis",
@@ -14,9 +14,9 @@
   "shortSummary": "Subtropical evergreen soapberry tree treasured for jewel-red tuberculate fruits filled with translucent rose-scented aril flesh.",
   "leadOverview": "Lychee (Litchi chinensis)—called Lichu across Bengal—is an ornate broad-crowned subtropical fruit tree celebrated for hanging ruby-red fruit clusters harvested during Grishmo summer. Beneath its brittle pebbled crimson shell lies a glistening, pearl-white juicy aril perfumed with delicate floral monoterpenes and crisp sweet-acid balance.",
   "heroImage": {
-    "url": "https://images.pexels.com/photos/38519277/pexels-photo-38519277.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Vibrant crimson Litchi chinensis lychee fruits with textured pebbled skins",
-    "caption": "Fresh ruby-red Litchi chinensis drupe-like berries displaying diagnostic polygonal tubercles."
+    "url": "https://static.inaturalist.org/photos/133754991/large.jpg",
+    "alt": "Lychee (Litchi chinensis) botanical herbarium specimen",
+    "caption": "Lychee (Litchi chinensis) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -67,14 +67,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/38519277/pexels-photo-38519277.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Fresh harvested red lychees showing pebbled skin",
-          "caption": "Mature crimson Lichu pericarps displaying diagnostic honeycomb tubercle embossing."
-        },
-        {
-          "url": "https://images.pexels.com/photos/17201892/pexels-photo-17201892.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Cluster of ripe red lychee fruits with green foliage",
-          "caption": "Hanging orchard clusters ripening simultaneously under warm Boishakh sunshine."
+          "url": "https://static.inaturalist.org/photos/78645566/large.jpeg",
+          "alt": "Lychee (Litchi chinensis) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Lychee (Litchi chinensis): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -89,9 +84,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/17201892/pexels-photo-17201892.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Sapindaceae fruit cluster in sunlight",
-          "caption": "Classic Sapindaceae terminal fruit panicle uniting dense clusters along woody pedicels."
+          "url": "https://static.inaturalist.org/photos/133755002/large.jpg",
+          "alt": "Lychee (Litchi chinensis) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Lychee (Litchi chinensis): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -106,9 +101,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/38519277/pexels-photo-38519277.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Fresh crimson lychee harvest",
-          "caption": "Ripe subtropical harvest conditioned by cool dry winter induction and warm summer rains."
+          "url": "https://static.inaturalist.org/photos/486275429/large.jpg",
+          "alt": "Lychee (Litchi chinensis) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Lychee (Litchi chinensis): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -120,13 +115,6 @@
       "paragraphs": [
         "Lychee trees form obligate symbiotic partnerships with soil endomycorrhizal fungi—producing dense surface feeder roots coated with fungal hyphae that absorb phosphorus and zinc efficiently. Without these beneficial soil microbes, nursery air-layers struggle to establish.",
         "During Boshonto bloom, exposed floral nectary discs attract immense swarms of Apis bees, producing pale amber monofloral 'Lichu honey' celebrated across northern Bangladesh. Later, fruit bats and civets disperse ripe red fruits."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Honeybees pollinating orchard flowers",
-          "caption": "Heavy honeybee visitation fuels pollination and prized spring Lichu honey harvests."
-        }
       ]
     },
     {
@@ -140,9 +128,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/17201892/pexels-photo-17201892.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Clusters of fresh ripe lychees on branches",
-          "caption": "Iconic Jyoishtho orchard clusters prized for fragrant, crisp pearl-white arils."
+          "url": "https://static.inaturalist.org/photos/486275445/large.jpg",
+          "alt": "Lychee (Litchi chinensis) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Lychee (Litchi chinensis): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -155,14 +143,7 @@
         "Ripe lychee arils deliver roughly 70 mg of vitamin C per 100 grams along with copper, potassium, and proanthocyanidin polyphenols (epicatechin and procyanidin A2)—studied for vascular antioxidant protection and post-exercise recovery.",
         "In traditional Chinese herbalism, dried lychee seeds (Li Zhi He) and pericarps are used cautiously in regulated decoctions for mild digestive warming."
       ],
-      "safetyNote": "Never consume unripe green lychees or eat large quantities of ripe fruit on an empty stomach, especially in malnourished children: unripe fruits contain elevated methylene cyclopropyl-glycine (MCPG) and hypoglycin A, which can block gluconeogenesis and trigger dangerous acute hypoglycemia.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/38519277/pexels-photo-38519277.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Ripe red lychees ready for safe consumption",
-          "caption": "Consume fully tree-ripened crimson lychees after balanced meals for safe vitamin C nutrition."
-        }
-      ]
+      "safetyNote": "Never consume unripe green lychees or eat large quantities of ripe fruit on an empty stomach, especially in malnourished children: unripe fruits contain elevated methylene cyclopropyl-glycine (MCPG) and hypoglycin A, which can block gluconeogenesis and trigger dangerous acute hypoglycemia."
     },
     {
       "number": "07",
@@ -175,9 +156,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/17201892/pexels-photo-17201892.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Healthy fruiting lychee branch",
-          "caption": "Even spring irrigation prevents pericarp sunburn and cracking during rapid aril swelling."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/489593039/large.jpg",
+          "alt": "Lychee (Litchi chinensis) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Lychee (Litchi chinensis): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Spring (বসন্ত), Summer (গ্রীষ্ম)).",
+      "paragraphs": [
+        "Lychee (Litchi chinensis) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Spring (বসন্ত), Summer (গ্রীষ্ম).",
+        "Spring (বসন্ত): Apetalous cream terminal panicles bloom across Dinajpur and Pabna, yielding prized spring Lichu honey. Summer (গ্রীষ্ম): Ruby-red tuberculate fruit clusters swell and ripen pearl-white arils during Jyoishtho heat."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Spring (বসন্ত) · Summer (গ্রীষ্ম)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://static.inaturalist.org/photos/28173188/large.jpeg",
+          "alt": "Lychee (Litchi chinensis) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Lychee (Litchi chinensis): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Lychee.",
+      "paragraphs": [
+        "Lychee (Litchi chinensis) combines sexual seed propagation—useful for raising sturdy heterozygous rootstocks—with elite clonal techniques such as veneer grafting, air layering (gootee), and semi-hardwood stem cuttings. Fresh recalcitrant or semi-orthodox seeds typically germinate within 14 to 35 days when depulped and sown in warm organic loam.",
+        "Clonal orchards standardize crown architecture, early precocity, and uniform biochemical profiles across generations within Sapindaceae."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Depulped seed sown cleanly in 2:1 loam-compost media; high viability when fresh."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Approach/veneer grafting or monsoon air-layering onto vigorous local rootstocks."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Litchi chinensis.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Lychee (Litchi chinensis) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/446708416/large.jpeg",
+          "alt": "Lychee (Litchi chinensis) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Lychee (Litchi chinensis): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Lychee.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Southern China, Northern Vietnam & Indo-Malayan Foothills), Lychee (Litchi chinensis) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Southern China, Northern Vietnam & Indo-Malayan Foothills thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 5.5 – 6.8, Full Unobstructed Sun, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Lychee (Litchi chinensis) calibrates root-zone chemistry around pH 5.5 – 6.8 inside deep humus-rich acidic loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full unobstructed sun.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate / seasonal dry rest) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 5.5 – 6.8 · Deep Humus-Rich Acidic Loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Unobstructed Sun · Moderate / Seasonal Dry Rest"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/38519277/pexels-photo-38519277.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Lychee (Litchi chinensis) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Lychee (Litchi chinensis): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Sapindales clade divergence and Sapindaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Litchi within order Sapindales (Eudicot (Malvids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Litchi chinensis inside family Sapindaceae (স্যাপিন্ডাসি (লিচু গোত্র)), order Sapindales, clade Eudicot (Malvids). Subtropical soapberry trees producing pinnately compound foliage, terminal nectariferous panicles, and tuberculate fruits cradling juicy translucent edible arils.",
+        "Within genus Litchi, specialized morphological adaptations—such as evenly pinnate glossy foliage flushing coppery-salmon when young—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Litchi chinensis (Lichu (লিচু)).",
+      "paragraphs": [
+        "Field verification of Lychee (Litchi chinensis) rests on recognizing key Sapindaceae family markers: Evenly pinnate glossy foliage flushing coppery-salmon when young; Dense apetalous floral panicles featuring prominent honeybee nectary discs; Brittle pebbled pericarps enclosing a fleshy sweet aril around glossy seeds. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Crown & Bark: Dense dome-shaped evergreen crown cast on dark grey furrowed trunks; young twigs brittle under high storm winds. Paripinnate Leaflets: 2–4 pairs of smooth leathery leaflets emerging vibrant pinkish-bronze to deter herbivores while developing chlorophyll. Tuberculate Pericarp: Leathery-brittle pink-to-scarlet rind etched with polygonal bumps that split cleanly at the longitudinal suture. Translucent Aril: Fleshy edible outgrowth of the seed funiculus rich in sugars, vitamin C, and geraniol floral esters."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Evenly pinnate glossy foliage flushing coppery-salmon when young"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Dense apetalous floral panicles featuring prominent honeybee nectary discs"
         }
       ]
     }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "champa",
   "commonName": "Golden Champa",
   "scientificName": "Magnolia champaca",
@@ -15,8 +15,8 @@
   "leadOverview": "Magnolia champaca—cherished across South Asia as Swarnachampa or Sonachampa ('Golden Champa')—is an evergreen magnoliid tree celebrated for some of the headiest floral perfume in the plant kingdom. Its sculpted saffron-yellow blossoms inspire classical Sanskrit and Bengali verse while powering iconic French perfumes and artisan attar distillation.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/31510582/pexels-photo-31510582.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Sculpted Magnolia family blossom with spiraling waxy tepals",
-    "caption": "Spirally arranged waxy tepals characteristic of ancient Magnoliaceae tree blossoms."
+    "alt": "Golden Champa (Magnolia champaca) botanical herbarium specimen",
+    "caption": "Golden Champa (Magnolia champaca) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Magnoliid (Early Angiosperm)",
@@ -67,14 +67,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31510582/pexels-photo-31510582.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Magnolia blossom showing primitive spiral floral symmetry",
-          "caption": "Layered waxy tepal geometry linking Golden Champa to early flowering plant evolution."
-        },
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Pollinating insects visiting sweet blooms",
-          "caption": "Beetles and bees drawn to intense sweet fruity floral volatiles."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/610031938/original.jpg",
+          "alt": "Golden Champa (Magnolia champaca) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Golden Champa (Magnolia champaca): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -89,9 +84,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31510582/pexels-photo-31510582.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Magnoliaceae floral axis and tepals",
-          "caption": "Ancient spiralled stamen and carpel arrangement predating specialized eudicot blooms."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/610031970/original.jpg",
+          "alt": "Golden Champa (Magnolia champaca) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Golden Champa (Magnolia champaca): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -106,9 +101,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Humid subtropical forest vegetation",
-          "caption": "Moisture-rich, organic acidic foothill soils supporting healthy evergreen growth."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/610031993/original.jpg",
+          "alt": "Golden Champa (Magnolia champaca) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Golden Champa (Magnolia champaca): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -120,13 +115,6 @@
       "paragraphs": [
         "Like ancient lotus relatives, freshly opening Magnolia champaca flowers gently warm their interior chambers above evening ambient temperatures (thermogenesis), vaporizing potent linalool, methyl benzoate, and indole volatiles that summon pollinating scarab beetles and honeybees.",
         "When woody follicles dehisce in autumn, bright red lipid-rich seed coats contrast sharply against pale grey pods, enticing bulbuls, barbets, and hornbills to swallow seeds and disperse them intact."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Insect pollinators on scented blossom",
-          "caption": "Volatile floral esters drawing beetles and bees across warm humid twilights."
-        }
       ]
     },
     {
@@ -140,9 +128,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31510582/pexels-photo-31510582.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Waxy Magnolia petals rich in aromatic oils",
-          "caption": "Freshly harvested waxy tepals prized by traditional attar distillers and modern perfumers."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/610032002/original.jpg",
+          "alt": "Golden Champa (Magnolia champaca) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Golden Champa (Magnolia champaca): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -155,14 +143,7 @@
         "Traditional Ayurvedic texts ('Champaka') value cooling flower infusions and leaf juices for mild inflammatory calm, headache relief, and fragrant hair oils. Modern chromatography identifies rich linalool, beta-elemene, and sesquiterpene lactones (such as parthenolide and costunolide) in leaves and bark.",
         "Floral aroma inhalation studies associate Champa's linalool-rich headspace with gentle parasympathetic calming and mood elevation."
       ],
-      "safetyNote": "Magnolia champaca bark and roots contain isoquinoline alkaloids (liriodenine) and sesquiterpene lactones that can irritate gastric mucosa or trigger contact dermatitis; avoid internal bark preparations during pregnancy.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/28511113/pexels-photo-28511113.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Aromatic herbal botanical preparation",
-          "caption": "Essential-oil-rich petals distilled traditionally into soothing floral waters and oils."
-        }
-      ]
+      "safetyNote": "Magnolia champaca bark and roots contain isoquinoline alkaloids (liriodenine) and sesquiterpene lactones that can irritate gastric mucosa or trigger contact dermatitis; avoid internal bark preparations during pregnancy."
     },
     {
       "number": "07",
@@ -175,9 +156,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/12067501/pexels-photo-12067501.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Lush sheltered garden canopy",
-          "caption": "Moist organic mulch and dappled afternoon relief maintain glossy foliage and steady blooms."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/634719654/original.jpg",
+          "alt": "Golden Champa (Magnolia champaca) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Golden Champa (Magnolia champaca): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Summer (গ্রীষ্ম), Monsoon (বর্ষা), Autumn (শরৎ)).",
+      "paragraphs": [
+        "Golden Champa (Magnolia champaca) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Summer (গ্রীষ্ম), Monsoon (বর্ষা), Autumn (শরৎ).",
+        "Summer (গ্রীষ্ম): Warm nights prompt golden saffron-amber tepals to unfurl with heady classic floral perfume. Monsoon (বর্ষা): Monsoon humidity maximizes linalool-rich blooming waves across heritage park canopies. Autumn (শরৎ): Cone-like woody follicle clusters split open to dangle bright scarlet-arilled seeds for birds."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Summer (গ্রীষ্ম) · Monsoon (বর্ষা) · Autumn (শরৎ)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/640490283/original.jpg",
+          "alt": "Golden Champa (Magnolia champaca) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Golden Champa (Magnolia champaca): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Golden Champa.",
+      "paragraphs": [
+        "Golden Champa (Magnolia champaca) combines sexual seed propagation—useful for raising sturdy heterozygous rootstocks—with elite clonal techniques such as veneer grafting, air layering (gootee), and semi-hardwood stem cuttings. Fresh recalcitrant or semi-orthodox seeds typically germinate within 14 to 35 days when depulped and sown in warm organic loam.",
+        "Clonal orchards standardize crown architecture, early precocity, and uniform biochemical profiles across generations within Magnoliaceae."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Depulped seed sown cleanly in 2:1 loam-compost media; high viability when fresh."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Approach/veneer grafting or monsoon air-layering onto vigorous local rootstocks."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Magnolia champaca.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Golden Champa (Magnolia champaca) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/644463688/original.jpg",
+          "alt": "Golden Champa (Magnolia champaca) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Golden Champa (Magnolia champaca): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Golden Champa.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (South & Southeast Asia (Indo-Malaya)), Golden Champa (Magnolia champaca) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to South & Southeast Asia (Indo-Malaya) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 5.2 – 6.8, Full Morning Sun / Dappled Shade, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Golden Champa (Magnolia champaca) calibrates root-zone chemistry around pH 5.2 – 6.8 inside deep acidic organic loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full morning sun / dappled shade.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (evenly moist humus) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 5.2 – 6.8 · Deep Acidic Organic Loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Morning Sun / Dappled Shade · Evenly Moist Humus"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/660096816/original.jpg",
+          "alt": "Golden Champa (Magnolia champaca) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Golden Champa (Magnolia champaca): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Magnoliales clade divergence and Magnoliaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Magnolia within order Magnoliales (Magnoliid (Early Angiosperm)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Magnolia champaca inside family Magnoliaceae (ম্যাগনোলিয়াসি (চম্পা গোত্র)), order Magnoliales, clade Magnoliid (Early Angiosperm). Ancient evolutionary lineage of fragrant forest trees featuring spirally arranged waxy tepals, ringed stipule scars on twigs, and beetle-pollinated cone-like fruits.",
+        "Within genus Magnolia, specialized morphological adaptations—such as elongated floral receptacle packed with spiral tepals and stamens—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Magnolia champaca (Champa / Swarnachampa (চম্পা / স্বর্ণচাঁপা)).",
+      "paragraphs": [
+        "Field verification of Golden Champa (Magnolia champaca) rests on recognizing key Magnoliaceae family markers: Elongated floral receptacle packed with spiral tepals and stamens; Conical stipular hoods leaving circular nodal rings along smooth twigs; Fleshy scarlet-seeded follicular aggregates splitting along wooden axes. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Annular Nodal Stipule Scars: Complete circular rings encircling twigs where silky protective bud-scales unwrap fresh leaves. Undulating Drip-Tip Foliage: Glossy bright-green elliptic blades shedding monsoon water rapidly off elongated acuminate tips. Spiral Golden Perianth: Undifferentiated petal-like tepals (15–20) opening gradually around a primitive elongated floral axis. Scarlet-Seeded Aggregate: Spicate clusters of splitting woody pods dangling oily coral-red seeds to attract forest birds."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Elongated floral receptacle packed with spiral tepals and stamens"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Conical stipular hoods leaving circular nodal rings along smooth twigs"
         }
       ]
     }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "sunflower",
   "commonName": "Sunflower",
   "scientificName": "Helianthus annuus",
@@ -13,9 +13,9 @@
   "shortSummary": "Heliotropic annual composite bearing golden ray florets, Fibonacci-spiralled disc seeds, and high-oleic culinary oil.",
   "leadOverview": "The common sunflower (Helianthus annuus) is a fast-growing annual herb of the daisy family Asteraceae, immediately recognizable by its towering rough stems and radiant flower heads. Domesticated in North America over 4,000 years ago, it serves today as both a premier oilseed crop and an emblem of solar tracking.",
   "heroImage": {
-    "url": "https://images.pexels.com/photos/27024149/pexels-photo-27024149.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Golden sunflower capitulum in bright sunlight",
-    "caption": "Helianthus annuus capitulum displaying golden sterile ray florets framing fertile central disc florets."
+    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/323768714/large.jpg",
+    "alt": "Sunflower (Helianthus annuus) botanical herbarium specimen",
+    "caption": "Sunflower (Helianthus annuus) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -56,14 +56,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/34537615/pexels-photo-34537615/free-photo-of-vibrant-sunflower-in-full-bloom-close-up.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Close-up of sunflower disc and ray florets",
-          "caption": "Centripetal maturation of fertile disc florets arranged along golden-angle spirals."
-        },
-        {
-          "url": "https://images.pexels.com/photos/18702246/pexels-photo-18702246/free-photo-of-close-up-of-sunflowers-in-paper.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Freshly cut ornamental sunflowers",
-          "caption": "Floral bracts and golden ray corollas harvested for ornamental display."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/98056702/large.jpeg",
+          "alt": "Sunflower (Helianthus annuus) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Sunflower (Helianthus annuus): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -78,9 +73,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/30994370/pexels-photo-30994370/free-photo-of-vibrant-sunflower-in-thailand-close-up.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Single-stem cultivated sunflower head",
-          "caption": "Unbranched terminal capitulum typical of domesticated Helianthus annuus cultivars."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/210274706/large.jpeg",
+          "alt": "Sunflower (Helianthus annuus) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Sunflower (Helianthus annuus): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -95,14 +90,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/34128564/pexels-photo-34128564/free-photo-of-vibrant-sunflowers-blooming-in-summer-field.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Expansive sunflower field in summer bloom",
-          "caption": "Monoculture agricultural stand thriving under unobstructed solar exposure."
-        },
-        {
-          "url": "https://images.pexels.com/photos/31299770/pexels-photo-31299770/free-photo-of-vibrant-sunflower-in-thai-summer-field.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Sunflowers blooming across tropical winter field",
-          "caption": "Warm-season field cultivation mirroring South Asian rabi cropping systems."
+          "url": "https://static.inaturalist.org/photos/647548096/large.jpg",
+          "alt": "Sunflower (Helianthus annuus) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Sunflower (Helianthus annuus): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -114,13 +104,6 @@
       "paragraphs": [
         "Immature sunflower buds exhibit true circadian heliotropism—tracking the sun from east to west each day via differential stem elongation driven by auxin gradients—before locking permanently toward the rising eastern sun upon anthesis. Research shows east-facing flower heads warm faster at dawn, attracting five times more morning bees than artificially west-turned heads.",
         "During seed set, lipid-dense achenes sustain finches, parrots, and migratory songbirds, while roots act as hyperaccumulators capable of phytoremediating heavy metals."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/39665142/pexels-photo-39665142.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Bumblebee visiting composite disc florets",
-          "caption": "Pollinator attraction enhanced by morning solar warming of eastern-oriented heads."
-        }
       ]
     },
     {
@@ -134,9 +117,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/27305386/pexels-photo-27305386/free-photo-of-a-sunflower-is-in-a-frame-in-a-field.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Sunflowers in bright rural landscape",
-          "caption": "Agricultural sunflower crop nearing peak pollination prior to achene filling."
+          "url": "https://images.pexels.com/photos/27024149/pexels-photo-27024149.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Sunflower (Helianthus annuus) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Sunflower (Helianthus annuus): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -149,14 +132,7 @@
         "Sunflower kernels are exceptionally rich in alpha-tocopherol (vitamin E), delivering over 20 mg per 100 g alongside selenium, magnesium, and phytosterols that support cellular membrane integrity and healthy serum cholesterol ratios. Traditional herbalists prepared warm petal and seed infusions for soothing mild respiratory irritation.",
         "Cold-pressed sunflower seed oil is widely formulated in dermatological emollients due to its linoleic acid barrier-repair properties."
       ],
-      "safetyNote": "While generally non-toxic and widely consumed, individuals with severe Asteraceae pollen allergies (ragweed cross-reactivity) or rare seed allergies should exercise caution. Avoid harvesting seeds from plants grown on contaminated industrial soils used for phytoremediation.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/27024149/pexels-photo-27024149.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Detailed view of sunflower florets",
-          "caption": "Developing achenes and vitamin E-rich floret structures."
-        }
-      ]
+      "safetyNote": "While generally non-toxic and widely consumed, individuals with severe Asteraceae pollen allergies (ragweed cross-reactivity) or rare seed allergies should exercise caution. Avoid harvesting seeds from plants grown on contaminated industrial soils used for phytoremediation."
     },
     {
       "number": "07",
@@ -169,9 +145,161 @@
       ],
       "images": [
         {
+          "url": "https://images.pexels.com/photos/34537615/pexels-photo-34537615/free-photo-of-vibrant-sunflower-in-full-bloom-close-up.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Sunflower (Helianthus annuus) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Sunflower (Helianthus annuus): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Late Autumn (হেমন্ত), Winter (শীত)).",
+      "paragraphs": [
+        "Sunflower (Helianthus annuus) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Late Autumn (হেমন্ত), Winter (শীত).",
+        "Late Autumn (হেমন্ত): Direct-sown across drying post-flood charlands and Gangetic loam for Robi oilseed and ornamental production. Winter (শীত): Golden heliotropic capitula open under bright, low-humidity winter skies as achene oil reserves mature."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Late Autumn (হেমন্ত) · Winter (শীত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/18702246/pexels-photo-18702246/free-photo-of-close-up-of-sunflowers-in-paper.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Sunflower (Helianthus annuus) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Sunflower (Helianthus annuus): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Sunflower.",
+      "paragraphs": [
+        "Sunflower (Helianthus annuus) exhibits dual reproductive versatility through wind-, pollinator-, or gravity-dispersed seed cohorts alongside rapid vegetative renewal via herbaceous stem cuttings, rhizome splits, or nodal rooting. Mature seed capsules collected just prior to dehiscence retain strong vigor in dry shaded storage for moderate periods.",
+        "Rooting auxin pre-treatment on semi-ripe nodal cuttings during warm humid months accelerates adventitious root initiation within 10 to 21 days in porous coco-peat and vermicompost propagation trays."
+      ],
+      "subblocks": [
+        {
+          "heading": "Seed Germination",
+          "text": "Surface-sown or lightly covered in sterile porous mix; germinates in 7–21 days under ambient humidity."
+        },
+        {
+          "heading": "Vegetative Method",
+          "text": "Two-node terminal cuttings or clump division rooted in misted, filtered-light benches."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Helianthus annuus.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Sunflower (Helianthus annuus) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/30994370/pexels-photo-30994370/free-photo-of-vibrant-sunflower-in-thailand-close-up.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Sunflower (Helianthus annuus) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Sunflower (Helianthus annuus): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Sunflower.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (North America), Sunflower (Helianthus annuus) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to North America thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Sunflower (Helianthus annuus) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
           "url": "https://images.pexels.com/photos/34128564/pexels-photo-34128564/free-photo-of-vibrant-sunflowers-blooming-in-summer-field.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Sunflowers aligned in sunlit rows",
-          "caption": "Proper row spacing ensuring uniform stem strength and full seed development."
+          "alt": "Sunflower (Helianthus annuus) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Sunflower (Helianthus annuus): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Asterales clade divergence and Asteraceae genomic traits",
+      "summary": "Phylogenetic placement of genus Helianthus within order Asterales (Eudicot (Asterids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Helianthus annuus inside family Asteraceae (অ্যাস্টেরেসি (সূর্যমুখী গোত্র)), order Asterales, clade Eudicot (Asterids). Earth's largest flowering plant family, distinguished by composite flower heads (capitula) uniting sterile ray florets and fertile central disc florets.",
+        "Within genus Helianthus, specialized morphological adaptations—such as capitulum inflorescence mimicking a single giant blossom—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Helianthus annuus (Surjomukhi (সূর্যমুখী)).",
+      "paragraphs": [
+        "Field verification of Sunflower (Helianthus annuus) rests on recognizing key Asteraceae family markers: Capitulum inflorescence mimicking a single giant blossom; Single-seeded achene fruits frequently topped with calyx pappus; Rich carotenoid pigments and heliotropic or aromatic terpenes. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Hispid Stems: Thick, pith-filled herbaceous stalks fortified by peripheral vascular bundles and stiff scabrous hairs reaching 1 to 3.5 metres. Cordate Leaves: Large alternate petiolate leaves with dentate margins, prominent three-veined bases, and rough sandpapery surfaces. Composite Capitulum: Pseudanthium surrounded by green involucral bracts; central disc florets mature centripetally from rim to centre over 5–10 days. Seeds & Taproot: Single-seeded dry cypsela fruits (achenes) encased in striped or black pericarps; deep branching taproot extracting deep soil moisture."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Capitulum inflorescence mimicking a single giant blossom"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Single-seeded achene fruits frequently topped with calyx pappus"
         }
       ]
     }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "coconut",
   "commonName": "Coconut",
   "scientificName": "Cocos nucifera",
@@ -15,8 +15,8 @@
   "leadOverview": "The Coconut Palm (Cocos nucifera) is the quintessential coastal monocot of the tropical world. Rising up to 30 metres on flexible ringed trunks crowned with feather-like pinnate fronds, this single-species genus sustains island and delta economies with electrolyte-rich coconut water, culinary milk, coir cordage, and architectural timber.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/28281017/pexels-photo-28281017.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Tall coconut palms leaning over tropical coastline",
-    "caption": "Gracefully curved Cocos nucifera trunks and pinnate crowns flourishing along sandy coastal shores."
+    "alt": "Coconut (Cocos nucifera) botanical herbarium specimen",
+    "caption": "Coconut (Cocos nucifera) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Monocot)",
@@ -58,13 +58,8 @@
       "images": [
         {
           "url": "https://images.pexels.com/photos/32970531/pexels-photo-32970531.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Cluster of young green coconuts hanging beneath palm fronds",
-          "caption": "Developing green drupes clustered in axillary crowns beneath arching pinnate fronds."
-        },
-        {
-          "url": "https://images.pexels.com/photos/32535057/pexels-photo-32535057.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Freshly opened coconut showing white endosperm and water",
-          "caption": "Stony endocarp lined with crisp white lipid-rich endosperm enclosing clear coconut water."
+          "alt": "Coconut (Cocos nucifera) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Coconut (Cocos nucifera): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -79,9 +74,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/16097003/pexels-photo-16097003.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Sunlit coconut palm fronds close-up",
-          "caption": "Pinnate Arecaceae frond geometry maximizing coastal sunlight capture while shedding gale winds."
+          "url": "https://images.pexels.com/photos/32535057/pexels-photo-32535057.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Coconut (Cocos nucifera) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Coconut (Cocos nucifera): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -96,9 +91,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/36868557/pexels-photo-36868557.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Tropical sandy shoreline lined with coconut palms",
-          "caption": "Saline coastal beach habitat where ocean currents deposit buoyant seeds."
+          "url": "https://images.pexels.com/photos/16097003/pexels-photo-16097003.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Coconut (Cocos nucifera) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Coconut (Cocos nucifera): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -110,13 +105,6 @@
       "paragraphs": [
         "Because fibrous coconut roots weave dense underground mats tolerant of brackish spray, shoreline groves protect vulnerable deltas and atolls from storm surge erosion while shading understory crops.",
         "Flowering year-round, sweet nectar glands on both male and female flowers attract honeybees, stingless bees, and wasps alongside steady sea breezes that transfer dusty pollen across neighbouring crowns."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/28281017/pexels-photo-28281017.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Coastal coconut grove anchoring shoreline",
-          "caption": "Interlocking fibrous root networks binding coastal sand dunes against tidal surges."
-        }
       ]
     },
     {
@@ -130,9 +118,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/32535057/pexels-photo-32535057.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Fresh culinary coconut halves",
-          "caption": "Nutrient-dense white endosperm harvested globally for culinary milk, desiccated flakes, and virgin oil."
+          "url": "https://images.pexels.com/photos/36868557/pexels-photo-36868557.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Coconut (Cocos nucifera) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Coconut (Cocos nucifera): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -145,14 +133,7 @@
         "Fresh young coconut water contains potassium, magnesium, calcium, and natural sugars in an osmotic balance closely resembling oral rehydration solutions, making it invaluable during tropical heat exhaustion or mild dehydration. Traditional Ayurvedic care applies pure coconut oil externally to nourish infant skin, hair shafts, and dry eczema patches.",
         "Medium-chain fatty acids—predominantly lauric acid—yield monolaurin in vitro with documented antimicrobial activity against lipid-enveloped microbes."
       ],
-      "safetyNote": "Because coconut oil is roughly 82–90% saturated fat, major cardiology guidelines recommend moderating dietary coconut oil intake in favor of unsaturated vegetable oils if managing elevated LDL cholesterol; individuals with renal potassium restriction should also monitor coconut water consumption.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/32970531/pexels-photo-32970531.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Young green drinking coconuts on tree",
-          "caption": "Six-month tender green drupes prized for sterile potassium-rich isotonic water."
-        }
-      ]
+      "safetyNote": "Because coconut oil is roughly 82–90% saturated fat, major cardiology guidelines recommend moderating dietary coconut oil intake in favor of unsaturated vegetable oils if managing elevated LDL cholesterol; individuals with renal potassium restriction should also monitor coconut water consumption."
     },
     {
       "number": "07",
@@ -165,9 +146,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/16097003/pexels-photo-16097003.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Healthy coconut palm crown",
-          "caption": "Well-nourished crown carrying balanced whorls of emerald fronds and fruiting spadices."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/604557759/original.jpg",
+          "alt": "Coconut (Cocos nucifera) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Coconut (Cocos nucifera): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Summer (গ্রীষ্ম), Monsoon (বর্ষা)).",
+      "paragraphs": [
+        "Coconut (Cocos nucifera) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Summer (গ্রীষ্ম), Monsoon (বর্ষা).",
+        "Summer (গ্রীষ্ম): Peak summer heat drives high demand and harvest of tender green ডাব (tender coconut water). Monsoon (বর্ষা): Monsoon rainfall accelerates coastal palm frond expansion and mature nut sizing across southern delta groves."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Summer (গ্রীষ্ম) · Monsoon (বর্ষা)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/767748939/large.jpg",
+          "alt": "Coconut (Cocos nucifera) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Coconut (Cocos nucifera): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Coconut.",
+      "paragraphs": [
+        "Coconut (Cocos nucifera) regenerates strictly or primarily from mature fibrous seeds or basal suckers, since arborescent palms lack vascular cambium for conventional bark grafting. Fresh ripe pyrenes or stones exhibit highest germination vigor when sown immediately in moist, well-aerated sand-humus beds under filtered shade.",
+        "During early nursery rearing, seedlings develop deep haustorial roots requiring tall nursery polybags to prevent coiling prior to monsoon transplanting."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Sown fresh at 28–32 °C in sterile river sand with constant mist."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Sucker division or selected superior mother-palm seed progeny."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Cocos nucifera.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Coconut (Cocos nucifera) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/604686414/original.jpg",
+          "alt": "Coconut (Cocos nucifera) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Coconut (Cocos nucifera): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Coconut.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Indo-Pacific & Maritime Southeast Asia), Coconut (Cocos nucifera) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Indo-Pacific & Maritime Southeast Asia thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Coconut (Cocos nucifera) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605236901/original.jpg",
+          "alt": "Coconut (Cocos nucifera) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Coconut (Cocos nucifera): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Arecales clade divergence and Arecaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Cocos within order Arecales (Monocot (Commelinids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Cocos nucifera inside family Arecaceae (অ্যারেকাসি (তাল-নারিকেল গোত্র)), order Arecales, clade Monocot (Commelinids). Unbranched woody monocot palms crowned with rosettes of giant pinnate fronds, ringed cylindrical trunks, and fibrous coastal drupes.",
+        "Within genus Cocos, specialized morphological adaptations—such as solitary cylindrical trunk lacking secondary cambial wood rings—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Cocos nucifera (Narikel (নারিকেল)).",
+      "paragraphs": [
+        "Field verification of Coconut (Cocos nucifera) rests on recognizing key Arecaceae family markers: Solitary cylindrical trunk lacking secondary cambial wood rings; Giant pinnate crown fronds protected by woven fibrous leaf bases; Liquid-to-solid endosperm nutrition inside buoyant husk drupes. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Ringed Trunk: Unbranched fibrous stem ringed by abscised petiole scars, flexing effortlessly during coastal gales. Pinnate Fronds: Plume-like compound leaves up to 6 m long with 200+ linear-lanceolate pleated leaflets. Spadix & Flowers: Branched axillary inflorescence shielded by a woody boat-shaped spathe bearing small female bases and myriad male tips. Fibrous Drupe: Buoyant three-angled husk enclosing the three-eyed shell ('germination pores') and dual liquid/solid endosperm."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Solitary cylindrical trunk lacking secondary cambial wood rings"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Giant pinnate crown fronds protected by woven fibrous leaf bases"
         }
       ]
     }

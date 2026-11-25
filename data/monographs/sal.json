@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "sal",
   "commonName": "Sal Tree",
   "scientificName": "Shorea robusta",
@@ -14,9 +14,9 @@
   "shortSummary": "Majestic dipterocarp timber giant dominating Bangladesh's Madhupur and Bhawal Bhawal-Terrace deciduous forests with winged five-sepalled samaras and fragrant dammar resin.",
   "leadOverview": "Shorea robusta, revered across South Asia as Sal and regionally in central Bangladesh as Gojari, is one of the most ecologically dominant broadleaf timber trees of the Indian subcontinent. Anchoring the red lateritic Pleistocene terraces of Madhupur and Bhawal, this towering semi-deciduous dipterocarp yields exceptionally durable heartwood, aromatic dammar resin, and winged shuttlecock-like fruits.",
   "heroImage": {
-    "url": "https://images.pexels.com/photos/12067501/pexels-photo-12067501.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Dense Shorea robusta Sal woodland canopy in sunlight",
-    "caption": "Towering broadleaf woodland canopy characteristic of Shorea robusta (Sal / Gojari) forests."
+    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/192131140/large.jpg",
+    "alt": "Sal Tree (Shorea robusta) botanical herbarium specimen",
+    "caption": "Sal Tree (Shorea robusta) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -28,7 +28,7 @@
     "commonUses": "Heavy construction timber, railway sleepers, sal dammar incense resin, biodegradable leaf plates"
   },
   "cultivationTelemetry": {
-    "phMin": 5.0,
+    "phMin": 5,
     "phMax": 6.5,
     "phOptimalLabel": "pH 5.0 – 6.5",
     "sunlightLevel": 3,
@@ -67,14 +67,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/12067501/pexels-photo-12067501.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Broadleaf forest canopy of Sal woodland",
-          "caption": "Continuous green canopy formed by gregarious Shorea robusta stands."
-        },
-        {
-          "url": "https://images.pexels.com/photos/216668/pexels-photo-216668.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Deeply furrowed hardwood trunk bark",
-          "caption": "Thick longitudinally fissured bark protecting mature timber boles from seasonal dry fires."
+          "url": "https://static.inaturalist.org/photos/399146420/large.jpg",
+          "alt": "Sal Tree (Shorea robusta) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Sal Tree (Shorea robusta): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -89,9 +84,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/216668/pexels-photo-216668.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Textured hardwood bark of Shorea robusta relative",
-          "caption": "Dense interlocking grain and protective bark characteristic of Dipterocarpaceae."
+          "url": "https://static.inaturalist.org/photos/16380605/large.jpeg",
+          "alt": "Sal Tree (Shorea robusta) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Sal Tree (Shorea robusta): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -106,9 +101,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Humid forest understorey vegetation",
-          "caption": "Moist deciduous understorey microclimate sheltered beneath towering Sal crowns."
+          "url": "https://static.inaturalist.org/photos/16383235/large.jpeg",
+          "alt": "Sal Tree (Shorea robusta) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Sal Tree (Shorea robusta): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -120,13 +115,6 @@
       "paragraphs": [
         "Sal blossoms release a sweet musky scent attracting tiny thrips, honeybees, and solitary beetles that cross-pollinate neighboring trees amidst open spring winds. Beneath the forest floor, Sal roots form vital ectomycorrhizal symbioses with Russula and Amanita basidiomycete mushrooms that unlock scarce phosphorus from weathered red clay.",
         "Historically renowned for extraordinary coppice vigor, felled stumps sprout multiple vigorous shoots from underground root collars, supporting capped langurs, woodpeckers, and wild junglefowl across Madhupur."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Forest bee visiting spring flowers",
-          "caption": "Hymenopteran and thrips pollinators transferring pollen across spring Sal panicles."
-        }
       ]
     },
     {
@@ -140,9 +128,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/12067501/pexels-photo-12067501.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Tall timber forest stands",
-          "caption": "Straight-grained forest stands valued across generations for structural engineering."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/119774548/large.jpeg",
+          "alt": "Sal Tree (Shorea robusta) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Sal Tree (Shorea robusta): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -155,14 +143,7 @@
         "In Ayurveda (known as 'Shala') and Unani practice, powdered white Sal resin (Ral) is warmed with sesame oil or ghee to formulate soothing topical balms for skin abrasions, cracked heels, and minor burns. Phytochemical assays identify ursolic acid, asiatic acid, and alpha-amyrin triterpenoids with documented antibacterial and wound-healing properties.",
         "Stem bark extracts are rich in condensed tannins and bergenin, traditionally prepared as astringent gargles and gastrointestinal tonics."
       ],
-      "safetyNote": "Crude Sal resin (dhuna) should only be used topically or as external fumigation incense unless formulated by a qualified practitioner; resinous smoke may irritate asthma-prone airways.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/216668/pexels-photo-216668.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Resinous bark of hardwood forest tree",
-          "caption": "Fissured bark exuding triterpenoid-rich dammar oleoresin."
-        }
-      ]
+      "safetyNote": "Crude Sal resin (dhuna) should only be used topically or as external fumigation incense unless formulated by a qualified practitioner; resinous smoke may irritate asthma-prone airways."
     },
     {
       "number": "07",
@@ -176,8 +157,160 @@
       "images": [
         {
           "url": "https://images.pexels.com/photos/12067501/pexels-photo-12067501.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Healthy regenerating forest canopy",
-          "caption": "Protected upland plantations sustain natural Sal coppice and seedling recruitment."
+          "alt": "Sal Tree (Shorea robusta) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Sal Tree (Shorea robusta): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Spring (বসন্ত), Summer (গ্রীষ্ম)).",
+      "paragraphs": [
+        "Sal Tree (Shorea robusta) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Spring (বসন্ত), Summer (গ্রীষ্ম).",
+        "Spring (বসন্ত): Sheds weathered winter foliage briefly before bursting into fragrant creamy-yellow panicles and ruby leaf flushes. Summer (গ্রীষ্ম): Five-winged Dipterocarpaceae samaras spin onto Madhupur red clay for immediate pre-monsoon germination."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Spring (বসন্ত) · Summer (গ্রীষ্ম)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/216668/pexels-photo-216668.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Sal Tree (Shorea robusta) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Sal Tree (Shorea robusta): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Sal Tree.",
+      "paragraphs": [
+        "Sal Tree (Shorea robusta) combines sexual seed propagation—useful for raising sturdy heterozygous rootstocks—with elite clonal techniques such as veneer grafting, air layering (gootee), and semi-hardwood stem cuttings. Fresh recalcitrant or semi-orthodox seeds typically germinate within 14 to 35 days when depulped and sown in warm organic loam.",
+        "Clonal orchards standardize crown architecture, early precocity, and uniform biochemical profiles across generations within Dipterocarpaceae."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Depulped seed sown cleanly in 2:1 loam-compost media; high viability when fresh."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Approach/veneer grafting or monsoon air-layering onto vigorous local rootstocks."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Shorea robusta.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Sal Tree (Shorea robusta) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Sal Tree (Shorea robusta) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Sal Tree (Shorea robusta): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Sal Tree.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (South Asia (Sub-Himalayan & Madhupur-Bhawal Belts)), Sal Tree (Shorea robusta) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to South Asia (Sub-Himalayan & Madhupur-Bhawal Belts) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 5.0 – 6.5, Full Sun / Emergent Canopy, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Sal Tree (Shorea robusta) calibrates root-zone chemistry around pH 5.0 – 6.5 inside well-drained lateritic red loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun / emergent canopy.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate seasonal monsoon) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 5.0 – 6.5 · Well-Drained Lateritic Red Loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun / Emergent Canopy · Moderate Seasonal Monsoon"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/607322641/original.jpg",
+          "alt": "Sal Tree (Shorea robusta) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Sal Tree (Shorea robusta): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Malvales clade divergence and Dipterocarpaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Shorea within order Malvales (Eudicot (Malvids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Shorea robusta inside family Dipterocarpaceae (ডিপ্টেরোকার্পাসি (শাল-গর্জন গোত্র)), order Malvales, clade Eudicot (Malvids). Resin-bearing tropical hardwood giants anchoring South and Southeast Asian broadleaf forests, instantly recognizable by shuttlecock-like winged fruiting calyces.",
+        "Within genus Shorea, specialized morphological adaptations—such as woody ovoid nuts crowned with two to five persistent papery calyx wings—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Shorea robusta (Shal / Gojari (শাল / গজারী)).",
+      "paragraphs": [
+        "Field verification of Sal Tree (Shorea robusta) rests on recognizing key Dipterocarpaceae family markers: Woody ovoid nuts crowned with two to five persistent papery calyx wings; Deeply fissured fire-hardy bark containing aromatic dammar oleoresins; Ectomycorrhizal root symbiosis supporting gregarious terrace stands. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Fire-Hardy Bark & Bole: Deeply fissured charcoal-brown bark packed with resin canals yielding pale aromatic Sal dammar (dhuna). Coriaceous Leaf Blades: Tough, leathery ovate foliage shed briefly between Phalgun and Chaitra before flushing ruby-copper. Creamy Raceme Panicles: Fragrant five-petalled cream blossoms densely clustered along defoliated spring twigs. Winged Dipterocarp Samaras: Helicopter-like five-winged fruits spinning smoothly in pre-monsoon gusts for rapid immediate germination."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Woody ovoid nuts crowned with two to five persistent papery calyx wings"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Deeply fissured fire-hardy bark containing aromatic dammar oleoresins"
         }
       ]
     }

@@ -11,22 +11,51 @@ import { applyPageSeo } from "../utils/seo.js";
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 const HERO_IMAGE_URL =
-  "https://images.pexels.com/photos/13995284/pexels-photo-13995284.jpeg?auto=compress&cs=tinysrgb&w=1600";
+  "https://inaturalist-open-data.s3.amazonaws.com/photos/605494677/original.jpg";
+const OG_IMAGE_URL =
+  "https://inaturalist-open-data.s3.amazonaws.com/photos/605680884/original.jpg";
+const TWITTER_IMAGE_URL =
+  "https://inaturalist-open-data.s3.amazonaws.com/photos/616184116/original.jpg";
 
 const SECTION_IMAGES = {
   pipeline: {
-    url: "https://images.pexels.com/photos/16987747/pexels-photo-16987747.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    alt: "Lush tropical conservatory canopy representing Plantipedia's multi-source botanical data pipeline",
+    url: "https://inaturalist-open-data.s3.amazonaws.com/photos/608838217/original.jpg",
+    alt: "Ficus elastica broad foliage plate representing Plantipedia's multi-source botanical data pipeline",
     caption: "Fig. 01.1 — Living conservatory biodiversity synthesized through Plantipedia's zero-key global flora pipeline.",
   },
+  gbif: {
+    url: "https://inaturalist-open-data.s3.amazonaws.com/photos/605908559/original.jpg",
+    alt: "Magnolia grandiflora specimen representing GBIF Backbone Taxonomy",
+    caption: "Fig. 02.1 — Diagnostic Magnolia specimen cross-checked against GBIF Backbone usageKeys and synonym hierarchies.",
+  },
+  prose: {
+    url: "https://inaturalist-open-data.s3.amazonaws.com/photos/619063351/original.jpg",
+    alt: "Equisetum arvense articulated stem plate illustrating structured morphological extraction",
+    caption: "Fig. 03.1 — Deep section parsing preserves clear boundaries across evolutionary phylogeny and vascular anatomy.",
+  },
+  wikidata: {
+    url: "https://static.inaturalist.org/photos/155902482/large.jpg",
+    alt: "Piper nigrum fruiting spike representing multilingual semantic taxon graphs",
+    caption: "Fig. 04.1 — Piper nigrum culinary vine anchored via persistent Wikidata P225 nodes and EN / বাংলা cross-links.",
+  },
   inaturalist: {
-    url: "https://images.pexels.com/photos/38055799/pexels-photo-38055799/free-photo-of-vibrant-red-rose-in-full-bloom-close-up.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    alt: "High-resolution macro floral observation plate illustrating phenological petal detail",
-    caption: "Fig. 05.1 — Diagnostic floral close-up exemplifying research-grade phenology and citizen-science taxon verification.",
+    url: "https://inaturalist-open-data.s3.amazonaws.com/photos/485122324/original.jpeg",
+    alt: "Phalaenopsis aphrodite floral plate illustrating iNaturalist research-grade observations",
+    caption: "Fig. 05.1 — Epiphytic Phalaenopsis blossom exemplifying research-grade phenology and community verification.",
+  },
+  kewWfo: {
+    url: "https://inaturalist-open-data.s3.amazonaws.com/photos/607291348/original.jpg",
+    alt: "Cycas revoluta frond symmetry aligned with APG IV and Kew/WFO botanical standards",
+    caption: "Fig. 06.1 — Ancient cycad lineage mapped alongside APG IV angiosperm orders verified via POWO and World Flora Online.",
+  },
+  biomes: {
+    url: "https://inaturalist-open-data.s3.amazonaws.com/photos/23160840/large.jpg",
+    alt: "Ferocactus xerophyte ridges illustrating calibrated biome and soil pH envelopes",
+    caption: "Fig. 07.1 — Arid-adapted Ferocactus trait profile calibrated by EOL TraitBank ecological guilds.",
   },
   integrity: {
-    url: "https://images.pexels.com/photos/32112349/pexels-photo-32112349.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    alt: "Sunlit emerald woodland canopy illustrating verified biogeographic biome standards",
+    url: "https://inaturalist-open-data.s3.amazonaws.com/photos/326787967/large.jpg",
+    alt: "Sequoia sempervirens canopy timber plate illustrating verified archival rigor",
     caption: "Fig. 08.1 — Biome-calibrated habitat envelopes and peer-verified monograph curation across local and global flora.",
   },
 };
@@ -83,6 +112,7 @@ const SOURCES_SECTIONS = [
       { label: "Core Signals", value: "usageKey, acceptedUsageKey, rank, status, authorship" },
       { label: "License Standard", value: "CC0 / CC-BY Open Biodiversity Data" },
     ],
+    figure: SECTION_IMAGES.gbif,
     actions: [
       { label: "GBIF Species API Docs", href: "https://www.gbif.org/developer/species", external: true },
     ],
@@ -93,21 +123,22 @@ const SOURCES_SECTIONS = [
     theme: "violet",
     icon: "🏛️",
     eyebrow: "SECTION 03 · DEEP PROSE & SPECIMEN PLATES",
-    title: "MediaWiki & Wikimedia Commons Botanical Knowledge Base",
-    subtitle: "MediaWiki REST & Action APIs",
-    desc: "Full-section morphological parsing, taxobox extraction, and Commons bitmap curation.",
+    title: "Global Flora Index & Open Herbarium Specimen Graph",
+    subtitle: "Structured Taxobox Parsing & Specimen Gateways",
+    desc: "Full-section morphological parsing, taxobox extraction, and verified botanical bitmap curation.",
     paragraphs: [
-      "Detailed morphological descriptions, evolutionary narratives, and ethnobotanical histories are harvested directly via MediaWiki Action API calls (`action=parse` with `prop=text|sections`, alongside `prop=extracts|pageimages|revisions|langlinks`). Unlike flat summary excerpts that scramble unrelated topics, parsing the structured DOM heading tree preserves true section boundaries—keeping evolutionary phylogeny distinct from trapping biomechanics or horticultural care.",
-      "High-resolution photographic plates are retrieved asynchronously through MediaWiki `generator=images` and Wikimedia Commons bitmap search (`filetype:bitmap` with `iiurlwidth=1100`). Automated asset gates enforce strict JPEG/PNG/WebP MIME checks, minimum 400×300 pixel resolution, aspect-ratio bounds, and exclusion regexes against range maps, SVG cladograms, icons, and vector badges.",
+      "Detailed morphological descriptions, evolutionary narratives, and ethnobotanical histories are harvested through structured REST & DOM botanical gateways alongside open taxonomic knowledge graphs. Unlike flat summary excerpts that scramble unrelated topics, parsing the structured DOM heading tree preserves true section boundaries—keeping evolutionary phylogeny distinct from trapping biomechanics or horticultural care.",
+      "High-resolution photographic plates are curated asynchronously across open botanical image archives with strict JPEG/PNG/WebP MIME checks, minimum 400×300 pixel resolution, aspect-ratio bounds, and exclusion filters against range maps, SVG cladograms, icons, and vector badges.",
     ],
     specs: [
-      { label: "Action API", value: "action=parse (text|sections) & generator=images" },
-      { label: "Commons Media", value: "commons.wikimedia.org/w/api.php (filetype:bitmap)" },
+      { label: "Section Engine", value: "Structured DOM Taxobox & Morphological Section Extractor" },
+      { label: "Specimen Media", value: "Open Botanical Bitmap Gateways (Filtered 400×300+ Plates)" },
       { label: "Chemistry Cleanup", value: "DOM <sup>/<sub> & ion normalization (CO₂, H⁺)" },
       { label: "Image Quota", value: "6–12 distinct photographs · Strict Max 1 per page" },
     ],
+    figure: SECTION_IMAGES.prose,
     actions: [
-      { label: "Wikimedia Commons API", href: "https://commons.wikimedia.org/wiki/Commons:API", external: true },
+      { label: "GBIF Specimen Media Search", href: "https://www.gbif.org/occurrence/search?media_type=StillImage", external: true },
     ],
   },
   {
@@ -129,6 +160,7 @@ const SOURCES_SECTIONS = [
       { label: "Script Alignment", value: "Synchronized English, Linnaean & বাংলা labels" },
       { label: "Data License", value: "CC0 1.0 Universal Public Domain Dedication" },
     ],
+    figure: SECTION_IMAGES.wikidata,
     actions: [
       { label: "Wikidata Query Service", href: "https://query.wikidata.org/", external: true },
     ],
@@ -176,6 +208,7 @@ const SOURCES_SECTIONS = [
       { label: "Order Mapping", value: "80+ Family → Canonical -ales Order Lookup Table" },
       { label: "Biogeography", value: "TDWG Native Origin vs. Naturalized Belt Distinction" },
     ],
+    figure: SECTION_IMAGES.kewWfo,
     actions: [
       { label: "Kew Plants of the World Online", href: "https://powo.science.kew.org/", external: true },
       { label: "World Flora Online", href: "https://www.worldfloraonline.org/", external: true },
@@ -200,6 +233,7 @@ const SOURCES_SECTIONS = [
       { label: "Soil pH Calibration", value: "Expanded 3.5 – 9.0 Spectrum Meter Precision" },
       { label: "Phylogenetic Scope", value: "Bryophytes, Pteridophytes, Gymnosperms & Angiosperms" },
     ],
+    figure: SECTION_IMAGES.biomes,
     actions: [
       { label: "Encyclopedia of Life", href: "https://eol.org/", external: true },
       { label: "Open Tree of Life", href: "https://tree.opentreeoflife.org/", external: true },
@@ -695,9 +729,11 @@ export function renderSourcesPortal(mountEl, { speciesIndex = [] } = {}) {
       ogType: "website",
       ogTitle: "Sources & Scientific References — Open Botanical Infrastructure | Plantipedia v3.1",
       ogDescription:
-        "How Plantipedia indexes 400,000+ vascular plants across GBIF, MediaWiki, Wikidata, iNaturalist, POWO/Kew, WFO, and EOL with zero-key resilience.",
-      ogImage: HERO_IMAGE_URL,
+        "How Plantipedia indexes 400,000+ vascular plants across GBIF, Global Flora Index, Wikidata, iNaturalist, POWO/Kew, WFO, and EOL with zero-key resilience.",
+      ogImage: OG_IMAGE_URL,
       ogImageAlt: "Plantipedia Open Botanical Infrastructure and Scientific Sources",
+      twitterImage: TWITTER_IMAGE_URL,
+      twitterImageAlt: "Plantipedia Scientific Botanical References",
     });
   } catch {
     // Non-blocking SEO metadata updates

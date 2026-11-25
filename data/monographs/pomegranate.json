@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "pomegranate",
   "commonName": "Pomegranate",
   "scientificName": "Punica granatum",
@@ -16,8 +16,8 @@
   "leadOverview": "Punica granatum—cherished in Bengal as Dalim and sweet soft-seeded Bedana—is a drought-hardy multi-stemmed shrub or small tree cultivated since Bronze Age antiquity. Bearing blazing vermilion flowers and leathery red-gold globes packed with hundreds of shimmering ruby arils, it stands at the forefront of modern cardiovascular polyphenol research.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/18523341/pexels-photo-18523341.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Fresh ripe crimson Punica granatum pomegranates",
-    "caption": "Mature crimson-blushed Punica granatum (Dalim) fruits crowned by persistent toothed calyx lobes."
+    "alt": "Pomegranate (Punica granatum) botanical herbarium specimen",
+    "caption": "Pomegranate (Punica granatum) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -68,14 +68,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/18523341/pexels-photo-18523341.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Crimson ripe pomegranate fruits",
-          "caption": "Leathery crowned fruits showing characteristic persistent calyx tube at the apex."
-        },
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Bees pollinating bright blossoms",
-          "caption": "Insect pollinators transferring pollen across showy Lythraceae floral tubes."
+          "url": "https://images.pexels.com/photos/31732206/pexels-photo-31732206.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Pomegranate (Punica granatum) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Pomegranate (Punica granatum): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -90,9 +85,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/18523341/pexels-photo-18523341.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Pomegranate harvest texture",
-          "caption": "Unique multi-tiered carpel arrangement within the Lythraceae balausta fruit."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/610346706/original.jpg",
+          "alt": "Pomegranate (Punica granatum) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Pomegranate (Punica granatum): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -107,9 +102,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31732206/pexels-photo-31732206.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Sunlit fruit orchard rows",
-          "caption": "Warm solar exposure driving vibrant crimson anthocyanin coloration in rinds and arils."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/606612092/original.jpg",
+          "alt": "Pomegranate (Punica granatum) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Pomegranate (Punica granatum): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -121,13 +116,6 @@
       "paragraphs": [
         "Pomegranate trees produce two functional flower morphs on the same branch: fertile vase-shaped flowers with tall receptive stigmas and short-styled bell flowers acting largely as pollen donors. Honeybees, sweat bees, and sunbirds forage eagerly inside bright orange calyx cups, ensuring rich cross-pollination.",
         "Because leaves are small and waxy with low stomatal transpiration, established shrubs anchor dry slopes and urban heat-island rooftops while sustaining pollinating insects across warm months."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Bee collecting floral pollen",
-          "caption": "Bee pollinators boosting fruit set across hermaphrodite vase-shaped blooms."
-        }
       ]
     },
     {
@@ -141,9 +129,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/18523341/pexels-photo-18523341.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Market display of crimson pomegranates",
-          "caption": "High-antioxidant ruby arils powering global juice, culinary, and nutraceutical markets."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4956594/large.jpeg",
+          "alt": "Pomegranate (Punica granatum) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Pomegranate (Punica granatum): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -156,14 +144,7 @@
         "Modern nutritional biochemistry highlights pomegranate juice and white pith as extraordinarily rich sources of ellagitannins—especially punicalagin—and anthocyanins (delphinidin, cyanidin). Gut microbiota metabolize ellagitannins into urolithin A, an active compound extensively investigated for mitochondrial mitophagy, vascular nitric-oxide support, and antioxidant defense.",
         "In Ayurveda ('Dadima') and Unani medicine ('Anar'), sun-dried rind powder ('Chhilka') provides high-tannin astringent relief for loose stools and oral mucosal inflammation."
       ],
-      "safetyNote": "Never consume pomegranate root or stem bark casually without medical oversight—they contain toxic pelletierine alkaloids. Additionally, concentrated juice may interact with CYP2C9/CYP3A4-metabolized drugs (such as warfarin or certain antihypertensives) similarly to grapefruit.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/28511113/pexels-photo-28511113.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Dried herbal peel and natural specimens",
-          "caption": "Punicalagin-dense peel and jewel arils extensively studied in vascular nutrition."
-        }
-      ]
+      "safetyNote": "Never consume pomegranate root or stem bark casually without medical oversight—they contain toxic pelletierine alkaloids. Additionally, concentrated juice may interact with CYP2C9/CYP3A4-metabolized drugs (such as warfarin or certain antihypertensives) similarly to grapefruit."
     },
     {
       "number": "07",
@@ -176,9 +157,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/18523341/pexels-photo-18523341.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Uncracked ripe crimson pomegranates",
-          "caption": "Consistent watering and boron micronutrients produce unblemished crack-free crimson fruits."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20099/large.jpg",
+          "alt": "Pomegranate (Punica granatum) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Pomegranate (Punica granatum): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Spring (বসন্ত), Late Autumn (হেমন্ত), Winter (শীত)).",
+      "paragraphs": [
+        "Pomegranate (Punica granatum) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Spring (বসন্ত), Late Autumn (হেমন্ত), Winter (শীত).",
+        "Spring (বসন্ত): Bronze-tinted foliage flushes alongside scarlet crumpled calyx blossoms in rooftop gardens. Late Autumn (হেমন্ত): Dry post-monsoon sunlight ripens crowned crimson rinds without fruit-splitting rains. Winter (শীত): Sweet jewel-like ruby arils reach peak anthocyanin color and crisp sugar balance."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Spring (বসন্ত) · Late Autumn (হেমন্ত) · Winter (শীত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4956598/large.jpeg",
+          "alt": "Pomegranate (Punica granatum) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Pomegranate (Punica granatum): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Pomegranate.",
+      "paragraphs": [
+        "Pomegranate (Punica granatum) combines sexual seed propagation—useful for raising sturdy heterozygous rootstocks—with elite clonal techniques such as veneer grafting, air layering (gootee), and semi-hardwood stem cuttings. Fresh recalcitrant or semi-orthodox seeds typically germinate within 14 to 35 days when depulped and sown in warm organic loam.",
+        "Clonal orchards standardize crown architecture, early precocity, and uniform biochemical profiles across generations within Lythraceae."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Depulped seed sown cleanly in 2:1 loam-compost media; high viability when fresh."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Approach/veneer grafting or monsoon air-layering onto vigorous local rootstocks."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Punica granatum.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Pomegranate (Punica granatum) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4956597/large.jpeg",
+          "alt": "Pomegranate (Punica granatum) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Pomegranate (Punica granatum): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Pomegranate.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Iranian Plateau to Northern India), Pomegranate (Punica granatum) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Iranian Plateau to Northern India thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 5.5 – 7.5, Full Unfiltered Sun, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Pomegranate (Punica granatum) calibrates root-zone chemistry around pH 5.5 – 7.5 inside well-drained fertile loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full unfiltered sun.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (even moderate moisture) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 5.5 – 7.5 · Well-Drained Fertile Loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Unfiltered Sun · Even Moderate Moisture"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4956596/large.jpg",
+          "alt": "Pomegranate (Punica granatum) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Pomegranate (Punica granatum): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Myrtales clade divergence and Lythraceae genomic traits",
+      "summary": "Phylogenetic placement of genus Punica within order Myrtales (Eudicot (Malvids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Punica granatum inside family Lythraceae (লাইথ্রাসি (ডালিম-জারুল-পানিফল গোত্র)), order Myrtales, clade Eudicot (Malvids). Diverse family spanning ornamental crape-myrtles, jewel-seeded pomegranates, and floating wetland water chestnuts marked by crumpled petals and tubular hypanthia.",
+        "Within genus Punica, specialized morphological adaptations—such as campanulate leathery floral hypanthium cradling crumpled petals—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Punica granatum (Dalim / Bedana (ডালিম / বেদানা)).",
+      "paragraphs": [
+        "Field verification of Pomegranate (Punica granatum) rests on recognizing key Lythraceae family markers: Campanulate leathery floral hypanthium cradling crumpled petals; Opposite simple leaves and tannin-rich rinds or aquatic floating rosettes; Fleshy arillate seeds (pomegranate) or horned woody aquatic nuts. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Multi-Stemmed Spine Twigs: Gracefully arching grey-brown canes sprouting freely from basal suckers and pruning cuts. Glossy Spur Foliage: Opposite narrow-lanceolate leaves flushing bronze-crimson in spring before turning polished emerald. Crumpled Vermilion Flowers: Heterostylous vase-and-bell blossoms where thick long-styled hermaphrodite flowers successfully set fruit. Balausta Seed Chambers: Crowned leathery rind enclosing distinct locular membranes packed with sweet crisp juice-sacs (arils)."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Campanulate leathery floral hypanthium cradling crumpled petals"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Opposite simple leaves and tannin-rich rinds or aquatic floating rosettes"
         }
       ]
     }

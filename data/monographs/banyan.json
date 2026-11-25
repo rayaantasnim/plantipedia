@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "banyan",
   "commonName": "Banyan",
   "scientificName": "Ficus benghalensis",
@@ -16,8 +16,8 @@
   "leadOverview": "The Indian Banyan (Ficus benghalensis) is one of the largest canopy-forming trees on Earth in horizontal crown spread. Starting life either terrestrially or as a bird-sown epiphyte high in another tree's fork, this keystone fig drops curtain-like aerial roots that thicken into secondary pillar trunks across centuries.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/5479919/pexels-photo-5479919.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Ancient banyan tree with cascading aerial prop roots",
-    "caption": "Mature Ficus benghalensis specimen anchored by woody columnar aerial prop roots."
+    "alt": "Banyan (Ficus benghalensis) botanical herbarium specimen",
+    "caption": "Banyan (Ficus benghalensis) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -58,14 +58,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/5479919/pexels-photo-5479919.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Banyan trunks and drooping aerial roots",
-          "caption": "Multi-columnar pillar roots creating a self-supporting architectural grove from one organism."
-        },
-        {
           "url": "https://images.pexels.com/photos/30316269/pexels-photo-30316269.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Spreading banyan canopy overhead",
-          "caption": "Dense evergreen leaf crown casting deep cooling microclimate shade."
+          "alt": "Banyan (Ficus benghalensis) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Banyan (Ficus benghalensis): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -80,9 +75,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/30316269/pexels-photo-30316269.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Banyan tree branching structure",
-          "caption": "Diagnostic Urostigma habit combining wide horizontal limbs and descending roots."
+          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Banyan (Ficus benghalensis) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Banyan (Ficus benghalensis): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -97,9 +92,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Lush tropical forest vegetation",
-          "caption": "Humid monsoon forest biome supporting epiphytic fig germination and aerial root growth."
+          "url": "https://images.pexels.com/photos/13012247/pexels-photo-13012247.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Banyan (Ficus benghalensis) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Banyan (Ficus benghalensis): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -111,13 +106,6 @@
       "paragraphs": [
         "Like every Ficus species, Ficus benghalensis depends exclusively on a species-specific chalcid wasp—Eupristina masoni—to crawl through the tiny apical ostiole pore of young green syconia, pollinating female florets while laying eggs in specialized gall flowers. Without its microscopic wasp partner, no viable seed forms.",
         "Because asynchronous trees fruit throughout dry seasons when other trees are barren, ripe red figs serve as an irreplaceable keystone food bank for green pigeons, coppersmith barbets, bulbuls, macaques, and flying foxes."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/13012247/pexels-photo-13012247.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Wild green tropical canopy ecosystem",
-          "caption": "Multi-tiered canopy ecosystem sustained year-round by asynchronous fig fruiting."
-        }
       ]
     },
     {
@@ -131,9 +119,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/5479919/pexels-photo-5479919.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Monumental banyan tree landmark",
-          "caption": "Living civic and cultural landmark sheltering generations beneath cascading prop roots."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/607458652/original.jpg",
+          "alt": "Banyan (Ficus benghalensis) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Banyan (Ficus benghalensis): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -146,14 +134,7 @@
         "Within Ayurveda and Unani medicine (where the bark is known as Vata or Bargad), inner stem bark decoctions are prescribed as gentle astringents for mucosal inflammation, oral gum strengthening, and blood-sugar support, while warmed milky latex is applied externally to cracked heels and minor joint swellings.",
         "Phytochemical studies identify bengalenoside, leucopelargonidin derivatives, beta-sitosterol, and polyphenolic tannins exhibiting antioxidant and mild hypoglycemic activity in experimental models."
       ],
-      "safetyNote": "Raw milky latex of Ficus species contains proteolytic enzymes and irritating resins capable of triggering skin sensitization or severe oral/gastric irritation if ingested undiluted. Never substitute traditional bark decoctions for prescribed endocrine or antimicrobial therapy.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/30316269/pexels-photo-30316269.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Banyan bark and woody aerial roots",
-          "caption": "Fibrous bark and adventitious root tissues rich in condensed tannins and sterols."
-        }
-      ]
+      "safetyNote": "Raw milky latex of Ficus species contains proteolytic enzymes and irritating resins capable of triggering skin sensitization or severe oral/gastric irritation if ingested undiluted. Never substitute traditional bark decoctions for prescribed endocrine or antimicrobial therapy."
     },
     {
       "number": "07",
@@ -166,9 +147,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/5479919/pexels-photo-5479919.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Mature open-park banyan specimen",
-          "caption": "Expansive park setting accommodating unrestricted lateral crown and prop-root development."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/610080734/original.jpg",
+          "alt": "Banyan (Ficus benghalensis) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Banyan (Ficus benghalensis): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Summer (গ্রীষ্ম), Spring (বসন্ত)).",
+      "paragraphs": [
+        "Banyan (Ficus benghalensis) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Summer (গ্রীষ্ম), Spring (বসন্ত).",
+        "Summer (গ্রীষ্ম): Expansive evergreen cathedral canopies provide critical thermal shade while paired red syconium figs nourish frugivorous birds. Spring (বসন্ত): Coppery stipules shed across village commons as fresh glossy foliage emerges alongside young fig receptacles."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Summer (গ্রীষ্ম) · Spring (বসন্ত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/609158534/original.jpg",
+          "alt": "Banyan (Ficus benghalensis) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Banyan (Ficus benghalensis): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Banyan.",
+      "paragraphs": [
+        "Banyan (Ficus benghalensis) combines sexual seed propagation—useful for raising sturdy heterozygous rootstocks—with elite clonal techniques such as veneer grafting, air layering (gootee), and semi-hardwood stem cuttings. Fresh recalcitrant or semi-orthodox seeds typically germinate within 14 to 35 days when depulped and sown in warm organic loam.",
+        "Clonal orchards standardize crown architecture, early precocity, and uniform biochemical profiles across generations within Moraceae."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Depulped seed sown cleanly in 2:1 loam-compost media; high viability when fresh."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Approach/veneer grafting or monsoon air-layering onto vigorous local rootstocks."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Ficus benghalensis.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Banyan (Ficus benghalensis) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/608959381/original.jpg",
+          "alt": "Banyan (Ficus benghalensis) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Banyan (Ficus benghalensis): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Banyan.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Indian Subcontinent (Bangladesh, India, Sri Lanka)), Banyan (Ficus benghalensis) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Indian Subcontinent (Bangladesh, India, Sri Lanka) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Banyan (Ficus benghalensis) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/613178141/original.jpg",
+          "alt": "Banyan (Ficus benghalensis) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Banyan (Ficus benghalensis): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Rosales clade divergence and Moraceae genomic traits",
+      "summary": "Phylogenetic placement of genus Ficus within order Rosales (Eudicot (Fabids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Ficus benghalensis inside family Moraceae (মোরাসি (ডুমুর-কাঁঠাল গোত্র)), order Rosales, clade Eudicot (Fabids). Laticiferous tropical canopy giants producing milky latex and remarkable multiple fruits—ranging from inverted fig syconia to cauliflorous jackfruit syncarps.",
+        "Within genus Ficus, specialized morphological adaptations—such as abundant white milky latex across bark, petioles, and fruit—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Ficus benghalensis (Bot Gachh (বটগাছ)).",
+      "paragraphs": [
+        "Field verification of Banyan (Ficus benghalensis) rests on recognizing key Moraceae family markers: Abundant white milky latex across bark, petioles, and fruit; Conical sheathing stipules leaving circular scars on twigs; Compound multiple fruits (syconia or trunk-borne syncarps). Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Aerial Prop Roots: Adventitious roots descending vertically from lateral branches, fusing into load-bearing auxiliary trunks. Bark & Latex: Smooth pale greyish-ash bark housing white milky latex rich in triterpenes and rubber-like polyisoprenes. Leathery Leaves: Thick, glossy ovate blades (10–20 cm) with prominent pale ribs resisting monsoon wind tear and desiccation. Syconium Figs: Enclosed urn-shaped inflorescences ripening to bright red 1.5–2 cm figs lacking external petals."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Abundant white milky latex across bark, petioles, and fruit"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Conical sheathing stipules leaving circular scars on twigs"
         }
       ]
     }

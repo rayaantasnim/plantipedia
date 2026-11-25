@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "kadamba",
   "commonName": "Kadamba",
   "scientificName": "Neolamarckia cadamba",
@@ -16,8 +16,8 @@
   "leadOverview": "Kadamba (Neolamarckia cadamba)—immortalized as Kodom across Bengali monsoon poetry—is a fast-growing evergreen tropical tree admired for its tiered architectural branches and extraordinary globe-shaped blossoms. When Asharh rains arrive, thousands of creamy-white stigmas bristle from golden-orange flower balls, filling humid evenings with delicate honey perfume.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/38093946/pexels-photo-38093946.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Spherical golden-orange Neolamarckia cadamba Kodom blossoms amidst glossy green foliage",
-    "caption": "Signature pincushion flower heads of Neolamarckia cadamba bursting into monsoon bloom."
+    "alt": "Kadamba (Neolamarckia cadamba) botanical herbarium specimen",
+    "caption": "Kadamba (Neolamarckia cadamba) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -68,14 +68,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/38093946/pexels-photo-38093946.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Spherical Kodom flower cluster on leafy branch",
-          "caption": "Radial white styles emerging across a golden globose Neolamarckia cadamba inflorescence."
-        },
-        {
           "url": "https://images.pexels.com/photos/9210074/pexels-photo-9210074.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Kadamba tree blossoms and lush tropical foliage",
-          "caption": "Lush opposite leaves framing monsoon Kodom flower clusters."
+          "alt": "Kadamba (Neolamarckia cadamba) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Kadamba (Neolamarckia cadamba): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -90,9 +85,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/9210074/pexels-photo-9210074.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Close-up of Rubiaceae Kadamba floral structure",
-          "caption": "Compact head of fused Rubiaceae florets forming the iconic monsoon sphere."
+          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Kadamba (Neolamarckia cadamba) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Kadamba (Neolamarckia cadamba): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -107,9 +102,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Lush humid tropical rainforest habitat",
-          "caption": "Humid alluvial tropical forest understory where Neolamarckia cadamba pioneers sunny gaps."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605310827/original.jpg",
+          "alt": "Kadamba (Neolamarckia cadamba) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Kadamba (Neolamarckia cadamba): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -121,13 +116,6 @@
       "paragraphs": [
         "Because Kodom florets release peak honey-sweet scent after sunset, hawk moths, nocturnal bees, and crepuscular flies visit the spherical brushes heavily, transferring sticky pollen along their undersides. By day, honeybees and butterflies glean remaining nectar rewards.",
         "When ripe fleshy fruits soften in late monsoon, flying foxes (Pteropus fruit bats), bulbuls, and monkeys consume the tangy pulp and scatter tiny seeds across open silt bars—making Kadamba a premier pioneer species for degraded riparian restoration."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Bees gathering pollen on tropical blossoms",
-          "caption": "Daytime hymenopteran visitors complementing nocturnal moth pollination on globose flower heads."
-        }
       ]
     },
     {
@@ -141,9 +129,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/38093946/pexels-photo-38093946.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Kodom flowers celebrating Bengali monsoon",
-          "caption": "Kodom blossoms cherished across Bengal as the poetic emblem of Asharh monsoon rains."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/607876903/original.jpg",
+          "alt": "Kadamba (Neolamarckia cadamba) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Kadamba (Neolamarckia cadamba): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -156,14 +144,7 @@
         "Classical Ayurvedic texts classify Kadamba bark as cooling, astringent, and febrifugal—prescribing standardized stem-bark decoctions for mild fever washes, mouth gargles, and topical wound cleansing. Fresh broad leaves are traditionally warmed and wrapped around swollen joints.",
         "Phytochemical investigations identify characteristic monoterpenoid indole alkaloids (cadambine, 3α-dihydrocadambine), chlorogenic acid, and triterpenoid glycosides exhibiting antioxidant and hypoglycemic potential in preclinical research."
       ],
-      "safetyNote": "Internal consumption of crude bark extracts can irritate sensitive digestive linings and should never substitute for clinical antimalarial, fever, or glycemic therapy; consult qualified healthcare practitioners before therapeutic use.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/9210074/pexels-photo-9210074.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Medicinal Kodom blossoms and bark foliage",
-          "caption": "Bioactive floral and foliar tissues containing cadambine alkaloids and polyphenols."
-        }
-      ]
+      "safetyNote": "Internal consumption of crude bark extracts can irritate sensitive digestive linings and should never substitute for clinical antimalarial, fever, or glycemic therapy; consult qualified healthcare practitioners before therapeutic use."
     },
     {
       "number": "07",
@@ -176,9 +157,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/38093946/pexels-photo-38093946.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Healthy flowering Kadamba branches in daylight",
-          "caption": "Vigorous flowering canopies thriving in humid monsoon climates and moist fertile loam."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/607090486/original.jpg",
+          "alt": "Kadamba (Neolamarckia cadamba) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Kadamba (Neolamarckia cadamba): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Monsoon (বর্ষা), Autumn (শরৎ)).",
+      "paragraphs": [
+        "Kadamba (Neolamarckia cadamba) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Monsoon (বর্ষা), Autumn (শরৎ).",
+        "Monsoon (বর্ষা): Iconic monsoon herald bursting into spherical golden pincushion flower heads across rain-soaked riverbanks. Autumn (শরৎ): Fleshy yellow-orange compound fruits ripen and nourish frugivorous birds and bats above alluvial banks."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Monsoon (বর্ষা) · Autumn (শরৎ)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/616151402/original.jpg",
+          "alt": "Kadamba (Neolamarckia cadamba) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Kadamba (Neolamarckia cadamba): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Kadamba.",
+      "paragraphs": [
+        "Kadamba (Neolamarckia cadamba) combines sexual seed propagation—useful for raising sturdy heterozygous rootstocks—with elite clonal techniques such as veneer grafting, air layering (gootee), and semi-hardwood stem cuttings. Fresh recalcitrant or semi-orthodox seeds typically germinate within 14 to 35 days when depulped and sown in warm organic loam.",
+        "Clonal orchards standardize crown architecture, early precocity, and uniform biochemical profiles across generations within Rubiaceae."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Depulped seed sown cleanly in 2:1 loam-compost media; high viability when fresh."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Approach/veneer grafting or monsoon air-layering onto vigorous local rootstocks."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Neolamarckia cadamba.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Kadamba (Neolamarckia cadamba) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/616151855/original.jpg",
+          "alt": "Kadamba (Neolamarckia cadamba) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Kadamba (Neolamarckia cadamba): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Kadamba.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (South & Southeast Asia (Bengal, India, Myanmar, Malesia)), Kadamba (Neolamarckia cadamba) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to South & Southeast Asia (Bengal, India, Myanmar, Malesia) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 5.5 – 7.5, Full Sun / Light Shade, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Kadamba (Neolamarckia cadamba) calibrates root-zone chemistry around pH 5.5 – 7.5 inside moist deep alluvial loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun / light shade.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (high / monsoon-loving) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 5.5 – 7.5 · Moist Deep Alluvial Loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun / Light Shade · High / Monsoon-Loving"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/608567130/original.jpg",
+          "alt": "Kadamba (Neolamarckia cadamba) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Kadamba (Neolamarckia cadamba): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Gentianales clade divergence and Rubiaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Neolamarckia within order Gentianales (Eudicot (Asterids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Neolamarckia cadamba inside family Rubiaceae (রুবিয়াসি (কদম গোত্র)), order Gentianales, clade Eudicot (Asterids). Tropical shrubs and trees marked by opposite simple leaves linked by interpetiolar stipules and dense corymb clusters of four-lobed tubular flowers.",
+        "Within genus Neolamarckia, specialized morphological adaptations—such as strictly opposite leaves connected by triangular interpetiolar stipules—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Neolamarckia cadamba (Kodom (কদম)).",
+      "paragraphs": [
+        "Field verification of Kadamba (Neolamarckia cadamba) rests on recognizing key Rubiaceae family markers: Strictly opposite leaves connected by triangular interpetiolar stipules; Hemispherical corymb inflorescences attracting butterflies & sunbirds; Fleshy berry-like drupes maturing from scarlet-orange blooms. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Tiered Crown & Bark: Straight self-pruning bole topped with whorled horizontal limbs; grey bark becoming fissured and scaly with age. Opposite Stipulate Leaves: Large ovate-oblong glossy blades (15–30 cm) joined at nodes by early-shedding triangular interpetiolar stipules. Spherical Flower Heads: Globose orange-yellow heads (4–5 cm diameter) bristling with exserted white stigmas that release gentle nocturnal fragrance. Multiple Fleshy Fruit: Soft yellow-orange compound pseudocarp packed with thousands of minute angular seeds dispersed by bats and monsoon water."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Strictly opposite leaves connected by triangular interpetiolar stipules"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Hemispherical corymb inflorescences attracting butterflies & sunbirds"
         }
       ]
     }

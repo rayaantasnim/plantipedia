@@ -10,8 +10,10 @@
     "ogType": "website",
     "ogTitle": "Digital Botanical Research Suite & Services v3.1 | Plantipedia",
     "ogDescription": "Explore Plantipedia Version 3.1's 11-section botanical research suite uniting 50 curated 15-chapter monographs, 400,000+ live Global Server taxa, interactive SVG analytics, and citation sandboxes.",
-    "ogImage": "https://images.pexels.com/photos/36868557/pexels-photo-36868557.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    "ogImage": "https://inaturalist-open-data.s3.amazonaws.com/photos/604527138/original.jpg",
     "ogImageAlt": "Plantipedia Digital Botanical Research Suite",
+    "twitterImage": "https://inaturalist-open-data.s3.amazonaws.com/photos/343545534/large.jpg",
+    "twitterImageAlt": "Plantipedia 11-Section Botanical Suite Canopy Plate",
     "jsonLd": {
       "@context": "https://schema.org",
       "@graph": [
@@ -74,8 +76,8 @@
     "headline": "Open-Access Botanical Tools Built for Field & Scholarship",
     "subcopy": "Plantipedia pairs peer-structured 15-chapter species monographs with a live Global Botanical Server indexing 400,000+ worldwide vascular species, real-time bilingual search, seasonal delta phenology, soil telemetry meters, and instant academic citations—zero logins, zero paywalls.",
     "heroImage": {
-      "imageUrl": "https://images.pexels.com/photos/13995284/pexels-photo-13995284.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      "imageAlt": "Lush botanical foliage canopy representing Plantipedia's digital botanical research suite"
+      "imageUrl": "https://static.inaturalist.org/photos/94705908/large.jpg",
+      "imageAlt": "Sequoia sempervirens evergreen canopy representing Plantipedia's digital botanical research suite"
     },
     "primaryCta": { "label": "Browse Species Atlas →", "href": "./species/" },
     "secondaryCta": { "label": "Try Live Sandbox", "href": "#services-sandbox" }
@@ -437,9 +439,51 @@
     "primaryCta": { "label": "Launch Worldwide Gateway →", "href": "./plant/live/" },
     "secondaryCta": { "label": "Inspect v3.2 Roadmap →", "href": "./roadmap/" },
     "image": {
-      "imageUrl": "https://images.pexels.com/photos/9219974/pexels-photo-9219974.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      "imageAlt": "Lush botanical woodland foliage canopy illustrating worldwide vascular flora scale",
-      "caption": "Canopy giants & worldwide vascular lineages unified inside Plantipedia's dual-layer Botanical Server architecture."
+      "imageUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/610636081/original.jpg",
+      "imageAlt": "Ginkgo biloba living fossil foliage representing worldwide vascular flora breadth",
+      "caption": "Fig. 11.1 — Canopy giants & living fossil lineages unified inside Plantipedia's dual-layer Botanical Server architecture."
+    }
+  },
+  "sectionFigures": {
+    "02": {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/611020781/original.jpg",
+      "alt": "Magnolia grandiflora structured floral specimen study",
+      "caption": "Fig. 02.1 — Benchmark architectural plate: structured Magnolia grandiflora floral anatomy linked to bilingual search and soil telemetry."
+    },
+    "03": {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/616184035/original.jpg",
+      "alt": "Equisetum arvense articulated vascular stem morphology",
+      "caption": "Fig. 03.1 — Quantitative biodiversity pulse: ancient Equisetum pteridophyte lineage tracked alongside 34 angiosperm families."
+    },
+    "05": {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/71151821/large.jpg",
+      "alt": "Ginkgo biloba seasonal foliage specimen for live academic citations",
+      "caption": "Fig. 05.1 — Sandbox specimen plate: verify live APA 7th, MLA 9th, and BibTeX citation exports across documented flora."
+    },
+    "06": {
+      "url": "https://static.inaturalist.org/photos/155106210/large.jpeg",
+      "alt": "Passiflora edulis complex floral corona for interdisciplinary study",
+      "caption": "Fig. 06.1 — Cross-disciplinary study: Passiflora edulis reproductive architecture bridging student coursework and horticultural care."
+    },
+    "07": {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/249827419/large.jpeg",
+      "alt": "Adansonia digitata iconic baobab canopy resolved by the Global Botanical Server",
+      "caption": "Fig. 07.1 — Global Botanical Server lookup: African succulent giant Adansonia digitata synthesized on demand with zero API keys."
+    },
+    "08": {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/604757912/original.jpg",
+      "alt": "Botanical seed morphology illustrating data synthesis normalization",
+      "caption": "Fig. 08.1 — Deterministic synthesis stage: propagating verified taxon telemetry and carpological data into 15 structured chapters."
+    },
+    "09": {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/564079340/large.jpg",
+      "alt": "Cyathea cooperi tree fern canopy adapted for greenhouse and field binder study",
+      "caption": "Fig. 09.1 — Conservatory-to-print continuity: Cyathea cooperi pteridophyte documentation formatted for A4 field binders."
+    },
+    "10": {
+      "url": "https://static.inaturalist.org/photos/31695628/large.jpg",
+      "alt": "Rhizophora mangle coastal prop roots demonstrating intertidal ecological adaptation",
+      "caption": "Fig. 10.1 — Open botanical standards: Rhizophora mangle estuarine ecology documented with Schema.org Taxon metadata."
     }
   }
 }

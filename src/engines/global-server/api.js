@@ -6,16 +6,17 @@
 import { resolveRootPath } from "../../core/bootstrap/router.js";
 
 const SITE_ROOT_URL = new URL("../../../", import.meta.url);
-const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v50";
+const SPECIES_INDEX_STORAGE_KEY = "plantipedia:species-index:v51";
 const LEGACY_SPECIES_INDEX_KEYS = [
   "plantipedia:species-index:v1.0.0",
   "plantipedia:species-index:v1.1.0",
   "plantipedia:species-index:v1.2.0",
   "plantipedia:species-index:v1.3.0",
   "plantipedia:species-index:v30",
+  "plantipedia:species-index:v50",
 ];
 const KEBAB_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const DATA_CACHE_BUST = "v=50";
+const DATA_CACHE_BUST = "v=51";
 
 export const DATASET_ENDPOINTS = Object.freeze({
   navbar: `./config/navbar.json?${DATA_CACHE_BUST}`,

@@ -19,6 +19,8 @@ function renderLiveQueryPrompt(mountEl, { initialQuery = "", aborted = false } =
       title: "Global Botanical Server — Live Taxon Query | Plantipedia",
       description: "Query any worldwide plant species from the Global Botanical Server and render a live 15-chapter Plantipedia monograph across 400,000+ vascular taxa.",
       canonicalFile: "plant/live/",
+      ogImage: "https://inaturalist-open-data.s3.amazonaws.com/photos/614444901/original.jpg",
+      twitterImage: "https://inaturalist-open-data.s3.amazonaws.com/photos/606425430/original.jpg",
     });
   } catch {
     // Non-blocking

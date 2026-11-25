@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "ginger",
   "commonName": "Ginger",
   "scientificName": "Zingiber officinale",
@@ -15,8 +15,8 @@
   "leadOverview": "Zingiber officinale—indispensable in South Asian kitchens and medicine cabinets as Ada—is a clonal sterile tropical herb of the Zingiberaceae family. Rising via reed-like pseudostems above branched, straw-gold subterranean rhizomes, its warming pungent gingerols and volatile zingiberene oils rank among humanity's oldest culinary spices and clinically validated digestive remedies.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/41102959/pexels-photo-41102959.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Freshly harvested branched Zingiber officinale ginger rhizomes",
-    "caption": "Fleshy palmate Zingiber officinale (Ada) rhizomes coated in thin buff periderm."
+    "alt": "Ginger (Zingiber officinale) botanical herbarium specimen",
+    "caption": "Ginger (Zingiber officinale) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Monocot)",
@@ -67,14 +67,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/41102959/pexels-photo-41102959.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Branched fresh ginger rhizomes",
-          "caption": "Sympodial subterranean rhizome 'hands' bursting with volatile zingiberene and gingerols."
-        },
-        {
-          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Shaded humid tropical understorey",
-          "caption": "Dappled shade and humid tropical leaf-litter mimicking ancestral ginger cultivation."
+          "url": "https://images.pexels.com/photos/9542523/pexels-photo-9542523.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Ginger (Zingiber officinale) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Ginger (Zingiber officinale): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -89,9 +84,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/41102959/pexels-photo-41102959.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Antler-branched ginger rhizomes",
-          "caption": "Classic branched rhizome morphology giving rise to Sanskrit 'shringavera'."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/611106869/original.jpg",
+          "alt": "Ginger (Zingiber officinale) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Ginger (Zingiber officinale): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -106,9 +101,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/41102959/pexels-photo-41102959.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Clean harvested market ginger",
-          "caption": "Raised hillside terraces and aerated sack planters yield clean rot-free rhizome harvests."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605884936/original.jpg",
+          "alt": "Ginger (Zingiber officinale) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Ginger (Zingiber officinale): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -120,13 +115,6 @@
       "paragraphs": [
         "Because domesticated Zingiber officinale displays severe meiotic irregularities that prevent viable seed formation, its ecological persistence rests entirely on vigorous clonal budding and protective rhizome chemistry.",
         "Concentrated sesquiterpenes (zingiberene, beta-bisabolene) and pungent arylalkanones repel burrowing insect larvae and grazing rodents, though damp anaerobic soils rapidly invite devastating bacterial wilt (Ralstonia) and Pythium soft rot unless drainage and crop rotation are strictly maintained."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/9542523/pexels-photo-9542523.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Fresh botanical leaves and culinary herbs",
-          "caption": "Aromatic essential oils protect subterranean storage tissues across humid monsoon seasons."
-        }
       ]
     },
     {
@@ -140,9 +128,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/41102959/pexels-photo-41102959.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Culinary ginger hands",
-          "caption": "Freshly dug tender rhizomes prized for bright lemony heat, distinct from fiery dried Shunthi."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/606103580/original.jpg",
+          "alt": "Ginger (Zingiber officinale) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Ginger (Zingiber officinale): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -155,14 +143,7 @@
         "Celebrated in Ayurveda as 'Vishwabhesaja' ('the universal medicine'), ginger is one of the rare traditional herbs with robust randomized clinical evidence: active [6]-gingerol, [8]-gingerol, and [6]-shogaol modulate serotonergic 5-HT3 receptors in the gut, accelerating gastric emptying and reliably easing motion sickness, morning sickness, and post-operative nausea.",
         "Controlled human trials further report modest anti-inflammatory benefits for primary dysmenorrhea discomfort and mild knee osteoarthritis stiffness through COX/LOX pathway modulation."
       ],
-      "safetyNote": "High supplemental doses (>4 g dry ginger daily) may cause mild heartburn or interact additively with prescription anticoagulants (warfarin, apixaban) and antiplatelets; consult an obstetrician before taking concentrated capsules during pregnancy.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/41102959/pexels-photo-41102959.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Bioactive Zingiber officinale rhizomes",
-          "caption": "Standardized gingerols and shogaols driving evidence-based digestive and antiemetic relief."
-        }
-      ]
+      "safetyNote": "High supplemental doses (>4 g dry ginger daily) may cause mild heartburn or interact additively with prescription anticoagulants (warfarin, apixaban) and antiplatelets; consult an obstetrician before taking concentrated capsules during pregnancy."
     },
     {
       "number": "07",
@@ -175,9 +156,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/41102959/pexels-photo-41102959.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Plump harvested ginger rhizomes",
-          "caption": "High-organic, well-drained mulched beds prevent soft rot and maximize rhizome branching."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/611954381/original.jpg",
+          "alt": "Ginger (Zingiber officinale) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Ginger (Zingiber officinale): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Monsoon (বর্ষা), Late Autumn (হেমন্ত), Winter (শীত)).",
+      "paragraphs": [
+        "Ginger (Zingiber officinale) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Monsoon (বর্ষা), Late Autumn (হেমন্ত), Winter (শীত).",
+        "Monsoon (বর্ষা): Monsoon warmth propels rapid tillering of aromatic upright reed-like pseudostems across hill slopes and sacks. Late Autumn (হেমন্ত): Subterranean palmate rhizome 'hands' bulk up with pungent [6]-gingerol oleoresins. Winter (শীত): Yellowing lodging leaves signal harvest readiness for crisp fresh Ada across winter markets."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Monsoon (বর্ষা) · Late Autumn (হেমন্ত) · Winter (শীত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/616304718/original.jpg",
+          "alt": "Ginger (Zingiber officinale) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Ginger (Zingiber officinale): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Ginger.",
+      "paragraphs": [
+        "Ginger (Zingiber officinale) exhibits dual reproductive versatility through wind-, pollinator-, or gravity-dispersed seed cohorts alongside rapid vegetative renewal via herbaceous stem cuttings, rhizome splits, or nodal rooting. Mature seed capsules collected just prior to dehiscence retain strong vigor in dry shaded storage for moderate periods.",
+        "Rooting auxin pre-treatment on semi-ripe nodal cuttings during warm humid months accelerates adventitious root initiation within 10 to 21 days in porous coco-peat and vermicompost propagation trays."
+      ],
+      "subblocks": [
+        {
+          "heading": "Seed Germination",
+          "text": "Surface-sown or lightly covered in sterile porous mix; germinates in 7–21 days under ambient humidity."
+        },
+        {
+          "heading": "Vegetative Method",
+          "text": "Two-node terminal cuttings or clump division rooted in misted, filtered-light benches."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Zingiber officinale.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Ginger (Zingiber officinale) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/616304739/original.jpg",
+          "alt": "Ginger (Zingiber officinale) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Ginger (Zingiber officinale): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Ginger.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Maritime Southeast Asia (Domesticated Austronesian Cultigen)), Ginger (Zingiber officinale) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Maritime Southeast Asia (Domesticated Austronesian Cultigen) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 5.5 – 6.5, Filtered Shade / Partial Sun, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Ginger (Zingiber officinale) calibrates root-zone chemistry around pH 5.5 – 6.5 inside humus-rich raised sandy loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across filtered shade / partial sun.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (evenly moist friable beds) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 5.5 – 6.5 · Humus-Rich Raised Sandy Loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Filtered Shade / Partial Sun · Evenly Moist Friable Beds"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/615940089/original.jpg",
+          "alt": "Ginger (Zingiber officinale) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Ginger (Zingiber officinale): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Zingiberales clade divergence and Zingiberaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Zingiber within order Zingiberales (Monocot (Commelinids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Zingiber officinale inside family Zingiberaceae (জিঞ্জিবেরাসি (আদা-হলুদ গোত্র)), order Zingiberales, clade Monocot (Commelinids). Aromatic tropical monocot herbs growing from fleshy horizontal rhizomes via clasping leafy pseudostems and shingled cone flower bracts rich in curcuminoids and volatile oils.",
+        "Within genus Zingiber, specialized morphological adaptations—such as fleshy subterranean rhizomes concentrated with polyphenolic curcuminoids—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Zingiber officinale (Ada (আদা)).",
+      "paragraphs": [
+        "Field verification of Ginger (Zingiber officinale) rests on recognizing key Zingiberaceae family markers: Fleshy subterranean rhizomes concentrated with polyphenolic curcuminoids; Tubular overlapping leaf sheaths forming herbaceous upright pseudostems; Asymmetrical flowers tucked within colorful shingled cone-spike bracts. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Fleshy Palmate Rhizomes: Sympodially branching aromatic underground storage stems packed with starch grains and gingerol oil cells. Clasping Leaf Pseudostem: Slender upright herbaceous stalk formed strictly by overlapping concentric leaf petiolar sheaths. Distichous Linear Blades: Smooth narrow-lanceolate leaves emitting crisp zesty citrus aroma when brushed or torn. Bracted Cone Inflorescence: Compact green cone of imbricate bracts protecting delicate three-lobed purple-lipped blooms."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Fleshy subterranean rhizomes concentrated with polyphenolic curcuminoids"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Tubular overlapping leaf sheaths forming herbaceous upright pseudostems"
         }
       ]
     }

@@ -102,6 +102,20 @@ function buildSectionHeader(eyebrow, heading, lead) {
   return header;
 }
 
+function buildServiceSectionFigure(figCfg) {
+  if (!figCfg?.url) return null;
+  const fig = createEl("figure", "services-section-figure");
+  const media = createEl("div", "services-section-figure-media");
+  media.appendChild(
+    buildImageElement(figCfg.url, figCfg.alt || "", figCfg.caption || ""),
+  );
+  fig.appendChild(media);
+  if (figCfg.caption) {
+    fig.appendChild(createEl("figcaption", "services-section-figure-caption", figCfg.caption));
+  }
+  return fig;
+}
+
 function renderHeroAndTelemetry(banner, telemetry, metrics) {
   const hero = createEl("section", "services-hero");
   hero.id = "services-hero";
@@ -197,7 +211,7 @@ function renderHeroAndTelemetry(banner, telemetry, metrics) {
   return hero;
 }
 
-function renderComparisonSection(comparisonCfg) {
+function renderComparisonSection(comparisonCfg, figCfg = null) {
   const section = createEl("section", "services-section");
   section.id = "services-comparison";
   const container = createEl("div", "section-container");
@@ -296,6 +310,8 @@ function renderComparisonSection(comparisonCfg) {
   renderRows();
   container.appendChild(filterBar);
   container.appendChild(tableScroll);
+  const figEl = buildServiceSectionFigure(figCfg);
+  if (figEl) container.appendChild(figEl);
   section.appendChild(container);
   return section;
 }
@@ -602,7 +618,7 @@ function buildSeasonalCurveCard(metrics) {
   return card;
 }
 
-function renderAnalyticsSection(analyticsCfg, metrics) {
+function renderAnalyticsSection(analyticsCfg, metrics, figCfg = null) {
   const section = createEl("section", "services-section");
   section.id = "services-analytics";
   const container = createEl("div", "section-container");
@@ -620,6 +636,8 @@ function renderAnalyticsSection(analyticsCfg, metrics) {
   grid.appendChild(buildSeasonalCurveCard(metrics));
 
   container.appendChild(grid);
+  const figEl = buildServiceSectionFigure(figCfg);
+  if (figEl) container.appendChild(figEl);
   section.appendChild(container);
   return section;
 }
@@ -662,7 +680,7 @@ function renderToolkitSection(toolkitCfg) {
   return section;
 }
 
-function renderSandboxSection(sandboxCfg, speciesIndex, glossaryData) {
+function renderSandboxSection(sandboxCfg, speciesIndex, glossaryData, figCfg = null) {
   const section = createEl("section", "services-section");
   section.id = "services-sandbox";
   const container = createEl("div", "section-container");
@@ -793,11 +811,13 @@ function renderSandboxSection(sandboxCfg, speciesIndex, glossaryData) {
   grid.appendChild(leftPanel);
   grid.appendChild(rightPanel);
   container.appendChild(grid);
+  const figEl = buildServiceSectionFigure(figCfg);
+  if (figEl) container.appendChild(figEl);
   section.appendChild(container);
   return section;
 }
 
-function renderPathwaysSection(pathwaysCfg) {
+function renderPathwaysSection(pathwaysCfg, figCfg = null) {
   const section = createEl("section", "services-section");
   section.id = "services-pathways";
   const container = createEl("div", "section-container");
@@ -821,6 +841,8 @@ function renderPathwaysSection(pathwaysCfg) {
   });
 
   container.appendChild(grid);
+  const figEl = buildServiceSectionFigure(figCfg);
+  if (figEl) container.appendChild(figEl);
   section.appendChild(container);
   return section;
 }
@@ -1378,7 +1400,7 @@ async function initServicesAnimations(portal) {
   ScrollTrigger.refresh();
 }
 
-function renderGlobalArchitectureSection(archCfg) {
+function renderGlobalArchitectureSection(archCfg, figCfg = null) {
   const section = createEl("section", "services-section");
   section.id = "services-global-architecture";
   const container = createEl("div", "section-container");
@@ -1429,11 +1451,13 @@ function renderGlobalArchitectureSection(archCfg) {
   });
 
   container.appendChild(grid);
+  const figEl = buildServiceSectionFigure(figCfg);
+  if (figEl) container.appendChild(figEl);
   section.appendChild(container);
   return section;
 }
 
-function renderSynthesisPipelineSection(pipelineCfg) {
+function renderSynthesisPipelineSection(pipelineCfg, figCfg = null) {
   const section = createEl("section", "services-section");
   section.id = "services-synthesis-pipeline";
   const container = createEl("div", "section-container");
@@ -1545,11 +1569,13 @@ function renderSynthesisPipelineSection(pipelineCfg) {
   shell.appendChild(diagram);
   shell.appendChild(inspector);
   container.appendChild(shell);
+  const figEl = buildServiceSectionFigure(figCfg);
+  if (figEl) container.appendChild(figEl);
   section.appendChild(container);
   return section;
 }
 
-function renderFieldStudioSection(studioCfg) {
+function renderFieldStudioSection(studioCfg, figCfg = null) {
   const section = createEl("section", "services-section");
   section.id = "services-field-studio";
   const container = createEl("div", "section-container");
@@ -1665,11 +1691,13 @@ function renderFieldStudioSection(studioCfg) {
   layout.appendChild(previewWrap);
   layout.appendChild(featCol);
   container.appendChild(layout);
+  const figEl = buildServiceSectionFigure(figCfg);
+  if (figEl) container.appendChild(figEl);
   section.appendChild(container);
   return section;
 }
 
-function renderStandardsAndCtaSection(standardsCfg) {
+function renderStandardsAndCtaSection(standardsCfg, figCfg = null) {
   const section = createEl("section", "services-section");
   section.id = "services-open-standards";
   const container = createEl("div", "section-container");
@@ -1741,6 +1769,8 @@ function renderStandardsAndCtaSection(standardsCfg) {
   banner.appendChild(btnGroup);
 
   container.appendChild(banner);
+  const figEl = buildServiceSectionFigure(figCfg);
+  if (figEl) container.appendChild(figEl);
   section.appendChild(container);
   return section;
 }
@@ -1839,8 +1869,8 @@ function renderWorldwideScaleSection(scaleCfg = {}, metrics = {}) {
   mediaBox.appendChild(
     buildImageElement(
       imgCfg.imageUrl ||
-        "https://images.pexels.com/photos/9219974/pexels-photo-9219974.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      imgCfg.imageAlt || "Lush botanical woodland foliage canopy illustrating worldwide vascular flora scale",
+        "https://inaturalist-open-data.s3.amazonaws.com/photos/610636081/original.jpg",
+      imgCfg.imageAlt || "Ginkgo biloba living fossil foliage representing worldwide vascular flora breadth",
       "Worldwide Botanical Scale Canopy",
     ),
   );
@@ -1893,17 +1923,18 @@ export function renderServicesPortal(
   telemetryBand.appendChild(telemetryContainer);
   portal.appendChild(telemetryBand);
 
-  portal.appendChild(renderComparisonSection(pageData.comparison || {}));
-  portal.appendChild(renderAnalyticsSection(pageData.analytics || {}, metrics));
+  const figs = pageData.sectionFigures || {};
+  portal.appendChild(renderComparisonSection(pageData.comparison || {}, figs["02"]));
+  portal.appendChild(renderAnalyticsSection(pageData.analytics || {}, metrics, figs["03"]));
   portal.appendChild(renderToolkitSection(pageData.toolkit || {}));
   portal.appendChild(
-    renderSandboxSection(pageData.sandbox || {}, speciesIndex, glossaryData),
+    renderSandboxSection(pageData.sandbox || {}, speciesIndex, glossaryData, figs["05"]),
   );
-  portal.appendChild(renderPathwaysSection(pageData.pathways || {}));
-  portal.appendChild(renderGlobalArchitectureSection(pageData.globalArchitecture || {}));
-  portal.appendChild(renderSynthesisPipelineSection(pageData.pipeline || {}));
-  portal.appendChild(renderFieldStudioSection(pageData.fieldStudio || {}));
-  portal.appendChild(renderStandardsAndCtaSection(pageData.standardsCta || {}));
+  portal.appendChild(renderPathwaysSection(pageData.pathways || {}, figs["06"]));
+  portal.appendChild(renderGlobalArchitectureSection(pageData.globalArchitecture || {}, figs["07"]));
+  portal.appendChild(renderSynthesisPipelineSection(pageData.pipeline || {}, figs["08"]));
+  portal.appendChild(renderFieldStudioSection(pageData.fieldStudio || {}, figs["09"]));
+  portal.appendChild(renderStandardsAndCtaSection(pageData.standardsCta || {}, figs["10"]));
   portal.appendChild(renderWorldwideScaleSection(pageData.worldwideScale || {}, metrics));
 
   mountEl.replaceChildren(portal);

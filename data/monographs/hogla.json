@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "hogla",
   "commonName": "Southern Cattail (Hogla)",
   "scientificName": "Typha elephantina",
@@ -15,8 +15,8 @@
   "leadOverview": "Typha elephantina—universally known across coastal Bangladesh as Hogla—is a towering emergent monocot marsh reed of the cattail family Typhaceae. Anchoring freshwater and brackish delta mudflats up to 3.5 metres tall, its spongy ribbon-like blades filter polluted runoff naturally while sustaining Barishal and Noakhali's celebrated eco-friendly Hogla Pata mat and basket weaving industry.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/32750231/pexels-photo-32750231.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Towering Typha cattail reeds standing along serene reflective wetland marsh",
-    "caption": "Vertical velvety brown Typha cattail flower spikes and sword-like blades lining still marshwaters."
+    "alt": "Southern Cattail (Hogla) (Typha elephantina) botanical herbarium specimen",
+    "caption": "Southern Cattail (Hogla) (Typha elephantina) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Monocot)",
@@ -67,14 +67,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/32750231/pexels-photo-32750231.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Cattail reeds reflected in calm marshland",
-          "caption": "Signature cylindrical seed heads towering cleanly above upright sword-like leaves."
-        },
-        {
           "url": "https://images.pexels.com/photos/35027528/pexels-photo-35027528.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Coastal delta flooded marsh basin",
-          "caption": "Shallow flooded coastal flats supporting vigorous Hogla reed meadows."
+          "alt": "Southern Cattail (Hogla) (Typha elephantina) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Southern Cattail (Hogla) (Typha elephantina): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -89,9 +84,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/32750231/pexels-photo-32750231.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Detailed Typha wetland spikes",
-          "caption": "Velvety pistillate spikes holding up to 200,000 tiny wind-dispersed fruits per stalk."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605487641/original.jpg",
+          "alt": "Southern Cattail (Hogla) (Typha elephantina) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Southern Cattail (Hogla) (Typha elephantina): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -106,9 +101,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/35027528/pexels-photo-35027528.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Reflective delta wetland landscape",
-          "caption": "Seasonal and tidal waterlogged depressions powering southern Bengal's Hogla bioeconomy."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/604570235/original.jpg",
+          "alt": "Southern Cattail (Hogla) (Typha elephantina) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Southern Cattail (Hogla) (Typha elephantina): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -120,13 +115,6 @@
       "paragraphs": [
         "Purely wind-pollinated (anemophilous), male spikes shower clouds of bright yellow pollen grains in late spring before drying off. Underground, dense interlocking rhizomes and root microbiomes excel at absorbing excess agricultural nitrates, phosphates, and heavy metals—making Typha the world's premier plant for eco-friendly constructed wastewater reedbeds.",
         "Above the mud, dense marsh beds shelter purple swamphens, waterhens, weaverbirds, and frogs while trapping sediment along fragile eroding delta chars."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/32750231/pexels-photo-32750231.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Lush marsh reed stand",
-          "caption": "Vertical reed stands filtering excess nutrients while sheltering wetland birds."
-        }
       ]
     },
     {
@@ -140,9 +128,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/32750231/pexels-photo-32750231.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Tall mature Hogla marsh reeds",
-          "caption": "Sun-cured flexible leaves transforming marsh reeds into global biodegradable craft exports."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605469680/original.jpg",
+          "alt": "Southern Cattail (Hogla) (Typha elephantina) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Southern Cattail (Hogla) (Typha elephantina): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -155,14 +143,7 @@
         "Across Asian ethnobotanical traditions (paralleling 'Puhuang' cattail pollen in East Asian pharmacopoeias), collected Typha pollen and velvety spike fluff were applied externally as dry styptic dressings on minor cuts, while rhizome starch provided bland soothing sustenance during digestive upset.",
         "Phytochemical screening reveals isorhamnetin flavonoids, sitosterols, and phenolic compounds with mild anti-inflammatory and astringent action."
       ],
-      "safetyNote": "CRITICAL ECOLOGICAL HYGIENE NOTE: Because Typha rhizomes actively absorb arsenic, lead, chromium, and industrial effluents from polluted canals, NEVER eat rhizomes, shoots, or pollen gathered near industrial zones, roadside runoff ditches, or polluted urban marshes.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/35027528/pexels-photo-35027528.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Wetland marsh habitat",
-          "caption": "Superior phytoremediation talent necessitates strict clean-water sourcing for any culinary use."
-        }
-      ]
+      "safetyNote": "CRITICAL ECOLOGICAL HYGIENE NOTE: Because Typha rhizomes actively absorb arsenic, lead, chromium, and industrial effluents from polluted canals, NEVER eat rhizomes, shoots, or pollen gathered near industrial zones, roadside runoff ditches, or polluted urban marshes."
     },
     {
       "number": "07",
@@ -175,9 +156,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/32750231/pexels-photo-32750231.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Healthy marshland Typha stand",
-          "caption": "Clean winter harvesting above waterlines promotes vigorous spring rhizome regrowth."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/606507382/original.jpg",
+          "alt": "Southern Cattail (Hogla) (Typha elephantina) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Southern Cattail (Hogla) (Typha elephantina): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Monsoon (বর্ষা), Late Autumn (হেমন্ত), Winter (শীত)).",
+      "paragraphs": [
+        "Southern Cattail (Hogla) (Typha elephantina) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Monsoon (বর্ষা), Late Autumn (হেমন্ত), Winter (শীত).",
+        "Monsoon (বর্ষা): Saturated coastal marshes fuel towering 3-metre emerald sword blades that buffer tidal silt. Late Autumn (হেমন্ত): Velvety chocolate-brown cattail seed heads mature and prepare downy wind-plumed dispersal. Winter (শীত): Dry winter mornings turn Barishal and Noakhali banks golden with sun-cured Hogla Pata reeds ready for weaving."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Monsoon (বর্ষা) · Late Autumn (হেমন্ত) · Winter (শীত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/606507431/original.jpg",
+          "alt": "Southern Cattail (Hogla) (Typha elephantina) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Southern Cattail (Hogla) (Typha elephantina): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Southern Cattail (Hogla).",
+      "paragraphs": [
+        "Southern Cattail (Hogla) (Typha elephantina) propagates both sexually through hard-coated hydrochorous seeds or nutlets settled in benthic silt and vegetatively via vigorous rhizome division, stolon offsets, or buoyant fragment rooting. Seed dormancy in aquatic lineages is often broken by mechanical scarification or seasonal monsoon flooding that rehydrates submerged seedbeds.",
+        "In botanical conservatory and pond restoration work, clonal division of terminal growing crowns during warm spring waters (24–30 °C) yields rapid colony establishment within three to six weeks while faithfully preserving petal pigmentation and cultivar traits."
+      ],
+      "subblocks": [
+        {
+          "heading": "Sexual Propagation",
+          "text": "Hydrated mudbed sowing or warm-water scarification breaking impervious seed coats."
+        },
+        {
+          "heading": "Clonal Division",
+          "text": "Splitting apical rhizome tips or daughter offsets with at least two intact nodes."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Typha elephantina.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Southern Cattail (Hogla) (Typha elephantina) relies on cuticular wax barriers and submerged phenolic metabolites as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/606507324/original.jpg",
+          "alt": "Southern Cattail (Hogla) (Typha elephantina) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Southern Cattail (Hogla) (Typha elephantina): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Southern Cattail (Hogla).",
+      "paragraphs": [
+        "Across its native and naturalized distribution (South & Southeast Asian Wetlands & Coastal Deltas), Southern Cattail (Hogla) (Typha elephantina) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to South & Southeast Asian Wetlands & Coastal Deltas thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 5.5 – 8.2, Full Open Marsh Sun, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Southern Cattail (Hogla) (Typha elephantina) calibrates root-zone chemistry around pH 5.5 – 8.2 inside saturated alluvial & brackish clay. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full open marsh sun.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (shallow flooded / brackish marsh) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 5.5 – 8.2 · Saturated Alluvial & Brackish Clay"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Open Marsh Sun · Shallow Flooded / Brackish Marsh"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/609926147/original.jpg",
+          "alt": "Southern Cattail (Hogla) (Typha elephantina) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Southern Cattail (Hogla) (Typha elephantina): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Poales clade divergence and Typhaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Typha within order Poales (Monocot (Commelinids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Typha elephantina inside family Typhaceae (টাইফাসি (হোগলা গোত্র)), order Poales, clade Monocot (Commelinids). Rhizomatous marshland monocot reeds rising in sword-like vertical blades crowned by dense velvety brown cylindrical cattail flower spikes.",
+        "Within genus Typha, specialized morphological adaptations—such as spongy aerenchyma-filled sword leaves withstanding brackish tides—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Typha elephantina (Hogla (হোগলা)).",
+      "paragraphs": [
+        "Field verification of Southern Cattail (Hogla) (Typha elephantina) rests on recognizing key Typhaceae family markers: Spongy aerenchyma-filled sword leaves withstanding brackish tides; Distinctive two-part unisexual cattail spike (male apex over female cylinder); Millions of wind-drifted plumed achenes stabilizing delta mudflats. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Starchy Creeping Rhizomes: Horizontal underwater stems piping atmospheric oxygen downward while stabilizing soft mudbanks. Aerenchyma Sword Blades: Spongy triangular-section ribbons compressing flat cleanly when sun-dried for soft elastic weaving. Two-Tiered Cattail Spike: Upper pollen-shedding staminate spike poised directly over a dense chocolate-brown pistillate cylinder. Plumed Anemochorous Fluff: Microscopic single-seeded achenes equipped with silky parachute hairs drifting miles across winter winds."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Spongy aerenchyma-filled sword leaves withstanding brackish tides"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Distinctive two-part unisexual cattail spike (male apex over female cylinder)"
         }
       ]
     }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "bamboo",
   "commonName": "Bamboo",
   "scientificName": "Bambusa vulgaris",
@@ -15,8 +15,8 @@
   "leadOverview": "Golden Bamboo (Bambusa vulgaris)—locally cherished across Bengal as Bash—is an evergreen clumping giant grass belonging to family Poaceae. Achieving full 20-metre height within a single monsoon growing season through pre-formed telescoped internodes, its silica-reinforced hollow culms power sustainable architecture, soil conservation, and traditional rural crafts.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/20793642/pexels-photo-20793642.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Towering green and golden bamboo culms in lush grove",
-    "caption": "Dense sympodial clump of Bambusa vulgaris culms displaying prominent nodal rings and slender foliage."
+    "alt": "Bamboo (Bambusa vulgaris) botanical herbarium specimen",
+    "caption": "Bamboo (Bambusa vulgaris) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Monocot)",
@@ -58,13 +58,8 @@
       "images": [
         {
           "url": "https://images.pexels.com/photos/8803722/pexels-photo-8803722.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Segmented bamboo stems and nodal rings close-up",
-          "caption": "Transverse nodal rings partitioning hollow internodes for peak buckling resistance."
-        },
-        {
-          "url": "https://images.pexels.com/photos/36165506/pexels-photo-36165506.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Lush green bamboo leaves canopy",
-          "caption": "Feathery Poaceae foliage filtering bright sunlight across dense culm crowns."
+          "alt": "Bamboo (Bambusa vulgaris) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Bamboo (Bambusa vulgaris): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -79,9 +74,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/37331249/pexels-photo-37331249.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Dense bamboo woodland grove",
-          "caption": "Clonal Bambusa stand illustrating tight sympodial culm clustering."
+          "url": "https://images.pexels.com/photos/36165506/pexels-photo-36165506.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Bamboo (Bambusa vulgaris) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Bamboo (Bambusa vulgaris): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -96,9 +91,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/20793642/pexels-photo-20793642.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Sunlit bamboo grove along slope",
-          "caption": "Riverbank and hillside bamboo stands locking topsoil beneath dense fibrous roots."
+          "url": "https://images.pexels.com/photos/37331249/pexels-photo-37331249.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Bamboo (Bambusa vulgaris) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Bamboo (Bambusa vulgaris): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -110,13 +105,6 @@
       "paragraphs": [
         "Because new culms shoot up within months while mature outer canes can be selectively harvested annually without killing the rhizome, managed bamboo groves sequester carbon rapidly and generate steady fallen leaf mulch that enriches depleted tropical topsoils with organic silica.",
         "Hollow internodes and dense evergreen crowns provide roosting habitat for weaver birds, owls, tree frogs, and bats, while underground rhizome mats absorb excess agricultural nitrogen runoff along streams."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/37331249/pexels-photo-37331249.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Ecological bamboo forest interior",
-          "caption": "Cool, shaded microhabitat and deep leaf-litter horizon beneath mature bamboo groves."
-        }
       ]
     },
     {
@@ -130,9 +118,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/8803722/pexels-photo-8803722.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Harvestable structural bamboo culms",
-          "caption": "Mature three-to-five-year culms prized for tensile construction and craft weaving."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/766456044/large.jpg",
+          "alt": "Bamboo (Bambusa vulgaris) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Bamboo (Bambusa vulgaris): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -145,14 +133,7 @@
         "Ayurvedic and Unani traditions value tabashir (banslochan)—a translucent biogenic silica concretion deposited occasionally inside hollow culm internodes—alongside young leaf decoctions for mild cooling and connective-tissue mineral support. Bamboo leaves contain C-glycosyl flavones (orientin, isoorientin, vitexin) with documented antioxidant activity.",
         "Cooked mature bamboo shoots provide low-calorie dietary fibre, potassium, and phytosterols."
       ],
-      "safetyNote": "Never eat raw bamboo shoots: fresh shoots contain high levels of the cyanogenic glycoside taxiphyllin, which releases toxic hydrogen cyanide when crushed. Always slice thin and boil uncovered in plenty of water for 20–30 minutes (discarding the cooking water) before culinary use.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36165506/pexels-photo-36165506.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Fresh bamboo shoots and leaves",
-          "caption": "Foliage rich in C-glycosyl flavones and silica-accumulating epidermal cells."
-        }
-      ]
+      "safetyNote": "Never eat raw bamboo shoots: fresh shoots contain high levels of the cyanogenic glycoside taxiphyllin, which releases toxic hydrogen cyanide when crushed. Always slice thin and boil uncovered in plenty of water for 20–30 minutes (discarding the cooking water) before culinary use."
     },
     {
       "number": "07",
@@ -165,9 +146,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/20793642/pexels-photo-20793642.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Managed sustainable bamboo clump",
-          "caption": "Selective thinning removes mature woody canes while nurturing young monsoon shoots."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/607616131/original.jpg",
+          "alt": "Bamboo (Bambusa vulgaris) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Bamboo (Bambusa vulgaris): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Monsoon (বর্ষা), Autumn (শরৎ)).",
+      "paragraphs": [
+        "Bamboo (Bambusa vulgaris) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Monsoon (বর্ষা), Autumn (শরৎ).",
+        "Monsoon (বর্ষা): Saturated monsoon soils trigger explosive emergence and vertical elongation of tender culm shoots (করুল). Autumn (শরৎ): Young hollow culms rapidly expand nodal branches and deposit structural biogenic silica along alluvial banks."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Monsoon (বর্ষা) · Autumn (শরৎ)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/612513021/original.jpg",
+          "alt": "Bamboo (Bambusa vulgaris) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Bamboo (Bambusa vulgaris): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Bamboo.",
+      "paragraphs": [
+        "Bamboo (Bambusa vulgaris) exhibits dual reproductive versatility through wind-, pollinator-, or gravity-dispersed seed cohorts alongside rapid vegetative renewal via herbaceous stem cuttings, rhizome splits, or nodal rooting. Mature seed capsules collected just prior to dehiscence retain strong vigor in dry shaded storage for moderate periods.",
+        "Rooting auxin pre-treatment on semi-ripe nodal cuttings during warm humid months accelerates adventitious root initiation within 10 to 21 days in porous coco-peat and vermicompost propagation trays."
+      ],
+      "subblocks": [
+        {
+          "heading": "Seed Germination",
+          "text": "Surface-sown or lightly covered in sterile porous mix; germinates in 7–21 days under ambient humidity."
+        },
+        {
+          "heading": "Vegetative Method",
+          "text": "Two-node terminal cuttings or clump division rooted in misted, filtered-light benches."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Bambusa vulgaris.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Bamboo (Bambusa vulgaris) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/612082376/original.jpg",
+          "alt": "Bamboo (Bambusa vulgaris) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Bamboo (Bambusa vulgaris): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Bamboo.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Tropical Asia (Indo-China & Yunnan)), Bamboo (Bambusa vulgaris) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Tropical Asia (Indo-China & Yunnan) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Bamboo (Bambusa vulgaris) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/612513139/original.jpg",
+          "alt": "Bamboo (Bambusa vulgaris) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Bamboo (Bambusa vulgaris): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Poales clade divergence and Poaceae (Bambusoideae) genomic traits",
+      "summary": "Phylogenetic placement of genus Bambusa within order Poales (Monocot (Commelinids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Bambusa vulgaris inside family Poaceae (Bambusoideae) (পোয়াসি (ঘাস-বাঁশ গোত্র)), order Poales, clade Monocot (Commelinids). Woody bamboo subfamily of the true grasses exhibiting hollow internodes separated by solid diaphragms, silica-armoured culms, and rapid elongation.",
+        "Within genus Bambusa, specialized morphological adaptations—such as segmented hollow culms reinforced with biogenic silica and nodal rings—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Bambusa vulgaris (Baansh (বাঁশ)).",
+      "paragraphs": [
+        "Field verification of Bamboo (Bambusa vulgaris) rests on recognizing key Poaceae (Bambusoideae) family markers: Segmented hollow culms reinforced with biogenic silica and nodal rings; Interlocking pachymorph underground rhizomes stabilizing riverbanks; Fastest recorded daily shoot extension in terrestrial flora. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Segmented Culms: Hollow cylindrical stems reinforced with vascular fibre bundles and biogenic opal silica along outer walls. Culm Sheaths: Protective deciduous papery-brown sheaths studded with golden hairs shielding tender growing shoot nodes. Bamboo Leaves: Linear-lanceolate parallel-veined blades (15–25 cm) borne on clustered fine upper branchlets. Pachymorph Rhizomes: Short, thick, non-invasive clumping underground stems anchoring dense multi-culm groves."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Segmented hollow culms reinforced with biogenic silica and nodal rings"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Interlocking pachymorph underground rhizomes stabilizing riverbanks"
         }
       ]
     }

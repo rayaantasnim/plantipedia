@@ -10,8 +10,10 @@
     "ogType": "website",
     "ogTitle": "Plantipedia v3.1 — 50 Curated 15-Chapter Monographs & 400,000+ Global Flora Archive",
     "ogDescription": "Discover 50 deeply curated 15-chapter monographs and a live Global Botanical Server uplink spanning 400,000+ worldwide vascular plants and trees with bilingual EN / বাংলা telemetry.",
-    "ogImage": "https://images.pexels.com/photos/27305386/pexels-photo-27305386/free-photo-of-a-sunflower-is-in-a-frame-in-a-field.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "ogImageAlt": "Sunlit botanical field specimen in the Plantipedia Flora Archive",
+    "ogImage": "https://inaturalist-open-data.s3.amazonaws.com/photos/605480894/original.jpg",
+    "ogImageAlt": "Curated vascular plant conservatory collection in the Plantipedia Flora Archive",
+    "twitterImage": "https://static.inaturalist.org/photos/61295436/large.jpeg",
+    "twitterImageAlt": "Plantipedia Botanical Canopy Flora Archive",
     "jsonLd": {
       "@context": "https://schema.org",
       "@graph": [
@@ -67,7 +69,7 @@
       "400,000+ Global Flora & Trees"
     ],
     "backdropImage": {
-      "imageUrl": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "imageUrl": "https://static.inaturalist.org/photos/248430040/large.jpg",
       "imageAlt": ""
     }
   },
@@ -95,67 +97,115 @@
       },
       {
         "id": "stat-global-taxa",
-        "value": "400,000+",
+        "value": "400K+",
         "themeColor": "emerald",
         "title": "Global Flora & Tree Collection",
         "description": "Live Global Botanical Server uplink connecting over 400,000 worldwide vascular plant and tree taxa on demand."
-      },
-      {
-        "id": "stat-domains",
-        "value": "06",
-        "themeColor": "violet",
-        "title": "Curated Flora Domains",
-        "description": "Structured across Flowers, Fruit Trees, Medicinal Plants, Shrubs & Herbs, Trees & Palms, and Aquatic biomes."
       }
     ]
   },
   "globalGateway": {
     "anchorId": "worldwide-gateway",
-    "eyebrow": "🌐 WORLDWIDE FLORA REGISTRY · LIVE UPLINK",
+    "eyebrow": "WORLDWIDE FLORA REGISTRY · 400K+ INDEXED TAXA",
     "statusTag": "ZERO-KEY LIVE UPLINK · STRICT LOCAL BYPASS",
-    "heading": "Worldwide Botanical Server Gateway",
+    "heading": "Global Botanical Server Gateway",
     "paragraphs": [
-      "While Plantipedia's core archive houses 50 deeply curated, 15-chapter botanical monographs, the global plant kingdom spans more than 400,000+ documented vascular plants and tree species. This dedicated gateway connects your research session directly to the Global Botanical Server for live taxonomic, morphological, and bilingual records.",
-      "Every query entered in this console bypasses the local 50-species index entirely—synthesizing real-time global botanical dossiers on demand with automated plant validation, English and বাংলা nomenclature cross-referencing, and instant split-screen comparison readiness."
+      "While Plantipedia's core archive curates 50 deeply authored 15-chapter botanical monographs, the living plant kingdom encompasses more than 400,000 vascular plant and tree taxa worldwide. This federated lookup console links directly to the Global Botanical Server so every search resolves accepted Linnaean binomials, hierarchical classifications, and verified field photography on demand.",
+      "Every query bypasses the local 50-species index without API keys or paywalls—aggregating multi-source taxonomic graphs, cross-script English and বাংলা vernacular matching, and biome-calibrated cultivation telemetry ready for full-page reading or split-screen comparison."
     ],
+    "backboneLabel": "Federated Botanical Backbone",
+    "backbones": [
+      {
+        "id": "gbif",
+        "label": "GBIF Backbone",
+        "detail": "Resolves accepted Kingdom Plantae binomials, synonym keys, and authoritative global occurrence hierarchies."
+      },
+      {
+        "id": "global-flora-index",
+        "label": "Global Flora Index",
+        "detail": "Synthesizes structured 15-chapter morphological, ecological, and ethnobotanical prose across worldwide taxa."
+      },
+      {
+        "id": "wikidata",
+        "label": "Wikidata Graph",
+        "detail": "Bridges persistent P225 taxonomic nodes with bilingual EN / বাংলা nomenclature and IUCN Red List statuses."
+      },
+      {
+        "id": "inaturalist",
+        "label": "iNaturalist Taxa",
+        "detail": "Supplies research-grade field specimen plates covering floral structures, foliage, bark, and natural habitats."
+      },
+      {
+        "id": "kew-powo",
+        "label": "Kew POWO",
+        "detail": "Cross-verifies APG IV family placements, native biogeographic distributions, and botanical synonymy."
+      }
+    ],
+    "image": {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/625322666/original.jpg",
+      "alt": "Welwitschia mirabilis field specimen representing the 400,000+ Worldwide Flora Registry",
+      "caption": "Fig. GW-01 — Endemic arid gymnosperm Welwitschia mirabilis indexed on demand through the 400K+ Global Botanical Server."
+    },
     "search": {
-      "placeholder": "Query any worldwide species (e.g., Baobab, Ginkgo Biloba, Venus Flytrap, Rafflesia)...",
+      "placeholder": "Query any worldwide species (e.g., Welwitschia mirabilis, Adansonia digitata, Ginkgo biloba)...",
       "ariaLabel": "Query Global Botanical Server by plant name",
       "submitLabel": "Query Global Server →",
       "validationHint": "Enter at least 2 characters of a common or Latin botanical name to query the Global Botanical Server."
     },
-    "expeditionsLabel": "Global Expedition Chips",
+    "expeditionsLabel": "Instant Global Taxon Quick-Launch",
     "expeditions": [
-      "Baobab",
-      "Venus Flytrap",
-      "Ginkgo Biloba",
-      "Dragon Blood Tree",
-      "Rafflesia"
+      "Welwitschia mirabilis",
+      "Dionaea muscipula",
+      "Adansonia digitata",
+      "Ginkgo biloba",
+      "Rafflesia arnoldii"
+    ],
+    "ctas": [
+      {
+        "label": "🌐 Open Global Botanical Server",
+        "href": "./plant/live/",
+        "variant": "primary"
+      },
+      {
+        "label": "📖 Explore Sources & References",
+        "href": "./sources/",
+        "variant": "secondary"
+      }
     ]
   },
   "nextMilestone": {
     "anchorId": "next-milestone",
     "eyebrow": "NEXT MILESTONE · VERSION 3.2 SPOTLIGHT",
-    "statusTag": "SCHEDULED NEXT DECIMAL RELEASE · v3.2",
+    "statusTag": "IN ACTIVE ARCHITECTURE · SCHEDULED NEXT RELEASE",
     "heading": "Next Up: Version 3.2 — Multi-Source Parallel Botanical Engine",
-    "description": "Immediately following Plantipedia Version 3.1, the upcoming Version 3.2 release upgrades live querying into a parallel multi-source botanical engine uniting GBIF, Global Flora Index, Wikidata, and iNaturalist—complete with a multi-angle specimen image aggregator and typo-tolerant fuzzy search mapped to the global '/' shortcut.",
-    "ctaLabel": "Inspect Full Roadmap",
+    "description": "Immediately following Version 3.1, Plantipedia Version 3.2 upgrades the live lookup stack into a parallel multi-source botanical engine uniting GBIF, the Global Flora Index, Wikidata, iNaturalist, and Kew POWO. Alongside concurrent resolution across 400,000+ vascular taxa, v3.2 introduces automated cross-script EN / বাংলা alignment and typo-tolerant Levenshtein fuzzy search bound to the global '/' shortcut.",
+    "readiness": {
+      "label": "Version 3.2 Core Architecture Readiness",
+      "percent": 72,
+      "statusText": "72% Spec Locked · Next After v3.1"
+    },
+    "ctaLabel": "🚀 View Full Release Roadmap (v3.1 → v4.3)",
     "ctaHref": "./roadmap/",
+    "secondaryCtaLabel": "🧭 Explore Current v3.1 Capabilities",
+    "secondaryCtaHref": "./services/",
     "pillars": [
       {
-        "kicker": "MULTI-SOURCE PARALLEL ENGINE",
-        "title": "GBIF + Global Flora Index + Wikidata + iNaturalist",
-        "description": "Concurrent cross-database resolution harmonizes verified Linnaean binomials, occurrence distributions, IUCN conservation tiers, and multilingual common names without single-source blind spots."
+        "number": "1",
+        "kicker": "CONCURRENT RESOLUTION",
+        "title": "⚡ 5-Source Parallel Aggregation",
+        "description": "Executes simultaneous browser requests across GBIF Backbone, Global Flora Index, Wikidata P225, iNaturalist Taxa, and Kew POWO to assemble unified botanical dossiers without single-endpoint bottlenecks."
       },
       {
-        "kicker": "MULTI-SOURCE IMAGE AGGREGATOR",
-        "title": "Herbarium & Field Specimen Carousel",
-        "description": "Dynamic imagery pipelines assemble verified canopy silhouettes, floral macro studies, bark textures, and fruiting habits from open botanical repositories."
+        "number": "2",
+        "kicker": "BILINGUAL LEXICON",
+        "title": "🌐 Cross-Script EN / বাংলা Alignment",
+        "description": "Expands semantic sitelink mapping between Linnaean binomials, English vernaculars, and Bengali Unicode nomenclature so every global taxon renders accurate bilingual headers and phonetic cues."
       },
       {
-        "kicker": "FUZZY SEARCH & KEYBOARD NAV",
-        "title": "Typo-Tolerant Search & '/' Shortcut",
-        "description": "Client-side Levenshtein fuzzy matching across EN, বাংলা, and Latin queries pairs with an instant '/' keyboard focus shortcut for zero-friction lookup across every page."
+        "number": "3",
+        "kicker": "INSTANT NAVIGATION",
+        "title": "🔍 Typo-Tolerant Fuzzy Search & Shortcuts",
+        "description": "Combines client-side edit-distance matching for misspelled Latin or local plant names with an instant '/' keyboard focus shortcut active across every Plantipedia archive page."
       }
     ],
     "timeline": [

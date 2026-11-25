@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "starfruit",
   "commonName": "Starfruit (Carambola)",
   "scientificName": "Averrhoa carambola",
@@ -15,8 +15,8 @@
   "leadOverview": "Averrhoa carambola—known across Bangladesh as Kamranga and globally as Starfruit or Carambola—is a compact, prolific tropical fruit tree of the wood-sorrel family Oxalidaceae. Instantly recognizable for crisp waxy golden berries ribbed into five prominent longitudinal ridges, its delicate pink-violet panicles flower repeatedly across warm months.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/35035983/pexels-photo-35035983.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Crisp five-ribbed Averrhoa carambola starfruit hanging on tree branch",
-    "caption": "Waxy green-to-gold five-winged Averrhoa carambola (Kamranga) berry maturing amidst compound leaflets."
+    "alt": "Starfruit (Carambola) (Averrhoa carambola) botanical herbarium specimen",
+    "caption": "Starfruit (Carambola) (Averrhoa carambola) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -67,14 +67,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/35035983/pexels-photo-35035983.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Starfruit growing naturally on leafy twig",
-          "caption": "Five-ribbed Averrhoa carambola fruit hanging cleanly on slender drooping branchlets."
-        },
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Insect pollinators gathering nectar",
-          "caption": "Honeybees cross-pollinating long- and short-styled lavender starfruit blossoms."
+          "url": "https://images.pexels.com/photos/31732206/pexels-photo-31732206.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Starfruit (Carambola) (Averrhoa carambola) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Starfruit (Carambola) (Averrhoa carambola): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -89,9 +84,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/35035983/pexels-photo-35035983.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Close-up of Averrhoa carambola ridges",
-          "caption": "Signature five-carpel star geometry linking Averrhoa with five-parted Oxalis capsules."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605631366/original.jpg",
+          "alt": "Starfruit (Carambola) (Averrhoa carambola) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Starfruit (Carambola) (Averrhoa carambola): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -106,9 +101,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31732206/pexels-photo-31732206.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Subtropical fruit grove",
-          "caption": "Humid frost-free home gardens supporting continuous flowering and heavy fruiting."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605571494/original.jpg",
+          "alt": "Starfruit (Carambola) (Averrhoa carambola) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Starfruit (Carambola) (Averrhoa carambola): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -120,13 +115,6 @@
       "paragraphs": [
         "Because individual cultivars are typically fixed in either long-styled or short-styled flower morphology, Apis honeybees, stingless bees, and syrphid flies dramatically raise fruit set when mixed sweet and tart trees grow nearby.",
         "Bright golden-ripe fruits soften on outer twigs, attracting bulbuls, fruit bats, and squirrels that scatter smooth flat brown seeds along shaded fence lines."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Pollinating bee on blossom",
-          "caption": "Bees transferring pollen efficiently between complementary floral morphs."
-        }
       ]
     },
     {
@@ -140,9 +128,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/35035983/pexels-photo-35035983.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Ripe starfruit ready for harvest",
-          "caption": "Crisp golden starfruits harvested in winter for fresh snacks and sour culinary dishes."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/607911972/original.jpg",
+          "alt": "Starfruit (Carambola) (Averrhoa carambola) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Starfruit (Carambola) (Averrhoa carambola): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -155,14 +143,7 @@
         "Low in calories yet generous in vitamin C (ascorbic acid), epicatechin, proanthocyanidins, and potassium, culinary starfruit has long featured in Southeast Asian folk tonics for mild heat relief and appetite stimulation.",
         "Laboratory assays identify quercetin and gallic acid derivatives concentrated along the waxy skin ribs, providing notable free-radical scavenging capacity in healthy individuals."
       ],
-      "safetyNote": "CRITICAL MEDICAL WARNING: Starfruit contains high soluble oxalic acid AND a potent neurotoxin called caramboxin. Healthy kidneys excrete caramboxin effortlessly, but anyone with chronic kidney disease (CKD), reduced renal function, or dialysis MUST strictly avoid starfruit—ingestion can trigger intractable hiccups, confusion, seizures, or fatal neurotoxicity.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/35035983/pexels-photo-35035983.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Averrhoa carambola ribbed fruit",
-          "caption": "Vitamin-C-rich fruit requiring intact renal clearance due to natural caramboxin and oxalates."
-        }
-      ]
+      "safetyNote": "CRITICAL MEDICAL WARNING: Starfruit contains high soluble oxalic acid AND a potent neurotoxin called caramboxin. Healthy kidneys excrete caramboxin effortlessly, but anyone with chronic kidney disease (CKD), reduced renal function, or dialysis MUST strictly avoid starfruit—ingestion can trigger intractable hiccups, confusion, seizures, or fatal neurotoxicity."
     },
     {
       "number": "07",
@@ -175,9 +156,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31732206/pexels-photo-31732206.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Sheltered orchard trees in sunlight",
-          "caption": "Wind-sheltered, well-drained acidic beds sustain heavy biannual starfruit harvests."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/608118272/original.jpg",
+          "alt": "Starfruit (Carambola) (Averrhoa carambola) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Starfruit (Carambola) (Averrhoa carambola): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Autumn (শরৎ), Winter (শীত)).",
+      "paragraphs": [
+        "Starfruit (Carambola) (Averrhoa carambola) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Autumn (শরৎ), Winter (শীত).",
+        "Autumn (শরৎ): Pink-lilac heterostylous bell clusters produce heavy autumn flushes of crisp five-winged berries. Winter (শীত): Waxy golden-amber Kamranga stars sweeten in mild winter sunshine across backyard homesteads."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Autumn (শরৎ) · Winter (শীত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/610280389/original.jpg",
+          "alt": "Starfruit (Carambola) (Averrhoa carambola) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Starfruit (Carambola) (Averrhoa carambola): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Starfruit (Carambola).",
+      "paragraphs": [
+        "Starfruit (Carambola) (Averrhoa carambola) combines sexual seed propagation—useful for raising sturdy heterozygous rootstocks—with elite clonal techniques such as veneer grafting, air layering (gootee), and semi-hardwood stem cuttings. Fresh recalcitrant or semi-orthodox seeds typically germinate within 14 to 35 days when depulped and sown in warm organic loam.",
+        "Clonal orchards standardize crown architecture, early precocity, and uniform biochemical profiles across generations within Oxalidaceae."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Depulped seed sown cleanly in 2:1 loam-compost media; high viability when fresh."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Approach/veneer grafting or monsoon air-layering onto vigorous local rootstocks."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Averrhoa carambola.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Starfruit (Carambola) (Averrhoa carambola) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/610280376/original.jpg",
+          "alt": "Starfruit (Carambola) (Averrhoa carambola) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Starfruit (Carambola) (Averrhoa carambola): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Starfruit (Carambola).",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Tropical Southeast Asia & Maritime Indonesia), Starfruit (Carambola) (Averrhoa carambola) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Tropical Southeast Asia & Maritime Indonesia thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 5.5 – 6.8, Full Sun to Light Afternoon Shade, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Starfruit (Carambola) (Averrhoa carambola) calibrates root-zone chemistry around pH 5.5 – 6.8 inside humus-rich acidic loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to light afternoon shade.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (consistent moist drainage) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 5.5 – 6.8 · Humus-Rich Acidic Loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Light Afternoon Shade · Consistent Moist Drainage"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/605011758/original.jpg",
+          "alt": "Starfruit (Carambola) (Averrhoa carambola) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Starfruit (Carambola) (Averrhoa carambola): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Oxalidales clade divergence and Oxalidaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Averrhoa within order Oxalidales (Eudicot (Rosids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Averrhoa carambola inside family Oxalidaceae (অক্সালিডাসি (কামরাঙ্গা গোত্র)), order Oxalidales, clade Eudicot (Rosids). Woody fruit trees and clover-like herbs noted for oxalic-acid-rich sap, nyctinastic sleep-folding compound leaflets, and deeply five-ribbed star-shaped berries.",
+        "Within genus Averrhoa, specialized morphological adaptations—such as odd-pinnate compound leaves folding downward neatly at dusk—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Averrhoa carambola (Kamranga (কামরাঙ্গা)).",
+      "paragraphs": [
+        "Field verification of Starfruit (Carambola) (Averrhoa carambola) rests on recognizing key Oxalidaceae family markers: Odd-pinnate compound leaves folding downward neatly at dusk; Cauliflorous and axillary clusters of pink-lavender pentamerous blooms; Succulent five-winged berries slicing cleanly into five-pointed stars. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Compact Drooping Crown: Short trunk dividing early into flexible, fruit-laden spreading branches easy to hand-harvest. Nyctinastic Leaflets: Light-sensitive compound leaves folding downward at nightfall to reduce radiative heat and dew loss. Heterostylous Pink Panicles: Lilac-striped tiny bell flowers occurring in pin (long-style) and thrum (short-style) morphs for outcrossing. Five-Winged Waxy Berry: Thin edible waxy skin enclosing crisp, watery translucent pulp with minimal fibrous core and flat brown seeds."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Odd-pinnate compound leaves folding downward neatly at dusk"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Cauliflorous and axillary clusters of pink-lavender pentamerous blooms"
         }
       ]
     }

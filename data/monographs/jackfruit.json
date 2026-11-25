@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "jackfruit",
   "commonName": "Jackfruit",
   "scientificName": "Artocarpus heterophyllus",
@@ -15,8 +15,8 @@
   "leadOverview": "Jackfruit (Artocarpus heterophyllus), known affectionately across Bengal as Kathal and honoured as the national fruit of Bangladesh, is a stout evergreen tree in the mulberry-fig family (Moraceae). Capable of yielding massive cauliflorous compound fruits weighing over 35 kilograms straight off sturdy trunks, it delivers both sweet golden arils and high-protein young vegetable flesh.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/19229291/pexels-photo-19229291.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Spiny green-gold jackfruits growing directly from tree trunk",
-    "caption": "Cauliflorous Artocarpus heterophyllus syncarp fruits suspended directly from thick woody branches."
+    "alt": "Jackfruit (Artocarpus heterophyllus) botanical herbarium specimen",
+    "caption": "Jackfruit (Artocarpus heterophyllus) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -57,14 +57,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/19229291/pexels-photo-19229291.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Jackfruits hanging directly on woody trunk",
-          "caption": "Cauliflorous fruiting habit anchoring massive syncarps directly onto structural scaffold trunks."
-        },
-        {
           "url": "https://images.pexels.com/photos/37541294/pexels-photo-37541294.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Close-up of textured green jackfruit rind",
-          "caption": "Hexagonal papillose rind tubercles corresponding to individual fused fruitlets."
+          "alt": "Jackfruit (Artocarpus heterophyllus) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Jackfruit (Artocarpus heterophyllus): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -80,8 +75,8 @@
       "images": [
         {
           "url": "https://images.pexels.com/photos/13654840/pexels-photo-13654840.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Freshly cut golden jackfruit arils",
-          "caption": "Sweet golden fleshy perianth segments enveloping starchy jackfruit seeds."
+          "alt": "Jackfruit (Artocarpus heterophyllus) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Jackfruit (Artocarpus heterophyllus): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -96,9 +91,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/19229291/pexels-photo-19229291.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Homestead jackfruit tree laden with fruit",
-          "caption": "Well-drained monsoon upland habitat sustaining abundant summer syncarp harvests."
+          "url": "https://images.pexels.com/photos/13012247/pexels-photo-13012247.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Jackfruit (Artocarpus heterophyllus) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Jackfruit (Artocarpus heterophyllus): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -110,13 +105,6 @@
       "paragraphs": [
         "Jackfruit combines anemophily (wind-borne pollen clouds from fragrant male spikes) with entomophily mediated by tiny gall midges and sap-feeding nitidulid beetles attracted to banana-scented volatiles emitted during receptive bloom.",
         "In native forest ecosystems, aromatic fallen syncarps feed elephants, deer, monkeys, civets, and wild pigs that disperse intact starchy seeds across forest clearings, while dense canopies host nesting birds."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/13012247/pexels-photo-13012247.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Tropical forest canopy habitat",
-          "caption": "Multilayered tropical woodland ecosystem supported by nutritious tree crops."
-        }
       ]
     },
     {
@@ -130,9 +118,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/13654840/pexels-photo-13654840.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Golden ripe jackfruit bulbs ready to eat",
-          "caption": "Ripe aromatic bulbs alongside edible starchy seeds and fiber-rich outer rags."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/607121282/original.jpg",
+          "alt": "Jackfruit (Artocarpus heterophyllus) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Jackfruit (Artocarpus heterophyllus): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -145,14 +133,7 @@
         "Ripe jackfruit provides substantial vitamin C, potassium, dietary fibre, and beta-carotene, while seeds contain resistant prebiotic starches and jacalin—a galactose-binding lectin extensively utilized in immunology laboratories worldwide to purify human IgA antibodies.",
         "Heartwood and root flavonoids including artocarpin and cyanomaclurin demonstrate notable antioxidant and antibacterial effects in preclinical research."
       ],
-      "safetyNote": "Sticky latex inside unripe fruit can trigger skin sensitization or cross-reactive oral allergy syndrome in individuals allergic to natural rubber latex or birch pollen; oiling knives and hands before cutting prevents contact irritation, and people with chronic kidney disease should monitor high potassium intake.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/37541294/pexels-photo-37541294.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Jackfruit exterior rind and stalk",
-          "caption": "Outer syncarp rind rich in natural latex resins and protective phenolic compounds."
-        }
-      ]
+      "safetyNote": "Sticky latex inside unripe fruit can trigger skin sensitization or cross-reactive oral allergy syndrome in individuals allergic to natural rubber latex or birch pollen; oiling knives and hands before cutting prevents contact irritation, and people with chronic kidney disease should monitor high potassium intake."
     },
     {
       "number": "07",
@@ -165,9 +146,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/19229291/pexels-photo-19229291.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Productive jackfruit orchard trunk",
-          "caption": "Balanced trunk pruning and strict root drainage sustaining heavy summer fruit loads."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/614761249/original.jpg",
+          "alt": "Jackfruit (Artocarpus heterophyllus) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Jackfruit (Artocarpus heterophyllus): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Spring (বসন্ত), Summer (গ্রীষ্ম)).",
+      "paragraphs": [
+        "Jackfruit (Artocarpus heterophyllus) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Spring (বসন্ত), Summer (গ্রীষ্ম).",
+        "Spring (বসন্ত): Cauliflorous male and female inflorescence spikes ('মুচি') emerge directly along thick trunks and main limbs. Summer (গ্রীষ্ম): Giant prickly syncarps swell and ripen fragrant golden bulbs across Gazipur and Madhupur terraces."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Spring (বসন্ত) · Summer (গ্রীষ্ম)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/332097864/large.jpeg",
+          "alt": "Jackfruit (Artocarpus heterophyllus) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Jackfruit (Artocarpus heterophyllus): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Jackfruit.",
+      "paragraphs": [
+        "Jackfruit (Artocarpus heterophyllus) combines sexual seed propagation—useful for raising sturdy heterozygous rootstocks—with elite clonal techniques such as veneer grafting, air layering (gootee), and semi-hardwood stem cuttings. Fresh recalcitrant or semi-orthodox seeds typically germinate within 14 to 35 days when depulped and sown in warm organic loam.",
+        "Clonal orchards standardize crown architecture, early precocity, and uniform biochemical profiles across generations within Moraceae."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Depulped seed sown cleanly in 2:1 loam-compost media; high viability when fresh."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Approach/veneer grafting or monsoon air-layering onto vigorous local rootstocks."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Artocarpus heterophyllus.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Jackfruit (Artocarpus heterophyllus) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/743672672/large.jpg",
+          "alt": "Jackfruit (Artocarpus heterophyllus) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Jackfruit (Artocarpus heterophyllus): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Jackfruit.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (South & Southeast Asia (Western Ghats & Indo-Bengal)), Jackfruit (Artocarpus heterophyllus) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to South & Southeast Asia (Western Ghats & Indo-Bengal) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Jackfruit (Artocarpus heterophyllus) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/65364817/large.jpg",
+          "alt": "Jackfruit (Artocarpus heterophyllus) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Jackfruit (Artocarpus heterophyllus): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Rosales clade divergence and Moraceae genomic traits",
+      "summary": "Phylogenetic placement of genus Artocarpus within order Rosales (Eudicot (Fabids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Artocarpus heterophyllus inside family Moraceae (মোরাসি (ডুমুর-কাঁঠাল গোত্র)), order Rosales, clade Eudicot (Fabids). Laticiferous tropical canopy giants producing milky latex and remarkable multiple fruits—ranging from inverted fig syconia to cauliflorous jackfruit syncarps.",
+        "Within genus Artocarpus, specialized morphological adaptations—such as abundant white milky latex across bark, petioles, and fruit—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Artocarpus heterophyllus (Kathal (কাঁঠাল)).",
+      "paragraphs": [
+        "Field verification of Jackfruit (Artocarpus heterophyllus) rests on recognizing key Moraceae family markers: Abundant white milky latex across bark, petioles, and fruit; Conical sheathing stipules leaving circular scars on twigs; Compound multiple fruits (syconia or trunk-borne syncarps). Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Cauliflorous Trunk: Thick woody trunks and scaffold boughs bearing short fruit stalks capable of supporting 15–40 kg syncarps. Heterophyllous Leaves: Lobed saplings transitioning into glossy oblong-obovate mature blades (10–20 cm) with pale central midribs. Unisexual Spikes: Drooping green male catkins (shedding clouds of pollen) paired with stout oblong female spikes. Syncarp Fruit & Roots: World's largest tree fruit enclosing sweet golden bulbs and large starchy seeds; deep moisture-seeking taproot."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Abundant white milky latex across bark, petioles, and fruit"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Conical sheathing stipules leaving circular scars on twigs"
         }
       ]
     }

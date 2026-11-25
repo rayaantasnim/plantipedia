@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "ixora",
   "commonName": "Ixora",
   "scientificName": "Ixora coccinea",
@@ -14,9 +14,9 @@
   "shortSummary": "Evergreen tropical shrub producing hemispherical corymbs of star-shaped scarlet flowers and leathery opposite leaves throughout warm seasons.",
   "leadOverview": "Ixora coccinea—widely known across South Asia as Rangan or Jungle Flame—is a dense evergreen flowering shrub of the coffee family (Rubiaceae). Celebrated for long-lasting terminal clusters of tubular four-lobed blossoms, it thrives in acid-rich tropical soils and serves as both a vibrant garden hedge and a classical medicinal shrub.",
   "heroImage": {
-    "url": "https://images.pexels.com/photos/30122834/pexels-photo-30122834.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Scarlet Ixora coccinea floral corymb in tropical daylight",
-    "caption": "Dense terminal corymb of Ixora coccinea displaying four-lobed scarlet corollas and slender floral tubes."
+    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/507269617/large.jpg",
+    "alt": "Ixora (Ixora coccinea) botanical herbarium specimen",
+    "caption": "Ixora (Ixora coccinea) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -57,14 +57,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/30122834/pexels-photo-30122834.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Close-up of Ixora floral clusters",
-          "caption": "Symmetrical four-lobed corolla architecture arranged in a compact terminal corymb."
-        },
-        {
-          "url": "https://images.pexels.com/photos/36551223/pexels-photo-36551223.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Ixora evergreen foliage and blooming branches",
-          "caption": "Opposite leathery leaves framing sunlit flower heads in warm coastal gardens."
+          "url": "https://static.inaturalist.org/photos/85394928/large.jpeg",
+          "alt": "Ixora (Ixora coccinea) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Ixora (Ixora coccinea): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -79,9 +74,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/36551223/pexels-photo-36551223.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Cultivated Ixora coccinea shrub",
-          "caption": "Diagnostic Rubiaceae opposite leaf pairs and terminal floral display."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/362533708/large.jpeg",
+          "alt": "Ixora (Ixora coccinea) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Ixora (Ixora coccinea): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -96,9 +91,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Humid tropical understorey habitat",
-          "caption": "Humid monsoon understorey conditions favored by wild Ixora populations."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/684882809/large.jpg",
+          "alt": "Ixora (Ixora coccinea) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Ixora (Ixora coccinea): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -110,13 +105,6 @@
       "paragraphs": [
         "The narrow elongated corolla tube of Ixora coccinea restricts access to nectar pools at the base of the flower, selecting for long-proboscis swallowtail butterflies, skippers, and hovering sunbirds. Bright red-orange wavelengths stand out conspicuously against glossy green foliage to attract diurnal lepidopterans.",
         "Because individual flower heads remain fresh for several weeks while opening florets in succession, Ixora hedges provide vital bridge forage in urban tropical parks."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/38669618/pexels-photo-38669618.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Butterfly pollinating bright tropical flower",
-          "caption": "Long-proboscis butterfly feeding from nectar-rich blooms in a pollinator corridor."
-        }
       ]
     },
     {
@@ -131,8 +119,8 @@
       "images": [
         {
           "url": "https://images.pexels.com/photos/30122834/pexels-photo-30122834.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Vibrant red Ixora blooms in garden landscape",
-          "caption": "Brilliant crimson corymbs valued for formal hedges and festive floral garlands."
+          "alt": "Ixora (Ixora coccinea) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Ixora (Ixora coccinea): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -145,14 +133,7 @@
         "Ayurvedic and Siddha practitioners historically prepared decoctions of Ixora coccinea flowers and roots—often termed Pathali or Raktaka—as mild astringents for dysentery, topical skin washes, and throat gargles. Phytochemical screening reveals triterpenoids (lupeol, ursolic acid), flavonoids, tannins, and cyanidin anthocyanins.",
         "Experimental pharmacological studies have investigated leaf and flower extracts for antioxidant scavenging, wound-contraction support, and antimicrobial inhibition against common cutaneous bacteria."
       ],
-      "safetyNote": "While flowers and leaves appear in regional folk remedies, standardized clinical dosing and long-term toxicity data remain limited. Avoid ingesting concentrated root extracts during pregnancy or alongside prescription medications without medical guidance.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36551223/pexels-photo-36551223.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Ixora flowers and leaves used in ethnobotany",
-          "caption": "Fresh blossoms and opposite foliage containing anthocyanins and triterpenoids."
-        }
-      ]
+      "safetyNote": "While flowers and leaves appear in regional folk remedies, standardized clinical dosing and long-term toxicity data remain limited. Avoid ingesting concentrated root extracts during pregnancy or alongside prescription medications without medical guidance."
     },
     {
       "number": "07",
@@ -165,9 +146,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/30122834/pexels-photo-30122834.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Healthy blooming Ixora bush in full sun",
-          "caption": "Full floral saturation achieved in acidic, organic-rich soil under bright tropical sun."
+          "url": "https://images.pexels.com/photos/36551223/pexels-photo-36551223.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Ixora (Ixora coccinea) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Ixora (Ixora coccinea): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Summer (গ্রীষ্ম), Monsoon (বর্ষা), Autumn (শরৎ)).",
+      "paragraphs": [
+        "Ixora (Ixora coccinea) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Summer (গ্রীষ্ম), Monsoon (বর্ষা), Autumn (শরৎ).",
+        "Summer (গ্রীষ্ম): Warm sunlight triggers dense scarlet floral corymbs across acidic garden borders. Monsoon (বর্ষা): Monsoon humidity accelerates leathery opposite leaf flushes and continuous butterfly-pollinated clusters. Autumn (শরৎ): Late warm sunshine maintains rich crimson-orange corymb displays before winter dormancy."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Summer (গ্রীষ্ম) · Monsoon (বর্ষা) · Autumn (শরৎ)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Ixora (Ixora coccinea) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Ixora (Ixora coccinea): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Ixora.",
+      "paragraphs": [
+        "Ixora (Ixora coccinea) exhibits dual reproductive versatility through wind-, pollinator-, or gravity-dispersed seed cohorts alongside rapid vegetative renewal via herbaceous stem cuttings, rhizome splits, or nodal rooting. Mature seed capsules collected just prior to dehiscence retain strong vigor in dry shaded storage for moderate periods.",
+        "Rooting auxin pre-treatment on semi-ripe nodal cuttings during warm humid months accelerates adventitious root initiation within 10 to 21 days in porous coco-peat and vermicompost propagation trays."
+      ],
+      "subblocks": [
+        {
+          "heading": "Seed Germination",
+          "text": "Surface-sown or lightly covered in sterile porous mix; germinates in 7–21 days under ambient humidity."
+        },
+        {
+          "heading": "Vegetative Method",
+          "text": "Two-node terminal cuttings or clump division rooted in misted, filtered-light benches."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Ixora coccinea.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Ixora (Ixora coccinea) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/38669618/pexels-photo-38669618.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Ixora (Ixora coccinea) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Ixora (Ixora coccinea): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Ixora.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Southern India, Bangladesh & Sri Lanka), Ixora (Ixora coccinea) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Southern India, Bangladesh & Sri Lanka thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Ixora (Ixora coccinea) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/611179272/original.jpg",
+          "alt": "Ixora (Ixora coccinea) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Ixora (Ixora coccinea): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Gentianales clade divergence and Rubiaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Ixora within order Gentianales (Eudicot (Asterids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Ixora coccinea inside family Rubiaceae (রুবিয়াসি (কদম গোত্র)), order Gentianales, clade Eudicot (Asterids). Tropical shrubs and trees marked by opposite simple leaves linked by interpetiolar stipules and dense corymb clusters of four-lobed tubular flowers.",
+        "Within genus Ixora, specialized morphological adaptations—such as strictly opposite leaves connected by triangular interpetiolar stipules—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Ixora coccinea (Rangan (রঙ্গন)).",
+      "paragraphs": [
+        "Field verification of Ixora (Ixora coccinea) rests on recognizing key Rubiaceae family markers: Strictly opposite leaves connected by triangular interpetiolar stipules; Hemispherical corymb inflorescences attracting butterflies & sunbirds; Fleshy berry-like drupes maturing from scarlet-orange blooms. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Stems & Stipules: Slender, much-branched woody twigs bearing triangular interpetiolar stipules along nodal rings. Foliage: Opposite, glabrous, leathery blades (5–10 cm) emerging bronze-tinted before maturing deep glossy emerald green. Corymbs & Flowers: Flat-topped to domed terminal corymbs composed of long-tubed tetramerous blossoms opening sequentially. Fruit & Roots: Fleshy two-seeded purplish-black berries upon maturity; fibrous branching roots adapted to aerated acidic loam."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Strictly opposite leaves connected by triangular interpetiolar stipules"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Hemispherical corymb inflorescences attracting butterflies & sunbirds"
         }
       ]
     }

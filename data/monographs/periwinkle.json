@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "periwinkle",
   "commonName": "Madagascar Periwinkle",
   "scientificName": "Catharanthus roseus",
@@ -15,9 +15,9 @@
   "shortSummary": "Evergreen tropical subshrub famous for year-round five-petalled blooms and life-saving vinca alkaloid oncology compounds.",
   "leadOverview": "Madagascar periwinkle (Catharanthus roseus), widely known across South Asia as Nayantara or Sadabahar ('always blooming'), is a resilient perennial subshrub in the dogbane family Apocynaceae. Celebrated in gardens for effortless continuous colour, it also transformed modern oncology through the discovery of vinblastine and vincristine.",
   "heroImage": {
-    "url": "https://images.pexels.com/photos/5720961/pexels-photo-5720961.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Pink Catharanthus roseus flowers blooming amidst glossy foliage",
-    "caption": "Five-lobed salverform corollas of Catharanthus roseus with contrasting central throat eye."
+    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/625888487/large.jpg",
+    "alt": "Madagascar Periwinkle (Catharanthus roseus) botanical herbarium specimen",
+    "caption": "Madagascar Periwinkle (Catharanthus roseus) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -58,14 +58,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/33518507/pexels-photo-33518507.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "White Catharanthus roseus blossom macro",
-          "caption": "White-petalled cultivar displaying glossy midrib-marked leaves and pinwheel petal overlap."
-        },
-        {
-          "url": "https://images.pexels.com/photos/7049637/pexels-photo-7049637.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Periwinkle flower cluster in sunlit garden",
-          "caption": "Compact floriferous habit sustaining simultaneous open blooms and maturing flower buds."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/366810921/large.jpg",
+          "alt": "Madagascar Periwinkle (Catharanthus roseus) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Madagascar Periwinkle (Catharanthus roseus): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -80,9 +75,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/5720961/pexels-photo-5720961.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Pink Catharanthus roseus botanical specimen",
-          "caption": "Diagnostic upright branching habit distinguishing Catharanthus from trailing Vinca species."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/519128398/large.jpg",
+          "alt": "Madagascar Periwinkle (Catharanthus roseus) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Madagascar Periwinkle (Catharanthus roseus): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -97,9 +92,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/7049637/pexels-photo-7049637.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Periwinkle naturalized in sunny bed",
-          "caption": "Thriving sun-loving habit adapted to warm sandy-loam beds and rooftop containers."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/520018239/large.jpg",
+          "alt": "Madagascar Periwinkle (Catharanthus roseus) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Madagascar Periwinkle (Catharanthus roseus): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -111,13 +106,6 @@
       "paragraphs": [
         "The slender 2.5-centimetre floral tube restricts nectar access to long-tongued pollinators, primarily skippers, swallowtail butterflies, and crepuscular hawk moths whose slender proboscides brush pollen near the constricted throat. In addition, many cultivars retain high rates of autonomous self-pollination, ensuring prolific seed production even where specialized pollinators are scarce.",
         "Its continuous 12-month flowering cycle provides dependable nectar bridges for urban butterflies during dry winter months."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/13012247/pexels-photo-13012247.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Butterfly and bee visiting pink wildflowers",
-          "caption": "Lepidopteran nectar-foraging dynamics mirroring butterfly visits to periwinkle corollas."
-        }
       ]
     },
     {
@@ -131,9 +119,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/33518507/pexels-photo-33518507.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Crisp white Nayantara blossoms",
-          "caption": "Uniform bedding cultivar prized for heat resilience and continuous landscape colour."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/520018308/large.jpg",
+          "alt": "Madagascar Periwinkle (Catharanthus roseus) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Madagascar Periwinkle (Catharanthus roseus): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -146,14 +134,7 @@
         "Few plants illustrate the bridge between folk medicine and modern pharmacology as dramatically as Catharanthus roseus. Investigating traditional Jamaican and Malagasy leaf teas used for blood sugar management in the 1950s, researchers at Eli Lilly and Western Ontario isolated over 130 terpenoid indole alkaloids—most notably vinblastine and vincristine.",
         "Both dimeric alkaloids bind tubulin to arrest mitotic spindle assembly, revolutionizing clinical treatment of Hodgkin lymphoma, acute lymphoblastic leukemia, and testicular carcinomas. Root-derived ajmalicine is similarly used in vascular pharmacology."
       ],
-      "safetyNote": "TOXICITY WARNING: Every part of Catharanthus roseus is toxic if ingested raw or brewed as homemade tea. Vinca alkaloids are potent cytotoxic agents capable of causing severe myelosuppression, neuropathy, and gastrointestinal injury outside precise hospital oncology dosing. Keep out of reach of children and pets.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/5720961/pexels-photo-5720961.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Periwinkle leaves and blossoms",
-          "caption": "Foliage containing trace terpene indole alkaloids harvested strictly for pharmaceutical extraction."
-        }
-      ]
+      "safetyNote": "TOXICITY WARNING: Every part of Catharanthus roseus is toxic if ingested raw or brewed as homemade tea. Vinca alkaloids are potent cytotoxic agents capable of causing severe myelosuppression, neuropathy, and gastrointestinal injury outside precise hospital oncology dosing. Keep out of reach of children and pets."
     },
     {
       "number": "07",
@@ -166,9 +147,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/7049637/pexels-photo-7049637.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Healthy sunlit periwinkle bed",
-          "caption": "Compact, freely branching periwinkle plants thriving in well-aerated sunny beds."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/123786286/large.jpeg",
+          "alt": "Madagascar Periwinkle (Catharanthus roseus) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Madagascar Periwinkle (Catharanthus roseus): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Autumn (শরৎ), Late Autumn (হেমন্ত), Winter (শীত)).",
+      "paragraphs": [
+        "Madagascar Periwinkle (Catharanthus roseus) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Autumn (শরৎ), Late Autumn (হেমন্ত), Winter (শীত).",
+        "Autumn (শরৎ): Receding monsoon warmth supports vigorous glossy foliage and continuous pink-to-white pinwheel corollas. Late Autumn (হেমন্ত): Dry soil conditions prevent root rot while indole alkaloid concentration remains high in aerial leaves. Winter (শীত): Steady winter flowering across sunlit courtyards and well-drained balcony containers."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Autumn (শরৎ) · Late Autumn (হেমন্ত) · Winter (শীত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/323145905/large.jpg",
+          "alt": "Madagascar Periwinkle (Catharanthus roseus) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Madagascar Periwinkle (Catharanthus roseus): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Madagascar Periwinkle.",
+      "paragraphs": [
+        "Madagascar Periwinkle (Catharanthus roseus) exhibits dual reproductive versatility through wind-, pollinator-, or gravity-dispersed seed cohorts alongside rapid vegetative renewal via herbaceous stem cuttings, rhizome splits, or nodal rooting. Mature seed capsules collected just prior to dehiscence retain strong vigor in dry shaded storage for moderate periods.",
+        "Rooting auxin pre-treatment on semi-ripe nodal cuttings during warm humid months accelerates adventitious root initiation within 10 to 21 days in porous coco-peat and vermicompost propagation trays."
+      ],
+      "subblocks": [
+        {
+          "heading": "Seed Germination",
+          "text": "Surface-sown or lightly covered in sterile porous mix; germinates in 7–21 days under ambient humidity."
+        },
+        {
+          "heading": "Vegetative Method",
+          "text": "Two-node terminal cuttings or clump division rooted in misted, filtered-light benches."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Catharanthus roseus.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Madagascar Periwinkle (Catharanthus roseus) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/323145942/large.jpg",
+          "alt": "Madagascar Periwinkle (Catharanthus roseus) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Madagascar Periwinkle (Catharanthus roseus): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Madagascar Periwinkle.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (Madagascar), Madagascar Periwinkle (Catharanthus roseus) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to Madagascar thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Madagascar Periwinkle (Catharanthus roseus) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/670022991/large.jpg",
+          "alt": "Madagascar Periwinkle (Catharanthus roseus) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Madagascar Periwinkle (Catharanthus roseus): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Gentianales clade divergence and Apocynaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Catharanthus within order Gentianales (Eudicot (Asterids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Catharanthus roseus inside family Apocynaceae (অ্যাপোসাইনাসি (করবী গোত্র)), order Gentianales, clade Eudicot (Asterids). Milky-latex herbs, climbers, and tropical shrubs renowned for contorted five-lobed pinwheel corollas and pharmacologically active indole alkaloids.",
+        "Within genus Catharanthus, specialized morphological adaptations—such as opposite glossy simple leaves and milky or clear laticifer sap—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Catharanthus roseus (Nayantara (নয়নতারা)).",
+      "paragraphs": [
+        "Field verification of Madagascar Periwinkle (Catharanthus roseus) rests on recognizing key Apocynaceae family markers: Opposite glossy simple leaves and milky or clear laticifer sap; Salverform tubular corollas twisting in bud (contorted aestivation); Paired elongated follicle seed pods and vinca alkaloid chemistry. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Stems & Latex: Erect, branching herbaceous-to-woody stems containing alkaloid-rich milky sap inside laticifer vessels. Opposite Foliage: Glabrous oval leaves arranged in decussate pairs with pale midveins and tiny interpetiolar glands. Salverform Flowers: Five-petalled pinwheel blooms with narrow hairy throats enclosing five concealed stamens near the orifice. Follicle Fruits: Twin narrow green dehiscent pods (2–4 cm) splitting longitudinally along one suture when dry."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Opposite glossy simple leaves and milky or clear laticifer sap"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Salverform tubular corollas twisting in bud (contorted aestivation)"
         }
       ]
     }

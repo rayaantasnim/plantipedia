@@ -55,7 +55,7 @@
 | **`v1.0`** | **Foundational Herbarium** | 6 static plant sheets introducing Plantipedia's emerald visual language and Linnaean tables. |
 | **`v2.0`** | **JSON Engine & Bilingual Search** | 30 curated species migrated into centralized JSON pipelines with instant `EN / বাংলা` search. |
 | **`v3.0`** | **Global Server & Comparator** | 50 local monographs, zero-key Global Botanical Server uplink, and Split Specimen Comparator. |
-| **`v3.1`** *(Current)* | **15-Chapter Upgrade & Workers Edge** | Unified 4-item emoji navbar, `3×2` telemetry grid, Next Milestone v3.2 spotlight, clade-filtered & paginated Taxonomy/Seasons, 11-Section Services suite, and `workers.dev` migration. |
+| **`v3.1`** *(Current)* | **15-Chapter Upgrade & Workers Edge** | Unified 4-item emoji navbar, `3×2` telemetry grid, Next Milestone v3.2 spotlight, clade-filtered & paginated Taxonomy/Seasons, 11-Section Services suite, and `plantipedia.rayaantasnim.workers.dev` migration. |
 | **`v3.2`** *(Next)* | **Parallel Multi-Source Engine** | Concurrent `GBIF + Global Flora Index + Wikidata + iNaturalist` resolution, multi-angle specimen carousel, typo-tolerant fuzzy search, and global `/` keyboard shortcut. |
 | **`v4.0`** | **Installable Offline PWA App** | Dedicated Offline Monograph Vault, background sync, and guided desktop/Android/iOS install flow (`/install/`). |
 | **`v4.1`** | **Garden QR Tag Studio** | Printable SVG/PDF waterproof botanical nameplates and QR arboretum plaques (`/qr-studio/`). |

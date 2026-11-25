@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "bougainvillea",
   "commonName": "Bougainvillea",
   "scientificName": "Bougainvillea spectabilis",
@@ -14,9 +14,9 @@
   "shortSummary": "Thorny Neotropical scrambling vine renowned for papery magenta-to-coral petaloid bracts surrounding inconspicuous creamy true flowers.",
   "leadOverview": "Bougainvillea (Bougainvillea spectabilis and B. glabra)—universally known in Bangladesh as Baganbilas—is a rugged, drought-defying thorny shrub-vine of the four-o'clock family (Nyctaginaceae). What appear to be paper-thin neon petals are actually modified colour-drenched leaf bracts framing clusters of three tiny tubular cream blossoms.",
   "heroImage": {
-    "url": "https://images.pexels.com/photos/28337842/pexels-photo-28337842.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Cascading magenta Bougainvillea bracts blooming across sunlit wall",
-    "caption": "Vivid magenta papery bracts of Bougainvillea spectabilis draping over sun-baked walls."
+    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/279592/large.jpeg",
+    "alt": "Bougainvillea (Bougainvillea spectabilis) botanical herbarium specimen",
+    "caption": "Bougainvillea (Bougainvillea spectabilis) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -57,14 +57,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/16987747/pexels-photo-16987747.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Close-up of Bougainvillea bracts revealing tiny cream true flowers",
-          "caption": "Tiny creamy tubular true flowers nestled squarely at the centre of three papery magenta bracts."
-        },
-        {
-          "url": "https://images.pexels.com/photos/10351679/pexels-photo-10351679.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Dense sunlit Bougainvillea cascade",
-          "caption": "Profuse dry-season floral bract display completely blankets exterior branches."
+          "url": "https://static.inaturalist.org/photos/678344575/large.jpg",
+          "alt": "Bougainvillea (Bougainvillea spectabilis) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Bougainvillea (Bougainvillea spectabilis): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -79,9 +74,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/28337842/pexels-photo-28337842.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Cultivated Bougainvillea spectabilis cultivar",
-          "caption": "Betacyanin-rich magenta bracts characterizing classic Bougainvillea spectabilis hybrids."
+          "url": "https://static.inaturalist.org/photos/678344527/large.jpg",
+          "alt": "Bougainvillea (Bougainvillea spectabilis) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Bougainvillea (Bougainvillea spectabilis): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -96,9 +91,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/10351679/pexels-photo-10351679.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Bougainvillea cascading over sunny architecture",
-          "caption": "Sun-drenched masonry walls intensifying heat reflection and flowering bract density."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/719956793/large.jpg",
+          "alt": "Bougainvillea (Bougainvillea spectabilis) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Bougainvillea (Bougainvillea spectabilis): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -110,13 +105,6 @@
       "paragraphs": [
         "While colourful papery bracts act as long-distance billboards visible across urban blocks, actual nectar lies deep inside the narrow 2-centimetre cream flower tubes accessible primarily to hummingbirds in the Americas and hovering hawkmoths, sunbirds, and skippers in Asia.",
         "Dense thorny tangles also shelter nesting songbirds from stray predators while shading concrete balconies and retaining walls from intense tropical heat."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/38669618/pexels-photo-38669618.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Butterfly feeding on bright nectar blooms",
-          "caption": "Long-tongued lepidopterans navigating visual bract flags to probe slender nectar tubes."
-        }
       ]
     },
     {
@@ -130,9 +118,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/28337842/pexels-photo-28337842.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Vibrant urban Bougainvillea display",
-          "caption": "Drought-resilient urban pergola cover transforming concrete corridors with colour."
+          "url": "https://static.inaturalist.org/photos/317662351/large.jpg",
+          "alt": "Bougainvillea (Bougainvillea spectabilis) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Bougainvillea (Bougainvillea spectabilis): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -145,14 +133,7 @@
         "In Mexican and Central American folk herbalism, boiled crimson Bougainvillea bracts (Bugambilia) combined with honey and lemon are sipped traditionally to soothe dry seasonal coughs and bronchial irritation. Phytochemical screening identifies antioxidant betalains, D-pinitol, and flavonoids.",
         "Experimental studies explore leaf and bract extracts for mild free-radical scavenging and glucose-transport modulation."
       ],
-      "safetyNote": "Sharp thorns can inflict painful mechanical puncture wounds contaminated with soil microbes, and sap may cause mild skin rash during heavy pruning—wear leather gardening gloves. Large internal quantities of leaves or stems can trigger mild gastrointestinal upset due to saponins.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/16987747/pexels-photo-16987747.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Vibrant Bougainvillea bracts close-up",
-          "caption": "Betalain-pigmented bracts analyzed for antioxidant phenolics and pinitol."
-        }
-      ]
+      "safetyNote": "Sharp thorns can inflict painful mechanical puncture wounds contaminated with soil microbes, and sap may cause mild skin rash during heavy pruning—wear leather gardening gloves. Large internal quantities of leaves or stems can trigger mild gastrointestinal upset due to saponins."
     },
     {
       "number": "07",
@@ -165,9 +146,161 @@
       ],
       "images": [
         {
+          "url": "https://images.pexels.com/photos/28337842/pexels-photo-28337842.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Bougainvillea (Bougainvillea spectabilis) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Bougainvillea (Bougainvillea spectabilis): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Late Autumn (হেমন্ত), Winter (শীত)).",
+      "paragraphs": [
+        "Bougainvillea (Bougainvillea spectabilis) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Late Autumn (হেমন্ত), Winter (শীত).",
+        "Late Autumn (হেমন্ত): Drying post-monsoon soil provides the mild water-stress cue that shifts thorny canes from leafy growth to bract formation. Winter (শীত): Dry winter sunlight covers trellises and Dhaka rooftops in cascading magenta, coral, and white papery bracts."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Late Autumn (হেমন্ত) · Winter (শীত)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/16987747/pexels-photo-16987747.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Bougainvillea (Bougainvillea spectabilis) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Bougainvillea (Bougainvillea spectabilis): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Bougainvillea.",
+      "paragraphs": [
+        "Bougainvillea (Bougainvillea spectabilis) exhibits dual reproductive versatility through wind-, pollinator-, or gravity-dispersed seed cohorts alongside rapid vegetative renewal via herbaceous stem cuttings, rhizome splits, or nodal rooting. Mature seed capsules collected just prior to dehiscence retain strong vigor in dry shaded storage for moderate periods.",
+        "Rooting auxin pre-treatment on semi-ripe nodal cuttings during warm humid months accelerates adventitious root initiation within 10 to 21 days in porous coco-peat and vermicompost propagation trays."
+      ],
+      "subblocks": [
+        {
+          "heading": "Seed Germination",
+          "text": "Surface-sown or lightly covered in sterile porous mix; germinates in 7–21 days under ambient humidity."
+        },
+        {
+          "heading": "Vegetative Method",
+          "text": "Two-node terminal cuttings or clump division rooted in misted, filtered-light benches."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Bougainvillea spectabilis.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Bougainvillea (Bougainvillea spectabilis) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
           "url": "https://images.pexels.com/photos/10351679/pexels-photo-10351679.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Profusely blooming sunlit Bougainvillea",
-          "caption": "Controlled dry intervals and maximum sunlight unlocking saturated non-stop bract flushes."
+          "alt": "Bougainvillea (Bougainvillea spectabilis) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Bougainvillea (Bougainvillea spectabilis): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Bougainvillea.",
+      "paragraphs": [
+        "Across its native and naturalized distribution (South America (Brazil, Peru, Argentina)), Bougainvillea (Bougainvillea spectabilis) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to South America (Brazil, Peru, Argentina) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 6.0 – 7.2 (Slightly acidic to neutral), Full Sun to Partial Filtered Light (6+ hrs), and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Bougainvillea (Bougainvillea spectabilis) calibrates root-zone chemistry around pH 6.0 – 7.2 (Slightly acidic to neutral) inside well-drained organic sandy-clay loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun to partial filtered light (6+ hrs).",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate deep watering scaled to monsoon rhythm) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 6.0 – 7.2 (Slightly acidic to neutral) · Well-drained organic sandy-clay loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun to Partial Filtered Light (6+ hrs) · Moderate deep watering scaled to monsoon rhythm"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://images.pexels.com/photos/38669618/pexels-photo-38669618.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Bougainvillea (Bougainvillea spectabilis) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Bougainvillea (Bougainvillea spectabilis): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Caryophyllales clade divergence and Nyctaginaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Bougainvillea within order Caryophyllales (Eudicot).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Bougainvillea spectabilis inside family Nyctaginaceae (নিক্টাজিনাসি (সন্ধ্যামালতী গোত্র)), order Caryophyllales, clade Eudicot. Four-o'clock family climbers and thorny shrubs whose inconspicuous tubular flowers are framed by vivid papery petaloid bracts colored with betalains.",
+        "Within genus Bougainvillea, specialized morphological adaptations—such as showy papery involucral bracts replacing petals in pollinator attraction—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Bougainvillea spectabilis (Baganbilash (বাগানবিলাস)).",
+      "paragraphs": [
+        "Field verification of Bougainvillea (Bougainvillea spectabilis) rests on recognizing key Nyctaginaceae family markers: Showy papery involucral bracts replacing petals in pollinator attraction; Betalain pigments (magenta, gold, coral) instead of anthocyanins; Curved woody stem spines enabling scrambling canopy ascent. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Scrambling Thorns: Stout woody axillary spines modified from sterile inflorescence shoots, assisting vertical climbing. Foliage: Alternate petiolate ovate-acuminate blades shedding partially during intense winter dry spells prior to bloom. Papery Bracts: Three colourful veined petaloid bracts cradling three miniature tubular cream-yellow true perianths. Anthocarp & Roots: Five-ribbed dry achene-like fruits (rare in sterile hybrids); delicate, brittle water-sensitive root system."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Showy papery involucral bracts replacing petals in pollinator attraction"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Betalain pigments (magenta, gold, coral) instead of anthocyanins"
         }
       ]
     }

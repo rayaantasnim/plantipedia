@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "2.0.0",
   "slug": "jamun",
   "commonName": "Jamun (Black Plum)",
   "scientificName": "Syzygium cumini",
@@ -16,8 +16,8 @@
   "leadOverview": "Syzygium cumini—beloved across Bengal as Kalojam and across South Asia as Jamun—is a long-lived evergreen canopy tree of the myrtle family Myrtaceae. Every Borsha monsoon, its dense branches sag under clusters of glossy indigo-black berries offering a signature sweet-tart astringency that stains tongues bright purple while its dried kernels rank among Ayurveda's classic metabolic botanicals.",
   "heroImage": {
     "url": "https://images.pexels.com/photos/8703806/pexels-photo-8703806.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    "alt": "Glossy deep-purple Jamun black plum berries",
-    "caption": "Deep anthocyanin-rich purple-black berries emblematic of ripe Syzygium cumini (Kalojam) harvests."
+    "alt": "Jamun (Black Plum) (Syzygium cumini) botanical herbarium specimen",
+    "caption": "Jamun (Black Plum) (Syzygium cumini) — Primary specimen plate curated for Plantipedia v3.1."
   },
   "overview": {
     "plantGroup": "Angiosperm (Eudicot)",
@@ -68,14 +68,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/8703806/pexels-photo-8703806.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Dark purple plums rich in anthocyanins",
-          "caption": "Violet-black berry pigmentation driven by concentrated delphinidin-3,5-diglucoside antioxidants."
-        },
-        {
           "url": "https://images.pexels.com/photos/28884216/pexels-photo-28884216.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Glossy Myrtaceae leaves and fruits",
-          "caption": "Opposite veined foliage characteristic of family Myrtaceae fruit trees."
+          "alt": "Jamun (Black Plum) (Syzygium cumini) — Vegetative habit, foliar venation, and structural crown morphology",
+          "caption": "Jamun (Black Plum) (Syzygium cumini): Vegetative habit, foliar venation, and structural crown morphology."
         }
       ]
     },
@@ -90,9 +85,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/28884216/pexels-photo-28884216.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Myrtaceae branch and veined foliage",
-          "caption": "Diagnostic aromatic oil-gland foliage shared across Syzygium and Psidium."
+          "url": "https://images.pexels.com/photos/31732206/pexels-photo-31732206.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Jamun (Black Plum) (Syzygium cumini) — Floral architecture and taxonomic reproductive structures",
+          "caption": "Jamun (Black Plum) (Syzygium cumini): Floral architecture and taxonomic reproductive structures."
         }
       ]
     },
@@ -107,9 +102,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31732206/pexels-photo-31732206.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Sunlit tropical orchard trees",
-          "caption": "Moist alluvial orchards and pond margins sustaining century-old fruiting trees."
+          "url": "https://images.pexels.com/photos/28511113/pexels-photo-28511113.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "alt": "Jamun (Black Plum) (Syzygium cumini) — Natural biogeographic habitat and ambient ecological guild",
+          "caption": "Jamun (Black Plum) (Syzygium cumini): Natural biogeographic habitat and ambient ecological guild."
         }
       ]
     },
@@ -121,13 +116,6 @@
       "paragraphs": [
         "Jamun's spring bloom is a vital nectar and pollen bonanza for giant rock bees (Apis dorsata) and Apis cerana, yielding prized dark-amber unifloral Jamun honey renowned for non-crystallizing fluidity and subtle herbal aroma.",
         "Ripe summer-monsoon berries attract green pigeons, rose-ringed parakeets, koels, monkeys, and nocturnal fruit bats that spit or pass intact green seeds widely across surrounding pastures."
-      ],
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/36441123/pexels-photo-36441123.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Honeybee foraging for spring nectar",
-          "caption": "Honeybees harvesting rich nectar from fragrant ramiflorous Syzygium cumini panicles."
-        }
       ]
     },
     {
@@ -141,9 +129,9 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/8703806/pexels-photo-8703806.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Freshly gathered deep violet berries",
-          "caption": "Glossy seasonal berries prized both fresh with salt and pressed into fermented vinegar."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/607895227/original.jpg",
+          "alt": "Jamun (Black Plum) (Syzygium cumini) — Cultural cultivation and ethnobotanical harvest specimen",
+          "caption": "Jamun (Black Plum) (Syzygium cumini): Cultural cultivation and ethnobotanical harvest specimen."
         }
       ]
     },
@@ -156,14 +144,7 @@
         "Both Ayurveda ('Jambu') and Unani medicine cherish dried powdered Jamun seeds ('Jamun Guthli') as an adjunct for managing excessive thirst and glycemic balance. Phytochemical analyses confirm ellagic acid, gallic acid, myricetin, quercetin, and the glycoside jamboline, alongside intense delphinidin anthocyanins in the dark skin.",
         "Preclinical and preliminary human studies suggest seed and pulp polyphenols modestly inhibit intestinal alpha-glucosidase enzymes and reduce oxidative stress markers."
       ],
-      "safetyNote": "People taking prescribed antidiabetic medications (metformin, sulfonylureas, or insulin) should monitor blood glucose closely and consult their physician before adding concentrated Jamun seed powder to avoid additive hypoglycemia.",
-      "images": [
-        {
-          "url": "https://images.pexels.com/photos/28511113/pexels-photo-28511113.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Herbal botanical powder and natural material",
-          "caption": "Dried seed kernels rich in ellagic acid and polyphenolic tannins."
-        }
-      ]
+      "safetyNote": "People taking prescribed antidiabetic medications (metformin, sulfonylureas, or insulin) should monitor blood glucose closely and consult their physician before adding concentrated Jamun seed powder to avoid additive hypoglycemia."
     },
     {
       "number": "07",
@@ -176,9 +157,161 @@
       ],
       "images": [
         {
-          "url": "https://images.pexels.com/photos/31732206/pexels-photo-31732206.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "alt": "Managed sunny tropical fruit grove",
-          "caption": "Well-spaced orchard trees yield plump, easily harvested berry clusters."
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/611175531/original.jpg",
+          "alt": "Jamun (Black Plum) (Syzygium cumini) — Substrate health, root-zone moisture, and horticultural care",
+          "caption": "Jamun (Black Plum) (Syzygium cumini): Substrate health, root-zone moisture, and horticultural care."
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Annual Phenology & Six-Season Rhythms",
+      "subtitle": "Flowering, fruiting, vegetative flush, and Shororitu synchrony",
+      "summary": "Seasonal cadence across Bengal's six-season cycle (Spring (বসন্ত), Monsoon (বর্ষা)).",
+      "paragraphs": [
+        "Jamun (Black Plum) (Syzygium cumini) aligns its vegetative flushes, anthesis, and fruit maturation tightly with Bengal's Shororitu photoperiod and monsoon moisture transitions, showing peak biological activity during Spring (বসন্ত), Monsoon (বর্ষা).",
+        "Spring (বসন্ত): Fragrant cream stamen-tufted panicles bloom along bare twigs, yielding prized Jamun honey. Monsoon (বর্ষা): Glossy indigo-black anthocyanin berries ripen heavily across Bengal's Asharh monsoon markets."
+      ],
+      "subblocks": [
+        {
+          "heading": "Peak Active Seasons",
+          "text": "Spring (বসন্ত) · Monsoon (বর্ষা)"
+        },
+        {
+          "heading": "Phenological Cue",
+          "text": "Synchronized with daylength shifts, pre-monsoon thermal buildup, and seasonal soil moisture oscillations."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/610596119/original.jpg",
+          "alt": "Jamun (Black Plum) (Syzygium cumini) — Seasonal phenological flush and reproductive bloom timing",
+          "caption": "Jamun (Black Plum) (Syzygium cumini): Seasonal phenological flush and reproductive bloom timing."
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "Seed Germination Biology & Propagation",
+      "subtitle": "Dormancy regulation, nursery media, and clonal propagation",
+      "summary": "Reproductive biology and reliable seed or vegetative propagation techniques for Jamun (Black Plum).",
+      "paragraphs": [
+        "Jamun (Black Plum) (Syzygium cumini) combines sexual seed propagation—useful for raising sturdy heterozygous rootstocks—with elite clonal techniques such as veneer grafting, air layering (gootee), and semi-hardwood stem cuttings. Fresh recalcitrant or semi-orthodox seeds typically germinate within 14 to 35 days when depulped and sown in warm organic loam.",
+        "Clonal orchards standardize crown architecture, early precocity, and uniform biochemical profiles across generations within Myrtaceae."
+      ],
+      "subblocks": [
+        {
+          "heading": "Nursery Seed Protocol",
+          "text": "Depulped seed sown cleanly in 2:1 loam-compost media; high viability when fresh."
+        },
+        {
+          "heading": "Clonal Method",
+          "text": "Approach/veneer grafting or monsoon air-layering onto vigorous local rootstocks."
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Pathology Defense, Vectors & Organic IPM",
+      "subtitle": "Phytoalexin resilience, fungal prophylaxis, and predator guilds",
+      "summary": "Biochemical defense mechanisms and low-impact organic IPM guidelines for Syzygium cumini.",
+      "paragraphs": [
+        "In humid South Asian and tropical growing belts, Jamun (Black Plum) (Syzygium cumini) relies on secondary terpenoid resins, foliar trichomes, and phytoalexin phenolics as front-line biochemical deterrence against herbivores and opportunistic pathogens. Prolonged monsoon waterlogging or stagnant canopy humidity can nonetheless encourage anthracnose (Colletotrichum spp.), powdery mildew, leaf-spot fungi, or root-zone Pythium.",
+        "Organic Integrated Pest Management (IPM) prioritizes preventive airflow pruning, Trichoderma-enriched compost amendments around feeder roots, and targeted cold-pressed Azadirachta indica (neem) oil sprays at dusk to suppress sap-sucking aphids, scale insects, and mealybugs without harming native pollinators."
+      ],
+      "subblocks": [
+        {
+          "heading": "Fungal Management",
+          "text": "Prevent overhead foliar wetness at dusk; maintain canopy aeration and copper/Trichoderma prophylaxis."
+        },
+        {
+          "heading": "Organic Pest Control",
+          "text": "Neem kernel emulsion (3–5 ml/L) plus conservation of hoverfly and ladybird predator guilds."
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/609624315/original.jpg",
+          "alt": "Jamun (Black Plum) (Syzygium cumini) — Healthy foliar vigor under balanced organic ecological defense",
+          "caption": "Jamun (Black Plum) (Syzygium cumini): Healthy foliar vigor under balanced organic ecological defense."
+        }
+      ]
+    },
+    {
+      "number": "11",
+      "title": "Conservation Standing & Climate Resilience",
+      "subtitle": "Population security, agroforestry corridors, and stress tolerance",
+      "summary": "Biogeographic conservation standing and climate adaptation traits of Jamun (Black Plum).",
+      "paragraphs": [
+        "Across its native and naturalized distribution (South & Southeast Asia (Indian Subcontinent)), Jamun (Black Plum) (Syzygium cumini) demonstrates strong ecological plasticity across alluvial floodplains, homestead agroforestry plots, and urban biodiversity corridors. While cultivated stands remain broadly secure, landrace genetic erosion, coastal salinity shifts, and wetland drainage threaten wild ecotypes and heritage regional varieties.",
+        "Long-term resilience depends on decentralized in-situ homestead stewardship, wetland buffer conservation, and botanical garden germplasm collections preserving drought-, flood-, and salinity-tolerant alleles amid shifting monsoon regimes."
+      ],
+      "subblocks": [
+        {
+          "heading": "Ecological Resilience",
+          "text": "Adapted to South & Southeast Asia (Indian Subcontinent) thermal oscillations and seasonal hydrological extremes."
+        },
+        {
+          "heading": "Stewardship Strategy",
+          "text": "Preserve traditional landraces, pollinator corridors, and living herbarium voucher plots."
+        }
+      ]
+    },
+    {
+      "number": "12",
+      "title": "Horticultural Spacing, Pruning & Telemetry",
+      "subtitle": "Plot geometry, canopy shaping, and calibrated soil-climate meters",
+      "summary": "Calibrated horticultural parameters: pH 5.5 – 7.5, Full Sun / Orchard, and structural spacing guidance.",
+      "isCultivationTelemetry": true,
+      "paragraphs": [
+        "Optimal managed cultivation of Jamun (Black Plum) (Syzygium cumini) calibrates root-zone chemistry around pH 5.5 – 7.5 inside deep moist alluvial loam. Providing adequate crown spacing prevents humidity buildup and lets lower shoots capture uniform irradiance across full sun / orchard.",
+        "Light corrective pruning immediately after main flowering or harvest periods redirects assimilates into healthy vegetative framework, while moisture scheduling (moderate / monsoon-hardy) stabilizes root turgor without inducing hypoxia."
+      ],
+      "subblocks": [
+        {
+          "heading": "Target Soil Chemistry",
+          "text": "pH 5.5 – 7.5 · Deep Moist Alluvial Loam"
+        },
+        {
+          "heading": "Solar & Moisture Profile",
+          "text": "Full Sun / Orchard · Moderate / Monsoon-Hardy"
+        }
+      ],
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/608550372/original.jpg",
+          "alt": "Jamun (Black Plum) (Syzygium cumini) — Spacing geometry and managed arboretum or garden specimen plate",
+          "caption": "Jamun (Black Plum) (Syzygium cumini): Spacing geometry and managed arboretum or garden specimen plate."
+        }
+      ]
+    },
+    {
+      "number": "13",
+      "title": "Evolutionary Genetics & Adaptive Phylogeny",
+      "subtitle": "Myrtales clade divergence and Myrtaceae genomic traits",
+      "summary": "Phylogenetic placement of genus Syzygium within order Myrtales (Eudicot (Malvids)).",
+      "paragraphs": [
+        "Modern molecular phylogenetics (APG IV) places Syzygium cumini inside family Myrtaceae (মিরটাসি (জাম-পেয়ারা গোত্র)), order Myrtales, clade Eudicot (Malvids). Aromatic myrtle trees and shrubs distinguished by peeling mottled bark, opposite oil-gland foliage, and powder-puff blossoms bristling with hundreds of stamens.",
+        "Within genus Syzygium, specialized morphological adaptations—such as exfoliating smooth copper-brown bark flaking in papery patches—reflect co-evolutionary specialization with regional pollinator guilds and abiotic habitat filters."
+      ]
+    },
+    {
+      "number": "14",
+      "title": "Field Identification Key & Diagnostic Checks",
+      "subtitle": "Macro-morphological verification against look-alike taxa",
+      "summary": "Rapid field-sheet checklist for confirming Syzygium cumini (Kalojam (কালোজাম)).",
+      "paragraphs": [
+        "Field verification of Jamun (Black Plum) (Syzygium cumini) rests on recognizing key Myrtaceae family markers: Exfoliating smooth copper-brown bark flaking in papery patches; Opposite leathery leaves dotted with fragrant terpenoid oil glands; Showy stamen-tufted blossoms yielding aromatic crowned berries and drupes. Inspecting fresh leaf arrangement, stem surface texture, and reproductive architecture together eliminates confusion with sympatric congeners.",
+        "Aromatic Intramarginal Leaves: Glossy leathery opposite blades studded with translucent oil dots and a clean marginal collecting vein. Ramiflorous Flower Panicles: Branched cream-white clusters borne on leafless old twigs bearing abundant free stamens. Anthocyanin-Rich Berries: Smooth oblong drupes bursting with sweet-astringent juice packed with delphinidin and petunidin pigments. Green Polyembryonic Kernel: Single-or-multi-embryo starchy seed prized in dried powder form across traditional apothecaries."
+      ],
+      "subblocks": [
+        {
+          "heading": "Primary Diagnostic Trait",
+          "text": "Exfoliating smooth copper-brown bark flaking in papery patches"
+        },
+        {
+          "heading": "Secondary Field Marker",
+          "text": "Opposite leathery leaves dotted with fragrant terpenoid oil glands"
         }
       ]
     }

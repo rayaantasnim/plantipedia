@@ -298,6 +298,28 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       ),
     );
 
+    const previewPlate = createEl("figure", "compare-preview-plate");
+    const previewMedia = createEl("div", "compare-preview-plate-media");
+    const previewImg = buildImageElement(
+      "https://inaturalist-open-data.s3.amazonaws.com/photos/252106121/large.jpeg",
+      "Cattleya labiata botanical field specimen plate",
+      "Cattleya labiata field photograph",
+    );
+    previewImg.loading = "lazy";
+    previewMedia.appendChild(previewImg);
+    previewPlate.appendChild(previewMedia);
+
+    const previewCap = document.createElement("figcaption");
+    previewCap.className = "compare-preview-plate-caption";
+    previewCap.appendChild(createEl("span", "figcaption-fig", "Fig. CM-01"));
+    previewCap.appendChild(
+      document.createTextNode(
+        " Cattleya labiata field photograph — Dual-pane specimen comparator aligning curated 15-chapter monographs and 400,000+ live Global Flora Index taxa.",
+      ),
+    );
+    previewPlate.appendChild(previewCap);
+    card.appendChild(previewPlate);
+
     const selectsRow = createEl("div", "compare-selects-grid");
     const warningEl = createEl("p", "compare-validation-warning", "");
     warningEl.id = "compareValidationWarning";
@@ -595,7 +617,56 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           return;
         }
 
-        redirectToCompare404(res?.reason || "invalid", query);
+        const failureReason = res?.reason || "invalid";
+        searchWrap.hidden = false;
+        statusEl.hidden = true;
+        telemetrySlot.replaceChildren();
+        telemetrySlot.hidden = false;
+
+        const recovery = createEl("div", "compare-inline-recovery");
+        recovery.setAttribute("role", "alert");
+        recovery.appendChild(
+          createEl(
+            "p",
+            "compare-inline-recovery-title",
+            failureReason === "network"
+              ? "GLOBAL SERVER CONNECTION FAILED"
+              : "UNRECOGNIZED BOTANICAL SPECIMEN",
+          ),
+        );
+        recovery.appendChild(
+          createEl(
+            "p",
+            "compare-inline-recovery-msg",
+            failureReason === "network"
+              ? `Unable to reach the Global Botanical Server for "${query}". Your other specimen slot remains intact—retry the uplink or select from our curated species index.`
+              : `"${query}" did not match a verified plant taxon in the Global Flora Index. Refine the Latin/common name above or pick one of our 50 curated monographs.`,
+          ),
+        );
+
+        const recoveryActions = createEl("div", "compare-inline-recovery-actions");
+        const retryBtn = createEl(
+          "button",
+          "compare-inline-recovery-btn",
+          "↻ Retry Global Server",
+        );
+        retryBtn.type = "button";
+        retryBtn.addEventListener("click", () => {
+          triggerInlineGlobalFetch(query);
+        });
+        const browseLink = createEl(
+          "a",
+          "compare-inline-recovery-btn",
+          "Browse 50 Curated Species →",
+        );
+        browseLink.href = resolveRootPath("./species/");
+
+        recoveryActions.appendChild(retryBtn);
+        recoveryActions.appendChild(browseLink);
+        recovery.appendChild(recoveryActions);
+        telemetrySlot.appendChild(recovery);
+        st.verifiedPlant = null;
+        validateSelection();
       }
 
       function renderAutocomplete(rawQuery) {
@@ -678,6 +749,10 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
       inputEl.addEventListener("input", () => {
         // Unlock previous selection whenever user edits the search query
+        if (!isInlineFetching && telemetrySlot.firstChild) {
+          telemetrySlot.replaceChildren();
+          telemetrySlot.hidden = true;
+        }
         st.mode = "local";
         st.slug = "";
         st.globalQuery = "";
@@ -760,6 +835,9 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         if (isInlineFetching) {
           const abortBtn = telemetrySlot.querySelector(".compare-loader-abort-btn");
           if (abortBtn) abortBtn.click();
+        } else if (telemetrySlot.firstChild) {
+          telemetrySlot.replaceChildren();
+          telemetrySlot.hidden = true;
         }
         st.mode = "local";
         st.slug = "";

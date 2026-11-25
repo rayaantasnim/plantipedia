@@ -250,6 +250,270 @@
       "category": "Phytochemistry",
       "en": "A unique non-protein amino acid synthesized predominantly in Camellia sinensis roots and leaves that imparts umami sweetness and promotes calm cognitive focus.",
       "bn": "এল-থিয়ানিন — চা পাতায় (Camellia sinensis) পাওয়া বিশেষ অ্যামিনো অ্যাসিড, যা চায়ে মৃদু মিষ্টতা আনে এবং মানসিক প্রশান্তি ও মনোযোগ বাড়াতে সহায়তা করে।"
+    },
+    {
+      "id": "phyllotaxis",
+      "term": "Phyllotaxis",
+      "aliases": ["phyllotaxis", "phyllotaxy"],
+      "category": "Morphology",
+      "en": "The geometric arrangement of leaves, bracts, or florets around a plant stem—typically spiral, opposite, or whorled—to optimize light interception.",
+      "bn": "পত্রবিন্যাস (ফাইলোট্যাক্সিস) — কাণ্ডের চারপাশে পাতা বা পুষ্পপুট সজ্জিত থাকার জ্যামিতিক নিয়ম।"
+    },
+    {
+      "id": "stipule",
+      "term": "Stipule",
+      "aliases": ["stipule", "stipules"],
+      "category": "Morphology",
+      "en": "A pair of leaf-like, spiny, or scaly appendages growing at the base of a petiole that often shield emerging young buds.",
+      "bn": "উপপত্র — পত্রবৃন্তের গোড়ায় অবস্থিত ছোট পাতাসদৃশ বা আঁশযুক্ত উপাঙ্গ, যা কচি কুঁড়িকে রক্ষা করে।"
+    },
+    {
+      "id": "petiole",
+      "term": "Petiole",
+      "aliases": ["petiole", "petioles", "petiolate"],
+      "category": "Morphology",
+      "en": "The vascular stalk that attaches a leaf lamina to its stem node and angles the blade toward incoming sunlight.",
+      "bn": "পত্রবৃন্ত / বোঁটা — পাতার ফলককে কাণ্ডের পর্বের সাথে সংযুক্তকারী সরু ডাঁটা।"
+    },
+    {
+      "id": "lamina",
+      "term": "Lamina",
+      "aliases": ["lamina", "leaf blade"],
+      "category": "Morphology",
+      "en": "The expanded, flattened, photosynthetic surface of a leaf blade containing palisade mesophyll and vascular veins.",
+      "bn": "পত্রফলক — পাতার প্রসারিত সবুজ চ্যাপ্টা অংশ, যেখানে মূল সালোকসংশ্লেষণ ঘটে।"
+    },
+    {
+      "id": "corolla",
+      "term": "Corolla",
+      "aliases": ["corolla", "corollas"],
+      "category": "Morphology",
+      "en": "The collective whorl of petals inside a flower, frequently pigmented or scented to attract specific animal pollinators.",
+      "bn": "দলমণ্ডল — ফুলের রঙিন বা সুগন্ধি পাঁপড়িগুলোর সম্মিলিত স্তবক।"
+    },
+    {
+      "id": "calyx",
+      "term": "Calyx",
+      "aliases": ["calyx", "sepals", "sepal"],
+      "category": "Morphology",
+      "en": "The outermost protective whorl of a flower consisting of green or modified sepals that enclose the developing bud.",
+      "bn": "বৃতি — ফুলের সবচেয়ে বাইরের সবুজ বা পরিবর্তিত পুষ্পপত্র স্তবক, যা কুঁড়িকে সুরক্ষা দেয়।"
+    },
+    {
+      "id": "stamen",
+      "term": "Stamen",
+      "aliases": ["stamen", "stamens", "androecium"],
+      "category": "Morphology",
+      "en": "The pollen-producing male reproductive organ of a flower, comprising a supporting filament and pollen-bearing anther.",
+      "bn": "পুংকেশর — পরাগদণ্ড ও পরাগধানী নিয়ে গঠিত ফুলের পুরুষ জনন অঙ্গ।"
+    },
+    {
+      "id": "carpel",
+      "term": "Carpel",
+      "aliases": ["carpel", "carpels", "gynoecium", "pistil"],
+      "category": "Morphology",
+      "en": "The ovule-enclosing female floral unit composed of ovary, style, and pollen-receptive stigma.",
+      "bn": "গর্ভপত্র / গর্ভকেশর — গর্ভাশয়, গর্ভদণ্ড ও গর্ভমুণ্ড নিয়ে গঠিত ফুলের স্ত্রী জনন অঙ্গ।"
+    },
+    {
+      "id": "entomophilous",
+      "term": "Entomophilous",
+      "aliases": ["entomophilous", "entomophily"],
+      "category": "Ecology",
+      "en": "Pollinated primarily by insects such as bees, hoverflies, beetles, moths, or butterflies lured by floral nectar and scent.",
+      "bn": "পতঙ্গপরাগী — মৌমাছি, প্রজাপতি বা ভ্রমরের মাধ্যমে পরাগায়ন সংঘটিত হয় এমন উদ্ভিদ।"
+    },
+    {
+      "id": "anemophilous",
+      "term": "Anemophilous",
+      "aliases": ["anemophilous", "anemophily"],
+      "category": "Ecology",
+      "en": "Wind-pollinated plants bearing lightweight powdery pollen, feathery stigmas, and reduced petals, typical of grasses and palms.",
+      "bn": "বায়ুপরাগী — বাতাসের মাধ্যমে হালকা পরাগরেণু বহনকারী উদ্ভিদ (যেমন ঘাস ও বাঁশ)।"
+    },
+    {
+      "id": "chiropterophilous",
+      "term": "Chiropterophilous",
+      "aliases": ["chiropterophilous", "chiropterophily"],
+      "category": "Ecology",
+      "en": "Adapted for nocturnal pollination or seed dispersal by fruit and nectar-feeding bats, marked by pale or strong musky blossoms.",
+      "bn": "বাদুড়পরাগী — নিশাচর বাদুড়ের মাধ্যমে পরাগায়ন বা বীজ বিস্তার ঘটে এমন উদ্ভিদ (যেমন কদম ও শিমুল)।"
+    },
+    {
+      "id": "pneumatophore",
+      "term": "Pneumatophore",
+      "aliases": ["pneumatophore", "pneumatophores"],
+      "category": "Anatomy",
+      "en": "Vertical upward-growing breathing roots studded with lenticels that protrude out of anaerobic tidal mangrove mud to exchange oxygen.",
+      "bn": "শ্বাসমূল — সুন্দরবনের লবণাক্ত কাদামাটি ভেদ করে ওপরে উঠে আসা অক্সিজেন গ্রহণকারী বিশেষ মূল।"
+    },
+    {
+      "id": "halophyte",
+      "term": "Halophyte",
+      "aliases": ["halophyte", "halophytes", "halophytic"],
+      "category": "Ecology",
+      "en": "A salt-tolerant plant adapted to coastal estuaries, brackish deltas, or saline soils via salt-excluding roots or salt-secreting leaf glands.",
+      "bn": "লবণাম্বু উদ্ভিদ — উপকূলীয় লবণাক্ত মাটি বা জোয়ারভাটার জলে টিকে থাকতে সক্ষম উদ্ভিদ।"
+    },
+    {
+      "id": "xerophyte",
+      "term": "Xerophyte",
+      "aliases": ["xerophyte", "xerophytes", "xerophytic"],
+      "category": "Ecology",
+      "en": "A drought-adapted plant conserving water through thick cuticles, succulent mucilage, sunken stomata, or spiny reduced leaves.",
+      "bn": "মরু উদ্ভিদ (জেরোফাইট) — শুষ্ক পরিবেশে জল সঞ্চয় ও বাষ্পমোচন রোধে অভিযোজিত উদ্ভিদ।"
+    },
+    {
+      "id": "hydrophyte",
+      "term": "Hydrophyte",
+      "aliases": ["hydrophyte", "hydrophytes", "macrophyte"],
+      "category": "Ecology",
+      "en": "An aquatic plant growing submerged, floating, or rooted in saturated marsh sediments with specialized spongy buoyancy tissue.",
+      "bn": "জলজ উদ্ভিদ — পুকুর, বিল বা জলাশয়ে ডুবে বা ভেসে বেড়ে ওঠা উদ্ভিদ।"
+    },
+    {
+      "id": "lignified",
+      "term": "Lignified",
+      "aliases": ["lignified", "lignin"],
+      "category": "Anatomy",
+      "en": "Cell walls impregnated with rigid phenolic lignin polymer, conferring mechanical strength, rot resistance, and upright woody stature.",
+      "bn": "কাষ্ঠল / লিগনিনযুক্ত — কোষপ্রাচীরে লিগনিন জমার ফলে দৃঢ় ও কাঠসদৃশ গঠনপ্রাপ্ত।"
+    },
+    {
+      "id": "meristem",
+      "term": "Meristem",
+      "aliases": ["meristem", "meristems", "intercalary"],
+      "category": "Anatomy",
+      "en": "Undifferentiated plant tissue composed of actively dividing totipotent cells at shoot tips, root tips, vascular cambium, or bamboo nodes.",
+      "bn": "ভাজক কলা — সক্রিয় কোষ বিভাজনে সক্ষম উদ্ভিদ কলা, যা নতুন শাখা ও শিকড় গঠনের উৎস।"
+    },
+    {
+      "id": "stomata",
+      "term": "Stomata",
+      "aliases": ["stomata", "stoma"],
+      "category": "Anatomy",
+      "en": "Microscopic adjustable pores flanked by guard cells on leaf epidermis that regulate CO₂ intake and transpirational water vapor loss.",
+      "bn": "পত্ররন্ধ্র — পাতার ত্বকে অবস্থিত ক্ষুদ্র ছিদ্র, যা গ্যাসীয় বিনিময় ও বাষ্পমোচন নিয়ন্ত্রণ করে।"
+    },
+    {
+      "id": "cuticle",
+      "term": "Cuticle",
+      "aliases": ["cuticle", "cuticular"],
+      "category": "Anatomy",
+      "en": "A waxy hydrophobic film coating plant epidermal surfaces that prevents desiccation and sheds fungal spores and surface water.",
+      "bn": "কিউটিকল — পাতার উপরিভাগে থাকা মোমসদৃশ স্তর, যা জল ক্ষয় ও জীবাণু সংক্রমণ রোধ করে।"
+    },
+    {
+      "id": "cotyledon",
+      "term": "Cotyledon",
+      "aliases": ["cotyledon", "cotyledons"],
+      "category": "Morphology",
+      "en": "The first embryonic seed leaf inside a germinating plant embryo that nourishes the emerging plumule and radicle.",
+      "bn": "বীজপত্র — অঙ্কুরোদগমের সময় ভ্রূণকে প্রাথমিক খাদ্য সরবরাহকারী ভ্রূণীয় পাতা।"
+    },
+    {
+      "id": "syncarp",
+      "term": "Syncarp",
+      "aliases": ["syncarp", "syncarps"],
+      "category": "Carpology",
+      "en": "A massive multiple fruit—such as jackfruit—formed when the ovaries and perianths of an entire dense inflorescence fuse together.",
+      "bn": "যৌগিক ফল (সিনকার্প) — সম্পূর্ণ পুষ্পমঞ্জরির বহু ফুল মিলিত হয়ে গঠিত একক বৃহৎ ফল (যেমন কাঁঠাল)।"
+    },
+    {
+      "id": "achene",
+      "term": "Achene",
+      "aliases": ["achene", "achenes"],
+      "category": "Carpology",
+      "en": "A small, dry, one-seeded indehiscent fruit whose seed coat remains free from the outer papery pericarp, common in Asteraceae.",
+      "bn": "একিন — পাতলা শুষ্ক আবরণযুক্ত এক-বীজবিশিষ্ট অস্ফুট ফল (যেমন সূর্যমুখীর বীজ)।"
+    },
+    {
+      "id": "capsule",
+      "term": "Capsule",
+      "aliases": ["capsule", "dehiscent"],
+      "category": "Carpology",
+      "en": "A dry multi-carpel fruit that splits open along programmed seams upon drying to scatter seeds into air or soil.",
+      "bn": "ক্যাপসুল — শুকিয়ে গেলে নির্দিষ্ট ফাটল বরাবর ফেটে বীজ ছড়ানো শুষ্ক ফল।"
+    },
+    {
+      "id": "terpenoid",
+      "term": "Terpenoid",
+      "aliases": ["terpenoid", "terpenoids", "terpene"],
+      "category": "Phytochemistry",
+      "en": "Aromatic volatile hydrocarbons built from isoprene units responsible for floral perfume, citrus oils, neem resin, and camphor scent.",
+      "bn": "টারপিনয়েড — সুগন্ধি উদ্ভিদ তেল ও রেজিনের মূল জৈব-রাসায়নিক উপাদান।"
+    },
+    {
+      "id": "flavonoid",
+      "term": "Flavonoid",
+      "aliases": ["flavonoid", "flavonoids"],
+      "category": "Phytochemistry",
+      "en": "Pigmented polyphenolic compounds generating floral yellows, reds, and purples while protecting tissues against UV radiation.",
+      "bn": "ফ্ল্যাভোনয়েড — ফুলের উজ্জ্বল রঙ ও উদ্ভিদের অ্যান্টিঅক্সিডেন্ট সুরক্ষা প্রদানকারী যৌগ।"
+    },
+    {
+      "id": "saponin",
+      "term": "Saponin",
+      "aliases": ["saponin", "saponins"],
+      "category": "Phytochemistry",
+      "en": "Amphipathic plant glycosides that foam gently in water and shield tubers and bark from soil microbes and grazing insects.",
+      "bn": "স্যাপোনিন — জলে মৃদু ফেনা সৃষ্টিকারী উদ্ভিদ গ্লাইকোসাইড, যা রোগপ্রতিরোধে ভূমিকা রাখে।"
+    },
+    {
+      "id": "symbiosis",
+      "term": "Symbiosis",
+      "aliases": ["symbiosis", "symbiotic", "mutualism"],
+      "category": "Ecology",
+      "en": "A close ecological partnership between two distinct organisms—such as nitrogen-fixing Rhizobium bacteria in legume root nodules.",
+      "bn": "মিথোজীবিতা — দুটি ভিন্ন জীবের পারস্পরিক উপকারমূলক দীর্ঘমেয়াদী সহাবস্থান।"
+    },
+    {
+      "id": "xylem",
+      "term": "Xylem",
+      "aliases": ["xylem"],
+      "category": "Anatomy",
+      "en": "Lignified vascular conduits transporting dissolved soil minerals and water upward from roots to transpiring canopy foliage.",
+      "bn": "জাইলেম — শিকড় থেকে পাতায় জল ও খনিজ লবণ পরিবহনকারী উদ্ভিদ বাহিকা কলা।"
+    },
+    {
+      "id": "phloem",
+      "term": "Phloem",
+      "aliases": ["phloem"],
+      "category": "Anatomy",
+      "en": "Living sieve-tube vascular tissue distributing photosynthetic sucrose and signaling hormones from mature leaves to growing sinks.",
+      "bn": "ফ্লোয়েম — পাতায় তৈরি শর্করা ও খাদ্য উদ্ভিদের সর্বত্র পরিবহনকারী সজীব পরিবহন কলা।"
+    },
+    {
+      "id": "cambium",
+      "term": "Cambium",
+      "aliases": ["cambium", "vascular cambium"],
+      "category": "Anatomy",
+      "en": "A cylindrical lateral meristem layer in woody dicot trunks that generates secondary xylem inward (wood) and phloem outward (inner bark).",
+      "bn": "ক্যাম্বিয়াম — কাষ্ঠল উদ্ভিদের কাণ্ড মোটা করার জন্য দায়ী পার্শ্বীয় ভাজক কলা স্তর।"
+    },
+    {
+      "id": "dormancy",
+      "term": "Dormancy",
+      "aliases": ["dormancy", "dormant"],
+      "category": "Phenology",
+      "en": "A programmed physiological pause in seed germination or bud growth suspended until moisture, chill, or photoperiod cues turn favorable.",
+      "bn": "সুপ্তাবস্থা — অনুকূল আবহাওয়া বা আর্দ্রতা না পাওয়া পর্যন্ত বীজ বা কুঁড়ির বৃদ্ধি সাময়িকভাবে স্থগিত থাকা।"
+    },
+    {
+      "id": "photoperiod",
+      "term": "Photoperiod",
+      "aliases": ["photoperiod", "photoperiodic"],
+      "category": "Phenology",
+      "en": "The relative seasonal length of daylight versus darkness that triggers seasonal flowering, leaf flush, or winter dormancy.",
+      "bn": "আলোক-পর্যায় (ফটোপিরিয়ড) — দিন ও রাতের দৈর্ঘ্যের অনুপাত, যা উদ্ভিদের ফুল ফোটা ও ঋতুচক্র নিয়ন্ত্রণ করে।"
+    },
+    {
+      "id": "polyembryonic",
+      "term": "Polyembryonic",
+      "aliases": ["polyembryonic", "polyembryony", "monoembryonic"],
+      "category": "Genetics",
+      "en": "Seeds containing multiple embryos—usually one sexual zygotic embryo plus clonal nucellar embryos genetically identical to the mother tree.",
+      "bn": "বহুভ্রূণী — একটি বীজের ভেতরে একাধিক ভ্রূণ থাকা, যা মাতৃগাছের হুবহু গুণসম্পন্ন চারা উৎপন্ন করতে সক্ষম।"
     }
   ]
 }

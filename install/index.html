@@ -26,9 +26,9 @@
     <meta property="og:url" content="https://plantipedia.rayaantasnim.workers.dev/install/" />
     <meta
       property="og:image"
-      content="https://images.pexels.com/photos/33854693/pexels-photo-33854693.jpeg?auto=compress&cs=tinysrgb&w=1200"
+      content="https://inaturalist-open-data.s3.amazonaws.com/photos/189605135/large.jpeg"
     />
-    <meta property="og:image:alt" content="Plantipedia Install Offline App Preview" />
+    <meta property="og:image:alt" content="Canopy fern ecosystem representing offline botanical field exploration" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Install Offline App (Scheduled v4.0) — Botanical PWA | Plantipedia" />
     <meta
@@ -38,9 +38,9 @@
     <meta name="twitter:url" content="https://plantipedia.rayaantasnim.workers.dev/install/" />
     <meta
       name="twitter:image"
-      content="https://images.pexels.com/photos/33854693/pexels-photo-33854693.jpeg?auto=compress&cs=tinysrgb&w=1200"
+      content="https://static.inaturalist.org/photos/74035162/large.jpeg"
     />
-    <meta name="twitter:image:alt" content="Plantipedia Offline PWA" />
+    <meta name="twitter:image:alt" content="Seed bank germination specimen for Offline Herbarium Vault v4.0" />
     <script type="application/ld+json" id="page-jsonld">
       {
         "@context": "https://schema.org",
@@ -102,48 +102,119 @@
 
           <article class="maintenance-card">
             <span class="maintenance-status-pill">
-              UNDER MAINTENANCE · SCHEDULED RELEASE: VERSION 4.0 · IN DEVELOPMENT
+              <span class="maintenance-status-dot" aria-hidden="true"></span>
+              <span>🚧 UNDER MAINTENANCE · SCHEDULED FOR VERSION 4.0</span>
             </span>
             <h1 id="installHeading" class="maintenance-headline">
               📲 Install Offline App — Progressive Web App & Field Vault
             </h1>
             <p class="justified-prose">
-              Scheduled for Plantipedia Version 4.0, our dedicated Offline PWA Installer is currently in engineering testing. Once launched, botanists and students will be able to download the complete 50-monograph 15-chapter vault, 34-family taxonomy, and 6-season Shororitu phenology index for full offline field access across forests, nurseries, and classrooms.
+              Scheduled for Plantipedia Version 4.0, our dedicated Offline Progressive Web App Installer is undergoing Service Worker precache hardening. Once deployed, researchers and field botanists will download the entire 50-monograph 15-chapter archive, 34-family taxonomic directory, and 6-season Shororitu phenology index for deterministic zero-signal operation in forests, mangrove deltas, and rural nurseries.
             </p>
+
+            <div class="maintenance-hero-split">
+              <figure class="maintenance-figure">
+                <div class="maintenance-figure-media">
+                  <img
+                    src="https://inaturalist-open-data.s3.amazonaws.com/photos/212969995/large.jpeg"
+                    alt="Cyathea cooperi tree fern canopy inside a dense woodland biome"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <figcaption class="maintenance-figure-caption">
+                  Fig. 4.0-A — Canopy-filtered Cyathea cooperi pteridophyte stand illustrating offline field conditions beyond cellular coverage.
+                </figcaption>
+              </figure>
+
+              <aside class="maintenance-telemetry-box" aria-label="Version 4.0 PWA Telemetry">
+                <h2 class="maintenance-telemetry-heading">Release Telemetry · Version 4.0 Field Vault</h2>
+                <div class="maintenance-telemetry-rows">
+                  <div class="maintenance-telemetry-cell">
+                    <span class="maintenance-telemetry-key">Release Target</span>
+                    <span class="maintenance-telemetry-val">Version 4.0</span>
+                  </div>
+                  <div class="maintenance-telemetry-cell">
+                    <span class="maintenance-telemetry-key">Offline Payload</span>
+                    <span class="maintenance-telemetry-val">50 Monographs + UI</span>
+                  </div>
+                  <div class="maintenance-telemetry-cell">
+                    <span class="maintenance-telemetry-key">Cache Footprints</span>
+                    <span class="maintenance-telemetry-val">&lt; 18 MB Indexed</span>
+                  </div>
+                  <div class="maintenance-telemetry-cell">
+                    <span class="maintenance-telemetry-key">Platforms</span>
+                    <span class="maintenance-telemetry-val">Desktop · iOS · Android</span>
+                  </div>
+                </div>
+                <div class="maintenance-progress-wrap">
+                  <div class="maintenance-progress-label">
+                    <span>Service Worker Precache Engine</span>
+                    <span>64% Complete</span>
+                  </div>
+                  <div class="maintenance-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="64">
+                    <div class="maintenance-progress-fill" style="width: 64%;"></div>
+                  </div>
+                </div>
+              </aside>
+            </div>
 
             <div class="maintenance-specs-grid">
               <div class="maintenance-spec-card">
                 <span class="maintenance-spec-label">PWA CAPABILITY 01</span>
                 <h2 class="maintenance-spec-title">Full Offline Monograph Vault</h2>
                 <p class="maintenance-spec-desc">
-                  Pre-caches every local 15-chapter plant dossier, bilingual EN / বাংলা search index, and glossary definition into deterministic browser storage with zero cloud lock-in.
+                  Pre-caches every local 15-chapter plant dossier, bilingual EN / বাংলা search index, and glossary definition into persistent browser storage with zero cloud lock-in.
                 </p>
               </div>
               <div class="maintenance-spec-card">
                 <span class="maintenance-spec-label">PWA CAPABILITY 02</span>
                 <h2 class="maintenance-spec-title">Silent Background Sync</h2>
                 <p class="maintenance-spec-desc">
-                  Automatically updates cached taxonomy schemas and My Herbarium bookmarks whenever a stable Wi-Fi or cellular uplink returns during field expeditions.
+                  Automatically refreshes cached taxonomy schemas, saved Global Botanical Server dossiers, and My Herbarium collections whenever Wi-Fi or cellular connectivity resumes.
                 </p>
               </div>
               <div class="maintenance-spec-card">
                 <span class="maintenance-spec-label">PWA CAPABILITY 03</span>
                 <h2 class="maintenance-spec-title">Desktop, Android & iOS Ready</h2>
                 <p class="maintenance-spec-desc">
-                  Provides one-click Chrome/Edge prompt bindings alongside clear Safari Add-to-Home-Screen instructions for standalone full-screen botanical study.
+                  Combines native Chromium install-prompt telemetry with step-by-step Safari Add-to-Home-Screen diagnostics for standalone distraction-free study.
+                </p>
+              </div>
+            </div>
+
+            <div class="maintenance-feature-plate">
+              <figure class="maintenance-figure">
+                <div class="maintenance-figure-media">
+                  <img
+                    src="https://static.inaturalist.org/photos/28285109/large.jpg"
+                    alt="Phaseolus vulgaris botanical seed specimen for germplasm vaulting"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <figcaption class="maintenance-figure-caption">
+                  Fig. 4.0-B — Propagule and seedbank study of Phaseolus vulgaris symbolizing resilient local knowledge storage inside the Offline Vault.
+                </figcaption>
+              </figure>
+              <div class="maintenance-feature-plate-copy">
+                <span class="maintenance-spec-label">RESILIENT CACHE ARCHITECTURE</span>
+                <h2 class="maintenance-spec-title">Zero-Signal Reference Access Across Any Herbarium</h2>
+                <p class="justified-prose">
+                  Version 4.0 splits network-first Global Botanical Server requests from stale-while-revalidate curated local JSON dossiers. Even in deep greenhouse conservatories or remote delta surveys, saved species remain browsable alongside complete A4 field-sheet print formatting and bilingual terminology tooltips.
                 </p>
               </div>
             </div>
 
             <div class="maintenance-actions">
-              <a class="specimen-nf-btn specimen-nf-btn--primary" href="../species/">
-                Explore 50 Curated Species →
-              </a>
-              <a class="specimen-nf-btn specimen-nf-btn--secondary" href="../plant/live/">
-                Open Global Server
+              <a class="specimen-nf-btn specimen-nf-btn--primary" href="../">
+                🏡 Return Home
               </a>
               <a class="specimen-nf-btn specimen-nf-btn--secondary" href="../roadmap/">
-                View Full Roadmap
+                🚀 View Full Release Roadmap
+              </a>
+              <a class="specimen-nf-btn specimen-nf-btn--secondary" href="../plant/live/">
+                🌐 Launch Global Botanical Server
               </a>
             </div>
           </article>

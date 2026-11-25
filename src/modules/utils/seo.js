@@ -6,7 +6,9 @@
 
 const PRODUCTION_SITE_URL = "https://plantipedia.rayaantasnim.workers.dev/";
 const DEFAULT_OG_IMAGE =
-  "https://images.pexels.com/photos/31591013/pexels-photo-31591013/free-photo-of-lush-monstera-leaves-in-colombian-jungle.jpeg?auto=compress&cs=tinysrgb&w=1200";
+  "https://static.inaturalist.org/photos/490150039/large.jpg";
+const DEFAULT_TWITTER_IMAGE =
+  "https://static.inaturalist.org/photos/52572496/large.jpeg";
 
 const AUTHOR_ENTITIES = [
   { "@type": "Person", name: "Jalees Habib" },
@@ -90,6 +92,10 @@ export function applyPageSeo(seoConfig) {
   const ogImage = seoConfig.ogImage || DEFAULT_OG_IMAGE;
   const ogImageAlt =
     seoConfig.ogImageAlt || "Plantipedia — Digital Botanical Encyclopedia";
+  const twitterImage =
+    seoConfig.twitterImage ||
+    (ogImage === DEFAULT_OG_IMAGE ? DEFAULT_TWITTER_IMAGE : DEFAULT_TWITTER_IMAGE);
+  const twitterImageAlt = seoConfig.twitterImageAlt || ogImageAlt;
 
   setMetaTag("name", "description", seoConfig.description);
   setMetaTag("name", "keywords", seoConfig.keywords);
@@ -115,8 +121,8 @@ export function applyPageSeo(seoConfig) {
     "twitter:description",
     seoConfig.ogDescription || seoConfig.description,
   );
-  setMetaTag("name", "twitter:image", ogImage);
-  setMetaTag("name", "twitter:image:alt", ogImageAlt);
+  setMetaTag("name", "twitter:image", twitterImage);
+  setMetaTag("name", "twitter:image:alt", twitterImageAlt);
 
   if (seoConfig.jsonLd) {
     const homeUrl = resolveCanonicalPageUrl("");
@@ -264,7 +270,7 @@ export function applyTaxonomySeo({ pageData, families, activeFamily }) {
   setMetaTag("name", "twitter:url", pageUrl);
   setMetaTag("name", "twitter:title", title);
   setMetaTag("name", "twitter:description", description);
-  setMetaTag("name", "twitter:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
+  setMetaTag("name", "twitter:image", baseSeo.twitterImage || DEFAULT_TWITTER_IMAGE);
 
   const breadcrumbItems = [
     { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
@@ -411,7 +417,7 @@ export function applySeasonsSeo({
   setMetaTag("name", "twitter:url", pageUrl);
   setMetaTag("name", "twitter:title", title);
   setMetaTag("name", "twitter:description", description);
-  setMetaTag("name", "twitter:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
+  setMetaTag("name", "twitter:image", baseSeo.twitterImage || DEFAULT_TWITTER_IMAGE);
 
   const breadcrumbItems = [
     { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
@@ -558,7 +564,7 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
   setMetaTag("name", "twitter:url", pageUrl);
   setMetaTag("name", "twitter:title", title);
   setMetaTag("name", "twitter:description", description);
-  setMetaTag("name", "twitter:image", baseSeo.ogImage || DEFAULT_OG_IMAGE);
+  setMetaTag("name", "twitter:image", baseSeo.twitterImage || DEFAULT_TWITTER_IMAGE);
 
   const breadcrumbItems = [
     { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
@@ -668,6 +674,10 @@ export function applyPlantMonographSeo(plant) {
   const heroImgUrl =
     /^https?:/i.test(rawHeroUrl) ? rawHeroUrl : DEFAULT_OG_IMAGE;
   const heroImgAlt = plant.heroImage?.alt || displayName;
+  const twitterImgUrl =
+    (Array.isArray(plant.sections)
+      ? plant.sections.flatMap((s) => s.images || []).find((im) => im?.url && im.url !== heroImgUrl)?.url
+      : null) || DEFAULT_TWITTER_IMAGE;
 
   document.title = seoTitle;
   setCanonicalHref(pageUrl);
@@ -704,7 +714,7 @@ export function applyPlantMonographSeo(plant) {
   setMetaTag("name", "twitter:url", pageUrl);
   setMetaTag("name", "twitter:title", seoTitle);
   setMetaTag("name", "twitter:description", seoDesc);
-  setMetaTag("name", "twitter:image", heroImgUrl);
+  setMetaTag("name", "twitter:image", twitterImgUrl);
   setMetaTag("name", "twitter:image:alt", heroImgAlt);
 
   const alternateNames = Array.from(
