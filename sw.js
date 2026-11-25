@@ -1,10 +1,10 @@
 /**
  * Plantipedia Service Worker — Clean Extensionless Folder-Based Routing Cache
  * Caches core shells, modular stylesheets, ES modules, and Data Lake JSON using relative ./ URLs
- * resolved safely against self.location (compatible with both / and /plantipedia/ GitHub Pages).
+ * resolved safely against self.location (compatible with both / and /plantipedia/ subpath mounts).
  */
 
-const CACHE_VERSION = "plantipedia-v5.3.4";
+const CACHE_VERSION = "plantipedia-v5.3.5";
 
 const CORE_SHELL_PATHS = [
   "./",
@@ -16,12 +16,13 @@ const CORE_SHELL_PATHS = [
   "./compare/",
   "./compare/result/",
   "./services/",
+  "./sources/",
   "./roadmap/",
   "./identify/",
   "./qr-studio/",
   "./install/",
   "./404.html",
-  "./manifest.json",
+  "./manifest.webmanifest",
   "./assets/images/brand-flower.svg",
   "./assets/images/placeholder-botanical.svg",
   "./styles/base/variables.css",
@@ -29,9 +30,13 @@ const CORE_SHELL_PATHS = [
   "./styles/base/layout.css",
   "./styles/components/sections.css",
   "./styles/components/components.css",
+  "./styles/components/footer.css",
+  "./styles/pages/home.css",
+  "./styles/pages/plant-live.css",
   "./styles/pages/pages-responsive.css",
   "./styles/pages/compare.css",
   "./styles/pages/services.css",
+  "./styles/pages/sources.css",
   "./styles/print/field-sheets.css",
   "./styles/tailwind/tailwind.config.js",
   "./styles/tailwind/load-tailwind-layers.js",
@@ -42,24 +47,37 @@ const CORE_SHELL_PATHS = [
   "./src/core/telemetry/animations.js",
   "./src/core/telemetry/telemetry-stats.js",
   "./src/core/telemetry/telemetry-meters.js",
+  "./src/core/compilers/shell.js",
   "./src/core/compilers/navbar-compiler.js",
   "./src/core/compilers/footer-compiler.js",
   "./src/core/compilers/specimen-not-found.js",
+  "./src/engines/citation/citation-generator.js",
+  "./src/engines/citation/glossary-tooltips.js",
+  "./src/engines/search/navigation.js",
   "./src/engines/global-server/api.js",
   "./src/engines/global-server/taxon-parser.js",
   "./src/engines/global-server/gbs-client.js",
   "./src/engines/global-server/live-gateway-controller.js",
   "./src/engines/global-server/global-botanical-server.js",
   "./src/engines/comparator/synthesis-overlay.js",
+  "./src/modules/pages/species-directory.js",
+  "./src/modules/pages/plant-monograph.js",
+  "./src/modules/pages/live-plant-view.js",
+  "./src/modules/pages/taxonomy-view.js",
+  "./src/modules/pages/seasons-view.js",
+  "./src/modules/pages/compare-view.js",
+  "./src/modules/pages/compare-result-view.js",
   "./src/modules/pages/services-controller.js",
+  "./src/modules/pages/sources-view.js",
+  "./src/modules/utils/templates.js",
   "./src/modules/utils/herbarium.js",
   "./src/modules/utils/seo.js",
-  "./config/navbar.json?v=50",
-  "./config/footer.json?v=50",
+  "./config/navbar.json?v=51",
+  "./config/footer.json?v=51",
   "./config/environment.json",
   "./config/routes.json",
-  "./data/index/species-index.json?v=50",
-  "./data/index/pages/services.json?v=50",
+  "./data/index/species-index.json?v=51",
+  "./data/index/pages/services.json?v=51",
 ];
 
 self.addEventListener("install", (event) => {

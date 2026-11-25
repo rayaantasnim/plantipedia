@@ -2,7 +2,7 @@
  * Declarative Component Registry for Plantipedia Headless Static Architecture.
  * - Scans DOM for [data-section] mount points on load
  * - Resolves minimal deduplicated JSON dataset dependencies per active page
- * - Uses ./data/catalog/species-index.json for index/search and on-demand ./data/species/<slug>.json for monographs
+ * - Uses ./data/index/species-index.json for index/search and on-demand ./data/monographs/<slug>.json for monographs
  * - Renders skeletons immediately to prevent CLS and hydrates concurrently via Promise.allSettled()
  */
 

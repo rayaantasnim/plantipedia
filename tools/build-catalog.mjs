@@ -11,7 +11,12 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, "..");
-const SITE_BASE = "https://plantipedia.rayaantasnim.workers.dev";
+const ENV_CONFIG = JSON.parse(
+  fs.readFileSync(path.join(ROOT_DIR, "config", "environment.json"), "utf8"),
+);
+const SITE_BASE = String(
+  ENV_CONFIG?.application?.canonicalUrl || "",
+).replace(/\/+$/, "");
 
 const INDEX_PATH = path.join(ROOT_DIR, "data", "index", "species-index.json");
 const SPECIES_DIR = path.join(ROOT_DIR, "data", "monographs");

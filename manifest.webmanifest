@@ -1,7 +1,7 @@
 {
   "name": "Plantipedia — Digital Botanical Encyclopedia & Worldwide Flora Archive",
   "short_name": "Plantipedia",
-  "description": "Plantipedia Version 3.1: 50 deeply curated 15-chapter botanical monographs paired with a live Global Botanical Server uplink connecting 400,000+ worldwide vascular plants and tree species, bilingual (EN / বাংলা) telemetry, dynamic taxonomic lineage, and print-ready field sheets.",
+  "description": "Plantipedia Version 3.2: 50 deeply curated 15-chapter bilingual monographs paired with a federated multi-source Global Botanical Server uplink connecting 400,000+ worldwide vascular plants and tree species, Split Specimen Comparator, dynamic taxonomic lineage, and print-ready field sheets.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
