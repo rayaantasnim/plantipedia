@@ -1423,7 +1423,10 @@ export function renderSearchSuggestionNodes(container, matches, emptyQuery, item
     return;
   }
 
-  matches.forEach((plant, idx) => {
+  matches.forEach((entry, idx) => {
+    const plant = entry?.item || entry;
+    const isFuzzy = Boolean(entry?.isFuzzy);
+
     const link = document.createElement("a");
     link.href = resolveRootPath(`./plant/?species=${encodeURIComponent(plant.slug)}`);
     link.setAttribute("role", "option");
@@ -1433,7 +1436,7 @@ export function renderSearchSuggestionNodes(container, matches, emptyQuery, item
       : plant.commonName;
 
     if (itemVariant === "home") {
-      link.className = "suggestion-row";
+      link.className = isFuzzy ? "suggestion-row is-fuzzy-match" : "suggestion-row";
       const leftWrap = createEl("div", "suggestion-left-wrap");
       const thumb = buildImageElement(
         plant.thumbnailUrl || plant.image?.imageUrl,
@@ -1447,11 +1450,21 @@ export function renderSearchSuggestionNodes(container, matches, emptyQuery, item
       leftWrap.appendChild(thumb);
       leftWrap.appendChild(left);
       link.appendChild(leftWrap);
-      link.appendChild(
+
+      const rightCol = createEl("div", "nav-suggestion-right");
+      rightCol.appendChild(
         createEl("span", "suggestion-family", plant.overview?.family || plant.family || ""),
       );
+      if (isFuzzy) {
+        rightCol.appendChild(
+          createEl("span", "fuzzy-match-badge", "Did you mean · Fuzzy Match"),
+        );
+      }
+      link.appendChild(rightCol);
     } else {
-      link.className = "nav-suggestion-item";
+      link.className = isFuzzy
+        ? "nav-suggestion-item is-fuzzy-match"
+        : "nav-suggestion-item";
       link.setAttribute("data-nav-idx", String(idx));
       const leftWrap = createEl("div", "nav-suggestion-left");
       const thumb = buildImageElement(
@@ -1466,15 +1479,23 @@ export function renderSearchSuggestionNodes(container, matches, emptyQuery, item
       leftWrap.appendChild(thumb);
       leftWrap.appendChild(left);
       link.appendChild(leftWrap);
-      link.appendChild(
+
+      const rightCol = createEl("div", "nav-suggestion-right");
+      rightCol.appendChild(
         createEl("span", "nav-suggestion-family", plant.overview?.family || plant.family || ""),
       );
+      if (isFuzzy) {
+        rightCol.appendChild(
+          createEl("span", "fuzzy-match-badge", "Did you mean · Fuzzy Match"),
+        );
+      }
+      link.appendChild(rightCol);
     }
 
     fragment.appendChild(link);
   });
 
-  if (trimmedQuery.length >= 2 && matches.length < 2) {
+  if (trimmedQuery.length >= 2 && matches.length < 3) {
     fragment.appendChild(createGlobalServerCtaNode(trimmedQuery));
   }
 

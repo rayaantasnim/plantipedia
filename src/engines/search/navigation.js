@@ -7,30 +7,7 @@ import { getSpeciesIndex } from "../../core/bootstrap/state.js";
 import { resolveRootPath } from "../../core/bootstrap/router.js";
 import { renderSearchSuggestionNodes } from "../../modules/utils/templates.js";
 import { bindGlobalImageFallbackHandler } from "../../core/compilers/navbar-compiler.js";
-
-function plantMatchesQuery(plant, query) {
-  if (!query) return true;
-  const q = query.trim().toLowerCase();
-  const family = plant.family || plant.overview?.family || "";
-  const familyBn = plant.familyBn || "";
-  const plantGroup = plant.plantGroup || plant.overview?.plantGroup || "";
-  const localName = plant.localName || "";
-  const commonNameBn = plant.commonNameBn || "";
-  const summaryBn = plant.summaryBn || "";
-  const domain = plant.taxonomicDomain || "";
-  return (
-    plant.commonName.toLowerCase().includes(q) ||
-    plant.scientificName.toLowerCase().includes(q) ||
-    localName.toLowerCase().includes(q) ||
-    commonNameBn.toLowerCase().includes(q) ||
-    family.toLowerCase().includes(q) ||
-    familyBn.toLowerCase().includes(q) ||
-    summaryBn.toLowerCase().includes(q) ||
-    (plant.category || "").toLowerCase().includes(q) ||
-    domain.toLowerCase().includes(q) ||
-    plantGroup.toLowerCase().includes(q)
-  );
-}
+import { searchSpeciesFuzzy } from "./fuzzy-matcher.js";
 
 function bindLiveSpeciesSearch(config) {
   const form = document.getElementById(config.formId);
@@ -62,9 +39,9 @@ function bindLiveSpeciesSearch(config) {
     }
 
     const indexList = getSpeciesIndex();
-    currentMatches = indexList
-      .filter((plant) => plantMatchesQuery(plant, q))
-      .slice(0, config.maxResults || 7);
+    currentMatches = searchSpeciesFuzzy(indexList, q, {
+      limit: config.maxResults || 7,
+    });
 
     activeIndex = -1;
     renderSearchSuggestionNodes(
@@ -152,9 +129,9 @@ function bindLiveSpeciesSearch(config) {
       window.location.href = resolveRootPath("./species/");
       return;
     }
-    const matches = getSpeciesIndex().filter((p) => plantMatchesQuery(p, q));
+    const matches = searchSpeciesFuzzy(getSpeciesIndex(), q, { limit: 5 });
     if (matches.length === 1) {
-      navigateToSpecies(matches[0].slug);
+      navigateToSpecies(matches[0].item.slug);
       return;
     }
     if (q) {

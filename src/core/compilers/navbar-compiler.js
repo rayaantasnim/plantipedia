@@ -29,6 +29,7 @@ import {
   initHerbariumSystem,
   openHerbariumDrawer,
 } from "../../modules/utils/herbarium.js";
+import { searchSpeciesFuzzy } from "../../engines/search/fuzzy-matcher.js";
 
 const SITE_ROOT_URL = new URL("../../../", import.meta.url);
 const PLACEHOLDER_SVG_PATH = "./assets/images/placeholder-botanical.svg";
@@ -1090,28 +1091,6 @@ function bindNavbarShellInteractions(config) {
   }
 }
 
-function plantMatchesSearchQuery(plant, query) {
-  if (!query) return true;
-  const q = query.trim().toLowerCase();
-  const family = plant.family || plant.overview?.family || "";
-  const familyBn = plant.familyBn || "";
-  const plantGroup = plant.plantGroup || plant.overview?.plantGroup || "";
-  const localName = plant.localName || "";
-  const commonNameBn = plant.commonNameBn || "";
-  const summaryBn = plant.summaryBn || "";
-  return (
-    plant.commonName.toLowerCase().includes(q) ||
-    plant.scientificName.toLowerCase().includes(q) ||
-    localName.toLowerCase().includes(q) ||
-    commonNameBn.toLowerCase().includes(q) ||
-    family.toLowerCase().includes(q) ||
-    familyBn.toLowerCase().includes(q) ||
-    summaryBn.toLowerCase().includes(q) ||
-    (plant.category || "").toLowerCase().includes(q) ||
-    plantGroup.toLowerCase().includes(q)
-  );
-}
-
 function createNavGlobalServerCta(query) {
   const cta = document.createElement("a");
   cta.href = resolveSitePath(`./plant/live/?q=${encodeURIComponent(query)}`);
@@ -1120,7 +1099,7 @@ function createNavGlobalServerCta(query) {
 
   const label = document.createElement("span");
   label.className = "global-server-cta-label";
-  label.textContent = `🌐 Query Global Botanical Server for "${query}"`;
+  label.textContent = `🌐 Search Global Botanical Server for "${query}"`;
 
   const arrow = document.createElement("span");
   arrow.className = "global-server-cta-arrow";
@@ -1149,10 +1128,15 @@ function renderNavSuggestionNodes(container, matches, query) {
     return;
   }
 
-  matches.forEach((plant, idx) => {
+  matches.forEach((entry, idx) => {
+    const plant = entry?.item || entry;
+    const isFuzzy = Boolean(entry?.isFuzzy);
+
     const link = document.createElement("a");
     link.href = resolveSitePath(`./plant/?species=${encodeURIComponent(plant.slug)}`);
-    link.className = "nav-suggestion-item";
+    link.className = isFuzzy
+      ? "nav-suggestion-item is-fuzzy-match"
+      : "nav-suggestion-item";
     link.setAttribute("role", "option");
     link.setAttribute("data-nav-idx", String(idx));
 
@@ -1181,16 +1165,27 @@ function renderNavSuggestionNodes(container, matches, query) {
     leftWrap.appendChild(thumb);
     leftWrap.appendChild(textCol);
 
+    const rightCol = document.createElement("div");
+    rightCol.className = "nav-suggestion-right";
+
     const fam = document.createElement("span");
     fam.className = "nav-suggestion-family";
     fam.textContent = plant.family || plant.overview?.family || "";
+    rightCol.appendChild(fam);
+
+    if (isFuzzy) {
+      const fuzzyBadge = document.createElement("span");
+      fuzzyBadge.className = "fuzzy-match-badge";
+      fuzzyBadge.textContent = "Did you mean · Fuzzy Match";
+      rightCol.appendChild(fuzzyBadge);
+    }
 
     link.appendChild(leftWrap);
-    link.appendChild(fam);
+    link.appendChild(rightCol);
     frag.appendChild(link);
   });
 
-  if (trimmedQuery.length >= 2 && matches.length < 2) {
+  if (trimmedQuery.length >= 2 && matches.length < 3) {
     frag.appendChild(createNavGlobalServerCta(trimmedQuery));
   }
 
@@ -1225,9 +1220,7 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
       return;
     }
 
-    currentMatches = getSpeciesIndex()
-      .filter((p) => plantMatchesSearchQuery(p, q))
-      .slice(0, 8);
+    currentMatches = searchSpeciesFuzzy(getSpeciesIndex(), q, { limit: 8 });
     activeIndex = -1;
     renderNavSuggestionNodes(suggestionsEl, currentMatches, q);
   };
@@ -1314,11 +1307,9 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
       return;
     }
     const q = input.value.trim();
-    const matches = getSpeciesIndex().filter((p) =>
-      plantMatchesSearchQuery(p, q),
-    );
+    const matches = searchSpeciesFuzzy(getSpeciesIndex(), q, { limit: 8 });
     if (matches.length === 1) {
-      navigateToSpecies(matches[0].slug);
+      navigateToSpecies(matches[0].item.slug);
       return;
     }
     if (q) {

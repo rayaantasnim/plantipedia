@@ -23,36 +23,7 @@ import {
   runGlobalServerTelemetry,
 } from "../../engines/global-server/global-botanical-server.js";
 import { openComparisonSynthesisOverlay } from "../../engines/comparator/synthesis-overlay.js";
-
-function scoreSpeciesMatch(sp, q) {
-  const fields = [
-    sp.commonName,
-    sp.commonNameBn,
-    sp.localName,
-    sp.scientificName,
-    sp.slug,
-    sp.family,
-    sp.familyBn,
-    sp.category,
-  ]
-    .filter(Boolean)
-    .map((val) => String(val).toLowerCase());
-
-  let bestScore = 0;
-  for (let i = 0; i < fields.length; i += 1) {
-    const field = fields[i];
-    if (field === q) {
-      bestScore = Math.max(bestScore, i <= 4 ? 100 : 75);
-    } else if (field.startsWith(q)) {
-      bestScore = Math.max(bestScore, i <= 4 ? 85 : 55);
-    } else if (field.includes(` ${q}`)) {
-      bestScore = Math.max(bestScore, i <= 4 ? 70 : 45);
-    } else if (field.includes(q)) {
-      bestScore = Math.max(bestScore, i <= 4 ? 50 : 30);
-    }
-  }
-  return bestScore;
-}
+import { searchSpeciesFuzzy } from "../../engines/search/fuzzy-matcher.js";
 
 function formatSpecimenInputLabel(sp) {
   if (!sp) return "";
@@ -94,17 +65,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
   }
 
   function filterCuratedSpecies(rawQuery) {
-    const q = String(rawQuery || "").trim().toLowerCase();
-    if (!q) return [];
-    const scored = [];
-    for (const sp of list) {
-      const score = scoreSpeciesMatch(sp, q);
-      if (score > 0) {
-        scored.push({ sp, score });
-      }
-    }
-    scored.sort((a, b) => b.score - a.score || a.sp.commonName.localeCompare(b.sp.commonName));
-    return scored.slice(0, 14).map((entry) => entry.sp);
+    return searchSpeciesFuzzy(list, rawQuery, { limit: 14 });
   }
 
   function getPanelIdentity(side) {
@@ -706,8 +667,16 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
             ),
           );
         } else {
-          currentMatches.forEach((sp, idx) => {
-            const optBtn = createEl("button", "compare-autocomplete-option");
+          currentMatches.forEach((entry, idx) => {
+            const sp = entry?.item || entry;
+            const isFuzzy = Boolean(entry?.isFuzzy);
+
+            const optBtn = createEl(
+              "button",
+              isFuzzy
+                ? "compare-autocomplete-option is-fuzzy-match"
+                : "compare-autocomplete-option",
+            );
             optBtn.type = "button";
             optBtn.setAttribute("role", "option");
             optBtn.dataset.slug = sp.slug;
@@ -722,9 +691,17 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
             optBtn.appendChild(thumb);
 
             const textCol = createEl("div", "compare-autocomplete-text");
-            textCol.appendChild(
+            const titleRow = createEl("div", "compare-option-title-row");
+            titleRow.appendChild(
               createEl("span", "compare-option-common", formatSpecimenInputLabel(sp)),
             );
+            if (isFuzzy) {
+              titleRow.appendChild(
+                createEl("span", "fuzzy-match-badge compare-fuzzy-badge", "Did you mean · Fuzzy Match"),
+              );
+            }
+            textCol.appendChild(titleRow);
+
             const sciSub = sp.family
               ? `${sp.scientificName} · ${sp.family}`
               : sp.scientificName;
@@ -745,9 +722,9 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           });
         }
 
-        if (trimmed.length >= 2 && currentMatches.length < 2) {
+        if (trimmed.length >= 2 && currentMatches.length < 3) {
           activeGlobalQuery = trimmed;
-          globalFetchBtn.textContent = `🌐 Fetch "${trimmed}" from Global Botanical Server →`;
+          globalFetchBtn.textContent = `🌐 Search Global Botanical Server for "${trimmed}" →`;
           globalFooter.hidden = false;
         } else {
           activeGlobalQuery = "";
@@ -821,12 +798,9 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           }
 
           const trimmed = inputEl.value.trim().replace(/\s+/g, " ");
-          if (trimmed.length >= 2 && currentMatches.length < 2) {
-            triggerInlineGlobalFetch(trimmed);
-            return;
-          }
           if (currentMatches.length >= 1) {
-            lockLocalSpecies(currentMatches[0]);
+            const top = currentMatches[0]?.item || currentMatches[0];
+            lockLocalSpecies(top);
             return;
           }
           if (trimmed.length >= 2) {
