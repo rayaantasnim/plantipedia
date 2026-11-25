@@ -3279,6 +3279,8 @@ body.is-embed .plant-floating-compare-btn {
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 24px 54px rgba(0, 0, 0, 0.52);
   color: #ecfdf5;
+  container-type: inline-size;
+  container-name: gbs-loader;
 }
 
 .gbs-loader-head {
@@ -3307,8 +3309,9 @@ body.is-embed .plant-floating-compare-btn {
 .gbs-loader-heading {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  font-size: clamp(1.25rem, 2.5vw, 1.7rem);
   font-weight: 700;
+  line-height: 1.25;
   color: #ecfdf5;
 }
 
@@ -3365,11 +3368,14 @@ body.is-embed .plant-floating-compare-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 8px 12px;
 }
 
 .gbs-loader-substatus {
   margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-family: var(--font-mono);
   font-size: 0.74rem;
   color: var(--ink-muted);
@@ -3460,6 +3466,21 @@ body.is-embed .plant-floating-compare-btn {
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
+}
+
+@container gbs-loader (max-width: 480px) {
+  .gbs-loader-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .compare-loader-abort-btn {
+    align-self: flex-start;
+  }
+
+  .gbs-loader-heading {
+    font-size: 1.18rem;
+  }
 }
 
 @media (max-width: 600px) {

@@ -254,15 +254,6 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     });
   }
 
-  function redirectToCompare404(reason, query) {
-    const params = new URLSearchParams({
-      reason: reason || "invalid",
-      q: query || "",
-      from: "compare",
-    });
-    window.location.href = resolveRootPath(`./404.html?${params.toString()}`);
-  }
-
   function renderSelectorView({ resetUrl = false, highlightRight = false } = {}) {
     clearDocumentListeners();
     removeFloatingModeButton();

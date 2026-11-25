@@ -4,7 +4,7 @@
  * resolved safely against self.location (compatible with both / and /plantipedia/ GitHub Pages).
  */
 
-const CACHE_VERSION = "plantipedia-v5.3.1";
+const CACHE_VERSION = "plantipedia-v5.3.2";
 
 const CORE_SHELL_PATHS = [
   "./",
@@ -45,6 +45,9 @@ const CORE_SHELL_PATHS = [
   "./src/core/compilers/footer-compiler.js",
   "./src/core/compilers/specimen-not-found.js",
   "./src/engines/global-server/api.js",
+  "./src/engines/global-server/taxon-parser.js",
+  "./src/engines/global-server/gbs-client.js",
+  "./src/engines/global-server/live-gateway-controller.js",
   "./src/engines/global-server/global-botanical-server.js",
   "./src/engines/comparator/synthesis-overlay.js",
   "./src/modules/pages/services-controller.js",

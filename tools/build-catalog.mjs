@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, "..");
-const SITE_BASE = "https://rayaantasnim.github.io/plantipedia";
+const SITE_BASE = "https://plantipedia.rayaantasnim.workers.dev";
 
 const INDEX_PATH = path.join(ROOT_DIR, "data", "index", "species-index.json");
 const SPECIES_DIR = path.join(ROOT_DIR, "data", "monographs");
@@ -20,10 +20,16 @@ const SITEMAP_PATH = path.join(ROOT_DIR, "sitemap.xml");
 const STATIC_ROUTES = [
   { loc: `${SITE_BASE}/`, changefreq: "weekly", priority: "1.0" },
   { loc: `${SITE_BASE}/species/`, changefreq: "weekly", priority: "0.9" },
+  { loc: `${SITE_BASE}/plant/live/`, changefreq: "weekly", priority: "0.9" },
   { loc: `${SITE_BASE}/taxonomy/`, changefreq: "weekly", priority: "0.9" },
   { loc: `${SITE_BASE}/seasons/`, changefreq: "weekly", priority: "0.9" },
   { loc: `${SITE_BASE}/compare/`, changefreq: "monthly", priority: "0.8" },
   { loc: `${SITE_BASE}/services/`, changefreq: "weekly", priority: "0.9" },
+  { loc: `${SITE_BASE}/sources/`, changefreq: "weekly", priority: "0.85" },
+  { loc: `${SITE_BASE}/roadmap/`, changefreq: "weekly", priority: "0.8" },
+  { loc: `${SITE_BASE}/identify/`, changefreq: "monthly", priority: "0.6" },
+  { loc: `${SITE_BASE}/qr-studio/`, changefreq: "monthly", priority: "0.6" },
+  { loc: `${SITE_BASE}/install/`, changefreq: "monthly", priority: "0.6" },
 ];
 
 function main() {
