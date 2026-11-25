@@ -13,7 +13,7 @@ import {
 
 const RETRY_SCHEDULE_MS = [0, 1200, 2600];
 const DEFAULT_TIMEOUT_MS = 6000;
-const CACHE_STORAGE_PREFIX = "plantipedia_global_monograph_v32::";
+const CACHE_STORAGE_PREFIX = "plantipedia_global_monograph_v33::";
 const memoryCache = new Map();
 
 const NON_BOTANICAL_IMAGE_RE =
@@ -536,12 +536,199 @@ async function fetchCommonsImages(searchTerm, commonName, scientificName, signal
       alt: `${commonName} (${scientificName}) botanical archival plate`,
       caption,
     });
-    if (out.length >= 14) break;
+    if (out.length >= 16) break;
   }
   return out;
 }
 
-function buildDedupedImagePool({ restSummary, page, articleImages, commonsImages, inatPhotos, commonName, scientificName }) {
+async function fetchCommonsCategoryImages(categoryName, commonName, scientificName, signal) {
+  const catClean = normalizeGlobalQuery(String(categoryName || "").replace(/^Category:/i, ""));
+  if (!catClean) return [];
+  const url = buildCommonsUrl({
+    action: "query",
+    generator: "categorymembers",
+    gcmtitle: `Category:${catClean}`,
+    gcmnamespace: "6",
+    gcmlimit: "24",
+    prop: "imageinfo",
+    iiprop: "url|mime|size|extmetadata",
+    iiurlwidth: "1100",
+  });
+  const json = await fetchJsonWithSignal(url, signal, DEFAULT_TIMEOUT_MS);
+  const pages = json?.query?.pages || [];
+  const out = [];
+  for (const imgPage of pages) {
+    const info = imgPage?.imageinfo?.[0];
+    if (!isBotanicalPhotoCandidate(imgPage.title, info)) continue;
+    const preferredUrl = info.thumburl || info.url;
+    const caption = cleanImageCaption(
+      info.extmetadata?.ImageDescription?.value || info.extmetadata?.ObjectName?.value,
+      imgPage.title,
+      commonName,
+      scientificName,
+    );
+    out.push({
+      url: preferredUrl,
+      alt: `${commonName} (${scientificName}) botanical category specimen`,
+      caption,
+    });
+    if (out.length >= 16) break;
+  }
+  return out;
+}
+
+async function fetchGbifOccurrenceImages(taxonKey, commonName, scientificName, signal) {
+  if (!taxonKey) return [];
+  const url = `https://api.gbif.org/v1/occurrence/search?taxonKey=${encodeURIComponent(String(taxonKey))}&mediaType=StillImage&limit=28`;
+  const json = await fetchJsonWithSignal(url, signal, DEFAULT_TIMEOUT_MS);
+  const results = Array.isArray(json?.results) ? json.results : [];
+  const livePhotos = [];
+  const voucherPhotos = [];
+
+  for (const occ of results) {
+    const mediaList = Array.isArray(occ?.media) ? occ.media : [];
+    for (const m of mediaList) {
+      if (!m || (m.type && m.type !== "StillImage")) continue;
+      const rawUrl = String(m.identifier || "").trim();
+      if (!rawUrl || !/^https?:\/\//i.test(rawUrl)) continue;
+      if (/\.(?:svg|gif|pdf|tif|tiff)(?:$|\?)/i.test(rawUrl)) continue;
+      if (NON_BOTANICAL_IMAGE_RE.test(rawUrl)) continue;
+      const fmt = String(m.format || "").toLowerCase();
+      if (fmt && !/^image\/(jpeg|jpg|png|webp)$/i.test(fmt)) continue;
+
+      const upgraded = upgradeInatPhotoUrl(rawUrl) || rawUrl;
+      const countryStr = occ.country ? ` (${occ.country})` : "";
+      const holder = occ.institutionCode || m.rightsHolder || m.creator || "GBIF Occurrence Record";
+      const entry = {
+        url: upgraded,
+        alt: `${commonName} (${scientificName}) verified biodiversity field photograph`,
+        caption: sanitizeBotanicalText(
+          `${commonName} (${scientificName}) — GBIF verified specimen${countryStr} · ${holder}`,
+        ),
+      };
+
+      const isHerbariumSheet =
+        /herbarium|preservedspecimen|barcode|manifest/i.test(`${occ.basisOfRecord || ""} ${rawUrl} ${m.title || ""}`);
+      if (isHerbariumSheet) {
+        voucherPhotos.push(entry);
+      } else {
+        livePhotos.push(entry);
+      }
+    }
+  }
+  return [...livePhotos, ...voucherPhotos].slice(0, 16);
+}
+
+const IUCN_WIKIDATA_MAP = Object.freeze({
+  Q211005: "Least Concern (LC)",
+  Q719675: "Near Threatened (NT)",
+  Q278113: "Vulnerable (VU)",
+  Q11394: "Endangered (EN)",
+  Q219127: "Critically Endangered (CR)",
+  Q239509: "Extinct in the Wild (EW)",
+  Q237350: "Extinct (EX)",
+  Q3245245: "Data Deficient (DD)",
+});
+
+function parseWikidataEntityObject(entity) {
+  if (!entity || entity.missing !== undefined) return null;
+  const claims = entity.claims || {};
+  const taxonName = claims.P225?.[0]?.mainsnak?.datavalue?.value || "";
+  const iucnId = claims.P141?.[0]?.mainsnak?.datavalue?.value?.id || "";
+  const commonsCategory = claims.P373?.[0]?.mainsnak?.datavalue?.value || "";
+  const commonsImage = claims.P18?.[0]?.mainsnak?.datavalue?.value || "";
+  return {
+    wikidataId: entity.id || "",
+    taxonName: typeof taxonName === "string" ? sanitizeBotanicalText(taxonName) : "",
+    iucnStatus: IUCN_WIKIDATA_MAP[iucnId] || "",
+    commonsCategory: typeof commonsCategory === "string" ? commonsCategory : "",
+    commonsImage: typeof commonsImage === "string" ? commonsImage : "",
+    enWikiTitle: entity.sitelinks?.enwiki?.title || "",
+    bnWikiTitle: entity.sitelinks?.bnwiki?.title || "",
+    labelEn: entity.labels?.en?.value || "",
+    labelBn: entity.labels?.bn?.value || "",
+    descriptionEn: entity.descriptions?.en?.value || "",
+  };
+}
+
+async function fetchWikidataEntity({ title, lang, fallbackQuery, signal }) {
+  const cleanTitle = normalizeGlobalQuery(title);
+  if (!cleanTitle) return null;
+
+  const site = lang === "bn" ? "bnwiki" : "enwiki";
+  const directParams = new URLSearchParams({
+    action: "wbgetentities",
+    sites: site,
+    titles: cleanTitle,
+    props: "claims|labels|descriptions|sitelinks",
+    languages: "en|bn",
+    format: "json",
+    origin: "*",
+  });
+  try {
+    const json = await fetchJsonWithSignal(
+      `https://www.wikidata.org/w/api.php?${directParams.toString()}`,
+      signal,
+      DEFAULT_TIMEOUT_MS,
+    );
+    const entities = json?.entities || {};
+    for (const [id, ent] of Object.entries(entities)) {
+      if (!id.startsWith("-") && ent && ent.missing === undefined) {
+        const parsed = parseWikidataEntityObject(ent);
+        if (parsed) return parsed;
+      }
+    }
+  } catch (err) {
+    if (isAbortError(err) && signal?.aborted) throw err;
+  }
+
+  const searchTerm = normalizeGlobalQuery(fallbackQuery || cleanTitle);
+  if (!searchTerm) return null;
+  const searchParams = new URLSearchParams({
+    action: "wbsearchentities",
+    search: searchTerm,
+    language: lang === "bn" ? "bn" : "en",
+    type: "item",
+    limit: "3",
+    format: "json",
+    origin: "*",
+  });
+  const searchJson = await fetchJsonWithSignal(
+    `https://www.wikidata.org/w/api.php?${searchParams.toString()}`,
+    signal,
+    DEFAULT_TIMEOUT_MS,
+  );
+  const firstId = searchJson?.search?.[0]?.id;
+  if (!firstId) return null;
+
+  const byIdParams = new URLSearchParams({
+    action: "wbgetentities",
+    ids: firstId,
+    props: "claims|labels|descriptions|sitelinks",
+    languages: "en|bn",
+    format: "json",
+    origin: "*",
+  });
+  const byIdJson = await fetchJsonWithSignal(
+    `https://www.wikidata.org/w/api.php?${byIdParams.toString()}`,
+    signal,
+    DEFAULT_TIMEOUT_MS,
+  );
+  return parseWikidataEntityObject(byIdJson?.entities?.[firstId]);
+}
+
+function buildDedupedImagePool({
+  restSummary,
+  page,
+  articleImages,
+  enArticleImages = [],
+  commonsCategoryImages = [],
+  commonsImages = [],
+  inatPhotos = [],
+  gbifOccurrencePhotos = [],
+  commonName,
+  scientificName,
+}) {
   const collected = [];
   const seenKeys = new Set();
 
@@ -576,17 +763,19 @@ function buildDedupedImagePool({ restSummary, page, articleImages, commonsImages
     );
   }
 
-  for (const img of articleImages || []) {
-    tryPush(img.url, img.alt, img.caption);
-    if (collected.length >= 14) break;
-  }
-  for (const img of commonsImages || []) {
-    if (collected.length >= 14) break;
-    tryPush(img.url, img.alt, img.caption);
-  }
-  for (const img of inatPhotos || []) {
-    if (collected.length >= 14) break;
-    tryPush(img.url, img.alt, img.caption);
+  const orderedSources = [
+    articleImages,
+    enArticleImages,
+    commonsCategoryImages,
+    commonsImages,
+    inatPhotos,
+    gbifOccurrencePhotos,
+  ];
+  for (const sourceArr of orderedSources) {
+    for (const img of sourceArr || []) {
+      if (collected.length >= 16) return collected;
+      tryPush(img.url, img.alt, img.caption);
+    }
   }
 
   return collected;
@@ -643,7 +832,6 @@ async function resolveSingleTitle({
   const enLangTitle =
     lang === "bn" ? page?.langlinks?.find((l) => l.lang === "en")?.title || "" : "";
 
-  // Extract binomial from the article itself FIRST before consulting Stage A common-name GBIF/iNat hits
   const articleBinomial = extractBinomial({
     taxobox,
     infobox: null,
@@ -730,6 +918,12 @@ async function resolveSingleTitle({
     lang === "bn" && enLangTitle
       ? fetchMediaWikiArticle(enLangTitle, "en", signal)
       : Promise.resolve(null),
+    fetchWikidataEntity({
+      title: resolvedTitle,
+      lang,
+      fallbackQuery: taxonomyLookupName,
+      signal,
+    }),
   ];
 
   const [
@@ -738,33 +932,64 @@ async function resolveSingleTitle({
     gbifSettled,
     inatSettled,
     enSupplementSettled,
+    wikidataSettled,
   ] = await Promise.allSettled(parallelTasks);
 
-  [artImgsSettled, commonsImgsSettled, gbifSettled, inatSettled, enSupplementSettled].forEach((r) => {
+  [
+    artImgsSettled,
+    commonsImgsSettled,
+    gbifSettled,
+    inatSettled,
+    enSupplementSettled,
+    wikidataSettled,
+  ].forEach((r) => {
     if (r.status === "rejected" && isAbortError(r.reason) && signal?.aborted) {
       throw r.reason;
     }
   });
 
   const articleImages = artImgsSettled.status === "fulfilled" ? artImgsSettled.value : [];
-  const commonsPrimary = commonsImgsSettled.status === "fulfilled" ? commonsImgsSettled.value : [];
+  let commonsPrimary = commonsImgsSettled.status === "fulfilled" ? commonsImgsSettled.value : [];
   let gbifData = gbifSettled.status === "fulfilled" ? gbifSettled.value : scopedGbif;
   let inatTaxon = inatSettled.status === "fulfilled" ? inatSettled.value : scopedInat;
-  const enSuppPage = enSupplementSettled.status === "fulfilled" ? enSupplementSettled.value : null;
+  let enSuppPage = enSupplementSettled.status === "fulfilled" ? enSupplementSettled.value : null;
+  const wikidataInfo = wikidataSettled.status === "fulfilled" ? wikidataSettled.value : null;
 
-  // For non-English queries (e.g. বাংলা "গোলাপ"), upgrade GBIF & iNat from English supplement binomial if needed
+  // Cross-language English Wikipedia fallback via Wikidata sitelink / P225 taxon name when BN langlink was missing
+  if (lang === "bn" && !enSuppPage) {
+    const enTarget =
+      wikidataInfo?.enWikiTitle ||
+      wikidataInfo?.taxonName ||
+      articleBinomial ||
+      gbifData?.species ||
+      gbifData?.canonicalName ||
+      "";
+    if (enTarget) {
+      const enExtraSettled = await Promise.allSettled([
+        fetchMediaWikiArticle(enTarget, "en", signal),
+      ]);
+      if (enExtraSettled[0].status === "fulfilled" && enExtraSettled[0].value) {
+        enSuppPage = enExtraSettled[0].value;
+      }
+    }
+  }
+
+  // Upgrade GBIF & iNat from English supplement or Wikidata P225 binomial when missing
   const enSuppWikitext = enSuppPage?.revisions?.[0]?.slots?.main?.content || "";
   const enSuppTaxobox = enSuppWikitext ? parseTaxoboxFields(enSuppWikitext) : {};
-  const enSuppSci = enSuppPage
-    ? extractBinomial({
-        taxobox: enSuppTaxobox,
-        infobox: null,
-        gbifData: null,
-        inatTaxon: null,
-        title: enSuppPage.title,
-        extract: enSuppPage.extract,
-      }) || enSuppTaxobox.genus || ""
-    : "";
+  const enSuppSci =
+    (enSuppPage
+      ? extractBinomial({
+          taxobox: enSuppTaxobox,
+          infobox: null,
+          gbifData: null,
+          inatTaxon: null,
+          title: enSuppPage.title,
+          extract: enSuppPage.extract,
+        }) || enSuppTaxobox.genus
+      : "") ||
+    wikidataInfo?.taxonName ||
+    "";
 
   if ((!gbifData || !inatTaxon) && enSuppSci && enSuppSci !== taxonomyLookupName) {
     const [gbifExtra, inatExtra] = await Promise.allSettled([
@@ -785,7 +1010,40 @@ async function resolveSingleTitle({
       inatTaxon,
       title: resolvedTitle,
       extract: `${page?.extract || ""} ${enSuppPage?.extract || ""}`,
-    }) || preliminarySci;
+    }) ||
+    wikidataInfo?.taxonName ||
+    preliminarySci;
+
+  // Harvest multi-source verified botanical photography in parallel:
+  // English Wikipedia images + Wikimedia Commons Category (P373) + GBIF Occurrence Media + exact binomial Commons search
+  const stageCPhotoTasks = [
+    enSuppPage?.title && (lang === "bn" || enSuppPage.title !== resolvedTitle)
+      ? fetchArticleImages(enSuppPage.title, "en", commonLabel, finalSci, signal)
+      : Promise.resolve([]),
+    wikidataInfo?.commonsCategory
+      ? fetchCommonsCategoryImages(wikidataInfo.commonsCategory, commonLabel, finalSci, signal)
+      : Promise.resolve([]),
+    gbifData?.usageKey
+      ? fetchGbifOccurrenceImages(gbifData.usageKey, commonLabel, finalSci, signal)
+      : Promise.resolve([]),
+    finalSci && `"${finalSci}"` !== commonsQuery
+      ? fetchCommonsImages(`"${finalSci}"`, commonLabel, finalSci, signal)
+      : Promise.resolve([]),
+  ];
+
+  const [
+    enArtImgsSettled,
+    commonsCatSettled,
+    gbifMediaSettled,
+    commonsSciSettled,
+  ] = await Promise.allSettled(stageCPhotoTasks);
+
+  const enArticleImages = enArtImgsSettled.status === "fulfilled" ? enArtImgsSettled.value : [];
+  const commonsCategoryImages = commonsCatSettled.status === "fulfilled" ? commonsCatSettled.value : [];
+  const gbifOccurrencePhotos = gbifMediaSettled.status === "fulfilled" ? gbifMediaSettled.value : [];
+  if (commonsSciSettled.status === "fulfilled" && commonsSciSettled.value.length > 0) {
+    commonsPrimary = [...commonsSciSettled.value, ...commonsPrimary];
+  }
 
   const inatPhotos = collectInatPhotoEntries(inatTaxon, commonLabel, finalSci);
 
@@ -793,17 +1051,21 @@ async function resolveSingleTitle({
     restSummary,
     page,
     articleImages,
+    enArticleImages,
+    commonsCategoryImages,
     commonsImages: commonsPrimary,
     inatPhotos,
+    gbifOccurrencePhotos,
     commonName: commonLabel,
     scientificName: finalSci,
   });
 
-  if (imagesPool.length < 6) {
+  if (imagesPool.length < 7) {
     const genusTerm =
       gbifData?.genus ||
       (finalSci.includes(" ") ? finalSci.split(" ")[0] : "") ||
       enLangTitle ||
+      wikidataInfo?.enWikiTitle ||
       commonLabel;
     if (genusTerm && genusTerm.toLowerCase() !== commonsQuery.replace(/"/g, "").toLowerCase()) {
       const bonusSettled = await Promise.allSettled([
@@ -814,8 +1076,11 @@ async function resolveSingleTitle({
           restSummary,
           page,
           articleImages,
+          enArticleImages,
+          commonsCategoryImages,
           commonsImages: [...commonsPrimary, ...bonusSettled[0].value],
           inatPhotos,
+          gbifOccurrencePhotos,
           commonName: commonLabel,
           scientificName: finalSci,
         });
@@ -845,6 +1110,7 @@ async function resolveSingleTitle({
     restSummary,
     gbifData,
     inatTaxon,
+    wikidataInfo,
     parsedData: null,
     imagesPool,
     lang,
@@ -881,7 +1147,43 @@ async function queryGlobalSourcesOnce(query, preferredLang, signal) {
 
   const candidates = rankSearchCandidates(mwHits, initialInat, initialGbif, query);
 
+  const tryBengaliToEnglishFallback = async () => {
+    if (preferredLang !== "bn") return null;
+    let enCandidate =
+      parseWikipediaSlugFromUrl(initialInat?.wikipedia_url) ||
+      initialInat?.name ||
+      initialGbif?.species ||
+      initialGbif?.canonicalName ||
+      "";
+    if (!enCandidate) {
+      try {
+        const wd = await fetchWikidataEntity({
+          title: query,
+          lang: "bn",
+          fallbackQuery: query,
+          signal,
+        });
+        enCandidate = wd?.enWikiTitle || wd?.taxonName || wd?.labelEn || "";
+      } catch (err) {
+        if (isAbortError(err) && signal?.aborted) throw err;
+      }
+    }
+    if (!enCandidate) return null;
+    const enRes = await resolveSingleTitle({
+      title: enCandidate,
+      lang: "en",
+      originalQuery: query,
+      initialGbif,
+      initialInat,
+      signal,
+      stateTracker,
+    });
+    return enRes.status === "ok" && enRes.monograph ? enRes.monograph : null;
+  };
+
   if (candidates.length === 0) {
+    const bnFallback = await tryBengaliToEnglishFallback();
+    if (bnFallback) return { ok: true, monograph: bnFallback };
     if (stateTracker.hadNetworkError) {
       return { ok: false, reason: "network" };
     }
@@ -940,28 +1242,9 @@ async function queryGlobalSourcesOnce(query, preferredLang, signal) {
     }
   }
 
-  // If Bengali query still yielded nothing, try English fallback via initialInat/initialGbif
-  if (preferredLang === "bn") {
-    const enCandidate =
-      parseWikipediaSlugFromUrl(initialInat?.wikipedia_url) ||
-      initialInat?.name ||
-      initialGbif?.species ||
-      initialGbif?.canonicalName ||
-      "";
-    if (enCandidate) {
-      const enRes = await resolveSingleTitle({
-        title: enCandidate,
-        lang: "en",
-        originalQuery: query,
-        initialGbif,
-        initialInat,
-        signal,
-        stateTracker,
-      });
-      if (enRes.status === "ok" && enRes.monograph) {
-        return { ok: true, monograph: enRes.monograph };
-      }
-    }
+  const bnFallback = await tryBengaliToEnglishFallback();
+  if (bnFallback) {
+    return { ok: true, monograph: bnFallback };
   }
 
   if (

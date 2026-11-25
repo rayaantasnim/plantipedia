@@ -514,6 +514,78 @@
       "category": "Genetics",
       "en": "Seeds containing multiple embryos—usually one sexual zygotic embryo plus clonal nucellar embryos genetically identical to the mother tree.",
       "bn": "বহুভ্রূণী — একটি বীজের ভেতরে একাধিক ভ্রূণ থাকা, যা মাতৃগাছের হুবহু গুণসম্পন্ন চারা উৎপন্ন করতে সক্ষম।"
+    },
+    {
+      "id": "gymnosperm",
+      "term": "Gymnosperm",
+      "aliases": ["gymnosperm", "gymnosperms"],
+      "category": "Taxonomy",
+      "en": "Ancient vascular seed-bearing plants—such as conifers, cycads, Ginkgo, and Welwitschia—whose ovules develop exposed on cone scales rather than inside an enclosed ovary.",
+      "bn": "নগ্নবীজী উদ্ভিদ — যেসব প্রাচীন উদ্ভিদের বীজ ফলের ভেতরে আবৃত না থেকে শঙ্কু বা কোণের আঁশের ওপর উন্মুক্ত অবস্থায় থাকে।"
+    },
+    {
+      "id": "monocarpic",
+      "term": "Monocarpic",
+      "aliases": ["monocarpic", "semelparous", "hapaxanthic"],
+      "category": "Phenology",
+      "en": "Plants—such as Talipot palms (Corypha) and bamboos—that grow vegetatively for decades before flowering once in a massive terminal burst, setting seed, and dying.",
+      "bn": "মনোকার্পিক (একবার পুষ্পায়নকারী) — যেসব উদ্ভিদ দীর্ঘকাল বৃদ্ধির পর জীবনে কেবল একবারই প্রচুর ফুল ও ফল ধারণ করে মৃত্যুবরণ করে (যেমন তালিপাম ও বাঁশ)।"
+    },
+    {
+      "id": "dioecious",
+      "term": "Dioecious",
+      "aliases": ["dioecious", "dioecy"],
+      "category": "Reproductive Biology",
+      "en": "Botanical reproductive strategy where male pollen-bearing flowers and female seed-bearing flowers occur exclusively on separate individual plants.",
+      "bn": "ভিন্নবাসী — যেসব উদ্ভিদে পুরুষ ও স্ত্রী ফুল সম্পূর্ণ আলাদা গাছে জন্মায় (যেমন তাল ও খেজুর)।"
+    },
+    {
+      "id": "monoecious",
+      "term": "Monoecious",
+      "aliases": ["monoecious", "monoecy"],
+      "category": "Reproductive Biology",
+      "en": "Plants bearing separate male staminate and female pistillate flowers on the same individual stem or canopy.",
+      "bn": "সহবাসী — একই গাছে পৃথক পুরুষ ও স্ত্রী ফুল উৎপাদনকারী উদ্ভিদ (যেমন নারিকেল ও ভুট্টা)।"
+    },
+    {
+      "id": "palmate",
+      "term": "Palmate",
+      "aliases": ["palmate", "palmately", "costapalmate"],
+      "category": "Morphology",
+      "en": "Fan-like radiating arrangement of leaf lobes, leaflets, or major veins emerging from a single central point like fingers spreading from a palm.",
+      "bn": "করতলাকার (পামেট) — হাতের তালু ও আঙুলের মতো একটি বিন্দু থেকে চারদিকে ছড়ানো পাতার খণ্ড বা শিরাবিন্যাস (যেমন তালপাতা)।"
+    },
+    {
+      "id": "phylogeny",
+      "term": "Phylogeny",
+      "aliases": ["phylogeny", "phylogenetic"],
+      "category": "Evolution",
+      "en": "The evolutionary family tree and ancestor-descendant relationships reconstructing how plant lineages diverged across geological time.",
+      "bn": "জাতিজনি (ফাইলোজেনি) — ভূতাত্ত্বিক সময়ে উদ্ভিদ গোষ্ঠীগুলোর বিবর্তনমূলক বংশলতিকা ও সম্পর্ক।"
+    },
+    {
+      "id": "phenology",
+      "term": "Phenology",
+      "aliases": ["phenology", "phenological"],
+      "category": "Phenology",
+      "en": "The seasonal timing of biological plant life-cycle events—bud burst, leaf flush, anthesis, fruiting, and dormancy—driven by climate cues.",
+      "bn": "ফেনোলজি / ঋতুচক্রীয় বিবর্তন — জলবায়ুর প্রভাবে উদ্ভিদের মুকুলোদগম, পুষ্পায়ন, ফল ধারণ ও সুপ্তাবস্থার ঋতুভিত্তিক সময়সূচি।"
+    },
+    {
+      "id": "phytochemistry",
+      "term": "Phytochemistry",
+      "aliases": ["phytochemistry", "phytochemical", "phytochemicals", "bioactive"],
+      "category": "Phytochemistry",
+      "en": "The study of plant-derived secondary metabolites—phenolics, terpenoids, glycosides, and alkaloids—governing defense, pigment, scent, and pharmacology.",
+      "bn": "উদ্ভিদ রসায়ন (ফাইটোকেমিস্ট্রি) — উদ্ভিদের দেহে উৎপন্ন জৈব-সক্রিয় রাসায়নিক যৌগ ও তাদের ঔষধি-জৈবিক বৈশিষ্ট্য সম্পর্কিত বিজ্ঞান।"
+    },
+    {
+      "id": "spadix",
+      "term": "Spadix",
+      "aliases": ["spadix", "spathe"],
+      "category": "Morphology",
+      "en": "A thickened, fleshy spike inflorescence bearing numerous minute sessile florets, typically subtended or sheathed by a protective bract called a spathe.",
+      "bn": "স্প্যাডিক্স মঞ্জরি — মাংসল অক্ষের ওপর সজ্জিত ক্ষুদ্র ফুলের স্তবক, যা সাধারণত চমস (spathe) নামক আবরণে ঘেরা থাকে।"
     }
   ]
 }

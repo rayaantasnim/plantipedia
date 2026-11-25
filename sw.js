@@ -4,7 +4,7 @@
  * resolved safely against self.location (compatible with both / and /plantipedia/ GitHub Pages).
  */
 
-const CACHE_VERSION = "plantipedia-v5.3.2";
+const CACHE_VERSION = "plantipedia-v5.3.3";
 
 const CORE_SHELL_PATHS = [
   "./",

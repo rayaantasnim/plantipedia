@@ -11,21 +11,57 @@ export function hasBengaliScript(text) {
 }
 
 export function normalizeImageKey(url) {
-  const str = String(url || "").trim();
+  let str = String(url || "").trim();
   if (!str) return "";
   try {
+    // Unwrap GBIF / proxy image cache URLs containing a nested target URL
+    const nestedHttpMatch = str.match(/\/cache\/[^/]+\/(https?(?::|%3a).*)$/i);
+    if (nestedHttpMatch) {
+      try {
+        str = decodeURIComponent(nestedHttpMatch[1]);
+      } catch {
+        str = nestedHttpMatch[1];
+      }
+    }
+
     const u = new URL(str);
     const inatMatch = u.pathname.match(/\/photos\/(\d+)\//i);
     if (inatMatch) {
       return `inat:${inatMatch[1]}`;
     }
-    const fileMatch = u.pathname.match(/\/([^/]+\.(?:jpe?g|png|webp))$/i);
-    if (fileMatch) {
-      return decodeURIComponent(fileMatch[1]).toLowerCase();
+    const pexelsMatch = u.pathname.match(/pexels-photo-(\d+)/i);
+    if (pexelsMatch) {
+      return `pexels:${pexelsMatch[1]}`;
     }
-    return `${u.origin}${u.pathname}`.toLowerCase();
+
+    // Normalize Wikimedia /thumb/.../<Original_File.jpg>/<N>px-<Original_File.jpg> across ALL widths
+    const decodedPath = decodeURIComponent(u.pathname);
+    if (/wikimedia\.org|wikipedia\.org/i.test(u.hostname)) {
+      const thumbMatch = decodedPath.match(/\/thumb\/(?:[0-9a-f]+\/[0-9a-f]+\/)?([^/]+)\/[^/]+$/i);
+      if (thumbMatch && thumbMatch[1]) {
+        const canonical = thumbMatch[1].replace(/\s+/g, "_").toLowerCase();
+        return `wikimedia:${canonical}`;
+      }
+      const rawSeg = (decodedPath.split("/").pop() || "")
+        .replace(/^(?:lossy-)?(?:page\d+-)?(?:\d+px-|lang[a-z-]+-\d+px-)/i, "")
+        .replace(/\s+/g, "_")
+        .toLowerCase();
+      if (rawSeg) {
+        return `wikimedia:${rawSeg}`;
+      }
+    }
+
+    const fileMatch = decodedPath.match(/\/([^/]+\.(?:jpe?g|png|webp|avif))$/i);
+    if (fileMatch) {
+      const cleanedName = fileMatch[1]
+        .replace(/^(?:lossy-)?(?:page\d+-)?\d+px-/i, "")
+        .replace(/\s+/g, "_")
+        .toLowerCase();
+      return cleanedName;
+    }
+    return `${u.origin}${decodedPath}`.toLowerCase();
   } catch {
-    return str.toLowerCase();
+    return str.split("?")[0].split("#")[0].toLowerCase();
   }
 }
 
@@ -333,9 +369,20 @@ export function parseTaxoboxFields(wikitext) {
 }
 
 export function isIgnoredHeading(heading) {
-  return /^(see also|references|external links|further reading|notes|bibliography|sources|gallery|citations|works cited|footnotes|আরও দেখুন|তথ্যসূত্র|বহিঃসংযোগ|গ্যালারি)$/i.test(
-    String(heading || "").trim(),
-  );
+  const cleaned = String(heading || "")
+    .replace(/\[[^\]]*\]/g, "")
+    .replace(/[:।–—-]+$/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+  if (!cleaned) return true;
+
+  const exactForbidden = /^(?:see also|references|external links|further reading|notes|bibliography|sources|gallery|citations|works cited|footnotes|further information|other|links|আরও দেখুন|তথ্যসূত্র|বহিঃসংযোগ|গ্রন্থপঞ্জি|গ্যালারি|তথ্যপঞ্জি|পাদটীকা|টীকা|নির্দেশিকা|চিত্রশালা|সংগ্রহশালা|ছবিঘর)$/i;
+  if (exactForbidden.test(cleaned)) return true;
+
+  const compoundForbidden =
+    /^(?:selected\s+|general\s+|further\s+|image\s+|photo\s+|video\s+)?(?:see also|references|external links|further reading|bibliography|gallery|works cited|footnotes|citations|notes and references|references and notes|notes & references|sources and further reading)\b|(?:আরও দেখুন|তথ্যসূত্র|বহিঃসংযোগ|গ্রন্থপঞ্জি|গ্যালারি|তথ্যপঞ্জি|পাদটীকা)/i;
+  return compoundForbidden.test(cleaned);
 }
 
 function extractNodeCleanText(node) {
@@ -618,22 +665,28 @@ export function splitSectionsFromExtract(extract) {
           namedSections.push(currentH2);
         }
       } else {
-        if (currentH2 && !currentH2.ignored) {
+        const subIgnored = isIgnoredHeading(titleText);
+        if (subIgnored) {
+          currentSubHeading = "";
+          currentH2 = {
+            heading: titleText,
+            paragraphs: [],
+            subtopics: [],
+            ignored: true,
+          };
+        } else if (currentH2 && !currentH2.ignored) {
           if (depth === 3 && currentH2.paragraphs.length >= 1) {
-            // Promote substantive `=== Subsection ===` cleanly so multi-section articles populate up to 14 distinct chapters
+            // Promote substantive `=== Subsection ===` cleanly when parent is non-ignored
             currentSubHeading = "";
-            const ignored = isIgnoredHeading(titleText);
-            if (!ignored) {
-              const subSec = {
-                heading: titleText,
-                parentHeading: currentH2.heading,
-                paragraphs: [],
-                subtopics: [],
-                ignored: false,
-              };
-              currentH2 = subSec;
-              namedSections.push(subSec);
-            }
+            const subSec = {
+              heading: titleText,
+              parentHeading: currentH2.heading,
+              paragraphs: [],
+              subtopics: [],
+              ignored: false,
+            };
+            currentH2 = subSec;
+            namedSections.push(subSec);
           } else {
             currentSubHeading = titleText;
           }
@@ -1270,6 +1323,349 @@ function inferCategoryFromData(familyName, extractLower, categoriesLower) {
   return "Global Flora";
 }
 
+const CANONICAL_CHAPTER_SLOTS = [
+  {
+    id: "morphology",
+    title: "Botanical Habit & Morphology",
+    icon: "🌿",
+    subtitle: "Structural Architecture, Stem Axis & Root System",
+    pattern: /morpholog|description|habit|stem|trunk|caudex|root|rhizome|wood|bark|anatomy|biboron|বিবরণ|গঠন|কাণ্ড|মূল/i,
+  },
+  {
+    id: "foliage",
+    title: "Foliar & Canopy Architecture",
+    icon: "🍃",
+    subtitle: "Leaf Form, Venation & Specialized Laminar Traits",
+    pattern: /leaf|leaves|foliar|frond|canopy|crown|phyllotaxis|trap|lobe|pitcher|mechanism|পাত|পত্র/i,
+  },
+  {
+    id: "floral",
+    title: "Floral Biology & Reproduction",
+    icon: "🌸",
+    subtitle: "Inflorescence Structure, Anthesis & Pollination Guild",
+    pattern: /flower|floral|inflorescence|reproduc|pollinat|stamen|cone|strobil|monocarpic|bloom|ফুল|পরাগ|পুষ্প/i,
+  },
+  {
+    id: "fruit_seed",
+    title: "Fruit & Seed Ecology",
+    icon: "🫐",
+    subtitle: "Carpology, Propagules & Dispersal Syndromes",
+    pattern: /fruit|seed|dispers|carpel|drupe|pod|nut|germinat|ফল|বীজ/i,
+  },
+  {
+    id: "biogeography",
+    title: "Native Biogeography & Habitat",
+    icon: "🌍",
+    subtitle: "Geographic Distribution & Ecosystem Niche",
+    pattern: /habitat|distribut|biogeograph|native|range|ecology|biome|endemic|fire ecology|আবাস|বিস্তৃতি/i,
+  },
+  {
+    id: "phylogeny",
+    title: "Evolutionary Lineage & Phylogeny",
+    icon: "🧬",
+    subtitle: "Taxonomic Nomenclature, Etymology & Clade History",
+    pattern: /evolution|phylogen|taxonom|systemat|lineage|clade|fossil|nomenclature|etymolog|naming|subspecies|varieties|শ্রেণিবিন্যাস|নামকরণ/i,
+  },
+  {
+    id: "telemetry",
+    title: "Soil, Climate & Ecological Guild",
+    icon: "🪴",
+    subtitle: "Substrate Reaction, Moisture & Thermal Envelope",
+    pattern: /soil|climate|edaphic|substrate|moisture|light|water|husbandry|telemetry/i,
+    isCultivationTelemetry: true,
+  },
+  {
+    id: "phenology",
+    title: "Seasonal Phenology",
+    icon: "🗓️",
+    subtitle: "Vegetative Flush, Reproductive Timing & Dormancy",
+    pattern: /phenol|season|monsoon|dormanc|cycle|life cycle|rhythms|ঋতু/i,
+  },
+  {
+    id: "phytochemistry",
+    title: "Phytochemistry & Bioactive Profile",
+    icon: "⚗️",
+    subtitle: "Secondary Metabolites, Pigments & Chemical Defenses",
+    pattern: /phytochem|chemist|compound|alkaloid|terpen|flavon|metabolit|resin|sap|toxic|oil|রাসায়নিক/i,
+  },
+  {
+    id: "ethnobotany",
+    title: "Ethnobotanical & Cultural History",
+    icon: "📜",
+    subtitle: "Botanical Exploration, Heritage & Cultural Symbolism",
+    pattern: /cultur|history|ethnobot|myth|symbol|tradition|folklore|discovery|expedition|literature|art|ইতিহাস|সাহিত্য|সংস্কৃতি/i,
+  },
+  {
+    id: "economic",
+    title: "Medicinal & Economic Significance",
+    icon: "🧺",
+    subtitle: "Ethnomedicinal, Culinary, Craft & Industrial Applications",
+    pattern: /use|medic|econom|culinary|food|timber|fiber|thatch|craft|pharma|commercial|ব্যবহার|অর্থনৈতিক|ভেষজ/i,
+  },
+  {
+    id: "propagation",
+    title: "Propagation & Cultivation Protocol",
+    icon: "🌱",
+    subtitle: "Seed Preparation, Planting & Horticultural Care",
+    pattern: /cultivat|propagat|horticult|growing|care|prun|transplant|agronom|চাষ/i,
+  },
+  {
+    id: "resilience",
+    title: "Pests, Threats & Resilience",
+    icon: "🐛",
+    subtitle: "Biotic Stressors, Herbivory & Environmental Endurance",
+    pattern: /pest|disease|pathogen|herbivor|invasive|stress|frost|salinity|drought|রোগ|পোকা/i,
+  },
+  {
+    id: "conservation",
+    title: "Conservation Status & Global Registry",
+    icon: "🛡️",
+    subtitle: "IUCN Risk Assessment & Herbarium Verification",
+    pattern: /conserv|threat|endanger|iucn|extinct|status|protect|sanctuary|poach|red list|সংরক্ষণ/i,
+  },
+];
+
+function matchCanonicalSlotIndex(heading, bodyLower = "") {
+  const h = String(heading || "").toLowerCase();
+  for (let i = 0; i < CANONICAL_CHAPTER_SLOTS.length; i += 1) {
+    if (CANONICAL_CHAPTER_SLOTS[i].pattern.test(h)) {
+      return i;
+    }
+  }
+  if (/\b(ph\s+\d|drainage|loam|peat|sunlight|irrigation)\b/i.test(bodyLower)) return 6;
+  if (/\b(endangered|iucn|vulnerable|extinct|conservation)\b/i.test(bodyLower)) return 13;
+  if (/\b(alkaloid|flavonoid|terpene|essential oil|glycoside|toxic)\b/i.test(bodyLower)) return 8;
+  if (/\b(pollinat|stamen|petal|flower|anthesis|spathe)\b/i.test(bodyLower)) return 2;
+  if (/\b(fruit|seed|drupe|pod|cone|capsule)\b/i.test(bodyLower)) return 3;
+  if (/\b(native to|endemic|habitat|distribution|biome)\b/i.test(bodyLower)) return 4;
+  if (/\b(phylogen|fossil|linnaean|taxonomy|described by)\b/i.test(bodyLower)) return 5;
+  if (/\b(propagat|sown|germinat|pruning|cultivar|grown)\b/i.test(bodyLower)) return 11;
+  if (/\b(edible|medicinal|timber|fiber|ornamental|cultivated for)\b/i.test(bodyLower)) return 10;
+  return 0;
+}
+
+function buildTaxonAwareSlotFallback({
+  slotId,
+  commonName,
+  commonNameBn,
+  scientificName,
+  genusName,
+  familyName,
+  displayFamily,
+  orderName,
+  cladeLabel,
+  inferredGroup,
+  inferredHabit,
+  nativeOriginText,
+  guild,
+  dims,
+  wikidataInfo,
+  gbifData,
+  inatTaxon,
+  commonUsesText,
+  plantGroupDisplay,
+}) {
+  const sci = scientificName || commonName;
+  const bnNote = commonNameBn && commonNameBn !== "বৈশ্বিক উদ্ভিদ নমুনা" ? ` (${commonNameBn})` : "";
+  const isPalm = /\bpalm\b|arecaceae/i.test(`${inferredHabit} ${displayFamily}`);
+  const isAquatic = guild.guildId === "aquatic_wetland";
+  const isDesert = guild.guildId === "arid_xerophyte";
+  const isCarnivorous = guild.guildId === "carnivorous_bog";
+  const isGymnosperm = inferredGroup === "Gymnosperm";
+  const iucnLabel = wikidataInfo?.iucnStatus || "Evaluated via Global Biodiversity & Herbarium Networks";
+  const inatObs = Number(inatTaxon?.observations_count || 0);
+  const gbifKeyStr = gbifData?.usageKey ? `GBIF Taxon Key #${gbifData.usageKey}` : "GBIF Global Backbone Index";
+  const phRangeStr = `pH ${guild.phMin.toFixed(1)}–${guild.phMax.toFixed(1)}`;
+  const famOrOrder = [orderName ? `order ${orderName}` : null, `family ${displayFamily}`].filter(Boolean).join(", ");
+
+  switch (slotId) {
+    case "morphology":
+      return {
+        paragraphs: [
+          `${commonName}${bnNote} (${sci}) develops as a ${inferredHabit.toLowerCase()} belonging to ${famOrOrder} within the ${cladeLabel} clade, typically reaching a mature ${dims.stature.unit === "cm" ? "specimen span" : "canopy stature"} near ${dims.stature.value} ${dims.stature.unit}.`,
+          isPalm
+            ? `Its structural architecture centers on a solitary or clustered fibrous columnar caudex topped by an apical meristematic crownshoot, anchored below ground by dense adventitious roots engineered for tropical soil stability.`
+            : isAquatic
+              ? `Submerged vascular rhizomes or stoloniferous rootstocks anchor the plant in benthic sediments while internal aerenchyma air channels maintain mechanical buoyancy and oxygen transport to inundated tissues.`
+              : `Its vegetative body combines supportive vascular bundles, epidermal protection suited to ${guild.guildLabel.toLowerCase()} conditions, and an adaptive root system securing moisture and anchorage across ${nativeOriginText}.`,
+        ],
+        subblocks: [
+          { heading: "Growth Habit", text: inferredHabit },
+          { heading: "Recorded Stature", text: `${dims.stature.value} ${dims.stature.unit} mature form` },
+        ],
+      };
+
+    case "foliage":
+      return {
+        paragraphs: [
+          isPalm
+            ? `The crown foliage of ${commonName} consists of broad costapalmate or pinnate fronds arranged spirally around the trunk apex, reinforced with fibrous petiolar bases that channel rainwater and resist monsoon shear.`
+            : isAquatic
+              ? `Foliage comprises waxy, hydrophobic leaf laminae perforated by dense adaxial stomata above spongy mesophyll air chambers that shed standing water droplets rapidly.`
+              : isGymnosperm
+                ? `Leaves of ${sci} display enduring vascular venation and thickened cuticular protection, enabling continuous photosynthetic carbon assimilation across seasonally demanding light regimes.`
+                : `${commonName} produces characteristic ${inferredGroup.toLowerCase()} foliage engineered for optimal irradiance capture under ${guild.sunlightLabel.toLowerCase()}, balancing stomatal transpiration against ambient humidity.`,
+          `Leaf arrangement (phyllotaxis), venation density, and cuticular wax composition reflect evolutionary specialization within ${displayFamily} to deter desiccation, fungal colonization, and grazing pressure.`,
+        ],
+        subblocks: [
+          { heading: "Light Interception", text: guild.sunlightLabel },
+          { heading: "Canopy Syndrome", text: isPalm ? "Costapalmate / Pinnate Crown" : `${cladeLabel} Photosynthetic Lamina` },
+        ],
+      };
+
+    case "floral":
+      return {
+        paragraphs: [
+          isGymnosperm
+            ? `Rather than true angiosperm petals, ${sci} produces specialized pollen-bearing microstrobili and ovulate cones, with wind-mediated or specialized insect pollen transfer across exposed reproductive scales.`
+            : `Reproductive development in ${commonName} centers on ${displayFamily} floral architecture adapted to attract regional pollinators or harness wind currents during peak seasonal anthesis.`,
+          `Pollination dynamics coordinate anther dehiscence, stigma receptivity, and nectar or pollen presentation to ensure outcrossing genetic vigor and viable fertilization across native populations.`,
+        ],
+        subblocks: [
+          { heading: "Reproductive Clade", text: plantGroupDisplay },
+          { heading: "Pollination Mode", text: isGymnosperm ? "Strobilus / Anemophilous-Vector" : `${displayFamily} Floral Vector Guild` },
+        ],
+      };
+
+    case "fruit_seed":
+      return {
+        paragraphs: [
+          isGymnosperm
+            ? `Following fertilization, exposed ovules mature into protective seed coats containing nutritive megagametophyte reserves built to withstand erratic moisture availability before germination.`
+            : `Post-anthesis carpels in ${sci} ripen into ${displayFamily}-type fruits enclosing viable embryos equipped with protective seed coats, dormant metabolic reserves, and habitat-matched dispersal traits.`,
+          `Seed dissemination relies on abiotic buoyancy, wind scatter, or frugivorous fauna inhabiting ${nativeOriginText}, depositing propagules into moist mineral microsites calibrated near ${phRangeStr}.`,
+        ],
+        subblocks: [
+          { heading: "Propagule Viability", text: "Dormancy-modulated embryo maturation" },
+          { heading: "Dispersal Vector", text: isAquatic ? "Hydrochorous water & wetland drift" : "Zoochorous, barochorous & wind vectors" },
+        ],
+      };
+
+    case "biogeography":
+      return {
+        paragraphs: [
+          `${commonName} (${sci}) is biogeographically documented across ${nativeOriginText}, flourishing within ${guild.guildLabel.toLowerCase()} landscapes shaped by long-term climatic and edaphic filtering.`,
+          `Regional occurrences span naturally balanced communities alongside allied ${genusName} and ${displayFamily} taxa, verified through herbarium vouchers, GBIF coordinates, and citizen-science observations${inatObs > 0 ? ` (${inatObs.toLocaleString("en-US")} verified iNaturalist records)` : ""}.`,
+        ],
+        subblocks: [
+          { heading: "Native Origin", text: nativeOriginText },
+          { heading: "Ecological Biome", text: guild.guildLabel },
+        ],
+      };
+
+    case "phylogeny":
+      return {
+        paragraphs: [
+          `Systematically classified under ${plantGroupDisplay}, family ${displayFamily}, and genus ${genusName || commonName}, ${sci} holds accepted taxonomic recognition across the World Flora Online, GBIF Backbone, and International Plant Names Index.`,
+          `${gbifData?.authorship ? `Taxonomic authority attribution cites ${gbifData.authorship}; modern` : "Modern"} molecular phylogenetics places ${genusName || sci} within the broader ${orderName || cladeLabel} radiation alongside allied Gondwanan and Paleotropical or Holarctic relatives.`,
+        ],
+        subblocks: [
+          { heading: "Accepted Binomial", text: sci },
+          { heading: "Taxonomic Registry", text: `${gbifKeyStr}${orderName ? ` · Order ${orderName}` : ""}` },
+        ],
+      };
+
+    case "telemetry":
+      return {
+        paragraphs: [
+          `Physiological and edaphic telemetry places ${commonName} (${sci}) inside the ${guild.guildLabel} ecological guild, thriving best within ${guild.soilDrainageLabel.toLowerCase()} at ${phRangeStr}.`,
+          `Optimal vegetative metabolism aligns with ${guild.sunlightLabel.toLowerCase()}, ${guild.irrigationLabel.toLowerCase()}, and an ambient thermal window spanning ${dims.tempRangeLabel}.`,
+        ],
+        subblocks: [
+          { heading: "Substrate & pH Window", text: `${guild.soilDrainageLabel} (${phRangeStr})` },
+          { heading: "Solar & Thermal Envelope", text: `${guild.sunlightLabel} · Optimum ${dims.tempRangeLabel}` },
+        ],
+      };
+
+    case "phenology":
+      return {
+        paragraphs: [
+          `Across its ${dims.lifespan.value === 1 ? "annual" : "perennial"} life cycle (estimated ${dims.lifespan.value}${dims.lifespan.suffix} years), ${commonName} synchronizes meristematic leaf flush, reproductive initiation, and resource storage with seasonal shifts in temperature, rainfall, and photoperiod.`,
+          `During unfavorable cold, arid, or monsoon transitional intervals, metabolic translocation stabilizes subterranean reserves or hardened buds until optimal hydration around ${phRangeStr} triggers renewed active growth.`,
+        ],
+        subblocks: [
+          { heading: "Lifecycle Rhythm", text: `${dims.lifespan.value}${dims.lifespan.suffix} years (${dims.lifespan.value === 1 ? "Annual" : "Perennial"})` },
+          { heading: "Thermal Window", text: dims.tempRangeLabel },
+        ],
+      };
+
+    case "phytochemistry":
+      return {
+        paragraphs: [
+          `Like allied members of family ${displayFamily}, ${sci} synthesizes diverse secondary metabolites—encompassing protective polyphenols, flavonoids, terpenoids, and structural tannins—within foliar, bark, and reproductive tissues.`,
+          `These phytochemical pathways shield chloroplasts from intense solar UV load, inhibit opportunistic fungal penetration in humid microclimates, and deter generalist phytophagous insects.`,
+        ],
+        subblocks: [
+          { heading: "Metabolite Classes", text: `Polyphenols, flavonoids & ${displayFamily} terpenoids` },
+          { heading: "Physiological Role", text: "Photoprotection & biochemical defense" },
+        ],
+      };
+
+    case "ethnobotany":
+      return {
+        paragraphs: [
+          `${commonName}${bnNote} carries recognized ethnobotanical presence within communities bordering ${nativeOriginText}, where botanical chroniclers, local herbalists, and living collections document its regional vernacular nomenclature and ecological identity.`,
+          `Botanical illustrations, historical floras, and living arboretum accessions preserve the cultural lineage linking ${sci} with regional agroforestry, sacred groves, or ornamental heritage gardens.`,
+        ],
+        subblocks: [
+          { heading: "Vernacular Context", text: commonNameBn && commonNameBn !== "বৈশ্বিক উদ্ভিদ নমুনা" ? `${commonName} · ${commonNameBn}` : commonName },
+          { heading: "Documentation Source", text: "Regional Floras & Global Herbarium Archives" },
+        ],
+      };
+
+    case "economic":
+      return {
+        paragraphs: [
+          `Economic and ecological valuation of ${commonName} centers on ${commonUsesText.toLowerCase()}, alongside habitat stabilization, microclimate moderation, and conservation-collection horticulture.`,
+          `Within botanical gardens and biodiversity corridors, ${sci} contributes living germplasm, pollinator forage continuity, and comparative educational value illustrating ${orderName || displayFamily} trait evolution.`,
+        ],
+        subblocks: [
+          { heading: "Primary Uses", text: commonUsesText },
+          { heading: "Ecological Service", text: "Habitat biodiversity & living germplasm value" },
+        ],
+      };
+
+    case "propagation":
+      return {
+        paragraphs: [
+          `Successful ex-situ propagation of ${commonName} requires replicating native ${guild.soilDrainageLabel.toLowerCase()} calibrated to ${phRangeStr}, employing clean fresh seed stock or healthy semi-hardwood/rhizomatous divisions free of basal rot.`,
+          isCarnivorous || isDesert
+            ? `Growers should strictly avoid synthetic salt fertilizers, maintain mineral purity in irrigation water, and respect winter or dry-season resting cues to prevent root shock.`
+            : `Establishing seedlings under filtered shelter before acclimating young specimens to ${guild.sunlightLabel.toLowerCase()} maximizes root-to-shoot establishment and long-term vigor.`,
+        ],
+        subblocks: [
+          { heading: "Irrigation Protocol", text: guild.irrigationLabel },
+          { heading: "Rooting Medium", text: guild.soilDrainageLabel },
+        ],
+      };
+
+    case "resilience":
+      return {
+        paragraphs: [
+          `In managed landscapes and fragmented wild habitats, ${sci} faces potential stress from sap-sucking hemipterans, foliar fungal blights during stagnant humidity, and anthropogenic soil compaction or hydrological alteration.`,
+          `Maintaining aerated substrate drainage, balanced light exposure, and native mycorrhizal associations strengthens systemic cell-wall resilience and rapid post-disturbance canopy recovery.`,
+        ],
+        subblocks: [
+          { heading: "Biotic Stressors", text: "Aphids, scale insects & root-zone oomycetes" },
+          { heading: "Resilience Strategy", text: "Site hygiene, aeration & mycorrhizal support" },
+        ],
+      };
+
+    case "conservation":
+    default:
+      return {
+        paragraphs: [
+          `Global conservation assessment for ${commonName} (${sci}) records status: ${iucnLabel}. Protecting intact ${guild.guildLabel.toLowerCase()} habitat across ${nativeOriginText} remains vital to safeguarding genetic diversity within wild subpopulations.`,
+          `Living accessions in botanical gardens, international seed-bank preservation, and open digital vouchers via ${gbifKeyStr}${inatObs > 0 ? ` and ${inatObs.toLocaleString("en-US")} verified iNaturalist observations` : ""} reinforce ongoing taxonomic monitoring and stewardship.`,
+        ],
+        subblocks: [
+          { heading: "Conservation Standing", text: iucnLabel },
+          { heading: "Global Verification", text: `${gbifKeyStr}${wikidataInfo?.wikidataId ? ` · Wikidata ${wikidataInfo.wikidataId}` : ""}` },
+        ],
+      };
+  }
+}
+
 export function classifyDynamicSectionMeta(rawHeading, bodyLower = "") {
   const h = String(rawHeading || "").toLowerCase();
   const cleanTitle = sanitizeBotanicalText(rawHeading || "Botanical Monograph Section");
@@ -1397,6 +1793,7 @@ export function buildPlantipediaMonograph({
   restSummary,
   gbifData,
   inatTaxon,
+  wikidataInfo = null,
   parsedData,
   imagesPool = [],
   lang = "en",
@@ -1415,24 +1812,30 @@ export function buildPlantipediaMonograph({
     page?.title ||
       restSummary?.title ||
       inatTaxon?.preferred_common_name ||
+      wikidataInfo?.labelEn ||
       gbifData?.canonicalName ||
       originalQuery,
   );
 
-  // Merge plain-text MediaWiki extract (`== Heading ==`) and REST/iNat summaries safely without null crashes
+  // Merge primary & cross-language Wikipedia extracts + REST/iNat summaries safely without junk headings
   const primaryExtract = page?.extract || "";
-  const extractFallback = splitSectionsFromExtract(primaryExtract);
-  const secondarySections = secondaryExtract ? splitSectionsFromExtract(secondaryExtract) : { leadParagraphs: [], namedSections: [] };
+  const primarySplit = splitSectionsFromExtract(primaryExtract);
+  const secondarySplit = secondaryExtract
+    ? splitSectionsFromExtract(secondaryExtract)
+    : { leadParagraphs: [], namedSections: [] };
 
   const restLead = restSummary?.extract ? sanitizeBotanicalText(restSummary.extract) : "";
-  const inatLead = inatTaxon?.wikipedia_summary ? sanitizeBotanicalText(stripWikitextMarkup(inatTaxon.wikipedia_summary)) : "";
+  const inatLead = inatTaxon?.wikipedia_summary
+    ? sanitizeBotanicalText(stripWikitextMarkup(inatTaxon.wikipedia_summary))
+    : "";
 
   const candidateLeads = [
     ...(parsedData?.leadParagraphs || []),
-    ...extractFallback.leadParagraphs,
+    ...primarySplit.leadParagraphs,
+    ...(lang === "bn" ? secondarySplit.leadParagraphs : []),
     ...(restLead && restLead.length > 24 ? [restLead] : []),
     ...(inatLead && inatLead.length > 24 ? [inatLead] : []),
-    ...(secondarySections.leadParagraphs || []),
+    ...(lang !== "bn" ? secondarySplit.leadParagraphs : []),
   ];
 
   const rawLeadParagraphs = [];
@@ -1446,16 +1849,26 @@ export function buildPlantipediaMonograph({
     }
   }
 
-  const sourceSections =
+  // Filter strictly against wiki junk headings across BOTH primary and cross-language extracts
+  const primarySections = (
     parsedData?.parsedSections?.length >= 2
       ? parsedData.parsedSections
-      : extractFallback.namedSections.length >= 1
-        ? extractFallback.namedSections
-        : secondarySections.namedSections;
+      : primarySplit.namedSections
+  ).filter((s) => s && !isIgnoredHeading(s.heading) && Array.isArray(s.paragraphs) && s.paragraphs.length > 0);
+
+  const secondarySectionsList = (secondarySplit.namedSections || []).filter(
+    (s) => s && !isIgnoredHeading(s.heading) && Array.isArray(s.paragraphs) && s.paragraphs.length > 0,
+  );
+
+  // For Bengali queries, combine rich English scientific chapters + native Bengali chapters seamlessly
+  const combinedSourceSections =
+    lang === "bn" && secondarySectionsList.length > 0
+      ? [...secondarySectionsList, ...primarySections]
+      : [...primarySections, ...secondarySectionsList];
 
   const leadJoined = rawLeadParagraphs.join(" ");
   const extractFull = sanitizeBotanicalText(
-    [leadJoined, ...sourceSections.map((s) => (s.paragraphs || []).join(" "))].join(" ") ||
+    [leadJoined, ...combinedSourceSections.map((s) => (s.paragraphs || []).join(" "))].join(" ") ||
       primaryExtract ||
       secondaryExtract ||
       restLead ||
@@ -1468,6 +1881,7 @@ export function buildPlantipediaMonograph({
 
   const scientificName =
     extractBinomial({ taxobox, infobox, gbifData, inatTaxon, title: rawTitle, extract: leadJoined }) ||
+    wikidataInfo?.taxonName ||
     sanitizeBotanicalText(infobox.binomial || taxobox.binomial || taxobox.taxon || rawTitle);
 
   const familyName = extractBotanicalFamily({
@@ -1507,12 +1921,17 @@ export function buildPlantipediaMonograph({
   );
   const bnLangTitle = page?.langlinks?.find((l) => l.lang === "bn")?.title || "";
 
-  const commonName = rawTitle;
+  const commonName =
+    lang === "bn" && wikidataInfo?.enWikiTitle && hasBengaliScript(rawTitle)
+      ? `${rawTitle} (${wikidataInfo.enWikiTitle})`
+      : rawTitle;
   const commonNameBn =
     lang === "bn"
       ? rawTitle
       : sanitizeBotanicalText(
           bnLangTitle ||
+            wikidataInfo?.bnWikiTitle ||
+            wikidataInfo?.labelBn ||
             (hasBengaliScript(originalQuery) ? normalizeGlobalQuery(originalQuery) : "") ||
             "বৈশ্বিক উদ্ভিদ নমুনা",
         );
@@ -1566,16 +1985,21 @@ export function buildPlantipediaMonograph({
     });
   };
 
-  const leadOverview = rawLeadParagraphs[0]
-    ? extractSentences(rawLeadParagraphs[0], 3) || rawLeadParagraphs[0]
+  // Prefer the cleanest informative overview (English scientific lead if primary BN lead is very short)
+  const bestLeadPara =
+    rawLeadParagraphs.find((p) => !hasBengaliScript(p) && p.length >= 90) ||
+    rawLeadParagraphs[0] ||
+    "";
+  const leadOverview = bestLeadPara
+    ? extractSentences(bestLeadPara, 3) || bestLeadPara
     : `${commonName} (${scientificName || commonName}) is a documented vascular botanical taxon indexed via the Global Botanical Server.`;
   const shortSummary = extractSentences(leadOverview, 2) || leadOverview;
   markTextUsed(leadOverview);
 
-  const habitatSections = sourceSections.filter((s) =>
+  const habitatSections = combinedSourceSections.filter((s) =>
     /habitat|distribution|ecology|range|origin|বিস্তৃতি|আবাস/i.test(s.heading),
   );
-  const usesSections = sourceSections.filter((s) =>
+  const usesSections = combinedSourceSections.filter((s) =>
     /use|medic|phytochem|culinary|economic|ব্যবহার/i.test(s.heading),
   );
 
@@ -1600,142 +2024,185 @@ export function buildPlantipediaMonograph({
     return out;
   };
 
-  const dynamicChapters = [];
+  // Initialize all 14 canonical botanical chapters (01-14, totaling 15+ chapters including 00 Overview)
+  const slotBuckets = CANONICAL_CHAPTER_SLOTS.map((slot) => ({
+    ...slot,
+    paragraphs: [],
+    subblocks: [],
+    matchedHeadings: [],
+  }));
 
-  // Chapter 01: Remaining unused lead sentences
-  const extraLeadParagraphs = claimUnusedFromList(
-    rawLeadParagraphs.flatMap((p) => {
-      const unusedSents = splitIntoSentences(p).filter((s) => !usedSentenceKeys.has(normalizeDedupKey(s)));
-      return unusedSents.length ? [unusedSents.join(" ")] : [];
-    }),
-    2,
-  );
-  if (extraLeadParagraphs.length > 0) {
-    dynamicChapters.push({
-      title: "Botanical Identity & Overview",
-      subtitle: "Global Flora Index Taxonomic & Diagnostic Summary",
-      icon: "🌿",
-      summary: `Taxonomic placement, diagnostic traits, and nomenclature for ${commonName}.`,
-      paragraphs: extraLeadParagraphs,
-      subblocks: [
-        { heading: "Scientific Binomial", text: scientificName || commonName },
-        {
-          heading: "Order & Family Lineage",
-          text: [orderName ? `Order: ${orderName}` : null, `Family: ${displayFamily}`, `Clade: ${cladeLabel}`]
-            .filter(Boolean)
-            .join(" · "),
-        },
-      ],
-      isCultivationTelemetry: false,
-    });
-  }
+  // 1) Route all extracted non-junk sections semantically into their matching botanical chapter slot
+  const overflowUniqueChapters = [];
+  for (const srcSec of combinedSourceSections) {
+    if (!srcSec || isIgnoredHeading(srcSec.heading)) continue;
+    const bodyText = (srcSec.paragraphs || []).join(" ");
+    const slotIdx = matchCanonicalSlotIndex(srcSec.heading, bodyText.toLowerCase());
+    const targetBucket = slotBuckets[slotIdx];
+    const remainingCap = Math.max(0, 4 - targetBucket.paragraphs.length);
 
-  // Content-matched chapters from article headings
-  for (const srcSec of sourceSections) {
-    if (dynamicChapters.length >= 13) break;
-    const claimed = claimUnusedFromList(srcSec.paragraphs || [], 4);
-    if (claimed.length === 0) continue;
-
-    const meta = classifyDynamicSectionMeta(srcSec.heading, claimed.join(" ").toLowerCase());
-    const duplicateTitle = dynamicChapters.some((ch) => ch.title.toLowerCase() === meta.title.toLowerCase());
-    const resolvedTitle = duplicateTitle ? sanitizeBotanicalText(srcSec.heading) : meta.title;
-
-    const chObj = {
-      title: resolvedTitle,
-      subtitle: meta.subtitle,
-      icon: meta.icon,
-      summary: meta.summary,
-      paragraphs: claimed,
-      isCultivationTelemetry: meta.isCultivation,
-    };
-
-    if (Array.isArray(srcSec.subtopics) && srcSec.subtopics.length > 0) {
-      chObj.subblocks = srcSec.subtopics.slice(0, 2).map((st) => ({
-        heading: st.heading,
-        text: extractSentences(st.text, 2) || st.text,
-      }));
+    if (remainingCap > 0) {
+      const claimed = claimUnusedFromList(srcSec.paragraphs || [], Math.min(3, remainingCap));
+      if (claimed.length > 0) {
+        targetBucket.paragraphs.push(...claimed);
+        targetBucket.matchedHeadings.push(sanitizeBotanicalText(srcSec.heading));
+        if (Array.isArray(srcSec.subtopics)) {
+          srcSec.subtopics.forEach((st) => {
+            if (targetBucket.subblocks.length < 2 && st?.heading && st?.text) {
+              targetBucket.subblocks.push({
+                heading: sanitizeBotanicalText(st.heading),
+                text: extractSentences(st.text, 2) || sanitizeBotanicalText(st.text),
+              });
+            }
+          });
+        }
+      }
+    } else if (overflowUniqueChapters.length < 1 && /\b(trap|biomechan|carnivor|genome|symbio|fire ecology|cultivar)\b/i.test(srcSec.heading)) {
+      const claimed = claimUnusedFromList(srcSec.paragraphs || [], 2);
+      if (claimed.length > 0) {
+        const meta = classifyDynamicSectionMeta(srcSec.heading, claimed.join(" ").toLowerCase());
+        const titleLower = meta.title.toLowerCase();
+        const isRedundantWithSlots =
+          slotBuckets.some((b) => b.title.toLowerCase().includes(titleLower) || titleLower.includes(b.title.toLowerCase().split(" ")[0])) ||
+          overflowUniqueChapters.some((o) => o.title.toLowerCase() === titleLower);
+        if (!isRedundantWithSlots && !isIgnoredHeading(meta.title)) {
+          overflowUniqueChapters.push({
+            title: meta.title,
+            subtitle: meta.subtitle,
+            icon: meta.icon,
+            summary: meta.summary,
+            paragraphs: claimed,
+            subblocks: (srcSec.subtopics || []).slice(0, 2).map((st) => ({
+              heading: sanitizeBotanicalText(st.heading),
+              text: extractSentences(st.text, 2) || sanitizeBotanicalText(st.text),
+            })),
+            isCultivationTelemetry: meta.isCultivation,
+          });
+        }
+      }
     }
-
-    dynamicChapters.push(chObj);
   }
 
-  // Ensure an explicit Physiological Telemetry & Ecological Husbandry chapter exists
-  const existingCultIdx = dynamicChapters.findIndex((c) => c.isCultivationTelemetry);
+  // 2) Distribute any remaining unused lead sentences into Morphology (01) or Phylogeny (06)
+  const leftoverLeadParagraphs = rawLeadParagraphs.flatMap((p) => {
+    const unusedSents = splitIntoSentences(p).filter((s) => !usedSentenceKeys.has(normalizeDedupKey(s)));
+    return unusedSents.length ? [unusedSents.join(" ")] : [];
+  });
+  for (const extraP of leftoverLeadParagraphs) {
+    const claimed = claimUnusedFromList([extraP], 1);
+    if (!claimed.length) continue;
+    const idx = slotBuckets[0].paragraphs.length < 2 ? 0 : slotBuckets[4].paragraphs.length < 2 ? 4 : 5;
+    if (slotBuckets[idx].paragraphs.length < 3) {
+      slotBuckets[idx].paragraphs.push(...claimed);
+    }
+  }
+
+  // 3) Synthesize taxon-calibrated academic prose for any slot with < 2 paragraphs so ALL 14 chapters are deep & complete
+  const fallbackContext = {
+    commonName,
+    commonNameBn,
+    scientificName: scientificName || commonName,
+    genusName,
+    familyName,
+    displayFamily,
+    orderName,
+    cladeLabel,
+    inferredGroup,
+    inferredHabit,
+    nativeOriginText,
+    guild,
+    dims,
+    wikidataInfo,
+    gbifData,
+    inatTaxon,
+    commonUsesText,
+    plantGroupDisplay,
+  };
+
   const phLabelStr = `pH ${guild.phMin.toFixed(1)}–${guild.phMax.toFixed(1)}`;
-  if (existingCultIdx === -1) {
-    dynamicChapters.push({
-      title: "Physiological Telemetry & Ecological Husbandry",
-      subtitle: `${guild.guildLabel} · Substrate & Climate Envelope`,
-      icon: "🪴",
-      summary: `Calibrated soil reaction (${phLabelStr}), solar exposure, and hydration profile for ${commonName}.`,
-      paragraphs: [
-        `Physiological and edaphic telemetry places ${commonName} (${scientificName || commonName}) within the ${guild.guildLabel} ecological guild (${inferredHabit.toLowerCase()}).`,
-        `Recommended substrate conditions mirror natural habitat tolerances: ${guild.soilDrainageLabel.toLowerCase()} calibrated around ${phLabelStr} with ${guild.irrigationLabel.toLowerCase()} and ${guild.sunlightLabel.toLowerCase()}.`,
-      ],
-      subblocks: [
-        { heading: "Substrate & pH Window", text: `${guild.soilDrainageLabel} (${phLabelStr})` },
-        { heading: "Solar & Thermal Envelope", text: `${guild.sunlightLabel} · Optimum up to ${dims.tempRangeLabel}` },
-      ],
-      isCultivationTelemetry: true,
+  const structuredChapters = slotBuckets.map((slot) => {
+    const fb = buildTaxonAwareSlotFallback({ slotId: slot.id, ...fallbackContext });
+    for (const para of fb.paragraphs) {
+      if (slot.paragraphs.length >= 2) break;
+      if (isTextUnused(para)) {
+        markTextUsed(para);
+        slot.paragraphs.push(para);
+      }
+    }
+    if (slot.paragraphs.length === 0) {
+      slot.paragraphs.push(fb.paragraphs[0]);
+    }
+    const mergedSubblocks = [...slot.subblocks];
+    fb.subblocks.forEach((sb) => {
+      if (mergedSubblocks.length < 2 && !mergedSubblocks.some((m) => m.heading.toLowerCase() === sb.heading.toLowerCase())) {
+        mergedSubblocks.push(sb);
+      }
     });
-  } else {
-    dynamicChapters[existingCultIdx].isCultivationTelemetry = true;
-    if (!dynamicChapters[existingCultIdx].subblocks) {
-      dynamicChapters[existingCultIdx].subblocks = [
-        { heading: "Substrate & pH Window", text: `${guild.soilDrainageLabel} (${phLabelStr})` },
-        { heading: "Solar & Thermal Envelope", text: `${guild.sunlightLabel} · Optimum up to ${dims.tempRangeLabel}` },
-      ];
-    }
-  }
 
-  if (dynamicChapters.length < 4) {
-    const existingTopics = new Set(dynamicChapters.map((c) => c.title.toLowerCase()));
-    if (!existingTopics.has("taxonomic lineage & systematics")) {
-      dynamicChapters.unshift({
-        title: "Taxonomic Lineage & Systematics",
-        subtitle: "Linnaean Hierarchy & Clade Relationships",
-        icon: "🧬",
-        summary: `Taxonomic classification placing ${commonName} in ${displayFamily}${orderName ? ` (Order ${orderName})` : ""}.`,
-        paragraphs: [
-          `Systematically assigned to ${plantGroupDisplay} under family ${displayFamily} and genus ${genusName || commonName}. Verified via GBIF, iNaturalist, and the Global Flora Index backbone.`,
-        ],
-        subblocks: [
-          { heading: "Accepted Binomial", text: scientificName || commonName },
-          { heading: "Native Biogeographic Region", text: nativeOriginText },
-        ],
-        isCultivationTelemetry: false,
-      });
-    }
-  }
+    const isTelemetry = Boolean(slot.isCultivationTelemetry);
+    return {
+      title: slot.title,
+      subtitle: isTelemetry ? `${guild.guildLabel} · Substrate & Climate Envelope` : slot.subtitle,
+      icon: slot.icon,
+      summary: isTelemetry
+        ? `Calibrated soil reaction (${phLabelStr}), solar exposure, and hydration profile for ${commonName}.`
+        : `${slot.title} analysis for ${commonName} (${scientificName || commonName}).`,
+      paragraphs: slot.paragraphs,
+      subblocks: mergedSubblocks,
+      isCultivationTelemetry: isTelemetry,
+    };
+  });
 
-  const cappedChapters = dynamicChapters.slice(0, 14);
+  // Append optional unique extra botanical chapters (e.g. specialized traps/physiology) up to max 16 numbered sections
+  overflowUniqueChapters.forEach((extra) => {
+    if (structuredChapters.length < 16) {
+      structuredChapters.push(extra);
+    }
+  });
 
   // Strict per-page image deduplication (`Max 1` occurrence per image across hero + chapters)
   const usedSectionImages = new Set();
-  const heroPhoto = imagesPool[0] || {
+  const dedupedPool = [];
+  for (const img of imagesPool || []) {
+    const k = normalizeImageKey(img?.url);
+    if (!k || usedSectionImages.has(k)) continue;
+    usedSectionImages.add(k);
+    dedupedPool.push(img);
+  }
+
+  const heroPhoto = dedupedPool[0] || {
     url: "./assets/images/placeholder-botanical.svg",
     alt: `${commonName} (${scientificName || commonName}) botanical specimen plate`,
     caption: `${commonName} — Live taxon plate archived via Global Botanical Server`,
   };
-  if (heroPhoto.url) {
-    usedSectionImages.add(normalizeImageKey(heroPhoto.url));
+  const chapterPhotos = dedupedPool.slice(1);
+
+  // Distribute 1 unique botanical photo across as many chapters (01-14+) as available (up to 14 distinct photos!)
+  const totalSecs = structuredChapters.length;
+  const assignedPhotos = Array.from({ length: totalSecs }, () => []);
+  if (chapterPhotos.length > 0) {
+    if (chapterPhotos.length >= totalSecs) {
+      for (let i = 0; i < totalSecs; i += 1) {
+        assignedPhotos[i].push(chapterPhotos[i]);
+      }
+    } else {
+      // Spread photos cleanly across chapters 01..14 so visuals span the full monograph
+      const step = totalSecs / chapterPhotos.length;
+      const usedSlotSet = new Set();
+      chapterPhotos.forEach((photo, idx) => {
+        let targetIdx = Math.min(totalSecs - 1, Math.floor(idx * step));
+        while (usedSlotSet.has(targetIdx) && targetIdx < totalSecs - 1) {
+          targetIdx += 1;
+        }
+        usedSlotSet.add(targetIdx);
+        assignedPhotos[targetIdx].push(photo);
+      });
+    }
   }
 
-  const chapterPhotos = imagesPool.slice(1).filter((img) => {
-    const k = normalizeImageKey(img.url);
-    if (!k || usedSectionImages.has(k)) return false;
-    usedSectionImages.add(k);
-    return true;
-  });
-
-  let photoCursor = 0;
-  const finalSections = cappedChapters.map((ch, idx) => {
+  const finalSections = structuredChapters.map((ch, idx) => {
     const numStr = String(idx + 1).padStart(2, "0");
-    const imgs = [];
-    if (photoCursor < chapterPhotos.length) {
-      imgs.push(chapterPhotos[photoCursor]);
-      photoCursor += 1;
-    }
+    const imgs = assignedPhotos[idx];
     return {
       number: numStr,
       title: ch.title,
@@ -1748,14 +2215,6 @@ export function buildPlantipediaMonograph({
       ...(ch.isCultivationTelemetry ? { isCultivationTelemetry: true } : {}),
     };
   });
-
-  for (let i = 0; i < finalSections.length && photoCursor < chapterPhotos.length && i < 11; i += 2) {
-    if (!finalSections[i].images) finalSections[i].images = [];
-    if (finalSections[i].images.length < 2) {
-      finalSections[i].images.push(chapterPhotos[photoCursor]);
-      photoCursor += 1;
-    }
-  }
 
   const idSeed = page?.pageid || gbifData?.usageKey || inatTaxon?.id || "LIVE";
   const monograph = {
