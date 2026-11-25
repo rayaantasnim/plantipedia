@@ -537,7 +537,12 @@ export function applyCompareSeo({ pageData, leftPlant, rightPlant }) {
     }
     query = `?${params.toString()}`;
   }
-  const pageUrl = resolveCanonicalPageUrl("compare/", query);
+  const routeSegment =
+    pageData?.isResultView ||
+    (typeof window !== "undefined" && window.location.pathname.includes("/compare/result"))
+      ? "compare/result/"
+      : "compare/";
+  const pageUrl = resolveCanonicalPageUrl(routeSegment, query);
 
   const leftName = leftPlant?.commonName || leftId;
   const rightName = rightPlant?.commonName || rightId;

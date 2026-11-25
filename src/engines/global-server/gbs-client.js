@@ -13,7 +13,7 @@ import {
 
 const RETRY_SCHEDULE_MS = [0, 1200, 2600];
 const DEFAULT_TIMEOUT_MS = 6000;
-const CACHE_STORAGE_PREFIX = "plantipedia_global_monograph_v33::";
+const CACHE_STORAGE_PREFIX = "plantipedia_global_monograph_v34::";
 const memoryCache = new Map();
 
 const NON_BOTANICAL_IMAGE_RE =
@@ -637,6 +637,12 @@ function parseWikidataEntityObject(entity) {
   const iucnId = claims.P141?.[0]?.mainsnak?.datavalue?.value?.id || "";
   const commonsCategory = claims.P373?.[0]?.mainsnak?.datavalue?.value || "";
   const commonsImage = claims.P18?.[0]?.mainsnak?.datavalue?.value || "";
+  const aliasesEn = Array.isArray(entity.aliases?.en)
+    ? entity.aliases.en.map((a) => String(a?.value || "").trim()).filter(Boolean)
+    : [];
+  const aliasesBn = Array.isArray(entity.aliases?.bn)
+    ? entity.aliases.bn.map((a) => String(a?.value || "").trim()).filter(Boolean)
+    : [];
   return {
     wikidataId: entity.id || "",
     taxonName: typeof taxonName === "string" ? sanitizeBotanicalText(taxonName) : "",
@@ -647,6 +653,8 @@ function parseWikidataEntityObject(entity) {
     bnWikiTitle: entity.sitelinks?.bnwiki?.title || "",
     labelEn: entity.labels?.en?.value || "",
     labelBn: entity.labels?.bn?.value || "",
+    aliasesEn,
+    aliasesBn,
     descriptionEn: entity.descriptions?.en?.value || "",
   };
 }
@@ -660,7 +668,7 @@ async function fetchWikidataEntity({ title, lang, fallbackQuery, signal }) {
     action: "wbgetentities",
     sites: site,
     titles: cleanTitle,
-    props: "claims|labels|descriptions|sitelinks",
+    props: "claims|labels|descriptions|sitelinks|aliases",
     languages: "en|bn",
     format: "json",
     origin: "*",
@@ -704,7 +712,7 @@ async function fetchWikidataEntity({ title, lang, fallbackQuery, signal }) {
   const byIdParams = new URLSearchParams({
     action: "wbgetentities",
     ids: firstId,
-    props: "claims|labels|descriptions|sitelinks",
+    props: "claims|labels|descriptions|sitelinks|aliases",
     languages: "en|bn",
     format: "json",
     origin: "*",
@@ -1116,6 +1124,7 @@ async function resolveSingleTitle({
     lang,
     originalQuery,
     secondaryExtract: enSuppPage?.extract || "",
+    enSuppTitle: enSuppPage?.title || "",
   });
 
   if (!monograph) {

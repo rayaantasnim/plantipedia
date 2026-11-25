@@ -1,8 +1,8 @@
 /**
  * Distraction-Free Split Specimen Comparison Result View (/compare/result/)
- * - Renders ONLY the compact utility header + full side-by-side comparison matrix
+ * - Renders ONLY the compact utility header + 15-chapter side-by-side comparison matrix
  * - Supports curated local monographs and Global Botanical Server species
- * - Redirects gracefully to ../ when visited without valid non-duplicate left & right params
+ * - Routes failed/invalid lookups cleanly back to ../compare/ for inline recovery (zero 404 redirects)
  */
 
 import { createEl, sanitizeUrl } from "../utils/templates.js";
@@ -19,6 +19,10 @@ import {
   normalizeGlobalQuery,
   runGlobalServerTelemetry,
 } from "../../engines/global-server/global-botanical-server.js";
+import {
+  isIgnoredHeading,
+  normalizeImageKey,
+} from "../../engines/global-server/taxon-parser.js";
 
 const PLACEHOLDER_PLATE = "./assets/images/placeholder-botanical.svg";
 
@@ -51,17 +55,40 @@ function createIconSvg(paths, size = 16) {
   return svg;
 }
 
-function redirectBackToSelector() {
-  window.location.replace(resolveRootPath("./compare/"));
+function buildReturnHref(parsed) {
+  const params = new URLSearchParams();
+  if (parsed?.left) {
+    params.set("left", parsed.left);
+    if (parsed.leftType === "global") params.set("leftType", "global");
+    else params.set("leftType", "local");
+  }
+  if (parsed?.right) {
+    params.set("right", parsed.right);
+    if (parsed.rightType === "global") params.set("rightType", "global");
+    else params.set("rightType", "local");
+  }
+  const qs = params.toString();
+  return resolveRootPath(qs ? `./compare/?${qs}` : "./compare/");
 }
 
-function redirectToCompare404(reason, query) {
-  const params = new URLSearchParams({
-    reason: reason || "invalid",
-    q: query || "",
-    from: "compare",
-  });
-  window.location.replace(resolveRootPath(`./404.html?${params.toString()}`));
+function redirectBackToSelector(parsed = null) {
+  window.location.replace(buildReturnHref(parsed));
+}
+
+function redirectToCompareInlineRecovery(parsed, failedSide, failedQuery, failedReason) {
+  const params = new URLSearchParams();
+  if (parsed?.left) {
+    params.set("left", parsed.left);
+    params.set("leftType", parsed.leftType === "global" ? "global" : "local");
+  }
+  if (parsed?.right) {
+    params.set("right", parsed.right);
+    params.set("rightType", parsed.rightType === "global" ? "global" : "local");
+  }
+  if (failedSide) params.set("failedSide", failedSide);
+  if (failedQuery) params.set("failedQuery", failedQuery);
+  params.set("failedReason", failedReason || "invalid");
+  window.location.replace(resolveRootPath(`./compare/?${params.toString()}`));
 }
 
 function parseSpecimenParams() {
@@ -115,11 +142,43 @@ function normalizeLifespanToDays(stat) {
   return val * 365;
 }
 
-function findPlantSection(plant, keywordRe, fallbackNumber) {
+function getCleanPlantSections(plant) {
   const sections = Array.isArray(plant?.sections) ? plant.sections : [];
-  const byTitle = sections.find((sec) => keywordRe.test(String(sec.title || "")));
+  return sections.filter((sec) => sec && !isIgnoredHeading(sec.title));
+}
+
+function claimMatchingSection(plant, claimedSet, keywordRe, preferredNumbers = []) {
+  const sections = getCleanPlantSections(plant);
+  if (sections.length === 0) return null;
+
+  const unclaimed = sections.filter((sec) => !claimedSet.has(sec));
+  const byNumPreferred = (pool) => {
+    for (const num of preferredNumbers) {
+      const hit = pool.find((sec) => String(sec.number || "") === num);
+      if (hit) return hit;
+    }
+    return null;
+  };
+
+  let picked = unclaimed.find((sec) => keywordRe.test(`${sec.title || ""} ${sec.subtitle || ""}`));
+  if (!picked) picked = byNumPreferred(unclaimed);
+  if (!picked) picked = sections.find((sec) => keywordRe.test(`${sec.title || ""} ${sec.subtitle || ""}`));
+  if (!picked) picked = byNumPreferred(sections);
+  if (picked) {
+    claimedSet.add(picked);
+  }
+  return picked || null;
+}
+
+function peekSection(plant, keywordRe, preferredNumbers = []) {
+  const sections = getCleanPlantSections(plant);
+  const byTitle = sections.find((sec) => keywordRe.test(`${sec.title || ""} ${sec.subtitle || ""}`));
   if (byTitle) return byTitle;
-  return sections.find((sec) => sec.number === fallbackNumber) || sections[0] || null;
+  for (const num of preferredNumbers) {
+    const byNum = sections.find((sec) => String(sec.number || "") === num);
+    if (byNum) return byNum;
+  }
+  return sections[0] || null;
 }
 
 function getSpecimenImageUrl(plant) {
@@ -131,9 +190,8 @@ function getSpecimenImageUrl(plant) {
   return sanitizeUrl(candidate, PLACEHOLDER_PLATE);
 }
 
-function findSecondarySpecimenImage(plant, excludeUrls = new Set(), preferredRe = null) {
-  const sections = Array.isArray(plant?.sections) ? plant.sections : [];
-  const heroUrl = getSpecimenImageUrl(plant);
+function findSecondarySpecimenImage(plant, usedImageKeys, preferredRe = null) {
+  const sections = getCleanPlantSections(plant);
   const candidates = [];
 
   if (preferredRe) {
@@ -155,11 +213,13 @@ function findSecondarySpecimenImage(plant, excludeUrls = new Set(), preferredRe 
     const rawUrl = im?.url || im?.imageUrl || "";
     if (!rawUrl) continue;
     const cleanUrl = sanitizeUrl(rawUrl, "");
-    if (!cleanUrl || cleanUrl === PLACEHOLDER_PLATE || cleanUrl === heroUrl) continue;
-    if (excludeUrls && excludeUrls.has(cleanUrl)) continue;
+    if (!cleanUrl || cleanUrl === PLACEHOLDER_PLATE) continue;
+    const normKey = normalizeImageKey(cleanUrl);
+    if (!normKey || usedImageKeys.has(normKey)) continue;
+    usedImageKeys.add(normKey);
     return {
       url: cleanUrl,
-      alt: im.alt || `${plant.commonName} botanical plate`,
+      alt: im.alt || `${plant.commonName} botanical specimen plate`,
       caption: im.caption || im.alt || `${plant.commonName} comparative specimen plate`,
     };
   }
@@ -195,23 +255,6 @@ function getSpecimenMonographHref(spec) {
     return resolveRootPath(`./plant/live/?q=${encodeURIComponent(q)}&cached=1`);
   }
   return resolveRootPath(`./plant/?species=${encodeURIComponent(spec.plant.slug)}`);
-}
-
-function buildReturnHref(parsed) {
-  const params = new URLSearchParams();
-  if (parsed.leftType === "global") {
-    params.set("left", parsed.left);
-    params.set("leftType", "global");
-  } else {
-    params.set("left", parsed.left);
-  }
-  if (parsed.rightType === "global") {
-    params.set("right", parsed.right);
-    params.set("rightType", "global");
-  } else {
-    params.set("right", parsed.right);
-  }
-  return resolveRootPath(`./compare/?${params.toString()}`);
 }
 
 function buildTopHeader(parsed, leftPlant, rightPlant) {
@@ -301,20 +344,23 @@ function buildHeroCard(spec, sideLabel) {
   body.appendChild(metaRow);
 
   const nameRow = createEl("div", "compare-hero-names");
-  nameRow.appendChild(createEl("h2", "compare-hero-common", plant.commonName));
-  const bnLabel = plant.localName || plant.commonNameBn || "";
-  if (bnLabel) {
+  nameRow.appendChild(createEl("h2", "compare-hero-common", plant.commonName || plant.scientificName || "Botanical Specimen"));
+  const bnLabel = String(plant.localName || plant.commonNameBn || "").trim();
+  if (bnLabel && bnLabel.toLowerCase() !== String(plant.commonName || "").trim().toLowerCase()) {
     nameRow.appendChild(createEl("span", "compare-hero-bn", bnLabel));
   }
   body.appendChild(nameRow);
 
   body.appendChild(createEl("p", "compare-hero-sci", plant.scientificName || ""));
   if (plant.overview?.family) {
+    const hasDistinctBnFam =
+      plant.familyBn &&
+      plant.familyBn.trim().toLowerCase() !== plant.overview.family.trim().toLowerCase();
     body.appendChild(
       createEl(
         "p",
         "compare-hero-family",
-        plant.familyBn
+        hasDistinctBnFam
           ? `Family: ${plant.overview.family} (${plant.familyBn})`
           : `Family: ${plant.overview.family}`,
       ),
@@ -349,11 +395,26 @@ function buildSectionShell(number, title, subtitle) {
   return sec;
 }
 
+function appendDualCardSubblocks(card, subblocks) {
+  if (!Array.isArray(subblocks) || subblocks.length === 0) return;
+  const subGrid = createEl("div", "compare-subblocks-grid");
+  subblocks.slice(0, 4).forEach((sb) => {
+    if (!sb?.heading || !sb?.text) return;
+    const box = createEl("div", "compare-subblock");
+    box.appendChild(createEl("h4", "compare-subblock-title", sb.heading));
+    box.appendChild(createEl("p", "compare-subblock-text", sb.text));
+    subGrid.appendChild(box);
+  });
+  if (subGrid.children.length > 0) {
+    card.appendChild(subGrid);
+  }
+}
+
 function buildTaxonomySection(leftPlant, rightPlant) {
   const sec = buildSectionShell(
     "01",
     "Scientific Taxonomy",
-    "Linnaean hierarchy, growth habit, and biogeographic classification",
+    "Linnaean hierarchy, ordinal placement, growth habit, and biogeographic classification",
   );
 
   const tableWrap = createEl("div", "compare-taxonomy-table-wrap");
@@ -367,18 +428,16 @@ function buildTaxonomySection(leftPlant, rightPlant) {
   thead.appendChild(hRow);
   table.appendChild(thead);
 
+  const formatFam = (pl) =>
+    pl.familyBn && pl.familyBn.trim().toLowerCase() !== String(pl.overview?.family || "").trim().toLowerCase()
+      ? `${pl.overview?.family || "—"} (${pl.familyBn})`
+      : pl.overview?.family || "—";
+
   const rows = [
     ["Plant Group", leftPlant.overview?.plantGroup || "—", rightPlant.overview?.plantGroup || "—"],
     ["Taxonomic Domain", leftPlant.taxonomicDomain || leftPlant.category || "—", rightPlant.taxonomicDomain || rightPlant.category || "—"],
-    [
-      "Botanical Family",
-      leftPlant.familyBn
-        ? `${leftPlant.overview?.family || "—"} (${leftPlant.familyBn})`
-        : leftPlant.overview?.family || "—",
-      rightPlant.familyBn
-        ? `${rightPlant.overview?.family || "—"} (${rightPlant.familyBn})`
-        : rightPlant.overview?.family || "—",
-    ],
+    ["Botanical Order", leftPlant.overview?.order || "—", rightPlant.overview?.order || "—"],
+    ["Botanical Family", formatFam(leftPlant), formatFam(rightPlant)],
     ["Genus", leftPlant.overview?.genus || "—", rightPlant.overview?.genus || "—"],
     ["Species Epithet", leftPlant.overview?.species || leftPlant.scientificName || "—", rightPlant.overview?.species || rightPlant.scientificName || "—"],
     ["Growth Habit", leftPlant.overview?.growthForm || "—", rightPlant.overview?.growthForm || "—"],
@@ -520,179 +579,89 @@ function buildTelemetrySection(leftPlant, rightPlant) {
   return sec;
 }
 
-function buildMorphologySection(leftPlant, rightPlant, usedImageUrls) {
-  const sec = buildSectionShell(
-    "03",
-    "Morphology & Structural Architecture",
-    "Comparative vegetative habit, bark/stems, foliar venation, floral structures, and root systems",
-  );
-
+function buildComparativeChapterSection({
+  number,
+  title,
+  subtitle,
+  leftPlant,
+  rightPlant,
+  claimedLeft,
+  claimedRight,
+  usedImageKeys,
+  keywordRe,
+  preferredNumbers = [],
+  photoMatchRe,
+  fallbackBuilder,
+  extraPillsBuilder = null,
+  includeSafetyBox = false,
+}) {
+  const sec = buildSectionShell(number, title, subtitle);
   const dualGrid = createEl("div", "compare-dual-cards");
 
   [
-    { plant: leftPlant, side: "left" },
-    { plant: rightPlant, side: "right" },
-  ].forEach(({ plant, side }) => {
+    { plant: leftPlant, side: "left", claimed: claimedLeft, figSuffix: "L" },
+    { plant: rightPlant, side: "right", claimed: claimedRight, figSuffix: "R" },
+  ].forEach(({ plant, side, claimed, figSuffix }) => {
     const card = createEl("article", `compare-detail-card compare-detail-card--${side}`);
     const cardHead = createEl("div", "compare-detail-head");
     cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, plant.commonName));
-    const morphSec = findPlantSection(plant, /morpholog|description|anatomy/i, "01");
-    cardHead.appendChild(
-      createEl("h3", "compare-detail-heading", morphSec?.subtitle || morphSec?.title || "Morphological Profile"),
-    );
-    card.appendChild(cardHead);
 
-    const paragraphs = Array.isArray(morphSec?.paragraphs) ? morphSec.paragraphs : [];
-    if (paragraphs.length > 0) {
-      paragraphs.slice(0, 2).forEach((p) => {
-        card.appendChild(createEl("p", "compare-detail-prose", p));
-      });
-    } else {
-      card.appendChild(
-        createEl(
-          "p",
-          "compare-detail-prose",
-          plant.overview?.growthForm || plant.leadOverview || "Morphological record available in full monograph.",
-        ),
-      );
-    }
+    const matchedSec = claimMatchingSection(plant, claimed, keywordRe, preferredNumbers);
+    const fb = typeof fallbackBuilder === "function" ? fallbackBuilder(plant, matchedSec) : null;
 
-    const subblocks = Array.isArray(morphSec?.subblocks) ? morphSec.subblocks : [];
-    if (subblocks.length > 0) {
-      const subGrid = createEl("div", "compare-subblocks-grid");
-      subblocks.forEach((sb) => {
-        const box = createEl("div", "compare-subblock");
-        box.appendChild(createEl("h4", "compare-subblock-title", sb.heading));
-        box.appendChild(createEl("p", "compare-subblock-text", sb.text));
-        subGrid.appendChild(box);
-      });
-      card.appendChild(subGrid);
-    }
-
-    const morphPlate = findSecondarySpecimenImage(plant, usedImageUrls, /morpholog|vegetative|foliar/i);
-    if (morphPlate) {
-      usedImageUrls.add(morphPlate.url);
-      const figEl = buildSecondaryPlateFigure(morphPlate, side === "left" ? "Fig. 03.L" : "Fig. 03.R");
-      if (figEl) card.appendChild(figEl);
-    }
-
-    dualGrid.appendChild(card);
-  });
-
-  sec.appendChild(dualGrid);
-  return sec;
-}
-
-function buildHabitatSection(leftPlant, rightPlant, usedImageUrls) {
-  const sec = buildSectionShell(
-    "04",
-    "Habitat & Cultivation Envelope",
-    "Natural biogeographic distribution, edaphic soil chemistry, solar irradiance, and irrigation profile",
-  );
-
-  const dualGrid = createEl("div", "compare-dual-cards");
-
-  [
-    { plant: leftPlant, side: "left" },
-    { plant: rightPlant, side: "right" },
-  ].forEach(({ plant, side }) => {
-    const card = createEl("article", `compare-detail-card compare-detail-card--${side}`);
-    const cardHead = createEl("div", "compare-detail-head");
-    cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, plant.commonName));
-    const habSec = findPlantSection(plant, /habitat|distribution|ecology|range/i, "03");
-    cardHead.appendChild(
-      createEl("h3", "compare-detail-heading", habSec?.subtitle || habSec?.title || "Habitat & Ecological Range"),
-    );
-    card.appendChild(cardHead);
-
-    const paragraphs = Array.isArray(habSec?.paragraphs) ? habSec.paragraphs : [];
-    if (paragraphs.length > 0) {
-      paragraphs.slice(0, 2).forEach((p) => {
-        card.appendChild(createEl("p", "compare-detail-prose", p));
-      });
-    } else if (plant.overview?.nativeOrigin) {
-      card.appendChild(createEl("p", "compare-detail-prose", plant.overview.nativeOrigin));
-    }
-
-    const stats = extractPlantTelemetryStats(plant);
-    const tel = plant.cultivationTelemetry || {};
-    const specsGrid = createEl("div", "compare-care-pills");
-    const carePairs = [
-      ["Native Distribution", plant.overview?.nativeOrigin || "Broad Tropical / Global Range"],
-      ["Soil pH Envelope", tel.phOptimalLabel || plant.overview?.phRange || `pH ${stats[1]?.value ?? 6.5}`],
-      ["Solar Exposure", tel.sunlightLabel || plant.overview?.sunlight || `${stats[3]?.value ?? 30}${stats[3]?.suffix || "°C"}`],
-      ["Moisture & Substrate", [tel.irrigationLabel, tel.soilDrainageLabel].filter(Boolean).join(" · ") || "Well-drained organic loam"],
-    ];
-
-    carePairs.forEach(([k, v]) => {
-      const item = createEl("div", "compare-care-item");
-      item.appendChild(createEl("span", "compare-care-key", k));
-      item.appendChild(createEl("span", "compare-care-val", v));
-      specsGrid.appendChild(item);
-    });
-    card.appendChild(specsGrid);
-
-    const habPlate = findSecondarySpecimenImage(plant, usedImageUrls, /habitat|biogeograph|cultivat|ecology/i);
-    if (habPlate) {
-      usedImageUrls.add(habPlate.url);
-      const figEl = buildSecondaryPlateFigure(habPlate, side === "left" ? "Fig. 04.L" : "Fig. 04.R");
-      if (figEl) card.appendChild(figEl);
-    }
-
-    dualGrid.appendChild(card);
-  });
-
-  sec.appendChild(dualGrid);
-  return sec;
-}
-
-function buildPhytochemistrySection(leftPlant, rightPlant) {
-  const sec = buildSectionShell(
-    "05",
-    "Phytochemistry & Medicinal Profile",
-    "Bioactive secondary metabolites, ethnobotanical traditions, and clinical safety notes",
-  );
-
-  const dualGrid = createEl("div", "compare-dual-cards");
-
-  [
-    { plant: leftPlant, side: "left" },
-    { plant: rightPlant, side: "right" },
-  ].forEach(({ plant, side }) => {
-    const card = createEl("article", `compare-detail-card compare-detail-card--${side}`);
-    const cardHead = createEl("div", "compare-detail-head");
-    cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, plant.commonName));
-    const phytoSec = findPlantSection(plant, /medicin|phytochem|compound/i, "06");
     cardHead.appendChild(
       createEl(
         "h3",
         "compare-detail-heading",
-        phytoSec?.subtitle || phytoSec?.title || "Phytochemistry & Ethnomedicine",
+        matchedSec?.subtitle || matchedSec?.title || fb?.heading || title,
       ),
     );
     card.appendChild(cardHead);
 
-    const paragraphs = Array.isArray(phytoSec?.paragraphs) ? phytoSec.paragraphs : [];
-    if (paragraphs.length > 0) {
-      paragraphs.slice(0, 2).forEach((p) => {
-        card.appendChild(createEl("p", "compare-detail-prose", p));
-      });
-    } else {
-      card.appendChild(
-        createEl(
-          "p",
-          "compare-detail-prose",
-          `${plant.commonName} (${plant.scientificName}) contains lineage-specific polyphenols and bioactive metabolites documented in its full monograph.`,
-        ),
-      );
+    const paragraphs = Array.isArray(matchedSec?.paragraphs) ? matchedSec.paragraphs : [];
+    const proseList =
+      paragraphs.length > 0
+        ? paragraphs.slice(0, 2)
+        : Array.isArray(fb?.paragraphs) && fb.paragraphs.length > 0
+          ? fb.paragraphs
+          : [`Comparative botanical telemetry for ${plant.commonName} (${plant.scientificName}) is indexed in its full monograph.`];
+
+    proseList.forEach((p) => {
+      if (p) card.appendChild(createEl("p", "compare-detail-prose", p));
+    });
+
+    if (typeof extraPillsBuilder === "function") {
+      const carePairs = extraPillsBuilder(plant);
+      if (Array.isArray(carePairs) && carePairs.length > 0) {
+        const specsGrid = createEl("div", "compare-care-pills");
+        carePairs.forEach(([k, v]) => {
+          const item = createEl("div", "compare-care-item");
+          item.appendChild(createEl("span", "compare-care-key", k));
+          item.appendChild(createEl("span", "compare-care-val", v));
+          specsGrid.appendChild(item);
+        });
+        card.appendChild(specsGrid);
+      }
     }
 
-    if (phytoSec?.safetyNote) {
+    const subblocks =
+      Array.isArray(matchedSec?.subblocks) && matchedSec.subblocks.length > 0
+        ? matchedSec.subblocks
+        : fb?.subblocks || [];
+    appendDualCardSubblocks(card, subblocks);
+
+    if (includeSafetyBox && matchedSec?.safetyNote) {
       const noteBox = createEl("div", "safety-notice-box");
       noteBox.setAttribute("role", "note");
       noteBox.appendChild(createEl("span", "safety-notice-title", "Safety Advisory"));
-      noteBox.appendChild(document.createTextNode(phytoSec.safetyNote));
+      noteBox.appendChild(document.createTextNode(matchedSec.safetyNote));
       card.appendChild(noteBox);
+    }
+
+    const plate = findSecondarySpecimenImage(plant, usedImageKeys, photoMatchRe || keywordRe);
+    if (plate) {
+      const figEl = buildSecondaryPlateFigure(plate, `Fig. ${number}.${figSuffix}`);
+      if (figEl) card.appendChild(figEl);
     }
 
     dualGrid.appendChild(card);
@@ -702,11 +671,93 @@ function buildPhytochemistrySection(leftPlant, rightPlant) {
   return sec;
 }
 
-function buildPhenologySection(leftPlant, rightPlant, seasonsData) {
+function buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, usedImageKeys) {
   const sec = buildSectionShell(
-    "06",
-    "Seasonal Phenology",
-    "Flowering, fruiting, vegetative flush, and dormancy cadence across Bengal's six ecological seasons (ষড়ঋতু)",
+    "04",
+    "Foliar & Canopy Architecture",
+    "Phyllotaxis, leaf lamina geometry, vascular venation, and light-harvesting structure",
+  );
+  const dualGrid = createEl("div", "compare-dual-cards");
+
+  [
+    { plant: leftPlant, side: "left", claimed: claimedLeft, figSuffix: "L" },
+    { plant: rightPlant, side: "right", claimed: claimedRight, figSuffix: "R" },
+  ].forEach(({ plant, side, claimed, figSuffix }) => {
+    const card = createEl("article", `compare-detail-card compare-detail-card--${side}`);
+    const cardHead = createEl("div", "compare-detail-head");
+    cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, plant.commonName));
+
+    // Only claim sections whose heading/subtitle genuinely targets foliage (not already claimed morphology)
+    const sections = getCleanPlantSections(plant);
+    let foliarSec = sections.find(
+      (secItem) =>
+        !claimed.has(secItem) &&
+        /foliar|foliage|canopy architecture|leaf|leaves|frond/i.test(`${secItem.title || ""} ${secItem.subtitle || ""}`),
+    );
+    if (foliarSec) claimed.add(foliarSec);
+
+    cardHead.appendChild(
+      createEl(
+        "h3",
+        "compare-detail-heading",
+        foliarSec?.subtitle || foliarSec?.title || "Foliar Venation & Canopy Light Capture",
+      ),
+    );
+    card.appendChild(cardHead);
+
+    if (foliarSec?.paragraphs?.length) {
+      foliarSec.paragraphs.slice(0, 2).forEach((p) => {
+        card.appendChild(createEl("p", "compare-detail-prose", p));
+      });
+      appendDualCardSubblocks(card, foliarSec.subblocks);
+    } else {
+      const morphRef = peekSection(plant, /morpholog|description/i, ["01"]);
+      const allMorphSents = (morphRef?.paragraphs || [])
+        .join(" ")
+        .split(/(?<=[.!?।])\s+/)
+        .filter((s) => /\b(leaf|leaves|foliage|frond|blade|vein|venation|rosette|canopy|crown|leaflet|stoma)\b/i.test(s));
+      const leafFocusText =
+        allMorphSents.slice(0, 2).join(" ") ||
+        `${plant.commonName} (${plant.scientificName}) arranges its photosynthetic canopy to match ${plant.cultivationTelemetry?.sunlightLabel || "regional solar regimes"}, forming a ${plant.overview?.growthForm || "vascular specimen"}.`;
+
+      card.appendChild(createEl("p", "compare-detail-prose", leafFocusText));
+      card.appendChild(
+        createEl(
+          "p",
+          "compare-detail-prose",
+          `Classified within ${plant.overview?.family || "its botanical family"} (${plant.overview?.plantGroup || "vascular flora"}), cuticular resilience and canopy exposure coordinate transpiration efficiency with ${plant.cultivationTelemetry?.irrigationLabel || "ambient soil moisture"} availability.`,
+        ),
+      );
+
+      const morphSubs = Array.isArray(morphRef?.subblocks) ? morphRef.subblocks.slice(2, 4) : [];
+      if (morphSubs.length > 0) {
+        appendDualCardSubblocks(card, morphSubs);
+      } else {
+        appendDualCardSubblocks(card, [
+          { heading: "Light Interception", text: plant.cultivationTelemetry?.sunlightLabel || "Filtered to Full Sun" },
+          { heading: "Canopy Growth Form", text: plant.overview?.growthForm || plant.overview?.plantGroup || "Vascular Flora" },
+        ]);
+      }
+    }
+
+    const foliarPlate = findSecondarySpecimenImage(plant, usedImageKeys, /foliar|foliage|leaf|canopy|crown|morpholog/i);
+    if (foliarPlate) {
+      const figEl = buildSecondaryPlateFigure(foliarPlate, `Fig. 04.${figSuffix}`);
+      if (figEl) card.appendChild(figEl);
+    }
+
+    dualGrid.appendChild(card);
+  });
+
+  sec.appendChild(dualGrid);
+  return sec;
+}
+
+function buildPhenologySection(leftPlant, rightPlant, seasonsData, claimedLeft, claimedRight, usedImageKeys) {
+  const sec = buildSectionShell(
+    "09",
+    "Seasonal Phenology & Growth Rhythms",
+    "Flowering, fruiting, vegetative flush, and dormancy cadence across Bengal's six seasons (ষড়ঋতু) and global climate regimes",
   );
 
   const seasonsList =
@@ -717,9 +768,9 @@ function buildPhenologySection(leftPlant, rightPlant, seasonsData) {
   const dualGrid = createEl("div", "compare-dual-cards");
 
   [
-    { plant: leftPlant, side: "left" },
-    { plant: rightPlant, side: "right" },
-  ].forEach(({ plant, side }) => {
+    { plant: leftPlant, side: "left", claimed: claimedLeft, figSuffix: "L" },
+    { plant: rightPlant, side: "right", claimed: claimedRight, figSuffix: "R" },
+  ].forEach(({ plant, side, claimed, figSuffix }) => {
     const card = createEl("article", `compare-detail-card compare-detail-card--${side}`);
     const cardHead = createEl("div", "compare-detail-head");
     cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, plant.commonName));
@@ -732,16 +783,20 @@ function buildPhenologySection(leftPlant, rightPlant, seasonsData) {
     );
     card.appendChild(cardHead);
 
+    const phenoSec = claimMatchingSection(plant, claimed, /phenol|season|rhythm|dormanc/i, ["08"]);
     const activeSeasons = Array.isArray(plant.seasons) ? plant.seasons : [];
-    const phenoMap = plant.seasonalPhenology && typeof plant.seasonalPhenology === "object"
-      ? plant.seasonalPhenology
-      : null;
+    const phenoMap =
+      plant.seasonalPhenology && typeof plant.seasonalPhenology === "object"
+        ? plant.seasonalPhenology
+        : null;
 
     if (phenoMap || activeSeasons.length > 0) {
       const list = createEl("div", "compare-phenology-list");
       seasonsList.forEach((s) => {
         const isActive = activeSeasons.includes(s.id);
-        const note = phenoMap?.[s.id] || (isActive ? "Active growth / reproductive phase documented." : "Maintenance / vegetative rest period.");
+        const note =
+          phenoMap?.[s.id] ||
+          (isActive ? "Active growth / reproductive phase documented." : "Maintenance / vegetative rest period.");
         const row = createEl(
           "div",
           `compare-phenology-row${isActive ? " is-active-season" : ""}`,
@@ -761,23 +816,27 @@ function buildPhenologySection(leftPlant, rightPlant, seasonsData) {
       });
       card.appendChild(list);
     } else {
-      const lifeSec = findPlantSection(plant, /propagation|husbandry|cultivation|telemetry/i, "06");
       const lifespanText = plant.overview?.lifespan || "Perennial";
-      card.appendChild(
-        createEl(
-          "p",
-          "compare-detail-prose",
-          `${plant.commonName} follows a ${lifespanText.toLowerCase()} biological cycle indexed via the Global Flora Index. Growth activity peaks during warm, photoperiod-favorable seasons aligned with ${plant.overview?.sunlight || "ambient solar exposure"} and ${plant.overview?.temperatureRange || "18–32 °C"}.`,
-        ),
-      );
-      if (lifeSec?.paragraphs?.[0]) {
-        card.appendChild(createEl("p", "compare-detail-prose", lifeSec.paragraphs[0]));
+      if (phenoSec?.paragraphs?.length) {
+        phenoSec.paragraphs.slice(0, 2).forEach((p) => {
+          card.appendChild(createEl("p", "compare-detail-prose", p));
+        });
+      } else {
+        card.appendChild(
+          createEl(
+            "p",
+            "compare-detail-prose",
+            `${plant.commonName} (${plant.scientificName}) follows a ${lifespanText.toLowerCase()} biological cycle indexed via the Global Flora Index, synchronizing meristematic flushes and anthesis with ${plant.overview?.sunlight || "ambient irradiance"} and ${plant.overview?.temperatureRange || "18–32 °C"}.`,
+          ),
+        );
       }
+
       const badgeStrip = createEl("div", "compare-care-pills");
       [
         ["Lifecycle Class", lifespanText],
         ["Taxon Category", plant.category || "Global Flora"],
         ["Thermal Envelope", plant.overview?.temperatureRange || "18–32 °C"],
+        ["Moisture Regime", plant.cultivationTelemetry?.irrigationLabel || "Moderate"],
       ].forEach(([k, v]) => {
         const item = createEl("div", "compare-care-item");
         item.appendChild(createEl("span", "compare-care-key", k));
@@ -785,6 +844,12 @@ function buildPhenologySection(leftPlant, rightPlant, seasonsData) {
         badgeStrip.appendChild(item);
       });
       card.appendChild(badgeStrip);
+    }
+
+    const phenoPlate = findSecondarySpecimenImage(plant, usedImageKeys, /phenol|season|bloom|timing|flush/i);
+    if (phenoPlate) {
+      const figEl = buildSecondaryPlateFigure(phenoPlate, `Fig. 09.${figSuffix}`);
+      if (figEl) card.appendChild(figEl);
     }
 
     dualGrid.appendChild(card);
@@ -802,7 +867,7 @@ export async function renderCompareResultWorkspace(
 
   const parsed = parseSpecimenParams();
   if (!parsed.left || !parsed.right) {
-    redirectBackToSelector();
+    redirectBackToSelector(parsed);
     return;
   }
 
@@ -810,7 +875,7 @@ export async function renderCompareResultWorkspace(
     parsed.left.toLowerCase() === parsed.right.toLowerCase() &&
     parsed.leftType === parsed.rightType
   ) {
-    redirectBackToSelector();
+    redirectBackToSelector(parsed);
     return;
   }
 
@@ -818,11 +883,11 @@ export async function renderCompareResultWorkspace(
   const speciesBySlug = new Map(indexList.map((sp) => [sp.slug.toLowerCase(), sp]));
 
   if (parsed.leftType === "local" && !speciesBySlug.has(parsed.left)) {
-    redirectBackToSelector();
+    redirectToCompareInlineRecovery(parsed, "left", parsed.left, "invalid");
     return;
   }
   if (parsed.rightType === "local" && !speciesBySlug.has(parsed.right)) {
-    redirectBackToSelector();
+    redirectToCompareInlineRecovery(parsed, "right", parsed.right, "invalid");
     return;
   }
 
@@ -865,7 +930,12 @@ export async function renderCompareResultWorkspace(
           for (const item of uncachedGlobals) {
             const res = await fetchFromGlobalBotanicalServer(item.query, { signal, onRetry });
             if (!res?.ok || !res.monograph) {
-              return { ok: false, reason: res?.reason || "invalid", failedQuery: item.query };
+              return {
+                ok: false,
+                reason: res?.reason || "invalid",
+                failedSide: item.side,
+                failedQuery: item.query,
+              };
             }
             resolvedMap[item.side] = res.monograph;
           }
@@ -880,7 +950,12 @@ export async function renderCompareResultWorkspace(
 
       const res = telemetryOutcome.result;
       if (!res?.ok) {
-        redirectToCompare404(res?.reason || "invalid", res?.failedQuery || label);
+        redirectToCompareInlineRecovery(
+          parsed,
+          res?.failedSide || uncachedGlobals[0]?.side || "right",
+          res?.failedQuery || uncachedGlobals[0]?.query || label,
+          res?.reason || "invalid",
+        );
         return;
       }
 
@@ -897,12 +972,17 @@ export async function renderCompareResultWorkspace(
     rightPlant = resolvedR;
   } catch (err) {
     console.error("Split comparison hydration failed:", err);
-    redirectBackToSelector();
+    redirectToCompareInlineRecovery(
+      parsed,
+      parsed.rightType === "global" ? "right" : "left",
+      parsed.rightType === "global" ? parsed.right : parsed.left,
+      "network",
+    );
     return;
   }
 
   try {
-    applyCompareSeo({ pageData, leftPlant, rightPlant });
+    applyCompareSeo({ pageData: { ...(pageData || {}), isResultView: true }, leftPlant, rightPlant });
   } catch {
     // Non-blocking SEO metadata update
   }
@@ -915,23 +995,216 @@ export async function renderCompareResultWorkspace(
 
   const matrix = createEl("div", "compare-matrix-shell");
 
+  // 00: Specimen Hero Comparison
   const heroGrid = createEl("section", "compare-hero-grid");
   heroGrid.setAttribute("aria-label", "Specimen Hero Comparison");
   heroGrid.appendChild(buildHeroCard(leftSpec, "LEFT SPECIMEN"));
   heroGrid.appendChild(buildHeroCard(rightSpec, "RIGHT SPECIMEN"));
   matrix.appendChild(heroGrid);
 
-  const usedImageUrls = new Set([
-    getSpecimenImageUrl(leftPlant),
-    getSpecimenImageUrl(rightPlant),
-  ]);
+  // Strict site-wide/page-wide unique image registry (Max 1 normalized URL per page)
+  const usedImageKeys = new Set(
+    [normalizeImageKey(getSpecimenImageUrl(leftPlant)), normalizeImageKey(getSpecimenImageUrl(rightPlant))].filter(
+      Boolean,
+    ),
+  );
+  const claimedLeft = new Set();
+  const claimedRight = new Set();
 
+  // 01: Scientific Taxonomy
   matrix.appendChild(buildTaxonomySection(leftPlant, rightPlant));
+
+  // 02: Numerical Telemetry Comparison Bars
   matrix.appendChild(buildTelemetrySection(leftPlant, rightPlant));
-  matrix.appendChild(buildMorphologySection(leftPlant, rightPlant, usedImageUrls));
-  matrix.appendChild(buildHabitatSection(leftPlant, rightPlant, usedImageUrls));
-  matrix.appendChild(buildPhytochemistrySection(leftPlant, rightPlant));
-  matrix.appendChild(buildPhenologySection(leftPlant, rightPlant, seasonsData));
+
+  // 03: Botanical Habit & Morphological Description
+  matrix.appendChild(
+    buildComparativeChapterSection({
+      number: "03",
+      title: "Botanical Habit & Morphology",
+      subtitle: "Comparative vegetative architecture, stem structure, bark, and root systems",
+      leftPlant,
+      rightPlant,
+      claimedLeft,
+      claimedRight,
+      usedImageKeys,
+      keywordRe: /morpholog|habit|description|anatomy/i,
+      preferredNumbers: ["01"],
+      photoMatchRe: /morpholog|habit|vegetative|structure/i,
+    }),
+  );
+
+  // 04: Foliar & Canopy Architecture
+  matrix.appendChild(buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, usedImageKeys));
+
+  // 05: Floral Biology & Pollinator Ecology
+  matrix.appendChild(
+    buildComparativeChapterSection({
+      number: "05",
+      title: "Floral Biology & Pollinator Ecology",
+      subtitle: "Inflorescence morphology, anthesis rhythms, and pollination vectors",
+      leftPlant,
+      rightPlant,
+      claimedLeft,
+      claimedRight,
+      usedImageKeys,
+      keywordRe: /floral|flower|pollinat|ecolog|reproduc/i,
+      preferredNumbers: ["04", "03"],
+      photoMatchRe: /floral|flower|pollinat|reproduc/i,
+    }),
+  );
+
+  // 06: Fruit, Seed & Dispersal Biology
+  matrix.appendChild(
+    buildComparativeChapterSection({
+      number: "06",
+      title: "Fruit, Seed & Dispersal Biology",
+      subtitle: "Carpology, seed germination dynamics, and propagule dissemination",
+      leftPlant,
+      rightPlant,
+      claimedLeft,
+      claimedRight,
+      usedImageKeys,
+      keywordRe: /fruit|seed|dispers|germinat|propagation/i,
+      preferredNumbers: ["09", "04"],
+      photoMatchRe: /seed|fruit|propagat|germinat/i,
+    }),
+  );
+
+  // 07: Native Biogeography & Cultivation Envelope
+  matrix.appendChild(
+    buildComparativeChapterSection({
+      number: "07",
+      title: "Native Biogeography & Cultivation Envelope",
+      subtitle: "Geographic distribution, edaphic soil chemistry, solar exposure, and hydration profile",
+      leftPlant,
+      rightPlant,
+      claimedLeft,
+      claimedRight,
+      usedImageKeys,
+      keywordRe: /biogeograph|habitat|distribut|native|range/i,
+      preferredNumbers: ["03", "05"],
+      photoMatchRe: /habitat|biogeograph|distribut|range/i,
+      extraPillsBuilder: (plant) => {
+        const stats = extractPlantTelemetryStats(plant);
+        const tel = plant.cultivationTelemetry || {};
+        return [
+          ["Native Distribution", plant.overview?.nativeOrigin || "Broad Global / Tropical Range"],
+          ["Soil pH Envelope", tel.phOptimalLabel || plant.overview?.phRange || `pH ${stats[1]?.value ?? 6.5}`],
+          ["Solar Exposure", tel.sunlightLabel || plant.overview?.sunlight || `${stats[3]?.value ?? 30}${stats[3]?.suffix || "°C"}`],
+          ["Moisture & Substrate", [tel.irrigationLabel, tel.soilDrainageLabel].filter(Boolean).join(" · ") || "Well-drained organic loam"],
+        ];
+      },
+    }),
+  );
+
+  // 08: Evolutionary Lineage & Phylogeny
+  matrix.appendChild(
+    buildComparativeChapterSection({
+      number: "08",
+      title: "Evolutionary Lineage & Phylogeny",
+      subtitle: "Taxonomic radiation, clade placement, and adaptive systematic traits",
+      leftPlant,
+      rightPlant,
+      claimedLeft,
+      claimedRight,
+      usedImageKeys,
+      keywordRe: /phylogen|evolution|genetic|taxonom|lineage|clade|nomenclature/i,
+      preferredNumbers: ["13", "02", "06"],
+      photoMatchRe: /phylogen|taxonom|lineage|clade/i,
+    }),
+  );
+
+  // 09: Seasonal Phenology & Growth Rhythms
+  matrix.appendChild(
+    buildPhenologySection(leftPlant, rightPlant, seasonsData, claimedLeft, claimedRight, usedImageKeys),
+  );
+
+  // 10: Phytochemistry & Bioactive Medicinal Profile
+  matrix.appendChild(
+    buildComparativeChapterSection({
+      number: "10",
+      title: "Phytochemistry & Medicinal Profile",
+      subtitle: "Secondary metabolites, pharmacognosy, and clinical safety advisories",
+      leftPlant,
+      rightPlant,
+      claimedLeft,
+      claimedRight,
+      usedImageKeys,
+      keywordRe: /phytochem|medicin|compound|bioactive|alkaloid|pharmacol/i,
+      preferredNumbers: ["06", "09"],
+      photoMatchRe: /phytochem|medicin|compound|bioactive/i,
+      includeSafetyBox: true,
+    }),
+  );
+
+  // 11: Ethnobotanical, Cultural & Economic History
+  matrix.appendChild(
+    buildComparativeChapterSection({
+      number: "11",
+      title: "Ethnobotanical & Cultural History",
+      subtitle: "Culinary traditions, artisanal uses, folklore, and horticultural commerce",
+      leftPlant,
+      rightPlant,
+      claimedLeft,
+      claimedRight,
+      usedImageKeys,
+      keywordRe: /ethnobot|cultur|econom|culinar|history|heritage|use/i,
+      preferredNumbers: ["05", "10", "11"],
+      photoMatchRe: /cultur|ethnobot|econom|harvest/i,
+    }),
+  );
+
+  // 12: Cultivation Protocol, Spacing & Telemetry
+  matrix.appendChild(
+    buildComparativeChapterSection({
+      number: "12",
+      title: "Cultivation Protocol & Husbandry",
+      subtitle: "Substrate preparation, canopy spacing, irrigation discipline, and pruning",
+      leftPlant,
+      rightPlant,
+      claimedLeft,
+      claimedRight,
+      usedImageKeys,
+      keywordRe: /cultivat|spacing|prun|horticult|care|telemetry|soil/i,
+      preferredNumbers: ["07", "12"],
+      photoMatchRe: /cultivat|substrate|spacing|garden/i,
+    }),
+  );
+
+  // 13: Pathology Defense, Pests & Resilience
+  matrix.appendChild(
+    buildComparativeChapterSection({
+      number: "13",
+      title: "Pathology, Pests & Stress Resilience",
+      subtitle: "Biotic stressors, phytoalexin defenses, and organic IPM practices",
+      leftPlant,
+      rightPlant,
+      claimedLeft,
+      claimedRight,
+      usedImageKeys,
+      keywordRe: /patholog|pest|disease|ipm|resilien|threat|vector/i,
+      preferredNumbers: ["10", "13"],
+      photoMatchRe: /pest|patholog|ipm|defense/i,
+    }),
+  );
+
+  // 14: Conservation Standing & Field Identification Key
+  matrix.appendChild(
+    buildComparativeChapterSection({
+      number: "14",
+      title: "Conservation & Field Identification Key",
+      subtitle: "IUCN vulnerability status, germplasm stewardship, and diagnostic markers",
+      leftPlant,
+      rightPlant,
+      claimedLeft,
+      claimedRight,
+      usedImageKeys,
+      keywordRe: /conserv|identif|diagnostic|registry|status|iucn/i,
+      preferredNumbers: ["14", "11"],
+      photoMatchRe: /conserv|identif|herbarium|status/i,
+    }),
+  );
 
   workspace.appendChild(matrix);
   mountEl.replaceChildren(workspace);
@@ -1076,7 +1349,6 @@ async function animateCompareResultWorkspace(workspace) {
   const fillEls = Array.from(workspace.querySelectorAll(".compare-bar-fill"));
   const telemetryGrid = workspace.querySelector(".compare-telemetry-grid");
 
-  // Stage telemetry bars and numeric readouts at 0 immediately so they count/expand smoothly on reveal
   valueEls.forEach((el) => {
     el.textContent = formatCounterStep(0, el);
   });
@@ -1110,7 +1382,6 @@ async function animateCompareResultWorkspace(workspace) {
 
   const { gsap, ScrollTrigger } = window;
 
-  // 1. Utility Header & Hero Split Entrance
   const headerChildren = Array.from(
     workspace.querySelectorAll(".compare-result-header-inner > *"),
   );
@@ -1138,7 +1409,7 @@ async function animateCompareResultWorkspace(workspace) {
     });
   }
 
-  // 2. Scroll-choreographed Comparison Sections (01 - 06)
+  // Scroll-choreographed Comparison Sections (01 - 14)
   const matrixSections = Array.from(workspace.querySelectorAll(".compare-matrix-section"));
   matrixSections.forEach((sec) => {
     gsap.from(sec, {
@@ -1149,7 +1420,7 @@ async function animateCompareResultWorkspace(workspace) {
       clearProps: "transform,opacity",
       scrollTrigger: {
         trigger: sec,
-        start: "top 88%",
+        start: "top 90%",
         once: true,
       },
     });
@@ -1165,7 +1436,7 @@ async function animateCompareResultWorkspace(workspace) {
         clearProps: "transform,opacity",
         scrollTrigger: {
           trigger: sec.querySelector(".compare-taxonomy-table") || sec,
-          start: "top 86%",
+          start: "top 88%",
           once: true,
         },
       });
@@ -1182,7 +1453,7 @@ async function animateCompareResultWorkspace(workspace) {
         clearProps: "transform,opacity",
         scrollTrigger: {
           trigger: telemetryGrid || sec,
-          start: "top 86%",
+          start: "top 88%",
           once: true,
         },
       });
@@ -1199,7 +1470,7 @@ async function animateCompareResultWorkspace(workspace) {
         clearProps: "transform,opacity",
         scrollTrigger: {
           trigger: sec.querySelector(".compare-dual-cards") || sec,
-          start: "top 86%",
+          start: "top 88%",
           once: true,
         },
       });
@@ -1218,14 +1489,13 @@ async function animateCompareResultWorkspace(workspace) {
         clearProps: "transform,opacity",
         scrollTrigger: {
           trigger: sec,
-          start: "top 82%",
+          start: "top 84%",
           once: true,
         },
       });
     }
   });
 
-  // 3. Numerical Telemetry Bars & Counter Choreography from 0
   if (telemetryGrid && (fillEls.length > 0 || valueEls.length > 0)) {
     gsap.set(fillEls, { scaleX: 0, transformOrigin: "left center" });
     fillEls.forEach((fill) => fill.classList.remove("is-bar-staged"));
@@ -1263,7 +1533,7 @@ async function animateCompareResultWorkspace(workspace) {
 
     ScrollTrigger.create({
       trigger: telemetryGrid,
-      start: "top 86%",
+      start: "top 88%",
       once: true,
       onEnter: animateTelemetryBarsAndCounters,
     });

@@ -320,6 +320,7 @@ export function sanitizeBotanicalText(input) {
   if (!input || typeof input !== "string") return "";
   return cleanScientificNotation(input)
     .replace(/https?:\/\/[a-z0-9.-]*wik(?:ipedia|imedia)\.org[^\s)]*/gi, "https://flora-index.global/")
+    .replace(/\bwikimedia(?:\s+commons)?\b/gi, "Global Herbarium Archive")
     .replace(/\bwik(?:ipedia|imedia)\b/gi, "Global Flora Index")
     .replace(/\bwikidata\b/gi, "Global Taxon Registry")
     .replace(/\bwikicommons\b/gi, "Global Herbarium Archive")
@@ -1788,6 +1789,121 @@ export function classifyDynamicSectionMeta(rawHeading, bodyLower = "") {
   };
 }
 
+function toBotanicalTitleCase(text) {
+  const s = sanitizeBotanicalText(text);
+  if (!s) return "";
+  const minor = new Set(["of", "the", "and", "or", "in", "on", "to", "for", "by", "de", "la"]);
+  return s
+    .split(/\s+/)
+    .map((word, idx) => {
+      if (!word) return word;
+      if (idx > 0 && minor.has(word.toLowerCase())) {
+        return word.toLowerCase();
+      }
+      if (/^[A-Z0-9-]+$/.test(word) && word.length <= 4) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+}
+
+function extractEnglishVernacularFromLead(enText, scientificName) {
+  const txt = sanitizeBotanicalText(enText || "");
+  if (!txt) return "";
+  const sciLower = String(scientificName || "").toLowerCase();
+  const patterns = [
+    /(?:also\s+known\s+as|commonly\s+known\s+as|commonly\s+called|known\s+in\s+english\s+as|popularly\s+called)\s+(?:the\s+)?([A-Za-z][a-z-]+(?:\s+[A-Za-z-]+){0,3})/i,
+    /\bis\s+(?:a|an)\s+(?:species\s+of\s+)?([a-z][a-z-]+(?:\s+[a-z-]+){0,2})\s+(?:palm|tree|shrub|herb|plant|flower|vine|orchid)\b/i,
+  ];
+  for (const re of patterns) {
+    const m = txt.match(re);
+    if (m && m[1]) {
+      const candidate = m[1].replace(/[,.;:]+$/, "").trim();
+      if (
+        candidate.length >= 3 &&
+        candidate.length <= 42 &&
+        candidate.toLowerCase() !== sciLower &&
+        !/^(?:species|genus|family|plant|tree|flower|native|endemic|monocarpic)$/i.test(candidate)
+      ) {
+        return toBotanicalTitleCase(candidate);
+      }
+    }
+  }
+  return "";
+}
+
+function resolveBilingualMonographNames({
+  rawTitle,
+  scientificName,
+  lang,
+  originalQuery,
+  wikidataInfo,
+  inatTaxon,
+  enSuppTitle,
+  secondaryExtract,
+  bnLangTitle,
+}) {
+  const sci = sanitizeBotanicalText(scientificName || "");
+  const sciLower = sci.toLowerCase();
+
+  const isCleanEnglishVernacular = (val) => {
+    const clean = sanitizeBotanicalText(val);
+    if (!clean || hasBengaliScript(clean)) return false;
+    const low = clean.toLowerCase();
+    if (sciLower && low === sciLower) return false;
+    if (/^(?:species of|genus of|family of|plantae)\b/i.test(low)) return false;
+    return true;
+  };
+
+  const isFamilyRankInat = String(inatTaxon?.rank || "").toLowerCase() === "family";
+  const inatEnPrimary =
+    !isFamilyRankInat && isCleanEnglishVernacular(inatTaxon?.english_common_name)
+      ? inatTaxon.english_common_name
+      : "";
+  const inatEnPref =
+    !isFamilyRankInat && isCleanEnglishVernacular(inatTaxon?.preferred_common_name)
+      ? inatTaxon.preferred_common_name
+      : "";
+
+  const englishCandidates = [
+    lang !== "bn" && isCleanEnglishVernacular(rawTitle) ? rawTitle : "",
+    isCleanEnglishVernacular(enSuppTitle) ? enSuppTitle : "",
+    isCleanEnglishVernacular(wikidataInfo?.enWikiTitle) ? wikidataInfo.enWikiTitle : "",
+    inatEnPrimary,
+    inatEnPref,
+    isCleanEnglishVernacular(wikidataInfo?.labelEn) ? wikidataInfo.labelEn : "",
+    ...(Array.isArray(wikidataInfo?.aliasesEn)
+      ? wikidataInfo.aliasesEn.filter(
+          (a) => isCleanEnglishVernacular(a) && a.length <= 40 && !/^(?:species|taxon)\b/i.test(a),
+        )
+      : []),
+    extractEnglishVernacularFromLead(secondaryExtract, sci),
+  ].filter(Boolean);
+
+  const rawEnglishChoice =
+    englishCandidates[0] ||
+    (!hasBengaliScript(rawTitle) ? rawTitle : "") ||
+    wikidataInfo?.enWikiTitle ||
+    sci ||
+    rawTitle;
+
+  const commonName = toBotanicalTitleCase(rawEnglishChoice) || sci || rawTitle;
+
+  const bengaliCandidates = [
+    lang === "bn" && hasBengaliScript(rawTitle) ? rawTitle : "",
+    hasBengaliScript(originalQuery) ? normalizeGlobalQuery(originalQuery) : "",
+    hasBengaliScript(bnLangTitle) ? bnLangTitle : "",
+    hasBengaliScript(wikidataInfo?.bnWikiTitle) ? wikidataInfo.bnWikiTitle : "",
+    hasBengaliScript(wikidataInfo?.labelBn) ? wikidataInfo.labelBn : "",
+    ...(Array.isArray(wikidataInfo?.aliasesBn)
+      ? wikidataInfo.aliasesBn.filter((a) => hasBengaliScript(a))
+      : []),
+  ].filter(Boolean);
+
+  const commonNameBn = sanitizeBotanicalText(bengaliCandidates[0] || "বৈশ্বিক উদ্ভিদ নমুনা");
+
+  return { commonName, commonNameBn };
+}
+
 export function buildPlantipediaMonograph({
   page,
   restSummary,
@@ -1799,6 +1915,7 @@ export function buildPlantipediaMonograph({
   lang = "en",
   originalQuery,
   secondaryExtract = "",
+  enSuppTitle = "",
 }) {
   const wikitext = page?.revisions?.[0]?.slots?.main?.content || "";
   const taxobox = parseTaxoboxFields(wikitext);
@@ -1921,20 +2038,17 @@ export function buildPlantipediaMonograph({
   );
   const bnLangTitle = page?.langlinks?.find((l) => l.lang === "bn")?.title || "";
 
-  const commonName =
-    lang === "bn" && wikidataInfo?.enWikiTitle && hasBengaliScript(rawTitle)
-      ? `${rawTitle} (${wikidataInfo.enWikiTitle})`
-      : rawTitle;
-  const commonNameBn =
-    lang === "bn"
-      ? rawTitle
-      : sanitizeBotanicalText(
-          bnLangTitle ||
-            wikidataInfo?.bnWikiTitle ||
-            wikidataInfo?.labelBn ||
-            (hasBengaliScript(originalQuery) ? normalizeGlobalQuery(originalQuery) : "") ||
-            "বৈশ্বিক উদ্ভিদ নমুনা",
-        );
+  const { commonName, commonNameBn } = resolveBilingualMonographNames({
+    rawTitle,
+    scientificName,
+    lang,
+    originalQuery,
+    wikidataInfo,
+    inatTaxon,
+    enSuppTitle,
+    secondaryExtract,
+    bnLangTitle,
+  });
 
   const category = inferCategoryFromData(familyName || taxobox.familia, extractLower, categoriesLower);
 
@@ -2225,7 +2339,7 @@ export function buildPlantipediaMonograph({
     commonName,
     commonNameBn,
     scientificName: scientificName || commonName,
-    familyBn: lang === "bn" ? familyName : "",
+    familyBn: hasBengaliScript(taxobox.গোত্র || "") ? sanitizeBotanicalText(taxobox.গোত্র) : "",
     category,
     featured: false,
     leadOverview,
