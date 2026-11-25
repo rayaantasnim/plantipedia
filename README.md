@@ -1,7 +1,7 @@
 <p align="center">
   <a href="./">
     <img
-      src="https://images.pexels.com/photos/16987747/pexels-photo-16987747.jpeg?auto=compress&cs=tinysrgb&w=1200"
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJv6NpfC3s6wxxbvtd2vvSuxe4oumEyhdWJV1VN0f0Fw&s=10"
       alt="Plantipedia Botanical Banner — Lush Canopy Foliage and Vascular Flora Specimen"
       width="100%"
     />
