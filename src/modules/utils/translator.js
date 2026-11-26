@@ -193,6 +193,26 @@ export function applyGlossaryFallback(text, targetLang) {
   return out;
 }
 
+function splitChunkSafelyForMyMemory(text, maxLen = 450) {
+  const clean = String(text || "").trim();
+  if (!clean || clean.length <= maxLen) return clean ? [clean] : [];
+
+  const tokens = clean.match(/\[\[PTX_\d+\]\]|\S+\s*/g) || [clean];
+  const chunks = [];
+  let buf = "";
+
+  for (const tok of tokens) {
+    if (buf && (buf + tok).length > maxLen) {
+      chunks.push(buf.trim());
+      buf = tok;
+    } else {
+      buf += tok;
+    }
+  }
+  if (buf.trim()) chunks.push(buf.trim());
+  return chunks;
+}
+
 function splitTextIntoChunks(text, maxLen = 780) {
   const clean = String(text || "").trim();
   if (!clean || clean.length <= maxLen) return clean ? [clean] : [];
@@ -202,6 +222,14 @@ function splitTextIntoChunks(text, maxLen = 780) {
   let buf = "";
 
   sentences.forEach((sentence) => {
+    if (sentence.length > maxLen) {
+      if (buf.trim()) {
+        chunks.push(buf.trim());
+        buf = "";
+      }
+      chunks.push(...splitChunkSafelyForMyMemory(sentence, maxLen));
+      return;
+    }
     if ((buf + sentence).length > maxLen && buf) {
       chunks.push(buf.trim());
       buf = sentence;
@@ -213,7 +241,13 @@ function splitTextIntoChunks(text, maxLen = 780) {
   return chunks;
 }
 
+let gtxCooldownUntil = 0;
+let myMemoryCooldownUntil = 0;
+
 async function fetchGoogleTranslateChunk(chunk, sourceLang, targetLang, signal) {
+  if (Date.now() < gtxCooldownUntil) {
+    throw new Error("GTX temporary cooldown");
+  }
   const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${encodeURIComponent(
     sourceLang,
   )}&tl=${encodeURIComponent(targetLang)}&dt=t&q=${encodeURIComponent(chunk)}`;
@@ -225,6 +259,9 @@ async function fetchGoogleTranslateChunk(chunk, sourceLang, targetLang, signal) 
 
   try {
     const res = await fetch(url, { signal: ctrl.signal });
+    if (res.status === 429) {
+      gtxCooldownUntil = Date.now() + 2500;
+    }
     if (!res.ok) throw new Error(`GTX HTTP ${res.status}`);
     const json = await res.json();
     const segments = Array.isArray(json?.[0]) ? json[0] : [];
@@ -238,29 +275,49 @@ async function fetchGoogleTranslateChunk(chunk, sourceLang, targetLang, signal) 
 }
 
 async function fetchMyMemoryChunk(chunk, sourceLang, targetLang, signal) {
-  const clipped = chunk.slice(0, 480);
-  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
-    clipped,
-  )}&langpair=${encodeURIComponent(`${sourceLang}|${targetLang}`)}`;
-
-  const ctrl = new AbortController();
-  const timeout = setTimeout(() => ctrl.abort(), 5500);
-  const onAbort = () => ctrl.abort();
-  signal?.addEventListener("abort", onAbort, { once: true });
-
-  try {
-    const res = await fetch(url, { signal: ctrl.signal });
-    if (!res.ok) throw new Error(`MyMemory HTTP ${res.status}`);
-    const json = await res.json();
-    const translated = String(json?.responseData?.translatedText || "").trim();
-    if (!translated || /MYMEMORY WARNING|QUERY LENGTH LIMIT|INVALID/i.test(translated)) {
-      throw new Error("MyMemory unavailable");
-    }
-    return { text: translated, tier: "mymemory" };
-  } finally {
-    clearTimeout(timeout);
-    signal?.removeEventListener("abort", onAbort);
+  if (Date.now() < myMemoryCooldownUntil) {
+    throw new Error("MyMemory temporary cooldown");
   }
+  const safeSubChunks = splitChunkSafelyForMyMemory(chunk, 450);
+  const translatedParts = [];
+
+  for (const subChunk of safeSubChunks) {
+    if (signal?.aborted) {
+      const err = new Error("Aborted");
+      err.name = "AbortError";
+      throw err;
+    }
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
+      subChunk,
+    )}&langpair=${encodeURIComponent(`${sourceLang}|${targetLang}`)}`;
+
+    const ctrl = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 5500);
+    const onAbort = () => ctrl.abort();
+    signal?.addEventListener("abort", onAbort, { once: true });
+
+    try {
+      const res = await fetch(url, { signal: ctrl.signal });
+      if (res.status === 429) {
+        myMemoryCooldownUntil = Date.now() + 3000;
+      }
+      if (!res.ok) throw new Error(`MyMemory HTTP ${res.status}`);
+      const json = await res.json();
+      const translated = String(json?.responseData?.translatedText || "").trim();
+      if (!translated || /MYMEMORY WARNING|QUERY LENGTH LIMIT|INVALID/i.test(translated)) {
+        if (/MYMEMORY WARNING/i.test(translated)) {
+          myMemoryCooldownUntil = Date.now() + 4000;
+        }
+        throw new Error("MyMemory unavailable");
+      }
+      translatedParts.push(translated);
+    } finally {
+      clearTimeout(timeout);
+      signal?.removeEventListener("abort", onAbort);
+    }
+  }
+
+  return { text: translatedParts.join(" ").trim(), tier: "mymemory" };
 }
 
 export async function translateText(
@@ -305,13 +362,14 @@ export async function translateText(
       const res = await fetchGoogleTranslateChunk(chunk, effectiveSource, target, signal);
       translatedChunks.push(res.text);
       usedTier = res.tier;
-    } catch {
-      if (signal?.aborted) throw new Error("Aborted");
+    } catch (gtxErr) {
+      if (gtxErr?.name === "AbortError" && signal?.aborted) throw gtxErr;
       try {
         const res2 = await fetchMyMemoryChunk(chunk, effectiveSource, target, signal);
         translatedChunks.push(res2.text);
         usedTier = res2.tier;
-      } catch {
+      } catch (mmErr) {
+        if (mmErr?.name === "AbortError" && signal?.aborted) throw mmErr;
         translatedChunks.push(applyGlossaryFallback(chunk, target));
         usedTier = "glossary";
       }

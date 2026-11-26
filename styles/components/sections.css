@@ -113,7 +113,7 @@
 .mission-stat-desc {
   margin: 0;
   font-size: 0.91rem;
-  line-height: 1.6;
+  line-height: 1.75;
   color: #cbd5e1;
   text-align: justify;
   text-justify: inter-word;
@@ -990,7 +990,7 @@
   margin: 0.1rem 0 0;
   flex: 1;
   font-size: 0.93rem;
-  line-height: 1.62;
+  line-height: 1.75;
   color: var(--ink-secondary);
   text-align: justify;
   text-justify: inter-word;
@@ -1148,8 +1148,12 @@
   margin: 0 0 28px;
   max-width: 60ch;
   font-size: 0.98rem;
-  line-height: 1.68;
+  line-height: 1.75;
   color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .compare-selects-grid {
@@ -1474,7 +1478,11 @@
   color: #fde68a;
   font-size: 0.88rem;
   font-weight: 600;
-  line-height: 1.5;
+  line-height: 1.75;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .compare-validation-warning[hidden] {
@@ -1756,7 +1764,7 @@
   display: none;
 }
 
-/* 3-Second, 3-Stage Comparison Synthesis Overlay (#compare-synthesis-overlay) */
+/* 10-Second, 4-Stage Comparison Synthesis Overlay (#compare-synthesis-overlay) */
 .compare-synthesis-overlay {
   position: fixed;
   inset: 0;
@@ -1877,7 +1885,7 @@
 
 .compare-synthesis-pills {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   width: 100%;
 }
@@ -2055,6 +2063,13 @@
   transform: scale(0.97);
 }
 
+@media (max-width: 580px) {
+  .compare-synthesis-pills {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+}
+
 @media (max-width: 480px) {
   .compare-synthesis-card {
     padding: 20px 16px;
@@ -2063,7 +2078,8 @@
   }
 
   .compare-synthesis-pills {
-    gap: 6px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
   .compare-synthesis-pill {
@@ -2427,8 +2443,12 @@
   margin: 2px 0 0;
   flex: 1;
   font-size: 0.92rem;
-  line-height: 1.62;
+  line-height: 1.75;
   color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .compare-hero-footer {
@@ -2821,8 +2841,12 @@
 .compare-detail-prose {
   margin: 0;
   font-size: 0.9rem;
-  line-height: 1.64;
+  line-height: 1.75;
   color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .compare-subblocks-grid {
@@ -2865,8 +2889,12 @@
 .compare-care-val {
   margin: 0;
   font-size: 0.83rem;
-  line-height: 1.5;
+  line-height: 1.75;
   color: #ecfdf5;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .compare-care-pills {
@@ -2939,8 +2967,12 @@
 .compare-phenology-note {
   margin: 0;
   font-size: 0.82rem;
-  line-height: 1.48;
+  line-height: 1.75;
   color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 /* CSS-only Scroll Reveal Fallback when GSAP CDN is unavailable */

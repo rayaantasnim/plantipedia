@@ -140,8 +140,8 @@ export function openComparisonSynthesisOverlay({
   modalCard.appendChild(cancelBtn);
   overlay.appendChild(modalCard);
 
-  const previousOverflow = document.body.style.overflow;
-  document.body.style.overflow = "hidden";
+  document.documentElement.classList.add("overlay-locked");
+  document.body.classList.add("overlay-locked");
   document.body.appendChild(overlay);
   requestAnimationFrame(() => cancelBtn.focus({ preventScroll: true }));
 
@@ -183,7 +183,8 @@ export function openComparisonSynthesisOverlay({
     }
     document.removeEventListener("keydown", handleKeydown);
     overlay.remove();
-    document.body.style.overflow = previousOverflow;
+    document.documentElement.classList.remove("overlay-locked");
+    document.body.classList.remove("overlay-locked");
     if (restoreFocus && triggerBtn && document.body.contains(triggerBtn)) {
       triggerBtn.focus({ preventScroll: true });
     }

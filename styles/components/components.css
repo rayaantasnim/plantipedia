@@ -1958,8 +1958,12 @@ body.is-embed .plant-floating-compare-btn {
   max-width: 58ch;
   margin: 0 auto 28px;
   font-size: 0.98rem;
-  line-height: 1.68;
+  line-height: 1.75;
   color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .specimen-not-found-search-wrap {
@@ -2382,7 +2386,7 @@ body.is-embed .plant-floating-compare-btn {
 
 .telemetry-stat-value {
   font-family: var(--font-display);
-  font-size: clamp(1.85rem, 3vw, 2.65rem);
+  font-size: clamp(1.65rem, 2.75vw, 2.55rem);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -3842,8 +3846,12 @@ body.is-embed .plant-floating-compare-btn {
   margin: 0 auto 24px;
   max-width: 54ch;
   font-size: 0.96rem;
-  line-height: 1.65;
+  line-height: 1.75;
   color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .gbs-live-search-form {

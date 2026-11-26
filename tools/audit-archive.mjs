@@ -136,6 +136,9 @@ function auditServiceWorker() {
   return { count: entries.length, errors };
 }
 
+const SUSPICIOUS_IMAGE_URL_RE =
+  /\.(?:svg|gif)(?:\?|$)|locator|range_map|distribution_map|cladogram|diagram|chart|flag_of|coat_of_arms/i;
+
 function auditMonographsAndImageQuota() {
   const errors = [];
   const monographsDir = path.join(ROOT_DIR, "data", "monographs");
@@ -167,6 +170,9 @@ function auditMonographsAndImageQuota() {
     }
 
     for (const u of urls) {
+      if (SUSPICIOUS_IMAGE_URL_RE.test(u)) {
+        errors.push(`${file}: suspicious non-botanical image URL (${u})`);
+      }
       const key = normalizeImageKey(u);
       if (!key) continue;
       if (pageKeys.has(key)) {
@@ -175,12 +181,19 @@ function auditMonographsAndImageQuota() {
       pageKeys.add(key);
       siteWideCounts.set(key, (siteWideCounts.get(key) || 0) + 1);
     }
+
+    if (pageKeys.size < 6 || pageKeys.size > 10) {
+      errors.push(
+        `${file}: expected 6-10 unique botanical images, found ${pageKeys.size}`,
+      );
+    }
   }
 
   const overQuota = [];
   for (const [key, count] of siteWideCounts.entries()) {
     if (count > 4) {
       overQuota.push(`${key} (${count}x)`);
+      errors.push(`Site-wide >4 image quota exceeded: ${key} (${count}x)`);
     }
   }
 

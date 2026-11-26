@@ -464,6 +464,7 @@ function mountAndBindSectionMap(sectionMapCfg, plant) {
 
   const openOverlay = () => {
     overlay.hidden = false;
+    document.documentElement.classList.add("overlay-locked");
     document.body.classList.add("overlay-locked");
     trigger.setAttribute("aria-expanded", "true");
     closeBtn.focus();
@@ -471,6 +472,7 @@ function mountAndBindSectionMap(sectionMapCfg, plant) {
 
   const closeOverlay = () => {
     overlay.hidden = true;
+    document.documentElement.classList.remove("overlay-locked");
     document.body.classList.remove("overlay-locked");
     trigger.setAttribute("aria-expanded", "false");
   };
@@ -505,6 +507,7 @@ function mountAndBindSectionMap(sectionMapCfg, plant) {
       const tg = document.getElementById("sectionMapTrigger");
       if (e.key === "Escape" && ov && !ov.hidden) {
         ov.hidden = true;
+        document.documentElement.classList.remove("overlay-locked");
         document.body.classList.remove("overlay-locked");
         if (tg) {
           tg.setAttribute("aria-expanded", "false");

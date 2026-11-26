@@ -1155,17 +1155,25 @@ async function resolveSingleTitle({
     ""
   ).toLowerCase();
 
+  const gbifFirstToken =
+    String(initialGbif?.genus || initialGbif?.canonicalName || "")
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)[0] || "";
+  const inatFirstToken =
+    String(initialInat?.name || "")
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)[0] || "";
+
   const gbifMatchesArticle =
     Boolean(initialGbif) &&
-    (!articleGenus ||
-      String(initialGbif.genus || initialGbif.canonicalName || "")
-        .toLowerCase()
-        .startsWith(articleGenus));
+    (!articleGenus || gbifFirstToken === articleGenus);
 
   const inatMatchesArticle =
     Boolean(initialInat) &&
     (!articleGenus ||
-      String(initialInat.name || "").toLowerCase().startsWith(articleGenus) ||
+      inatFirstToken === articleGenus ||
       parseGlobalSlugFromUrl(initialInat.wikipedia_url).toLowerCase() ===
         String(page?.title || title).toLowerCase());
 

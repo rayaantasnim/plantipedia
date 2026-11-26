@@ -982,7 +982,8 @@ function renderServicesMapMatrix(portal, indexItems) {
 
   document.getElementById("services-map-matrix-btn")?.remove();
   document.getElementById("services-matrix-overlay")?.remove();
-  document.body.style.overflow = "";
+  document.documentElement.classList.remove("overlay-locked");
+  document.body.classList.remove("overlay-locked");
 
   const items = buildMatrixItems(indexItems);
   const totalStr = String(items.length).padStart(2, "0");
@@ -1062,7 +1063,8 @@ function renderServicesMapMatrix(portal, indexItems) {
   const openMatrix = () => {
     overlay.hidden = false;
     triggerBtn.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
+    document.documentElement.classList.add("overlay-locked");
+    document.body.classList.add("overlay-locked");
     closeBtn.focus({ preventScroll: true });
   };
 
@@ -1070,7 +1072,8 @@ function renderServicesMapMatrix(portal, indexItems) {
     if (overlay.hidden) return;
     overlay.hidden = true;
     triggerBtn.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
+    document.documentElement.classList.remove("overlay-locked");
+    document.body.classList.remove("overlay-locked");
     if (restoreFocus) {
       triggerBtn.focus({ preventScroll: true });
     }
@@ -1172,7 +1175,8 @@ function renderServicesMapMatrix(portal, indexItems) {
   activeMatrixCleanup = () => {
     abortController.abort();
     if (observer) observer.disconnect();
-    document.body.style.overflow = "";
+    document.documentElement.classList.remove("overlay-locked");
+    document.body.classList.remove("overlay-locked");
     triggerBtn.remove();
     overlay.remove();
   };

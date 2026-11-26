@@ -341,7 +341,8 @@ function renderSourcesMapMatrix(portal) {
 
   document.getElementById("sources-map-matrix-btn")?.remove();
   document.getElementById("sources-matrix-overlay")?.remove();
-  document.body.style.overflow = "";
+  document.documentElement.classList.remove("overlay-locked");
+  document.body.classList.remove("overlay-locked");
 
   const totalStr = String(SOURCES_SECTIONS.length).padStart(2, "0");
   const abortController = new AbortController();
@@ -414,7 +415,8 @@ function renderSourcesMapMatrix(portal) {
   const openMatrix = () => {
     overlay.hidden = false;
     triggerBtn.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
+    document.documentElement.classList.add("overlay-locked");
+    document.body.classList.add("overlay-locked");
     closeBtn.focus({ preventScroll: true });
   };
 
@@ -422,7 +424,8 @@ function renderSourcesMapMatrix(portal) {
     if (overlay.hidden) return;
     overlay.hidden = true;
     triggerBtn.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
+    document.documentElement.classList.remove("overlay-locked");
+    document.body.classList.remove("overlay-locked");
     if (restoreFocus) triggerBtn.focus({ preventScroll: true });
   };
 
@@ -515,7 +518,8 @@ function renderSourcesMapMatrix(portal) {
   activeSourcesMatrixCleanup = () => {
     abortController.abort();
     if (observer) observer.disconnect();
-    document.body.style.overflow = "";
+    document.documentElement.classList.remove("overlay-locked");
+    document.body.classList.remove("overlay-locked");
     triggerBtn.remove();
     overlay.remove();
   };
@@ -720,7 +724,7 @@ export function renderSourcesPortal(mountEl, { speciesIndex = [] } = {}) {
 
   try {
     applyPageSeo({
-      title: "Sources & Scientific References — Open Botanical Infrastructure | Plantipedia v3.1",
+      title: "Sources & Scientific References — Open Botanical Infrastructure | Plantipedia v3.2",
       description:
         "Explore the 8 scientific registries, open-data endpoints, APG IV taxonomic frameworks, and verification standards powering Plantipedia's 1,600,000+ (1.6M+) global flora index across 6 federated databases and 50 curated 15-chapter monographs.",
       keywords:
