@@ -10,13 +10,14 @@
 
 <div align="center">
 
-# 🌿 Plantipedia — Digital Botanical Encyclopedia & Worldwide Flora Archive
+# 🌿 Plantipedia — Digital Botanical Encyclopedia & Worldwide Flora Archive (`Version 3.2`)
 
-**A bilingual (`EN / বাংলা`) botanical knowledge platform uniting 50 deeply curated 15-chapter monographs with a 6-source federated, zero-key Global Botanical Server connecting 1,600,000+ (1.6M+) worldwide vascular plant and tree taxa.**
+**A bilingual (`EN / বাংলা`) botanical knowledge platform uniting 50 deeply curated 15-chapter monographs with a 6-source federated, zero-key Global Botanical Server connecting 1.6M+ (`1,600,000+`) worldwide vascular plant and tree taxa.**
 
+[![Version](https://img.shields.io/badge/Version-3.2%20(Current%20Active%20Release)-10b981?style=flat-square)](./roadmap/)
 [![Architecture](https://img.shields.io/badge/Architecture-Zero--Bundler%20ES6%2B-10b981?style=flat-square)](./docs/ARCHITECTURE.md)
 [![Curated Monographs](https://img.shields.io/badge/Curated%20Monographs-50%20Species%20%C2%B7%2015%20Chapters-22d3ee?style=flat-square)](./species/)
-[![Global Flora](https://img.shields.io/badge/Global%20Flora-1%2C600%2C000%2B%20(1.6M%2B)%20Taxa-2dd4bf?style=flat-square)](./plant/live/)
+[![Global Flora](https://img.shields.io/badge/Global%20Flora-1.6M%2B%20(1%2C600%2C000%2B)%20Taxa-2dd4bf?style=flat-square)](./plant/live/)
 [![PWA Build](https://img.shields.io/badge/PWA-Offline%20Ready%20SW-34d399?style=flat-square)](./install/)
 [![License](https://img.shields.io/badge/License-Open%20Access%20MIT-fbbf24?style=flat-square)](./sources/)
 
@@ -24,12 +25,14 @@
 
 ---
 
-## Executive Overview & Key Capabilities
+## Executive Overview & Key Capabilities (`Version 3.2`)
 
-Plantipedia bridges regional South Asian ethnobotanical scholarship with real-time global biodiversity registries in a museum-grade, offline-capable static web architecture:
+Plantipedia **Version 3.2** bridges regional South Asian ethnobotanical scholarship with real-time global biodiversity registries in a museum-grade, subpath-safe static web architecture:
 
 - **50 Curated 15-Chapter Bilingual (`EN / বাংলা`) Monographs ([`./species/`](./species/) & [`./plant/`](./plant/)):** Structured scientific dossiers spanning Chapters `00–14` (taxonomic lineage, morphology, foliar architecture, floral biology, fruit ecology, biogeography, phylogeny, phenology, phytochemistry, ethnobotany, cultivation telemetry, pathology, and field identification keys) with APA/MLA/BibTeX citations and interactive glossary tooltips.
-- **Federated Global Botanical Server ([`./plant/live/`](./plant/live/)):** Parallel zero-key 6-database synthesis across **1,600,000+ (`1.6M+`) worldwide vascular plant and tree taxa** resolving bilingual (`EN / বাংলা / Latin`) queries into full 15-chapter comparative dossiers with verified field photography and mandatory 3-tier translation fallback.
+- **Federated Global Botanical Server ([`./plant/live/`](./plant/live/)):** Parallel zero-key synthesis across **6 open botanical databases** (`GBIF`, `MediaWiki`, `Wikidata`, `iNaturalist`, `EOL`, `Open Tree of Life`) spanning **1.6M+ (`1,600,000+`) worldwide plant & tree taxa** with **3-Tier Zero-Key Translation** (`EN ↔ বাংলা`), verified multi-angle field photography, and a unified 15-chapter schema.
+- **Global Typo-Tolerant Fuzzy Search, Keyword Highlighting & Keyboard Shortcuts:** Federated Levenshtein + Plantae-scoped fuzzy taxon recovery resolves misspelled English, বাংলা, and Latin queries across all **1.6M+** taxa with **Instant Emerald Keyword Highlighting** (`<mark class="search-hl">`), global **`/`** quick search focus, and **`Esc`** overlay dismissal.
+- **🎲 Surprise Specimen Discovery:** Interactive 3-second (`3,000ms`) botanical discovery tumbler modal sampling curated flora with live taxonomic progress before opening the selected monograph.
 - **Split Specimen Comparator ([`./compare/`](./compare/) & [`./compare/result/`](./compare/result/)):** Side-by-side 15-chapter botanical comparison matrix aligning curated local monographs and live Global Botanical Server taxa with cross-script bilingual headers, numerical telemetry bars, and inline error recovery.
 - **6-Season *Shororitu* Phenology Calendar ([`./seasons/`](./seasons/)):** Ecological flowering and fruiting cycles mapped across Bengal's six botanical seasons (*গ্রীষ্ম, বর্ষা, শরৎ, হেমন্ত, শীত, বসন্ত*) with paginated specimen views.
 - **Taxonomic Lineage Explorer ([`./taxonomy/`](./taxonomy/)):** Clade-filterable phylogenetic hierarchy charting 34 documented plant families in descending specimen density.
@@ -46,13 +49,13 @@ Plantipedia bridges regional South Asian ethnobotanical scholarship with real-ti
 | **Styling & Print Media** | Modular CSS3 (`styles/base/`, `styles/components/`, `styles/pages/`) with `text-align: justify;` monograph prose, Tailwind token utilities, and A4 Print Media Queries (`styles/print/`) |
 | **Application Runtime** | Vanilla ES6+ JavaScript Modules with zero build-step bundler overhead and `import.meta.url`-anchored subpath safety (`/` and `/plantipedia/`) |
 | **Motion & Telemetry** | GSAP 3 + ScrollTrigger scroll choreography, biome-aware soil pH & thermal meters, reading progress indicator, and IntersectionObserver offline fallback |
-| **Federated Botanical APIs** | Zero-key parallel client synthesizing **GBIF Backbone**, **MediaWiki**, **Wikidata**, **iNaturalist**, **EOL**, and **Open Tree of Life** via `Promise.allSettled` |
-| **SEO & Structured Data** | Dynamic Schema.org `Taxon`, `ScholarlyArticle`, `CollectionPage`, `Dataset`, `WebSite`, and `BreadcrumbList` JSON-LD graphs |
+| **Federated Botanical APIs** | Zero-key parallel client synthesizing **GBIF**, **MediaWiki**, **Wikidata**, **iNaturalist**, **EOL**, and **Open Tree of Life** via `Promise.allSettled` + **3-Tier Zero-Key Translation** |
+| **SEO & Structured Data** | Dynamic Schema.org `Taxon`, `ScholarlyArticle`, `CollectionPage`, `Dataset`, `WebSite`, and `BreadcrumbList` JSON-LD graphs (`v3.2`) |
 | **Offline PWA Layer** | Network-first Service Worker (`sw.js`) & W3C Web App Manifest (`manifest.webmanifest`) precaching core shells, modules, styles, and datasets |
 
 ---
 
-## Architectural Evolution (`v1.0 → v4.3`)
+## Architectural Evolution (`v1.0 → v3.2 → v4.3`)
 
 | Version | Milestone | Summary |
 | :--- | :--- | :--- |
@@ -60,11 +63,11 @@ Plantipedia bridges regional South Asian ethnobotanical scholarship with real-ti
 | **`v2.0`** | **JSON Engine & Bilingual Search** | 30 curated monographs decoupled into JSON datasets with instant `EN / বাংলা / Latin` fuzzy search. |
 | **`v3.0`** | **Global Server & Comparator** | Expanded to 50 local monographs, zero-key Global Botanical Server uplink, and Split Specimen Comparator. |
 | **`v3.1`** | **15-Chapter Archive & Visual Suite** | Upgraded all 50 monographs to 15 structured chapters (`00–14`), unified 4-group navbar, paginated Taxonomy/Seasons, and 11-Section Services & Sources portals. |
-| **`v3.2`** *(Current)* | **6-Source Federated Engine & Bilingual Lock** | Concurrent `GBIF Backbone + MediaWiki + Wikidata + iNaturalist + EOL + Open Tree of Life` synthesis across **1.6M+** (`1,600,000+`) taxa, mandatory 3-tier auto-translation, 10s Split Comparator with per-slot language lock, and 3-tier Botanical Image Guard. |
-| **`v4.0`** *(Scheduled)* | **Installable Offline PWA App** | Dedicated Offline Monograph Vault, silent background sync, and guided desktop/Android/iOS install flow ([`./install/`](./install/)). |
+| **`v3.2`** *(Current Active Release)* | **6-Source Federated Engine & Global Fuzzy Search** | Concurrent `GBIF + MediaWiki + Wikidata + iNaturalist + EOL + Open Tree of Life` synthesis across **1.6M+** (`1,600,000+`) taxa, **3-Tier Zero-Key Translation**, **Global Typo-Tolerant Fuzzy Search**, **Instant Keyword Highlighting**, **`/` & `Esc` Keyboard Shortcuts**, **`🎲 Surprise Specimen`** 3s discovery overlay, and 3-tier Botanical Image Guard. |
+| **`v4.0`** *(Next Milestone)* | **True Offline-First PWA & Multi-Device `/install/` Hub** | Full offline-first `sw.js` monograph precaching, Multi-Device `/install/` Hub (Windows Official App, `.exe`/`.apk`, iOS Safari guide, Smart Board Kiosk), and Background Auto-Update Toast ([`./install/`](./install/)). |
 | **`v4.1`** *(Scheduled)* | **Garden QR Tag Studio** | Printable waterproof botanical nameplates and QR arboretum plaques ([`./qr-studio/`](./qr-studio/)). |
 | **`v4.2`** *(Scheduled)* | **Botanical Akinator** | 20-question dichotomous taxonomic key with live confidence scoring ([`./identify/`](./identify/)). |
-| **`v4.3`** *(Scheduled)* | **Ecosystem & Telemetry Polish** | Cross-biome analytics, portable herbarium study exports, and WCAG AAA accessibility refinement ([`./roadmap/`](./roadmap/)). |
+| **`v4.3`** *(Scheduled)* | **Edge-Case Hardening & Telemetry Polish** | Edge-case resilience audits, cross-biome analytics, portable herbarium study exports, and WCAG AAA accessibility refinement ([`./roadmap/`](./roadmap/)). |
 
 ---
 
