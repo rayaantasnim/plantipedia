@@ -29,7 +29,10 @@ import {
   initHerbariumSystem,
   openHerbariumDrawer,
 } from "../../modules/utils/herbarium.js";
-import { searchSpeciesFuzzy } from "../../engines/search/fuzzy-matcher.js";
+import {
+  searchSpeciesFuzzy,
+  setHighlightedContent,
+} from "../../engines/search/fuzzy-matcher.js";
 
 const SITE_ROOT_URL = new URL("../../../", import.meta.url);
 const PLACEHOLDER_SVG_PATH = "./assets/images/placeholder-botanical.svg";
@@ -70,6 +73,7 @@ const FALLBACK_NAVBAR_CONFIG = {
         { id: "nav-global-botanical-server", label: "🌐 Global Botanical Server", href: "./plant/live/", matchPaths: ["/plant/live/", "/plant/live"] },
         { id: "nav-archive-taxonomy", label: "🧬 Taxonomic Lineage", href: "./taxonomy/", matchPaths: ["/taxonomy/", "/taxonomy"] },
         { id: "nav-archive-seasons", label: "🗓️ 6-Season Calendar", href: "./seasons/", matchPaths: ["/seasons/", "/seasons"] },
+        { id: "nav-surprise-specimen", label: "🎲 Surprise Specimen", href: "./plant/", action: "surprise-specimen" },
       ],
     },
     {
@@ -194,7 +198,7 @@ function routeBaseName(route) {
 }
 
 function isNavItemActive(item) {
-  if (!item || typeof item !== "object") return false;
+  if (!item || typeof item !== "object" || item.action) return false;
   const currentRoute = normalizeRoutePath(window.location.pathname);
   const currentBase = routeBaseName(currentRoute);
   const currentHash = window.location.hash || "";
@@ -390,28 +394,34 @@ function createHerbariumPillButton(herbariumCfg, extraClass = "") {
 }
 
 function createDropdownItemNode(child, className = "nav-dropdown-item") {
-  const childLink = document.createElement("a");
-  childLink.href = resolveSitePath(child.href);
-  childLink.className = className;
-  childLink.setAttribute("role", "menuitem");
+  const isAction = typeof child.action === "string" && child.action.length > 0;
+  const itemNode = document.createElement(isAction ? "button" : "a");
+  if (isAction) {
+    itemNode.type = "button";
+    itemNode.setAttribute("data-action", child.action);
+  } else {
+    itemNode.href = resolveSitePath(child.href);
+  }
+  itemNode.className = className;
+  itemNode.setAttribute("role", "menuitem");
 
   const labelSpan = document.createElement("span");
   labelSpan.className = "nav-dropdown-item-label";
   labelSpan.textContent = child.label;
-  childLink.appendChild(labelSpan);
+  itemNode.appendChild(labelSpan);
 
   if (child.badge) {
     const badgeSpan = document.createElement("span");
     badgeSpan.className = "nav-soon-badge";
     badgeSpan.textContent = child.badge;
-    childLink.appendChild(badgeSpan);
+    itemNode.appendChild(badgeSpan);
   }
 
-  if (isNavItemActive(child)) {
-    childLink.classList.add("is-current-route");
-    childLink.setAttribute("aria-current", "page");
+  if (!isAction && isNavItemActive(child)) {
+    itemNode.classList.add("is-current-route");
+    itemNode.setAttribute("aria-current", "page");
   }
-  return childLink;
+  return itemNode;
 }
 
 function buildDropdownMenuNodes(menuEl, item) {
@@ -529,6 +539,12 @@ function buildNavbarDom(host, config) {
     searchCfg.ariaLabel || "Quick search plant species in English or Bengali",
   );
 
+  const kbdBadge = document.createElement("kbd");
+  kbdBadge.className = "nav-search-kbd";
+  kbdBadge.id = "navbarSearchKbd";
+  kbdBadge.setAttribute("aria-hidden", "true");
+  kbdBadge.textContent = "/";
+
   const clearBtn = document.createElement("button");
   clearBtn.type = "button";
   clearBtn.className = "navbar-search-clear";
@@ -538,6 +554,7 @@ function buildNavbarDom(host, config) {
   clearBtn.textContent = "×";
 
   form.appendChild(input);
+  form.appendChild(kbdBadge);
   form.appendChild(clearBtn);
 
   const suggestions = document.createElement("div");
@@ -823,29 +840,36 @@ function buildMobileOverlayDom(navbarHost, config) {
     panelInner.className = "mobile-accordion-inner";
 
     children.forEach((child) => {
-      const childLink = document.createElement("a");
-      childLink.href = resolveSitePath(child.href);
-      const childActive = isNavItemActive(child);
-      childLink.className = childActive
-        ? "mobile-accordion-item is-current-route"
-        : "mobile-accordion-item";
-      if (childActive) {
-        childLink.setAttribute("aria-current", "page");
+      const isAction = typeof child.action === "string" && child.action.length > 0;
+      const childEl = document.createElement(isAction ? "button" : "a");
+      if (isAction) {
+        childEl.type = "button";
+        childEl.setAttribute("data-action", child.action);
+        childEl.className = "mobile-accordion-item";
+      } else {
+        childEl.href = resolveSitePath(child.href);
+        const childActive = isNavItemActive(child);
+        childEl.className = childActive
+          ? "mobile-accordion-item is-current-route"
+          : "mobile-accordion-item";
+        if (childActive) {
+          childEl.setAttribute("aria-current", "page");
+        }
       }
 
       const labelSpan = document.createElement("span");
       labelSpan.className = "mobile-accordion-item-label";
       labelSpan.textContent = child.label;
-      childLink.appendChild(labelSpan);
+      childEl.appendChild(labelSpan);
 
       if (child.badge) {
         const badgeSpan = document.createElement("span");
         badgeSpan.className = "nav-soon-badge";
         badgeSpan.textContent = child.badge;
-        childLink.appendChild(badgeSpan);
+        childEl.appendChild(badgeSpan);
       }
 
-      panelInner.appendChild(childLink);
+      panelInner.appendChild(childEl);
     });
 
     panel.appendChild(panelInner);
@@ -1040,23 +1064,8 @@ function bindNavbarShellInteractions(config) {
     }
   });
 
-  if (!window.__plantipediaOverlayEscBound) {
-    window.__plantipediaOverlayEscBound = true;
-    document.addEventListener("keydown", (e) => {
-      const ov = document.getElementById("mobileNavOverlay");
-      const tg = document.getElementById("mobileMenuToggle");
-      if (e.key === "Escape" && ov && !ov.hidden) {
-        ov.hidden = true;
-        if (tg) {
-          tg.classList.remove("is-open");
-          tg.setAttribute("aria-expanded", "false");
-          tg.focus();
-        }
-        document.documentElement.classList.remove("overlay-locked");
-        document.body.classList.remove("overlay-locked");
-      }
-    });
-
+  if (!window.__plantipediaOverlayResizeBound) {
+    window.__plantipediaOverlayResizeBound = true;
     window.addEventListener("resize", () => {
       const ov = document.getElementById("mobileNavOverlay");
       const tg = document.getElementById("mobileMenuToggle");
@@ -1153,12 +1162,15 @@ function renderNavSuggestionNodes(container, matches, query) {
     const textCol = document.createElement("div");
     const title = document.createElement("span");
     title.className = "nav-suggestion-title";
-    title.textContent = plant.commonNameBn
-      ? `${plant.commonName} (${plant.commonNameBn})`
+    const bnName = plant.commonNameBn || plant.bengaliName || "";
+    const titleText = bnName
+      ? `${plant.commonName} (${bnName})`
       : plant.commonName;
+    setHighlightedContent(title, titleText, trimmedQuery);
+
     const sci = document.createElement("span");
     sci.className = "nav-suggestion-sci";
-    sci.textContent = plant.scientificName;
+    setHighlightedContent(sci, plant.scientificName || "", trimmedQuery);
     textCol.appendChild(title);
     textCol.appendChild(sci);
 
@@ -1170,7 +1182,11 @@ function renderNavSuggestionNodes(container, matches, query) {
 
     const fam = document.createElement("span");
     fam.className = "nav-suggestion-family";
-    fam.textContent = plant.family || plant.overview?.family || "";
+    setHighlightedContent(
+      fam,
+      plant.family || plant.overview?.family || "",
+      trimmedQuery,
+    );
     rightCol.appendChild(fam);
 
     if (isFuzzy) {
@@ -1211,9 +1227,14 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
     activeIndex = -1;
   };
 
+  const syncInputState = () => {
+    form.classList.toggle("has-value", input.value.length > 0);
+    if (clearBtn) clearBtn.hidden = input.value.trim().length === 0;
+  };
+
   const renderSuggestions = (query) => {
     const q = query.trim();
-    if (clearBtn) clearBtn.hidden = q.length === 0;
+    syncInputState();
     if (!q || q.length < minLength) {
       currentMatches = [];
       hideSuggestions();
@@ -1293,7 +1314,7 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
       input.value = "";
-      clearBtn.hidden = true;
+      syncInputState();
       hideSuggestions();
       input.focus();
     });
@@ -1340,6 +1361,252 @@ function closeMobileOverlayIfOpen() {
   document.body.classList.remove("overlay-locked");
 }
 
+function closeAllDesktopDropdowns() {
+  document.querySelectorAll(".nav-dropdown-group").forEach((group) => {
+    const btn = group.querySelector(".nav-dropdown-trigger");
+    const menu = group.querySelector(".nav-dropdown-menu");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+    if (menu) menu.hidden = true;
+    group.classList.remove("is-open");
+  });
+}
+
+function closeAllActiveOverlaysOnEscape() {
+  // 1. Search suggestion dropdowns
+  [
+    "navbarSuggestions",
+    "mobileSuggestions",
+    "homeSuggestions",
+    "specimenNfSuggestions",
+  ].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el && !el.hidden) {
+      el.hidden = true;
+      el.replaceChildren();
+    }
+  });
+  document.querySelectorAll(".compare-autocomplete-menu").forEach((menu) => {
+    if (!menu.hidden) menu.hidden = true;
+    const field = menu.closest(".compare-selector-field");
+    if (field) field.classList.remove("is-open");
+  });
+
+  // 2. Desktop navbar dropdown menus
+  closeAllDesktopDropdowns();
+
+  // 3. Mobile accordion drawer
+  closeMobileOverlayIfOpen();
+
+  // 4. My Herbarium drawer
+  const herbariumBackdrop = document.getElementById("herbariumDrawerBackdrop");
+  const herbariumDrawer = document.getElementById("herbariumDrawer");
+  if (herbariumBackdrop) herbariumBackdrop.hidden = true;
+  if (herbariumDrawer) herbariumDrawer.hidden = true;
+
+  // 5. Floating Section Map & Map Matrix overlays
+  const sectionMapOverlay = document.getElementById("sectionMapOverlay");
+  const sectionMapTrigger = document.getElementById("sectionMapTrigger");
+  if (sectionMapOverlay && !sectionMapOverlay.hidden) {
+    sectionMapOverlay.hidden = true;
+    if (sectionMapTrigger) sectionMapTrigger.setAttribute("aria-expanded", "false");
+  }
+
+  const servicesMatrixOverlay = document.getElementById("services-matrix-overlay");
+  const servicesMatrixTrigger = document.getElementById("services-map-matrix-btn");
+  if (servicesMatrixOverlay && !servicesMatrixOverlay.hidden) {
+    servicesMatrixOverlay.hidden = true;
+    if (servicesMatrixTrigger) servicesMatrixTrigger.setAttribute("aria-expanded", "false");
+  }
+
+  const sourcesMatrixOverlay = document.getElementById("sources-matrix-overlay");
+  const sourcesMatrixTrigger = document.getElementById("sources-map-matrix-btn");
+  if (sourcesMatrixOverlay && !sourcesMatrixOverlay.hidden) {
+    sourcesMatrixOverlay.hidden = true;
+    if (sourcesMatrixTrigger) sourcesMatrixTrigger.setAttribute("aria-expanded", "false");
+  }
+
+  // 6. Active botanical glossary tooltip
+  const glossaryTip = document.getElementById("botanicalGlossaryTooltip");
+  if (glossaryTip && !glossaryTip.hidden) {
+    glossaryTip.hidden = true;
+  }
+
+  // 7. Unlock document scroll unless Compare Synthesis modal is active
+  const synthesisOverlay = document.getElementById("compare-synthesis-overlay");
+  if (!synthesisOverlay || synthesisOverlay.hidden) {
+    document.documentElement.classList.remove("overlay-locked");
+    document.body.classList.remove("overlay-locked");
+  }
+
+  // 8. Cleanly blur active search input
+  const activeEl = document.activeElement;
+  if (
+    activeEl instanceof HTMLInputElement &&
+    (activeEl.type === "search" ||
+      /search|specimen-input/i.test(activeEl.id || ""))
+  ) {
+    activeEl.blur();
+  }
+}
+
+function isEditableKeyboardTarget(el) {
+  if (!el || !(el instanceof HTMLElement)) return false;
+  const tag = el.tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
+  if (el.isContentEditable) return true;
+  const ce = el.getAttribute("contenteditable");
+  return ce === "" || ce === "true";
+}
+
+function focusGlobalSearchInput() {
+  const navInput = document.getElementById("navbarSearchInput");
+  if (navInput && navInput.offsetParent !== null) {
+    navInput.focus({ preventScroll: true });
+    if (typeof navInput.select === "function") {
+      navInput.select();
+    }
+    return;
+  }
+
+  const mobileOverlay = document.getElementById("mobileNavOverlay");
+  const mobileToggle = document.getElementById("mobileMenuToggle");
+  const mobileInput = document.getElementById("mobileSearchInput");
+
+  if (mobileOverlay && mobileOverlay.hidden && mobileToggle) {
+    mobileToggle.click();
+  }
+  if (mobileInput) {
+    setTimeout(() => {
+      mobileInput.focus({ preventScroll: true });
+      if (typeof mobileInput.select === "function") {
+        mobileInput.select();
+      }
+    }, 60);
+    return;
+  }
+
+  const homeInput = document.getElementById("homeSearchInput");
+  if (homeInput) {
+    homeInput.focus({ preventScroll: true });
+    if (typeof homeInput.select === "function") {
+      homeInput.select();
+    }
+  }
+}
+
+export function bindGlobalKeyboardShortcuts() {
+  if (typeof document === "undefined" || window.__plantipediaGlobalShortcutsBound) {
+    return;
+  }
+  window.__plantipediaGlobalShortcutsBound = true;
+
+  document.addEventListener("keydown", (e) => {
+    if (
+      e.key === "/" &&
+      !e.ctrlKey &&
+      !e.metaKey &&
+      !e.altKey &&
+      !isEditableKeyboardTarget(document.activeElement) &&
+      !isEditableKeyboardTarget(e.target)
+    ) {
+      e.preventDefault();
+      focusGlobalSearchInput();
+      return;
+    }
+
+    if (e.key === "Escape") {
+      closeAllActiveOverlaysOnEscape();
+    }
+  });
+}
+
+async function resolveCuratedSpeciesList() {
+  const cached = getSpeciesIndex();
+  if (Array.isArray(cached) && cached.length > 0) {
+    return cached;
+  }
+
+  try {
+    const dataMap = await fetchDatasetsConcurrently(["speciesIndex"]);
+    const outcome = dataMap.get("speciesIndex");
+    if (outcome?.ok && Array.isArray(outcome.data) && outcome.data.length > 0) {
+      setSpeciesIndex(outcome.data);
+      return outcome.data;
+    }
+  } catch {
+    // Fall back to direct relative fetch below
+  }
+
+  try {
+    const url = resolveSitePath("./data/index/species-index.json");
+    const res = await fetch(url, { cache: "no-cache" });
+    if (!res.ok) return [];
+    const payload = await res.json();
+    const list = Array.isArray(payload?.species)
+      ? payload.species
+      : Array.isArray(payload)
+        ? payload
+        : [];
+    if (list.length > 0) {
+      setSpeciesIndex(list);
+    }
+    return list;
+  } catch {
+    return [];
+  }
+}
+
+async function handleSurpriseSpecimen() {
+  const list = await resolveCuratedSpeciesList();
+  const slugs = list
+    .map((entry) => String(entry?.slug || "").trim().toLowerCase())
+    .filter(Boolean);
+
+  if (slugs.length === 0) return;
+
+  let currentSlug = "";
+  try {
+    const currentRoute = normalizeRoutePath(window.location.pathname);
+    if (currentRoute === "plant" || currentRoute.endsWith("/plant")) {
+      const params = new URLSearchParams(window.location.search);
+      currentSlug = String(
+        params.get("slug") || params.get("species") || params.get("id") || "",
+      )
+        .trim()
+        .toLowerCase();
+    }
+  } catch {
+    currentSlug = "";
+  }
+
+  const pool =
+    currentSlug && slugs.length > 1
+      ? slugs.filter((s) => s !== currentSlug)
+      : slugs;
+  const randomSlug = pool[Math.floor(Math.random() * pool.length)];
+  if (!randomSlug) return;
+
+  closeAllDesktopDropdowns();
+  closeMobileOverlayIfOpen();
+  window.location.href = resolveSitePath(
+    `./plant/?slug=${encodeURIComponent(randomSlug)}`,
+  );
+}
+
+function bindSurpriseSpecimenAction() {
+  if (typeof document === "undefined" || window.__plantipediaSurpriseBound) {
+    return;
+  }
+  window.__plantipediaSurpriseBound = true;
+
+  document.addEventListener("click", (e) => {
+    const trigger = e.target.closest('[data-action="surprise-specimen"]');
+    if (!trigger) return;
+    e.preventDefault();
+    handleSurpriseSpecimen();
+  });
+}
+
 let compiledNavbarPromise = null;
 
 export function compileNavbar() {
@@ -1347,6 +1614,8 @@ export function compileNavbar() {
 
   compiledNavbarPromise = (async () => {
     bindGlobalImageFallbackHandler();
+    bindGlobalKeyboardShortcuts();
+    bindSurpriseSpecimenAction();
 
     if (isEmbedMode()) {
       document.body.classList.add("is-embed");

@@ -1095,7 +1095,8 @@
 
   .navbar-links,
   .navbar-search-wrap,
-  .navbar-herbarium-pill.is-desktop-pill {
+  .navbar-herbarium-pill.is-desktop-pill,
+  .nav-search-kbd {
     display: none;
   }
 
@@ -1590,6 +1591,13 @@
       border-color 0.18s ease,
       color 0.18s ease,
       transform 0.18s ease;
+  }
+
+  button.mobile-accordion-item {
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
   }
 
   .mobile-accordion-item:hover,

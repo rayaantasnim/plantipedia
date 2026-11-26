@@ -23,7 +23,10 @@ import {
   runGlobalServerTelemetry,
 } from "../../engines/global-server/global-botanical-server.js";
 import { openComparisonSynthesisOverlay } from "../../engines/comparator/synthesis-overlay.js";
-import { searchSpeciesFuzzy } from "../../engines/search/fuzzy-matcher.js";
+import {
+  searchSpeciesFuzzy,
+  setHighlightedContent,
+} from "../../engines/search/fuzzy-matcher.js";
 import { fetchSpeciesMonograph } from "../../engines/global-server/api.js";
 import {
   detectLanguage,
@@ -839,10 +842,11 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
             const textCol = createEl("div", "compare-autocomplete-text");
             const titleRow = createEl("div", "compare-option-title-row");
-            const displayLabel = sp.commonNameBn ? `${sp.commonName} (${sp.commonNameBn})` : sp.commonName;
-            titleRow.appendChild(
-              createEl("span", "compare-option-common", displayLabel),
-            );
+            const bnName = sp.commonNameBn || sp.bengaliName || "";
+            const displayLabel = bnName ? `${sp.commonName} (${bnName})` : sp.commonName;
+            const commonEl = createEl("span", "compare-option-common");
+            setHighlightedContent(commonEl, displayLabel, trimmed);
+            titleRow.appendChild(commonEl);
             if (isFuzzy) {
               titleRow.appendChild(
                 createEl("span", "fuzzy-match-badge compare-fuzzy-badge", "Did you mean · Fuzzy Match"),
@@ -853,7 +857,9 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
             const sciSub = sp.family
               ? `${sp.scientificName} · ${sp.family}`
               : sp.scientificName;
-            textCol.appendChild(createEl("span", "compare-option-sci", sciSub));
+            const sciEl = createEl("span", "compare-option-sci");
+            setHighlightedContent(sciEl, sciSub, trimmed);
+            textCol.appendChild(sciEl);
             optBtn.appendChild(textCol);
 
             optBtn.addEventListener("mouseenter", () => {
@@ -941,7 +947,6 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         } else if (e.key === "Escape") {
           if (!menu.hidden) {
             e.preventDefault();
-            e.stopPropagation();
             closeMenu();
           }
         } else if (e.key === "Enter") {

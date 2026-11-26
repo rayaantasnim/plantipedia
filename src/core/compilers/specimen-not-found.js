@@ -10,6 +10,7 @@ import { getSpeciesIndex, setSpeciesIndex } from "../bootstrap/state.js";
 import { applyNotFoundSeo } from "../../modules/utils/seo.js";
 import { resolveSitePath } from "./navbar-compiler.js";
 import { createEl, createSearchIconSvg } from "../../modules/utils/templates.js";
+import { setHighlightedContent } from "../../engines/search/fuzzy-matcher.js";
 import {
   buildNotFoundTelemetryStats,
   createTelemetryStatsGrid,
@@ -198,25 +199,20 @@ function bindNotFoundAutocomplete({ searchWrap, form, input, clearBtn, suggestio
       thumb.setAttribute("referrerpolicy", "no-referrer");
 
       const col = document.createElement("div");
-      const title = createEl(
-        "span",
-        "nav-suggestion-title",
-        plant.commonNameBn
-          ? `${plant.commonName} (${plant.commonNameBn})`
-          : plant.commonName,
-      );
-      const sci = createEl("span", "nav-suggestion-sci", plant.scientificName);
+      const bnName = plant.commonNameBn || plant.bengaliName || "";
+      const titleText = bnName ? `${plant.commonName} (${bnName})` : plant.commonName;
+      const title = createEl("span", "nav-suggestion-title");
+      setHighlightedContent(title, titleText, q);
+      const sci = createEl("span", "nav-suggestion-sci");
+      setHighlightedContent(sci, plant.scientificName, q);
       col.appendChild(title);
       col.appendChild(sci);
 
       left.appendChild(thumb);
       left.appendChild(col);
 
-      const fam = createEl(
-        "span",
-        "nav-suggestion-family",
-        plant.family || plant.overview?.family || "",
-      );
+      const fam = createEl("span", "nav-suggestion-family");
+      setHighlightedContent(fam, plant.family || plant.overview?.family || "", q);
 
       link.appendChild(left);
       link.appendChild(fam);

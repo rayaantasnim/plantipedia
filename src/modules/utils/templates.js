@@ -6,6 +6,7 @@
 
 import { createBookmarkButton } from "./herbarium.js";
 import { resolveRootPath } from "../../core/bootstrap/router.js";
+import { setHighlightedContent } from "../../engines/search/fuzzy-matcher.js";
 import {
   buildHomeTelemetryStats,
   createTelemetryStatsGrid,
@@ -1436,9 +1437,11 @@ export function renderSearchSuggestionNodes(container, matches, emptyQuery, item
     link.href = resolveRootPath(`./plant/?species=${encodeURIComponent(plant.slug)}`);
     link.setAttribute("role", "option");
 
-    const commonLabel = plant.commonNameBn
-      ? `${plant.commonName} (${plant.commonNameBn})`
+    const bnName = plant.commonNameBn || plant.bengaliName || "";
+    const commonLabel = bnName
+      ? `${plant.commonName} (${bnName})`
       : plant.commonName;
+    const familyLabel = plant.overview?.family || plant.family || "";
 
     if (itemVariant === "home") {
       link.className = isFuzzy ? "suggestion-row is-fuzzy-match" : "suggestion-row";
@@ -1450,16 +1453,20 @@ export function renderSearchSuggestionNodes(container, matches, emptyQuery, item
       );
       thumb.className = "suggestion-thumb";
       const left = document.createElement("div");
-      left.appendChild(createEl("span", "suggestion-main", commonLabel));
-      left.appendChild(createEl("span", "suggestion-sci", plant.scientificName));
+      const mainEl = createEl("span", "suggestion-main");
+      setHighlightedContent(mainEl, commonLabel, trimmedQuery);
+      const sciEl = createEl("span", "suggestion-sci");
+      setHighlightedContent(sciEl, plant.scientificName, trimmedQuery);
+      left.appendChild(mainEl);
+      left.appendChild(sciEl);
       leftWrap.appendChild(thumb);
       leftWrap.appendChild(left);
       link.appendChild(leftWrap);
 
       const rightCol = createEl("div", "nav-suggestion-right");
-      rightCol.appendChild(
-        createEl("span", "suggestion-family", plant.overview?.family || plant.family || ""),
-      );
+      const famEl = createEl("span", "suggestion-family");
+      setHighlightedContent(famEl, familyLabel, trimmedQuery);
+      rightCol.appendChild(famEl);
       if (isFuzzy) {
         rightCol.appendChild(
           createEl("span", "fuzzy-match-badge", "Did you mean · Fuzzy Match"),
@@ -1479,16 +1486,20 @@ export function renderSearchSuggestionNodes(container, matches, emptyQuery, item
       );
       thumb.className = "nav-suggestion-thumb";
       const left = document.createElement("div");
-      left.appendChild(createEl("span", "nav-suggestion-title", commonLabel));
-      left.appendChild(createEl("span", "nav-suggestion-sci", plant.scientificName));
+      const titleEl = createEl("span", "nav-suggestion-title");
+      setHighlightedContent(titleEl, commonLabel, trimmedQuery);
+      const sciEl = createEl("span", "nav-suggestion-sci");
+      setHighlightedContent(sciEl, plant.scientificName, trimmedQuery);
+      left.appendChild(titleEl);
+      left.appendChild(sciEl);
       leftWrap.appendChild(thumb);
       leftWrap.appendChild(left);
       link.appendChild(leftWrap);
 
       const rightCol = createEl("div", "nav-suggestion-right");
-      rightCol.appendChild(
-        createEl("span", "nav-suggestion-family", plant.overview?.family || plant.family || ""),
-      );
+      const famEl = createEl("span", "nav-suggestion-family");
+      setHighlightedContent(famEl, familyLabel, trimmedQuery);
+      rightCol.appendChild(famEl);
       if (isFuzzy) {
         rightCol.appendChild(
           createEl("span", "fuzzy-match-badge", "Did you mean · Fuzzy Match"),

@@ -386,3 +386,193 @@ export function searchSpeciesFuzzy(speciesList, rawQuery, { limit = 10 } = {}) {
 
   return limit > 0 ? results.slice(0, limit) : results;
 }
+
+const HTML_ESCAPE_MAP = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+};
+
+const GRAPHEME_SEGMENTER =
+  typeof Intl !== "undefined" && typeof Intl.Segmenter === "function"
+    ? new Intl.Segmenter("bn", { granularity: "grapheme" })
+    : null;
+
+export function escapeHtml(rawText) {
+  return String(rawText ?? "").replace(/[&<>"']/g, (ch) => HTML_ESCAPE_MAP[ch]);
+}
+
+function escapeRegExpLiteral(str) {
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getGraphemeRanges(text) {
+  if (!text) return [];
+  if (GRAPHEME_SEGMENTER) {
+    const ranges = [];
+    for (const seg of GRAPHEME_SEGMENTER.segment(text)) {
+      ranges.push({
+        start: seg.index,
+        end: seg.index + seg.segment.length,
+      });
+    }
+    return ranges;
+  }
+
+  // Fallback for environments without Intl.Segmenter: keep Bengali conjuncts/matras & combining marks intact
+  const ranges = [];
+  const fallbackRe =
+    /[\u0980-\u09FF][\u0981-\u0983\u09BC\u09BE-\u09CD\u09D7\u09E2\u09E3]*(?:\u09CD[\u0980-\u09FF][\u0981-\u0983\u09BC\u09BE-\u09CD\u09D7\u09E2\u09E3]*)*|[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\u0300-\u036F\u0981-\u0983\u09BC\u09BE-\u09CD\u09D7\u09E2\u09E3][\u0300-\u036F]*/g;
+  let match = fallbackRe.exec(text);
+  while (match) {
+    ranges.push({
+      start: match.index,
+      end: match.index + match[0].length,
+    });
+    match = fallbackRe.exec(text);
+  }
+  return ranges;
+}
+
+function snapRangeToGraphemes(start, end, graphemeRanges) {
+  if (graphemeRanges.length === 0) return { start, end };
+  let snappedStart = start;
+  let snappedEnd = end;
+
+  for (let i = 0; i < graphemeRanges.length; i += 1) {
+    const g = graphemeRanges[i];
+    if (g.start <= start && start < g.end) {
+      snappedStart = g.start;
+    }
+    if (g.start < end && end <= g.end) {
+      snappedEnd = g.end;
+      break;
+    }
+  }
+  return { start: snappedStart, end: snappedEnd };
+}
+
+function extractHighlightTerms(rawQuery) {
+  const clean = String(rawQuery ?? "")
+    .normalize("NFC")
+    .trim()
+    .replace(/\s+/g, " ");
+  if (!clean) return [];
+
+  const tokens = clean.split(" ").filter(Boolean);
+  const candidates = tokens.length > 1 ? [clean, ...tokens] : tokens;
+  const seen = new Set();
+  const unique = [];
+
+  for (const term of candidates) {
+    const key = term.toLowerCase();
+    if (!seen.has(key)) {
+      seen.add(key);
+      unique.push(term);
+    }
+  }
+
+  unique.sort((a, b) => b.length - a.length);
+  return unique;
+}
+
+export function computeHighlightSegments(rawText, rawQuery) {
+  const source = String(rawText ?? "").normalize("NFC");
+  if (!source) return [];
+
+  const terms = extractHighlightTerms(rawQuery);
+  if (terms.length === 0) {
+    return [{ text: source, highlighted: false }];
+  }
+
+  const pattern = terms.map(escapeRegExpLiteral).join("|");
+  if (!pattern) {
+    return [{ text: source, highlighted: false }];
+  }
+
+  const regex = new RegExp(pattern, "gi");
+  const rawMatches = [];
+  let match = regex.exec(source);
+  while (match) {
+    if (match[0].length === 0) {
+      regex.lastIndex += 1;
+    } else {
+      rawMatches.push({
+        start: match.index,
+        end: match.index + match[0].length,
+      });
+    }
+    match = regex.exec(source);
+  }
+
+  if (rawMatches.length === 0) {
+    return [{ text: source, highlighted: false }];
+  }
+
+  const graphemeRanges = getGraphemeRanges(source);
+  const snapped = rawMatches
+    .map((m) => snapRangeToGraphemes(m.start, m.end, graphemeRanges))
+    .sort((a, b) => (a.start !== b.start ? a.start - b.start : b.end - a.end));
+
+  const merged = [];
+  for (const interval of snapped) {
+    const prev = merged[merged.length - 1];
+    if (prev && interval.start <= prev.end) {
+      prev.end = Math.max(prev.end, interval.end);
+    } else {
+      merged.push({ start: interval.start, end: interval.end });
+    }
+  }
+
+  const segments = [];
+  let cursor = 0;
+  for (const { start, end } of merged) {
+    if (start > cursor) {
+      segments.push({ text: source.slice(cursor, start), highlighted: false });
+    }
+    segments.push({ text: source.slice(start, end), highlighted: true });
+    cursor = end;
+  }
+  if (cursor < source.length) {
+    segments.push({ text: source.slice(cursor), highlighted: false });
+  }
+
+  return segments;
+}
+
+export function highlightSearchHtml(rawText, rawQuery) {
+  const segments = computeHighlightSegments(rawText, rawQuery);
+  return segments
+    .map((seg) =>
+      seg.highlighted
+        ? `<mark class="search-hl">${escapeHtml(seg.text)}</mark>`
+        : escapeHtml(seg.text),
+    )
+    .join("");
+}
+
+export function createHighlightedFragment(rawText, rawQuery) {
+  const frag = document.createDocumentFragment();
+  const segments = computeHighlightSegments(rawText, rawQuery);
+  for (const seg of segments) {
+    if (!seg.text) continue;
+    if (seg.highlighted) {
+      const mark = document.createElement("mark");
+      mark.className = "search-hl";
+      mark.textContent = seg.text;
+      frag.appendChild(mark);
+    } else {
+      frag.appendChild(document.createTextNode(seg.text));
+    }
+  }
+  return frag;
+}
+
+export function setHighlightedContent(element, rawText, rawQuery) {
+  if (!element) return element;
+  element.replaceChildren(createHighlightedFragment(rawText, rawQuery));
+  return element;
+}
+

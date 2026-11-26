@@ -48,6 +48,12 @@
           "label": "🗓️ 6-Season Calendar",
           "href": "./seasons/",
           "matchPaths": ["/seasons/", "/seasons"]
+        },
+        {
+          "id": "nav-surprise-specimen",
+          "label": "🎲 Surprise Specimen",
+          "href": "./plant/",
+          "action": "surprise-specimen"
         }
       ]
     },
