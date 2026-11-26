@@ -1,312 +1,312 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/</loc>
+    <loc>/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/species/</loc>
+    <loc>/species/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/live/</loc>
+    <loc>/plant/live/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/taxonomy/</loc>
+    <loc>/taxonomy/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/seasons/</loc>
+    <loc>/seasons/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/compare/</loc>
+    <loc>/compare/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/services/</loc>
+    <loc>/services/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/sources/</loc>
+    <loc>/sources/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/roadmap/</loc>
+    <loc>/roadmap/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/identify/</loc>
+    <loc>/identify/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/qr-studio/</loc>
+    <loc>/qr-studio/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/install/</loc>
+    <loc>/install/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=mango</loc>
+    <loc>/plant/?species=mango</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=rose</loc>
+    <loc>/plant/?species=rose</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=sunflower</loc>
+    <loc>/plant/?species=sunflower</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=periwinkle</loc>
+    <loc>/plant/?species=periwinkle</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=marigold</loc>
+    <loc>/plant/?species=marigold</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=ixora</loc>
+    <loc>/plant/?species=ixora</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=water-lily</loc>
+    <loc>/plant/?species=water-lily</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=banyan</loc>
+    <loc>/plant/?species=banyan</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=neem</loc>
+    <loc>/plant/?species=neem</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=tulsi</loc>
+    <loc>/plant/?species=tulsi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=hibiscus</loc>
+    <loc>/plant/?species=hibiscus</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=jasmine</loc>
+    <loc>/plant/?species=jasmine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=lotus</loc>
+    <loc>/plant/?species=lotus</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=jackfruit</loc>
+    <loc>/plant/?species=jackfruit</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=coconut</loc>
+    <loc>/plant/?species=coconut</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=bamboo</loc>
+    <loc>/plant/?species=bamboo</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=aloe-vera</loc>
+    <loc>/plant/?species=aloe-vera</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=orchid</loc>
+    <loc>/plant/?species=orchid</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=bougainvillea</loc>
+    <loc>/plant/?species=bougainvillea</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=tea-plant</loc>
+    <loc>/plant/?species=tea-plant</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=krishnochura</loc>
+    <loc>/plant/?species=krishnochura</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=kadamba</loc>
+    <loc>/plant/?species=kadamba</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=shimul</loc>
+    <loc>/plant/?species=shimul</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=palmyra-palm</loc>
+    <loc>/plant/?species=palmyra-palm</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=guava</loc>
+    <loc>/plant/?species=guava</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=lychee</loc>
+    <loc>/plant/?species=lychee</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=turmeric</loc>
+    <loc>/plant/?species=turmeric</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=ashwagandha</loc>
+    <loc>/plant/?species=ashwagandha</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=shiuli</loc>
+    <loc>/plant/?species=shiuli</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=water-hyacinth</loc>
+    <loc>/plant/?species=water-hyacinth</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=sal</loc>
+    <loc>/plant/?species=sal</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=arjun</loc>
+    <loc>/plant/?species=arjun</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=mahogany</loc>
+    <loc>/plant/?species=mahogany</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=date-palm</loc>
+    <loc>/plant/?species=date-palm</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=jamun</loc>
+    <loc>/plant/?species=jamun</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=bael</loc>
+    <loc>/plant/?species=bael</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=pomegranate</loc>
+    <loc>/plant/?species=pomegranate</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=starfruit</loc>
+    <loc>/plant/?species=starfruit</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=aparajita</loc>
+    <loc>/plant/?species=aparajita</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=frangipani</loc>
+    <loc>/plant/?species=frangipani</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=champa</loc>
+    <loc>/plant/?species=champa</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=kamini</loc>
+    <loc>/plant/?species=kamini</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=amla</loc>
+    <loc>/plant/?species=amla</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=ginger</loc>
+    <loc>/plant/?species=ginger</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=kalmegh</loc>
+    <loc>/plant/?species=kalmegh</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=brahmi</loc>
+    <loc>/plant/?species=brahmi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=sundari</loc>
+    <loc>/plant/?species=sundari</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=golpata</loc>
+    <loc>/plant/?species=golpata</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=water-chestnut</loc>
+    <loc>/plant/?species=water-chestnut</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://plantipedia.rayaantasnim.workers.dev/plant/?species=hogla</loc>
+    <loc>/plant/?species=hogla</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

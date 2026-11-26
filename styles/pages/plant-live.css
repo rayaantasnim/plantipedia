@@ -45,7 +45,11 @@
 }
 
 :is([data-page="plant-live"], [data-page="plant"]) .chapter-card {
-  padding: clamp(22px, 3vw, 34px);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: clamp(20px, 3vw, 34px) clamp(16px, 3vw, 34px);
   border-radius: var(--radius-lg);
   background: linear-gradient(155deg, rgba(6, 20, 14, 0.88), rgba(11, 33, 23, 0.86));
   border: 1px solid rgba(52, 211, 153, 0.24);
@@ -58,6 +62,15 @@
 :is([data-page="plant-live"], [data-page="plant"]) .chapter-card:hover {
   border-color: rgba(52, 211, 153, 0.48);
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.36);
+}
+
+:is([data-page="plant-live"], [data-page="plant"]) .overview-header-grid > *,
+:is([data-page="plant-live"], [data-page="plant"]) .chapter-split-grid > *,
+:is([data-page="plant-live"], [data-page="plant"]) .chapter-subblocks > *,
+:is([data-page="plant-live"], [data-page="plant"]) .chapter-gallery-two > *,
+:is([data-page="plant-live"], [data-page="plant"]) .species-pager > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 :is([data-page="plant-live"], [data-page="plant"]) .plantipedia-telemetry-grid {

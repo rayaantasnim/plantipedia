@@ -23,6 +23,11 @@ import {
   isIgnoredHeading,
   normalizeImageKey,
 } from "../../engines/global-server/taxon-parser.js";
+import {
+  normalizeLangCode,
+  translateBatch,
+  translateMonographRecord,
+} from "../utils/translator.js";
 
 const PLACEHOLDER_PLATE = "./assets/images/placeholder-botanical.svg";
 
@@ -59,13 +64,13 @@ function buildReturnHref(parsed) {
   const params = new URLSearchParams();
   if (parsed?.left) {
     params.set("left", parsed.left);
-    if (parsed.leftType === "global") params.set("leftType", "global");
-    else params.set("leftType", "local");
+    params.set("leftType", parsed.leftType === "global" ? "global" : "local");
+    if (parsed.leftLang) params.set("leftLang", parsed.leftLang);
   }
   if (parsed?.right) {
     params.set("right", parsed.right);
-    if (parsed.rightType === "global") params.set("rightType", "global");
-    else params.set("rightType", "local");
+    params.set("rightType", parsed.rightType === "global" ? "global" : "local");
+    if (parsed.rightLang) params.set("rightLang", parsed.rightLang);
   }
   const qs = params.toString();
   return resolveRootPath(qs ? `./compare/?${qs}` : "./compare/");
@@ -80,10 +85,12 @@ function redirectToCompareInlineRecovery(parsed, failedSide, failedQuery, failed
   if (parsed?.left) {
     params.set("left", parsed.left);
     params.set("leftType", parsed.leftType === "global" ? "global" : "local");
+    if (parsed.leftLang) params.set("leftLang", parsed.leftLang);
   }
   if (parsed?.right) {
     params.set("right", parsed.right);
     params.set("rightType", parsed.rightType === "global" ? "global" : "local");
+    if (parsed.rightLang) params.set("rightLang", parsed.rightLang);
   }
   if (failedSide) params.set("failedSide", failedSide);
   if (failedQuery) params.set("failedQuery", failedQuery);
@@ -105,12 +112,28 @@ function parseSpecimenParams() {
   const rightType =
     rightGlobalRaw || params.get("rightType") === "global" ? "global" : "local";
 
+  const left = leftType === "global" ? normalizeGlobalQuery(rawLeft) : normalizeSpeciesSlug(rawLeft);
+  const right = rightType === "global" ? normalizeGlobalQuery(rawRight) : normalizeSpeciesSlug(rawRight);
+
+  const leftLang = normalizeLangCode(params.get("leftLang"), rawLeft || left);
+  const rightLang = normalizeLangCode(params.get("rightLang"), rawRight || right);
+
   return {
-    left: leftType === "global" ? normalizeGlobalQuery(rawLeft) : normalizeSpeciesSlug(rawLeft),
-    right: rightType === "global" ? normalizeGlobalQuery(rawRight) : normalizeSpeciesSlug(rawRight),
+    left,
+    right,
     leftType,
     rightType,
+    leftLang,
+    rightLang,
   };
+}
+
+function getSlotDisplayName(plant, lang = "en") {
+  if (!plant) return "Botanical Specimen";
+  if (lang === "bn") {
+    return String(plant.localName || plant.commonNameBn || plant.commonName || plant.scientificName || "উদ্ভিদ নমুনা").trim();
+  }
+  return String(plant.commonName || plant.scientificName || "Botanical Specimen").trim();
 }
 
 function formatTelemetryValue(stat) {
@@ -252,7 +275,8 @@ function buildSecondaryPlateFigure(imgObj, figCode) {
 function getSpecimenMonographHref(spec) {
   if (spec.type === "global" || spec.plant.isGlobalLive) {
     const q = spec.query || spec.plant.query || spec.plant.commonName;
-    return resolveRootPath(`./plant/live/?q=${encodeURIComponent(q)}&cached=1`);
+    const langParam = spec.lang ? `&lang=${encodeURIComponent(spec.lang)}` : "";
+    return resolveRootPath(`./plant/live/?q=${encodeURIComponent(q)}${langParam}&cached=1`);
   }
   return resolveRootPath(`./plant/?species=${encodeURIComponent(spec.plant.slug)}`);
 }
@@ -266,13 +290,16 @@ function buildTopHeader(parsed, leftPlant, rightPlant) {
   backLink.appendChild(createIconSvg(["m15 18-6-6 6-6"], 16));
   backLink.appendChild(createEl("span", "", "Change Specimens"));
 
+  const leftTitleName = getSlotDisplayName(leftPlant, parsed.leftLang);
+  const rightTitleName = getSlotDisplayName(rightPlant, parsed.rightLang);
+
   const titleGroup = createEl("div", "compare-result-title-group");
   titleGroup.appendChild(createEl("h1", "compare-result-title", "Split Specimen Comparison"));
   titleGroup.appendChild(
     createEl(
       "p",
       "compare-result-subtitle",
-      `${leftPlant.commonName} (${leftPlant.scientificName}) vs. ${rightPlant.commonName} (${rightPlant.scientificName})`,
+      `${leftTitleName} (${leftPlant.scientificName}) vs. ${rightTitleName} (${rightPlant.scientificName})`,
     ),
   );
 
@@ -303,14 +330,16 @@ function buildTopHeader(parsed, leftPlant, rightPlant) {
 }
 
 function buildHeroCard(spec, sideLabel) {
-  const { plant } = spec;
+  const { plant, lang = "en" } = spec;
+  const isBnSlot = lang === "bn";
+  const displayName = getSlotDisplayName(plant, lang);
   const card = createEl("article", `compare-hero-card compare-hero-card--${spec.side}`);
 
   const mediaWrap = createEl("div", "compare-hero-media");
   const img = document.createElement("img");
   img.className = "compare-hero-img";
   img.src = getSpecimenImageUrl(plant);
-  img.alt = plant.heroImage?.alt || `${plant.commonName} botanical specimen`;
+  img.alt = plant.heroImage?.alt || `${displayName} botanical specimen`;
   img.loading = "eager";
   img.decoding = "async";
   img.addEventListener("error", () => {
@@ -321,7 +350,9 @@ function buildHeroCard(spec, sideLabel) {
   });
   mediaWrap.appendChild(img);
 
-  const sourceLabel = plant.isGlobalLive ? "GLOBAL FLORA INDEX" : "CURATED ARCHIVE";
+  const sourceLabel = plant.isGlobalLive
+    ? (isBnSlot ? "গ্লোবাল ফ্লোরা ইনডেক্স" : "GLOBAL FLORA INDEX")
+    : (isBnSlot ? "সংরক্ষিত আর্কাইভ" : "CURATED ARCHIVE");
   const badgeOverlay = createEl("div", "compare-hero-badges");
   badgeOverlay.appendChild(
     createEl(
@@ -330,41 +361,29 @@ function buildHeroCard(spec, sideLabel) {
       sourceLabel,
     ),
   );
-  badgeOverlay.appendChild(createEl("span", "compare-side-tag", sideLabel));
+  badgeOverlay.appendChild(createEl("span", "compare-side-tag", `${sideLabel} · ${isBnSlot ? "বাংলা" : "EN"}`));
   mediaWrap.appendChild(badgeOverlay);
   card.appendChild(mediaWrap);
 
   const body = createEl("div", "compare-hero-body");
 
   const metaRow = createEl("div", "compare-hero-meta");
-  metaRow.appendChild(createEl("span", "compare-category-pill", plant.category || "Botanical Taxon"));
+  metaRow.appendChild(createEl("span", "compare-category-pill", plant.category || (isBnSlot ? "উদ্ভিদ ট্যাক্সন" : "Botanical Taxon")));
   if (plant.specimenId) {
     metaRow.appendChild(createEl("span", "compare-id-mono", plant.specimenId));
   }
   body.appendChild(metaRow);
 
   const nameRow = createEl("div", "compare-hero-names");
-  nameRow.appendChild(createEl("h2", "compare-hero-common", plant.commonName || plant.scientificName || "Botanical Specimen"));
-  const bnLabel = String(plant.localName || plant.commonNameBn || "").trim();
-  if (bnLabel && bnLabel.toLowerCase() !== String(plant.commonName || "").trim().toLowerCase()) {
-    nameRow.appendChild(createEl("span", "compare-hero-bn", bnLabel));
-  }
+  nameRow.appendChild(createEl("h2", "compare-hero-common", displayName));
   body.appendChild(nameRow);
 
   body.appendChild(createEl("p", "compare-hero-sci", plant.scientificName || ""));
-  if (plant.overview?.family) {
-    const hasDistinctBnFam =
-      plant.familyBn &&
-      plant.familyBn.trim().toLowerCase() !== plant.overview.family.trim().toLowerCase();
-    body.appendChild(
-      createEl(
-        "p",
-        "compare-hero-family",
-        hasDistinctBnFam
-          ? `Family: ${plant.overview.family} (${plant.familyBn})`
-          : `Family: ${plant.overview.family}`,
-      ),
-    );
+  if (plant.overview?.family || plant.familyBn) {
+    const famLabel = isBnSlot
+      ? `গোত্র: ${plant.familyBn || plant.overview?.family || ""}`
+      : `Family: ${plant.overview?.family || ""}`;
+    body.appendChild(createEl("p", "compare-hero-family", famLabel));
   }
 
   body.appendChild(
@@ -372,7 +391,11 @@ function buildHeroCard(spec, sideLabel) {
   );
 
   const footer = createEl("div", "compare-hero-footer");
-  const openLink = createEl("a", "compare-hero-link", "Open Full Monograph →");
+  const openLink = createEl(
+    "a",
+    "compare-hero-link",
+    isBnSlot ? "সম্পূর্ণ মনোগ্রাফ দেখুন →" : "Open Full Monograph →",
+  );
   openLink.href = getSpecimenMonographHref(spec);
   footer.appendChild(openLink);
   body.appendChild(footer);
@@ -410,12 +433,15 @@ function appendDualCardSubblocks(card, subblocks) {
   }
 }
 
-function buildTaxonomySection(leftPlant, rightPlant) {
+function buildTaxonomySection(leftPlant, rightPlant, leftLang = "en", rightLang = "en") {
   const sec = buildSectionShell(
     "01",
     "Scientific Taxonomy",
     "Linnaean hierarchy, ordinal placement, growth habit, and biogeographic classification",
   );
+
+  const leftName = getSlotDisplayName(leftPlant, leftLang);
+  const rightName = getSlotDisplayName(rightPlant, rightLang);
 
   const tableWrap = createEl("div", "compare-taxonomy-table-wrap");
   const table = createEl("table", "compare-taxonomy-table");
@@ -423,21 +449,21 @@ function buildTaxonomySection(leftPlant, rightPlant) {
   const thead = document.createElement("thead");
   const hRow = document.createElement("tr");
   hRow.appendChild(createEl("th", "", "Taxonomic Field"));
-  hRow.appendChild(createEl("th", "is-left", leftPlant.commonName));
-  hRow.appendChild(createEl("th", "is-right", rightPlant.commonName));
+  hRow.appendChild(createEl("th", "is-left", leftName));
+  hRow.appendChild(createEl("th", "is-right", rightName));
   thead.appendChild(hRow);
   table.appendChild(thead);
 
-  const formatFam = (pl) =>
-    pl.familyBn && pl.familyBn.trim().toLowerCase() !== String(pl.overview?.family || "").trim().toLowerCase()
-      ? `${pl.overview?.family || "—"} (${pl.familyBn})`
+  const formatFam = (pl, lang) =>
+    lang === "bn"
+      ? pl.familyBn || pl.overview?.family || "—"
       : pl.overview?.family || "—";
 
   const rows = [
     ["Plant Group", leftPlant.overview?.plantGroup || "—", rightPlant.overview?.plantGroup || "—"],
     ["Taxonomic Domain", leftPlant.taxonomicDomain || leftPlant.category || "—", rightPlant.taxonomicDomain || rightPlant.category || "—"],
     ["Botanical Order", leftPlant.overview?.order || "—", rightPlant.overview?.order || "—"],
-    ["Botanical Family", formatFam(leftPlant), formatFam(rightPlant)],
+    ["Botanical Family", formatFam(leftPlant, leftLang), formatFam(rightPlant, rightLang)],
     ["Genus", leftPlant.overview?.genus || "—", rightPlant.overview?.genus || "—"],
     ["Species Epithet", leftPlant.overview?.species || leftPlant.scientificName || "—", rightPlant.overview?.species || rightPlant.scientificName || "—"],
     ["Growth Habit", leftPlant.overview?.growthForm || "—", rightPlant.overview?.growthForm || "—"],
@@ -450,9 +476,9 @@ function buildTaxonomySection(leftPlant, rightPlant) {
     const tr = document.createElement("tr");
     tr.appendChild(createEl("th", "compare-tax-field", field));
     const tdL = createEl("td", "compare-tax-val is-left", valL);
-    tdL.dataset.specimenLabel = leftPlant.commonName;
+    tdL.dataset.specimenLabel = leftName;
     const tdR = createEl("td", "compare-tax-val is-right", valR);
-    tdR.dataset.specimenLabel = rightPlant.commonName;
+    tdR.dataset.specimenLabel = rightName;
     tr.appendChild(tdL);
     tr.appendChild(tdR);
     tbody.appendChild(tr);
@@ -464,7 +490,7 @@ function buildTaxonomySection(leftPlant, rightPlant) {
   return sec;
 }
 
-function buildTelemetrySection(leftPlant, rightPlant) {
+function buildTelemetrySection(leftPlant, rightPlant, leftLang = "en", rightLang = "en") {
   const sec = buildSectionShell(
     "02",
     "Numerical Telemetry Comparison Bars",
@@ -569,8 +595,8 @@ function buildTelemetrySection(leftPlant, rightPlant) {
       return row;
     };
 
-    bars.appendChild(buildRow(leftPlant.commonName, m.leftStat, m.pctL, "left"));
-    bars.appendChild(buildRow(rightPlant.commonName, m.rightStat, m.pctR, "right"));
+    bars.appendChild(buildRow(getSlotDisplayName(leftPlant, leftLang), m.leftStat, m.pctL, "left"));
+    bars.appendChild(buildRow(getSlotDisplayName(rightPlant, rightLang), m.rightStat, m.pctR, "right"));
     card.appendChild(bars);
     grid.appendChild(card);
   });
@@ -585,6 +611,8 @@ function buildComparativeChapterSection({
   subtitle,
   leftPlant,
   rightPlant,
+  leftLang = "en",
+  rightLang = "en",
   claimedLeft,
   claimedRight,
   usedImageKeys,
@@ -599,12 +627,14 @@ function buildComparativeChapterSection({
   const dualGrid = createEl("div", "compare-dual-cards");
 
   [
-    { plant: leftPlant, side: "left", claimed: claimedLeft, figSuffix: "L" },
-    { plant: rightPlant, side: "right", claimed: claimedRight, figSuffix: "R" },
-  ].forEach(({ plant, side, claimed, figSuffix }) => {
+    { plant: leftPlant, side: "left", lang: leftLang, claimed: claimedLeft, figSuffix: "L" },
+    { plant: rightPlant, side: "right", lang: rightLang, claimed: claimedRight, figSuffix: "R" },
+  ].forEach(({ plant, side, lang, claimed, figSuffix }) => {
+    const isBnSlot = lang === "bn";
+    const displayName = getSlotDisplayName(plant, lang);
     const card = createEl("article", `compare-detail-card compare-detail-card--${side}`);
     const cardHead = createEl("div", "compare-detail-head");
-    cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, plant.commonName));
+    cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, displayName));
 
     const matchedSec = claimMatchingSection(plant, claimed, keywordRe, preferredNumbers);
     const fb = typeof fallbackBuilder === "function" ? fallbackBuilder(plant, matchedSec) : null;
@@ -619,19 +649,22 @@ function buildComparativeChapterSection({
     card.appendChild(cardHead);
 
     const paragraphs = Array.isArray(matchedSec?.paragraphs) ? matchedSec.paragraphs : [];
+    const defaultFallbackLine = isBnSlot
+      ? `${displayName} (${plant.scientificName}) সম্পর্কিত তুলনামূলক উদ্ভিদতাত্ত্বিক তথ্য সম্পূর্ণ মনোগ্রাফে সংরক্ষিত আছে।`
+      : `Comparative botanical telemetry for ${displayName} (${plant.scientificName}) is indexed in its full monograph.`;
     const proseList =
       paragraphs.length > 0
         ? paragraphs.slice(0, 2)
         : Array.isArray(fb?.paragraphs) && fb.paragraphs.length > 0
           ? fb.paragraphs
-          : [`Comparative botanical telemetry for ${plant.commonName} (${plant.scientificName}) is indexed in its full monograph.`];
+          : [defaultFallbackLine];
 
     proseList.forEach((p) => {
       if (p) card.appendChild(createEl("p", "compare-detail-prose", p));
     });
 
     if (typeof extraPillsBuilder === "function") {
-      const carePairs = extraPillsBuilder(plant);
+      const carePairs = extraPillsBuilder(plant, lang);
       if (Array.isArray(carePairs) && carePairs.length > 0) {
         const specsGrid = createEl("div", "compare-care-pills");
         carePairs.forEach(([k, v]) => {
@@ -671,7 +704,7 @@ function buildComparativeChapterSection({
   return sec;
 }
 
-function buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, usedImageKeys) {
+function buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, usedImageKeys, leftLang = "en", rightLang = "en") {
   const sec = buildSectionShell(
     "04",
     "Foliar & Canopy Architecture",
@@ -680,19 +713,21 @@ function buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, u
   const dualGrid = createEl("div", "compare-dual-cards");
 
   [
-    { plant: leftPlant, side: "left", claimed: claimedLeft, figSuffix: "L" },
-    { plant: rightPlant, side: "right", claimed: claimedRight, figSuffix: "R" },
-  ].forEach(({ plant, side, claimed, figSuffix }) => {
+    { plant: leftPlant, side: "left", lang: leftLang, claimed: claimedLeft, figSuffix: "L" },
+    { plant: rightPlant, side: "right", lang: rightLang, claimed: claimedRight, figSuffix: "R" },
+  ].forEach(({ plant, side, lang, claimed, figSuffix }) => {
+    const isBnSlot = lang === "bn";
+    const displayName = getSlotDisplayName(plant, lang);
     const card = createEl("article", `compare-detail-card compare-detail-card--${side}`);
     const cardHead = createEl("div", "compare-detail-head");
-    cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, plant.commonName));
+    cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, displayName));
 
     // Only claim sections whose heading/subtitle genuinely targets foliage (not already claimed morphology)
     const sections = getCleanPlantSections(plant);
     let foliarSec = sections.find(
       (secItem) =>
         !claimed.has(secItem) &&
-        /foliar|foliage|canopy architecture|leaf|leaves|frond/i.test(`${secItem.title || ""} ${secItem.subtitle || ""}`),
+        /foliar|foliage|canopy architecture|leaf|leaves|frond|পাতা|পত্র/i.test(`${secItem.title || ""} ${secItem.subtitle || ""}`),
     );
     if (foliarSec) claimed.add(foliarSec);
 
@@ -700,7 +735,9 @@ function buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, u
       createEl(
         "h3",
         "compare-detail-heading",
-        foliarSec?.subtitle || foliarSec?.title || "Foliar Venation & Canopy Light Capture",
+        foliarSec?.subtitle ||
+          foliarSec?.title ||
+          (isBnSlot ? "পত্রবিন্যাস ও সূর্যালোক গ্রহণ কাঠামো" : "Foliar Venation & Canopy Light Capture"),
       ),
     );
     card.appendChild(cardHead);
@@ -711,21 +748,25 @@ function buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, u
       });
       appendDualCardSubblocks(card, foliarSec.subblocks);
     } else {
-      const morphRef = peekSection(plant, /morpholog|description/i, ["01"]);
+      const morphRef = peekSection(plant, /morpholog|description|গঠন|অঙ্গসংস্থান/i, ["01"]);
       const allMorphSents = (morphRef?.paragraphs || [])
         .join(" ")
         .split(/(?<=[.!?।])\s+/)
-        .filter((s) => /\b(leaf|leaves|foliage|frond|blade|vein|venation|rosette|canopy|crown|leaflet|stoma)\b/i.test(s));
+        .filter((s) => /\b(leaf|leaves|foliage|frond|blade|vein|venation|rosette|canopy|crown|leaflet|stoma)\b|পাতা|পত্র|বৃক্ষছত্র/i.test(s));
       const leafFocusText =
         allMorphSents.slice(0, 2).join(" ") ||
-        `${plant.commonName} (${plant.scientificName}) arranges its photosynthetic canopy to match ${plant.cultivationTelemetry?.sunlightLabel || "regional solar regimes"}, forming a ${plant.overview?.growthForm || "vascular specimen"}.`;
+        (isBnSlot
+          ? `${displayName} (${plant.scientificName}) আঞ্চলিক সূর্যালোকের সাথে সামঞ্জস্য রেখে পাতার বিন্যাস গঠন করে এবং ${plant.overview?.growthForm || "উদ্ভিদ"} হিসেবে বিকশিত হয়।`
+          : `${displayName} (${plant.scientificName}) arranges its photosynthetic canopy to match ${plant.cultivationTelemetry?.sunlightLabel || "regional solar regimes"}, forming a ${plant.overview?.growthForm || "vascular specimen"}.`);
 
       card.appendChild(createEl("p", "compare-detail-prose", leafFocusText));
       card.appendChild(
         createEl(
           "p",
           "compare-detail-prose",
-          `Classified within ${plant.overview?.family || "its botanical family"} (${plant.overview?.plantGroup || "vascular flora"}), cuticular resilience and canopy exposure coordinate transpiration efficiency with ${plant.cultivationTelemetry?.irrigationLabel || "ambient soil moisture"} availability.`,
+          isBnSlot
+            ? `${plant.familyBn || plant.overview?.family || "উদ্ভিদ"} গোত্রের অন্তর্ভুক্ত এই প্রজাতিটি ${plant.cultivationTelemetry?.irrigationLabel || "মাটির আর্দ্রতা"} অনুযায়ী বাষ্পমোচন ও সালোকসংশ্লেষণ নিয়ন্ত্রণ করে।`
+            : `Classified within ${plant.overview?.family || "its botanical family"} (${plant.overview?.plantGroup || "vascular flora"}), cuticular resilience and canopy exposure coordinate transpiration efficiency with ${plant.cultivationTelemetry?.irrigationLabel || "ambient soil moisture"} availability.`,
         ),
       );
 
@@ -733,10 +774,15 @@ function buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, u
       if (morphSubs.length > 0) {
         appendDualCardSubblocks(card, morphSubs);
       } else {
-        appendDualCardSubblocks(card, [
-          { heading: "Light Interception", text: plant.cultivationTelemetry?.sunlightLabel || "Filtered to Full Sun" },
-          { heading: "Canopy Growth Form", text: plant.overview?.growthForm || plant.overview?.plantGroup || "Vascular Flora" },
-        ]);
+        appendDualCardSubblocks(card, isBnSlot
+          ? [
+              { heading: "সূর্যালোক গ্রহণ", text: plant.cultivationTelemetry?.sunlightLabel || "পূর্ণ রোদ থেকে আংশিক ছায়া" },
+              { heading: "বৃদ্ধির ধরন", text: plant.overview?.growthForm || plant.overview?.plantGroup || "ভাস্কুলার উদ্ভিদ" },
+            ]
+          : [
+              { heading: "Light Interception", text: plant.cultivationTelemetry?.sunlightLabel || "Filtered to Full Sun" },
+              { heading: "Canopy Growth Form", text: plant.overview?.growthForm || plant.overview?.plantGroup || "Vascular Flora" },
+            ]);
       }
     }
 
@@ -753,7 +799,7 @@ function buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, u
   return sec;
 }
 
-function buildPhenologySection(leftPlant, rightPlant, seasonsData, claimedLeft, claimedRight, usedImageKeys) {
+function buildPhenologySection(leftPlant, rightPlant, seasonsData, claimedLeft, claimedRight, usedImageKeys, leftLang = "en", rightLang = "en") {
   const sec = buildSectionShell(
     "09",
     "Seasonal Phenology & Growth Rhythms",
@@ -768,22 +814,26 @@ function buildPhenologySection(leftPlant, rightPlant, seasonsData, claimedLeft, 
   const dualGrid = createEl("div", "compare-dual-cards");
 
   [
-    { plant: leftPlant, side: "left", claimed: claimedLeft, figSuffix: "L" },
-    { plant: rightPlant, side: "right", claimed: claimedRight, figSuffix: "R" },
-  ].forEach(({ plant, side, claimed, figSuffix }) => {
+    { plant: leftPlant, side: "left", lang: leftLang, claimed: claimedLeft, figSuffix: "L" },
+    { plant: rightPlant, side: "right", lang: rightLang, claimed: claimedRight, figSuffix: "R" },
+  ].forEach(({ plant, side, lang, claimed, figSuffix }) => {
+    const isBnSlot = lang === "bn";
+    const displayName = getSlotDisplayName(plant, lang);
     const card = createEl("article", `compare-detail-card compare-detail-card--${side}`);
     const cardHead = createEl("div", "compare-detail-head");
-    cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, plant.commonName));
+    cardHead.appendChild(createEl("span", `compare-detail-tag is-${side}`, displayName));
     cardHead.appendChild(
       createEl(
         "h3",
         "compare-detail-heading",
-        plant.isGlobalLive ? "Global Lifecycle & Climate Cadence" : "Shororitu Phenological Cycle",
+        isBnSlot
+          ? (plant.isGlobalLive ? "বৈশ্বিক জীবনচক্র ও জলবায়ু ছন্দ" : "ষড়ঋতুভিত্তিক প্রস্ফুটন চক্র")
+          : (plant.isGlobalLive ? "Global Lifecycle & Climate Cadence" : "Shororitu Phenological Cycle"),
       ),
     );
     card.appendChild(cardHead);
 
-    const phenoSec = claimMatchingSection(plant, claimed, /phenol|season|rhythm|dormanc/i, ["08"]);
+    const phenoSec = claimMatchingSection(plant, claimed, /phenol|season|rhythm|dormanc|ঋতু|প্রস্ফুটন/i, ["08"]);
     const activeSeasons = Array.isArray(plant.seasons) ? plant.seasons : [];
     const phenoMap =
       plant.seasonalPhenology && typeof plant.seasonalPhenology === "object"
@@ -796,18 +846,22 @@ function buildPhenologySection(leftPlant, rightPlant, seasonsData, claimedLeft, 
         const isActive = activeSeasons.includes(s.id);
         const note =
           phenoMap?.[s.id] ||
-          (isActive ? "Active growth / reproductive phase documented." : "Maintenance / vegetative rest period.");
+          (isBnSlot
+            ? (isActive ? "সক্রিয় বৃদ্ধি ও প্রজনন পর্যায় নথিভুক্ত।" : "স্বাভাবিক রক্ষণাবেক্ষণ ও বৃদ্ধি পর্যায়।")
+            : (isActive ? "Active growth / reproductive phase documented." : "Maintenance / vegetative rest period."));
         const row = createEl(
           "div",
           `compare-phenology-row${isActive ? " is-active-season" : ""}`,
         );
         const sHead = createEl("div", "compare-phenology-season");
-        sHead.appendChild(createEl("span", "compare-phenology-en", `${s.nameEn} (${s.nameBn})`));
+        sHead.appendChild(createEl("span", "compare-phenology-en", isBnSlot ? s.nameBn : s.nameEn));
         sHead.appendChild(
           createEl(
             "span",
             `compare-phenology-status${isActive ? " is-active" : ""}`,
-            isActive ? "Active Peak" : "Vegetative / Rest",
+            isBnSlot
+              ? (isActive ? "সক্রিয় শীর্ষ" : "স্বাভাবিক / বিশ্রাম")
+              : (isActive ? "Active Peak" : "Vegetative / Rest"),
           ),
         );
         row.appendChild(sHead);
@@ -816,7 +870,7 @@ function buildPhenologySection(leftPlant, rightPlant, seasonsData, claimedLeft, 
       });
       card.appendChild(list);
     } else {
-      const lifespanText = plant.overview?.lifespan || "Perennial";
+      const lifespanText = plant.overview?.lifespan || (isBnSlot ? "বহুবর্ষজীবী" : "Perennial");
       if (phenoSec?.paragraphs?.length) {
         phenoSec.paragraphs.slice(0, 2).forEach((p) => {
           card.appendChild(createEl("p", "compare-detail-prose", p));
@@ -826,18 +880,28 @@ function buildPhenologySection(leftPlant, rightPlant, seasonsData, claimedLeft, 
           createEl(
             "p",
             "compare-detail-prose",
-            `${plant.commonName} (${plant.scientificName}) follows a ${lifespanText.toLowerCase()} biological cycle indexed via the Global Flora Index, synchronizing meristematic flushes and anthesis with ${plant.overview?.sunlight || "ambient irradiance"} and ${plant.overview?.temperatureRange || "18–32 °C"}.`,
+            isBnSlot
+              ? `${displayName} (${plant.scientificName}) প্রজাতিটি ${lifespanText} জীবনচক্র অনুসরণ করে এবং ${plant.overview?.sunlight || "পর্যাপ্ত সূর্যালোক"} ও ${plant.overview?.temperatureRange || "১৮–৩২ °C"} তাপমাত্রায় পুষ্পায়ন সম্পন্ন করে।`
+              : `${displayName} (${plant.scientificName}) follows a ${lifespanText.toLowerCase()} biological cycle indexed via the Global Flora Index, synchronizing meristematic flushes and anthesis with ${plant.overview?.sunlight || "ambient irradiance"} and ${plant.overview?.temperatureRange || "18–32 °C"}.`,
           ),
         );
       }
 
       const badgeStrip = createEl("div", "compare-care-pills");
-      [
-        ["Lifecycle Class", lifespanText],
-        ["Taxon Category", plant.category || "Global Flora"],
-        ["Thermal Envelope", plant.overview?.temperatureRange || "18–32 °C"],
-        ["Moisture Regime", plant.cultivationTelemetry?.irrigationLabel || "Moderate"],
-      ].forEach(([k, v]) => {
+      const pills = isBnSlot
+        ? [
+            ["জীবনকাল", lifespanText],
+            ["ট্যাক্সন শ্রেণি", plant.category || "বৈশ্বিক উদ্ভিদ"],
+            ["তাপমাত্রা সীমা", plant.overview?.temperatureRange || "18–32 °C"],
+            ["আর্দ্রতা", plant.cultivationTelemetry?.irrigationLabel || "মাঝারি"],
+          ]
+        : [
+            ["Lifecycle Class", lifespanText],
+            ["Taxon Category", plant.category || "Global Flora"],
+            ["Thermal Envelope", plant.overview?.temperatureRange || "18–32 °C"],
+            ["Moisture Regime", plant.cultivationTelemetry?.irrigationLabel || "Moderate"],
+          ];
+      pills.forEach(([k, v]) => {
         const item = createEl("div", "compare-care-item");
         item.appendChild(createEl("span", "compare-care-key", k));
         item.appendChild(createEl("span", "compare-care-val", v));
@@ -873,7 +937,8 @@ export async function renderCompareResultWorkspace(
 
   if (
     parsed.left.toLowerCase() === parsed.right.toLowerCase() &&
-    parsed.leftType === parsed.rightType
+    parsed.leftType === parsed.rightType &&
+    parsed.leftLang === parsed.rightLang
   ) {
     redirectBackToSelector(parsed);
     return;
@@ -891,10 +956,23 @@ export async function renderCompareResultWorkspace(
     return;
   }
 
-  async function resolveLocalSpecimen(slug) {
+  async function resolveLocalSpecimen(slug, targetLang = "en") {
     const indexEntry = speciesBySlug.get(slug) || {};
+    const cacheKey = `plantipedia_local_tr_${slug}_${targetLang}`;
+    if (targetLang === "bn") {
+      try {
+        const cached = sessionStorage.getItem(cacheKey);
+        if (cached) {
+          const parsedCached = JSON.parse(cached);
+          if (parsedCached?.slug) return parsedCached;
+        }
+      } catch {
+        // Ignore cache read error
+      }
+    }
+
     const monograph = await fetchSpeciesMonograph(slug);
-    return {
+    let merged = {
       ...indexEntry,
       ...monograph,
       commonNameBn: monograph.localName || indexEntry.commonNameBn || "",
@@ -904,6 +982,30 @@ export async function renderCompareResultWorkspace(
       seasonalPhenology: indexEntry.seasonalPhenology || null,
       thumbnailUrl: indexEntry.thumbnailUrl || monograph.heroImage?.url || PLACEHOLDER_PLATE,
     };
+
+    if (targetLang === "bn") {
+      merged = await translateMonographRecord(merged, "bn");
+      if (merged.seasonalPhenology && typeof merged.seasonalPhenology === "object") {
+        const keys = Object.keys(merged.seasonalPhenology);
+        const vals = keys.map((k) => merged.seasonalPhenology[k]);
+        const trVals = await translateBatch(vals, "bn");
+        const nextPheno = {};
+        keys.forEach((k, idx) => {
+          nextPheno[k] = trVals[idx] || merged.seasonalPhenology[k];
+        });
+        merged.seasonalPhenology = nextPheno;
+      }
+      if (merged.localName || merged.commonNameBn) {
+        merged.commonName = merged.localName || merged.commonNameBn;
+      }
+      try {
+        sessionStorage.setItem(cacheKey, JSON.stringify(merged));
+      } catch {
+        // Ignore sessionStorage quota error
+      }
+    }
+
+    return merged;
   }
 
   let leftPlant = null;
@@ -912,12 +1014,12 @@ export async function renderCompareResultWorkspace(
   try {
     const uncachedGlobals = [];
     if (parsed.leftType === "global") {
-      leftPlant = getCachedGlobalMonograph(parsed.left);
-      if (!leftPlant) uncachedGlobals.push({ side: "left", query: parsed.left });
+      leftPlant = getCachedGlobalMonograph(parsed.left, parsed.leftLang);
+      if (!leftPlant) uncachedGlobals.push({ side: "left", query: parsed.left, lang: parsed.leftLang });
     }
     if (parsed.rightType === "global") {
-      rightPlant = getCachedGlobalMonograph(parsed.right);
-      if (!rightPlant) uncachedGlobals.push({ side: "right", query: parsed.right });
+      rightPlant = getCachedGlobalMonograph(parsed.right, parsed.rightLang);
+      if (!rightPlant) uncachedGlobals.push({ side: "right", query: parsed.right, lang: parsed.rightLang });
     }
 
     if (uncachedGlobals.length > 0) {
@@ -928,7 +1030,11 @@ export async function renderCompareResultWorkspace(
         work: async ({ signal, onRetry }) => {
           const resolvedMap = {};
           for (const item of uncachedGlobals) {
-            const res = await fetchFromGlobalBotanicalServer(item.query, { signal, onRetry });
+            const res = await fetchFromGlobalBotanicalServer(item.query, {
+              signal,
+              onRetry,
+              targetLang: item.lang,
+            });
             if (!res?.ok || !res.monograph) {
               return {
                 ok: false,
@@ -964,8 +1070,8 @@ export async function renderCompareResultWorkspace(
     }
 
     const [resolvedL, resolvedR] = await Promise.all([
-      leftPlant ? Promise.resolve(leftPlant) : resolveLocalSpecimen(parsed.left),
-      rightPlant ? Promise.resolve(rightPlant) : resolveLocalSpecimen(parsed.right),
+      leftPlant ? translateMonographRecord(leftPlant, parsed.leftLang) : resolveLocalSpecimen(parsed.left, parsed.leftLang),
+      rightPlant ? translateMonographRecord(rightPlant, parsed.rightLang) : resolveLocalSpecimen(parsed.right, parsed.rightLang),
     ]);
 
     leftPlant = resolvedL;
@@ -987,8 +1093,8 @@ export async function renderCompareResultWorkspace(
     // Non-blocking SEO metadata update
   }
 
-  const leftSpec = { side: "left", type: parsed.leftType, query: parsed.left, plant: leftPlant };
-  const rightSpec = { side: "right", type: parsed.rightType, query: parsed.right, plant: rightPlant };
+  const leftSpec = { side: "left", type: parsed.leftType, lang: parsed.leftLang, query: parsed.left, plant: leftPlant };
+  const rightSpec = { side: "right", type: parsed.rightType, lang: parsed.rightLang, query: parsed.right, plant: rightPlant };
 
   const workspace = createEl("div", "compare-result-shell");
   workspace.appendChild(buildTopHeader(parsed, leftPlant, rightPlant));
@@ -1012,10 +1118,10 @@ export async function renderCompareResultWorkspace(
   const claimedRight = new Set();
 
   // 01: Scientific Taxonomy
-  matrix.appendChild(buildTaxonomySection(leftPlant, rightPlant));
+  matrix.appendChild(buildTaxonomySection(leftPlant, rightPlant, parsed.leftLang, parsed.rightLang));
 
   // 02: Numerical Telemetry Comparison Bars
-  matrix.appendChild(buildTelemetrySection(leftPlant, rightPlant));
+  matrix.appendChild(buildTelemetrySection(leftPlant, rightPlant, parsed.leftLang, parsed.rightLang));
 
   // 03: Botanical Habit & Morphological Description
   matrix.appendChild(
@@ -1025,17 +1131,19 @@ export async function renderCompareResultWorkspace(
       subtitle: "Comparative vegetative architecture, stem structure, bark, and root systems",
       leftPlant,
       rightPlant,
+      leftLang: parsed.leftLang,
+      rightLang: parsed.rightLang,
       claimedLeft,
       claimedRight,
       usedImageKeys,
-      keywordRe: /morpholog|habit|description|anatomy/i,
+      keywordRe: /morpholog|habit|description|anatomy|গঠন|অঙ্গসংস্থান/i,
       preferredNumbers: ["01"],
       photoMatchRe: /morpholog|habit|vegetative|structure/i,
     }),
   );
 
   // 04: Foliar & Canopy Architecture
-  matrix.appendChild(buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, usedImageKeys));
+  matrix.appendChild(buildFoliageSection(leftPlant, rightPlant, claimedLeft, claimedRight, usedImageKeys, parsed.leftLang, parsed.rightLang));
 
   // 05: Floral Biology & Pollinator Ecology
   matrix.appendChild(
@@ -1045,10 +1153,12 @@ export async function renderCompareResultWorkspace(
       subtitle: "Inflorescence morphology, anthesis rhythms, and pollination vectors",
       leftPlant,
       rightPlant,
+      leftLang: parsed.leftLang,
+      rightLang: parsed.rightLang,
       claimedLeft,
       claimedRight,
       usedImageKeys,
-      keywordRe: /floral|flower|pollinat|ecolog|reproduc/i,
+      keywordRe: /floral|flower|pollinat|ecolog|reproduc|পুষ্প|ফুল|পরাগায়ন/i,
       preferredNumbers: ["04", "03"],
       photoMatchRe: /floral|flower|pollinat|reproduc/i,
     }),
@@ -1062,10 +1172,12 @@ export async function renderCompareResultWorkspace(
       subtitle: "Carpology, seed germination dynamics, and propagule dissemination",
       leftPlant,
       rightPlant,
+      leftLang: parsed.leftLang,
+      rightLang: parsed.rightLang,
       claimedLeft,
       claimedRight,
       usedImageKeys,
-      keywordRe: /fruit|seed|dispers|germinat|propagation/i,
+      keywordRe: /fruit|seed|dispers|germinat|propagation|ফল|বীজ|বংশবিস্তার/i,
       preferredNumbers: ["09", "04"],
       photoMatchRe: /seed|fruit|propagat|germinat/i,
     }),
@@ -1079,15 +1191,26 @@ export async function renderCompareResultWorkspace(
       subtitle: "Geographic distribution, edaphic soil chemistry, solar exposure, and hydration profile",
       leftPlant,
       rightPlant,
+      leftLang: parsed.leftLang,
+      rightLang: parsed.rightLang,
       claimedLeft,
       claimedRight,
       usedImageKeys,
-      keywordRe: /biogeograph|habitat|distribut|native|range/i,
+      keywordRe: /biogeograph|habitat|distribut|native|range|বিস্তৃতি|আবাসস্থল/i,
       preferredNumbers: ["03", "05"],
       photoMatchRe: /habitat|biogeograph|distribut|range/i,
-      extraPillsBuilder: (plant) => {
+      extraPillsBuilder: (plant, lang = "en") => {
+        const isBn = lang === "bn";
         const stats = extractPlantTelemetryStats(plant);
         const tel = plant.cultivationTelemetry || {};
+        if (isBn) {
+          return [
+            ["আদি বিস্তৃতি", plant.overview?.nativeOrigin || "বৈশ্বিক ও গ্রীষ্মমণ্ডলীয় অঞ্চল"],
+            ["মাটির পিএইচ", tel.phOptimalLabel || plant.overview?.phRange || `pH ${stats[1]?.value ?? 6.5}`],
+            ["সূর্যালোক", tel.sunlightLabel || plant.overview?.sunlight || `${stats[3]?.value ?? 30}${stats[3]?.suffix || "°C"}`],
+            ["আর্দ্রতা ও মাটি", [tel.irrigationLabel, tel.soilDrainageLabel].filter(Boolean).join(" · ") || "সুনিষ্কাশিত জৈব দোআঁশ"],
+          ];
+        }
         return [
           ["Native Distribution", plant.overview?.nativeOrigin || "Broad Global / Tropical Range"],
           ["Soil pH Envelope", tel.phOptimalLabel || plant.overview?.phRange || `pH ${stats[1]?.value ?? 6.5}`],
@@ -1106,10 +1229,12 @@ export async function renderCompareResultWorkspace(
       subtitle: "Taxonomic radiation, clade placement, and adaptive systematic traits",
       leftPlant,
       rightPlant,
+      leftLang: parsed.leftLang,
+      rightLang: parsed.rightLang,
       claimedLeft,
       claimedRight,
       usedImageKeys,
-      keywordRe: /phylogen|evolution|genetic|taxonom|lineage|clade|nomenclature/i,
+      keywordRe: /phylogen|evolution|genetic|taxonom|lineage|clade|nomenclature|শ্রেণিবিন্যাস|বিবর্তন/i,
       preferredNumbers: ["13", "02", "06"],
       photoMatchRe: /phylogen|taxonom|lineage|clade/i,
     }),
@@ -1117,7 +1242,7 @@ export async function renderCompareResultWorkspace(
 
   // 09: Seasonal Phenology & Growth Rhythms
   matrix.appendChild(
-    buildPhenologySection(leftPlant, rightPlant, seasonsData, claimedLeft, claimedRight, usedImageKeys),
+    buildPhenologySection(leftPlant, rightPlant, seasonsData, claimedLeft, claimedRight, usedImageKeys, parsed.leftLang, parsed.rightLang),
   );
 
   // 10: Phytochemistry & Bioactive Medicinal Profile
@@ -1128,10 +1253,12 @@ export async function renderCompareResultWorkspace(
       subtitle: "Secondary metabolites, pharmacognosy, and clinical safety advisories",
       leftPlant,
       rightPlant,
+      leftLang: parsed.leftLang,
+      rightLang: parsed.rightLang,
       claimedLeft,
       claimedRight,
       usedImageKeys,
-      keywordRe: /phytochem|medicin|compound|bioactive|alkaloid|pharmacol/i,
+      keywordRe: /phytochem|medicin|compound|bioactive|alkaloid|pharmacol|ভেষজ|রাসায়নিক|ঔষধি/i,
       preferredNumbers: ["06", "09"],
       photoMatchRe: /phytochem|medicin|compound|bioactive/i,
       includeSafetyBox: true,
@@ -1146,10 +1273,12 @@ export async function renderCompareResultWorkspace(
       subtitle: "Culinary traditions, artisanal uses, folklore, and horticultural commerce",
       leftPlant,
       rightPlant,
+      leftLang: parsed.leftLang,
+      rightLang: parsed.rightLang,
       claimedLeft,
       claimedRight,
       usedImageKeys,
-      keywordRe: /ethnobot|cultur|econom|culinar|history|heritage|use/i,
+      keywordRe: /ethnobot|cultur|econom|culinar|history|heritage|use|সাংস্কৃতিক|ব্যবহার|অর্থনৈতিক/i,
       preferredNumbers: ["05", "10", "11"],
       photoMatchRe: /cultur|ethnobot|econom|harvest/i,
     }),
@@ -1163,10 +1292,12 @@ export async function renderCompareResultWorkspace(
       subtitle: "Substrate preparation, canopy spacing, irrigation discipline, and pruning",
       leftPlant,
       rightPlant,
+      leftLang: parsed.leftLang,
+      rightLang: parsed.rightLang,
       claimedLeft,
       claimedRight,
       usedImageKeys,
-      keywordRe: /cultivat|spacing|prun|horticult|care|telemetry|soil/i,
+      keywordRe: /cultivat|spacing|prun|horticult|care|telemetry|soil|চাষাবাদ|পরিচর্যা/i,
       preferredNumbers: ["07", "12"],
       photoMatchRe: /cultivat|substrate|spacing|garden/i,
     }),
@@ -1180,10 +1311,12 @@ export async function renderCompareResultWorkspace(
       subtitle: "Biotic stressors, phytoalexin defenses, and organic IPM practices",
       leftPlant,
       rightPlant,
+      leftLang: parsed.leftLang,
+      rightLang: parsed.rightLang,
       claimedLeft,
       claimedRight,
       usedImageKeys,
-      keywordRe: /patholog|pest|disease|ipm|resilien|threat|vector/i,
+      keywordRe: /patholog|pest|disease|ipm|resilien|threat|vector|রোগবালাই|পোকামাকড়/i,
       preferredNumbers: ["10", "13"],
       photoMatchRe: /pest|patholog|ipm|defense/i,
     }),
@@ -1197,10 +1330,12 @@ export async function renderCompareResultWorkspace(
       subtitle: "IUCN vulnerability status, germplasm stewardship, and diagnostic markers",
       leftPlant,
       rightPlant,
+      leftLang: parsed.leftLang,
+      rightLang: parsed.rightLang,
       claimedLeft,
       claimedRight,
       usedImageKeys,
-      keywordRe: /conserv|identif|diagnostic|registry|status|iucn/i,
+      keywordRe: /conserv|identif|diagnostic|registry|status|iucn|সংরক্ষণ|শনাক্তকরণ/i,
       preferredNumbers: ["14", "11"],
       photoMatchRe: /conserv|identif|herbarium|status/i,
     }),

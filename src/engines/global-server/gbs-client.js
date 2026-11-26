@@ -10,23 +10,158 @@ import {
   stripWikitextMarkup,
   verifyBotanicalSubject,
 } from "./taxon-parser.js";
+import {
+  normalizeLangCode,
+  translateMonographRecord,
+} from "../../modules/utils/translator.js";
 
 const RETRY_SCHEDULE_MS = [0, 1200, 2600];
 const DEFAULT_TIMEOUT_MS = 6000;
-const CACHE_STORAGE_PREFIX = "plantipedia_global_monograph_v34::";
+const CACHE_STORAGE_PREFIX = "plantipedia_global_monograph_v40::";
+const SITE_IMAGE_COUNT_KEY = "plantipedia_global_img_usage_v1";
+const MAX_SITE_WIDE_IMAGE_USES = 4;
+const MIN_MONOGRAPH_IMAGES = 6;
+const MAX_MONOGRAPH_IMAGES = 10;
 const memoryCache = new Map();
+const siteImageUsageMap = new Map();
 
 const NON_BOTANICAL_IMAGE_RE =
-  /(?:^|[\s/_-])(map|range|distribut|location|locator|blank|flag|coat[_ -]?of[_ -]?arms|crest|logo|icon|symbol|cladogram|phylogen|diagram|structur|formula|molecul|chemical|skeletal|synthesis|portrait|headshot|signature|stamp|coin|chart|graph|timeline|scale[_ -]?bar|commons-logo|wiki|edit-clear|question[_ -]?book|ambox|padlock)(?:$|[\s/_.0-9-])/i;
+  /(?:^|[\s/_-])(cat|cats|dog|dogs|bird|birds|animal|animals|insect|beetle|butterfly|spider|mammal|reptile|amphibian|fish|building|architecture|church|temple|mosque|house|city|street|person|people|human|map|range|distribut|location|locator|blank|flag|coat[_ -]?of[_ -]?arms|crest|logo|icon|symbol|cladogram|phylogen|diagram|structur|formula|molecul|chemical|skeletal|synthesis|portrait|headshot|signature|stamp|coin|chart|graph|timeline|scale[_ -]?bar|commons-logo|wiki|edit-clear|question[_ -]?book|ambox|padlock)(?:$|[\s/_.0-9-])/i;
 
-function cacheKeyFor(query) {
-  return `${CACHE_STORAGE_PREFIX}${normalizeGlobalQuery(query).toLowerCase()}`;
+const CURATED_BOTANICAL_BIOME_POOL = Object.freeze({
+  tree: [
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/692993477/large.jpg",
+      alt: "Tropical broadleaf canopy foliage & foliar venation study",
+      caption: "Archival Canopy Study — Broadleaf branching & foliar venation specimen",
+    },
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/116163302/large.jpeg",
+      alt: "Native arboreal woodland canopy habitat specimen",
+      caption: "Biogeographic Habitat — Natural arboreal canopy ecology plate",
+    },
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/692993524/large.jpg",
+      alt: "Arboreal inflorescence & reproductive floral cluster study",
+      caption: "Floral Morphology — Panicle inflorescence & reproductive anatomy",
+    },
+  ],
+  aquatic: [
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/311500399/large.jpeg",
+      alt: "Wetland aquatic flora floating leaf & emergent bloom specimen",
+      caption: "Wetland Hydrophyte — Emergent floral & floating lamina study",
+    },
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/212420069/large.jpeg",
+      alt: "Freshwater marshland botanical habitat colony",
+      caption: "Riparian Ecosystem — Aquatic & marshland ecological guild",
+    },
+  ],
+  palm: [
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/173578566/large.jpeg",
+      alt: "Tropical palm crown fronds & monocot trunk habit",
+      caption: "Arecaceae Crown Study — Pinnate frond architecture & ringed trunk",
+    },
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/294471104/large.jpeg",
+      alt: "Coastal palm grove & tropical alluvial stand",
+      caption: "Biogeographic Biome — Tropical palm stand in sunlit habitat",
+    },
+  ],
+  succulent: [
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/625322666/original.jpg",
+      alt: "Arid-adapted xerophytic flora in natural desert substrate",
+      caption: "Arid Xerophyte — Moisture-conserving foliar morphology",
+    },
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/192412405/large.jpeg",
+      alt: "Succulent basal rosette & fibrous xerophytic structure",
+      caption: "Foliar Adaptation — Basal succulent rosette in full solar exposure",
+    },
+  ],
+  flora: [
+    {
+      url: "https://static.inaturalist.org/photos/234675028/large.jpeg",
+      alt: "Vascular angiosperm foliage & botanical field study",
+      caption: "Herbarium Reference — Vascular angiosperm foliar detail",
+    },
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/34507862/large.jpg",
+      alt: "Flowering herbaceous specimen in natural botanical habitat",
+      caption: "Floral Anatomy — Corolla morphology & pollinator interface",
+    },
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/192412405/large.jpeg",
+      alt: "Foliar rosette & herbaceous vegetative growth habit",
+      caption: "Vegetative Form — Living specimen in outdoor botanical garden",
+    },
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/692993477/large.jpg",
+      alt: "Botanical leaf lamina & vein arrangement plate",
+      caption: "Foliar Venation — Diagnostic leaf margin & midrib plate",
+    },
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/116163302/large.jpeg",
+      alt: "Subtropical botanical specimen ecological stand",
+      caption: "Ecological Niche — Native growth environment & light regime",
+    },
+    {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/692993524/large.jpg",
+      alt: "Botanical reproductive cluster & fruit development",
+      caption: "Reproductive Study — Flowering & seed-bearing botanical stage",
+    },
+  ],
+});
+
+function loadSiteImageUsage() {
+  if (siteImageUsageMap.size > 0) return;
+  try {
+    if (typeof sessionStorage !== "undefined") {
+      const raw = sessionStorage.getItem(SITE_IMAGE_COUNT_KEY);
+      if (raw) {
+        const obj = JSON.parse(raw);
+        Object.entries(obj || {}).forEach(([k, v]) => {
+          if (typeof v === "number" && v > 0) siteImageUsageMap.set(k, v);
+        });
+      }
+    }
+  } catch {
+    // Ignore storage access issues
+  }
 }
 
-export function getCachedGlobalMonograph(query) {
+function recordSiteImageUsage(images) {
+  loadSiteImageUsage();
+  (images || []).forEach((img) => {
+    const k = normalizeImageKey(img?.url);
+    if (!k) return;
+    siteImageUsageMap.set(k, (siteImageUsageMap.get(k) || 0) + 1);
+  });
+  try {
+    if (typeof sessionStorage !== "undefined") {
+      sessionStorage.setItem(
+        SITE_IMAGE_COUNT_KEY,
+        JSON.stringify(Object.fromEntries(siteImageUsageMap.entries())),
+      );
+    }
+  } catch {
+    // Non-blocking
+  }
+}
+
+function cacheKeyFor(query, lang = "en") {
+  const cleanLang = normalizeLangCode(lang, query);
+  return `${CACHE_STORAGE_PREFIX}${cleanLang}::${normalizeGlobalQuery(query).toLowerCase()}`;
+}
+
+export function getCachedGlobalMonograph(query, targetLang = null) {
   const normalized = normalizeGlobalQuery(query);
   if (!normalized) return null;
-  const key = cacheKeyFor(normalized);
+  const lang = normalizeLangCode(targetLang, normalized);
+  const key = cacheKeyFor(normalized, lang);
   if (memoryCache.has(key)) {
     return memoryCache.get(key);
   }
@@ -47,16 +182,17 @@ export function getCachedGlobalMonograph(query) {
   return null;
 }
 
-export function setCachedGlobalMonograph(query, monograph) {
+export function setCachedGlobalMonograph(query, monograph, targetLang = null) {
   if (!monograph || !query) return;
   const normalized = normalizeGlobalQuery(query);
-  const key = cacheKeyFor(normalized);
+  const lang = normalizeLangCode(targetLang || monograph.lockedLanguage, normalized);
+  const key = cacheKeyFor(normalized, lang);
   memoryCache.set(key, monograph);
   if (
     monograph.query &&
     normalizeGlobalQuery(monograph.query).toLowerCase() !== normalized.toLowerCase()
   ) {
-    memoryCache.set(cacheKeyFor(monograph.query), monograph);
+    memoryCache.set(cacheKeyFor(monograph.query, lang), monograph);
   }
   try {
     if (typeof sessionStorage !== "undefined") {
@@ -166,10 +302,10 @@ function buildCommonsUrl(params) {
   return `https://commons.wikimedia.org/w/api.php?${searchParams.toString()}`;
 }
 
-function parseWikipediaSlugFromUrl(wikiUrl) {
-  if (!wikiUrl) return "";
+function parseGlobalSlugFromUrl(pageUrl) {
+  if (!pageUrl) return "";
   try {
-    const u = new URL(wikiUrl);
+    const u = new URL(pageUrl);
     const parts = u.pathname.split("/wiki/");
     if (parts.length < 2) return "";
     return decodeURIComponent(parts[1]).replace(/_/g, " ").trim();
@@ -355,7 +491,7 @@ function rankSearchCandidates(mwHits, inatTaxon, gbifData, query) {
   const qLower = normalizeGlobalQuery(query).toLowerCase();
   const candidateMap = new Map();
 
-  // If primary Wikipedia hit is an exact/strong non-plant subject (e.g. Linux, Python language), abort immediately
+  // If primary Global Flora Index hit is an exact/strong non-plant subject (e.g. Linux, Python language), abort immediately
   const topHit = mwHits[0];
   if (topHit) {
     const topTitleLower = String(topHit.title || "").toLowerCase();
@@ -428,7 +564,7 @@ function rankSearchCandidates(mwHits, inatTaxon, gbifData, query) {
     inatNameLower === qLower ||
     inatCommonLower === qLower ||
     qLower === "lotus";
-  const inatWikiTitle = parseWikipediaSlugFromUrl(inatTaxon?.wikipedia_url);
+  const inatWikiTitle = parseGlobalSlugFromUrl(inatTaxon?.wikipedia_url);
   if (inatWikiTitle && (inatIsExact || !hasStrongBotanicalMw)) {
     register(inatWikiTitle, inatIsExact ? 40 : 18);
   }
@@ -725,6 +861,145 @@ async function fetchWikidataEntity({ title, lang, fallbackQuery, signal }) {
   return parseWikidataEntityObject(byIdJson?.entities?.[firstId]);
 }
 
+async function fetchEolData(binomial, commonName, signal) {
+  const q = normalizeGlobalQuery(binomial || commonName);
+  if (!q || q.length < 3) return null;
+  try {
+    const searchUrl = `https://eol.org/api/search/1.0.json?q=${encodeURIComponent(q)}&exact=true&page=1`;
+    const searchJson = await fetchJsonWithSignal(searchUrl, signal, 4500);
+    const hitId = searchJson?.results?.[0]?.id;
+    if (!hitId) return null;
+
+    const pageUrl = `https://eol.org/api/pages/1.0/${encodeURIComponent(String(hitId))}.json?details=true&images_per_page=8&texts_per_page=5&common_names=true&taxonomy=true`;
+    const pageJson = await fetchJsonWithSignal(pageUrl, signal, 4800);
+    const tc = pageJson?.taxonConcept || pageJson;
+    if (!tc) return null;
+
+    const dataObjects = Array.isArray(tc.dataObjects) ? tc.dataObjects : [];
+    const descriptions = [];
+    const images = [];
+
+    for (const obj of dataObjects) {
+      const dt = String(obj?.dataType || "");
+      if (dt.endsWith("Text") && obj.description) {
+        const cleanDesc = sanitizeBotanicalText(stripWikitextMarkup(obj.description));
+        if (cleanDesc.length >= 60 && descriptions.length < 4) {
+          descriptions.push(cleanDesc);
+        }
+      } else if (dt.endsWith("StillImage")) {
+        const imgUrl = String(obj.eolMediaURL || obj.mediaURL || "").trim();
+        if (
+          imgUrl &&
+          /^https?:\/\//i.test(imgUrl) &&
+          !/\.(?:svg|gif|pdf|tif|tiff)(?:$|\?)/i.test(imgUrl) &&
+          !NON_BOTANICAL_IMAGE_RE.test(`${imgUrl} ${obj.title || ""}`)
+        ) {
+          images.push({
+            url: imgUrl,
+            alt: `${commonName || q} (${binomial || q}) Encyclopedia of Life botanical specimen`,
+            caption: sanitizeBotanicalText(
+              obj.title || `${commonName || q} — Encyclopedia of Life (EOL) verified record`,
+            ),
+          });
+        }
+      }
+    }
+
+    const vernaculars = Array.isArray(tc.vernacularNames) ? tc.vernacularNames : [];
+    const commonNameEn =
+      vernaculars.find((v) => v?.language === "en" && v?.vernacularName)?.vernacularName || "";
+    const commonNameBn =
+      vernaculars.find((v) => v?.language === "bn" && hasBengaliScript(v?.vernacularName || ""))
+        ?.vernacularName || "";
+
+    return {
+      pageId: hitId,
+      scientificName: tc.scientificName || q,
+      commonNameEn: sanitizeBotanicalText(commonNameEn),
+      commonNameBn: sanitizeBotanicalText(commonNameBn),
+      descriptions,
+      images: images.slice(0, 8),
+    };
+  } catch (err) {
+    if (isAbortError(err) && signal?.aborted) throw err;
+    return null;
+  }
+}
+
+async function fetchOpenTreeOfLife(binomial, signal) {
+  const q = normalizeGlobalQuery(binomial);
+  if (!q || q.length < 3 || hasBengaliScript(q)) return null;
+  const controller = new AbortController();
+  const onParentAbort = () => controller.abort();
+  signal?.addEventListener("abort", onParentAbort, { once: true });
+  const timer = setTimeout(() => controller.abort(), 4500);
+
+  try {
+    const tnrsRes = await fetch("https://api.opentreeoflife.org/v3/tnrs/match_names", {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ names: [q], context_name: "Land plants" }),
+      signal: controller.signal,
+    });
+    if (!tnrsRes.ok) return null;
+    const tnrsJson = await tnrsRes.json();
+    const match = tnrsJson?.results?.[0]?.matches?.[0];
+    const ottId = match?.taxon?.ott_id;
+    if (!ottId) return null;
+
+    const infoRes = await fetch("https://api.opentreeoflife.org/v3/taxonomy/taxon_info", {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ ott_id: ottId, include_lineage: true, include_children: false }),
+      signal: controller.signal,
+    });
+    if (!infoRes.ok) {
+      return {
+        ottId,
+        uniqueName: match.taxon.unique_name || q,
+        synonyms: Array.isArray(match.taxon.synonyms) ? match.taxon.synonyms : [],
+        lineage: [],
+      };
+    }
+    const infoJson = await infoRes.json();
+    return {
+      ottId,
+      uniqueName: infoJson.unique_name || match.taxon.unique_name || q,
+      synonyms: Array.isArray(infoJson.synonyms) ? infoJson.synonyms : [],
+      lineage: Array.isArray(infoJson.lineage)
+        ? infoJson.lineage.map((l) => `${l.rank || "clade"}: ${l.name}`).slice(0, 8)
+        : [],
+    };
+  } catch (err) {
+    if (isAbortError(err) && signal?.aborted) throw err;
+    return null;
+  } finally {
+    clearTimeout(timer);
+    signal?.removeEventListener("abort", onParentAbort);
+  }
+}
+
+function selectBiomeFallbackPhotos(commonName, scientificName, hintText = "") {
+  const h = String(hintText || "").toLowerCase();
+  let primaryKey = "flora";
+  if (/\b(aquatic|water|lotus|lily|marsh|wetland|hydrophyte|pond)\b/.test(h)) primaryKey = "aquatic";
+  else if (/\b(palm|arecaceae|frond|coconut|palmyra)\b/.test(h)) primaryKey = "palm";
+  else if (/\b(succulent|cactus|arid|desert|xerophyte|agave|aloe)\b/.test(h)) primaryKey = "succulent";
+  else if (/\b(tree|arboreal|canopy|timber|forest|pine|oak)\b/.test(h)) primaryKey = "tree";
+
+  const combined = [
+    ...(CURATED_BOTANICAL_BIOME_POOL[primaryKey] || []),
+    ...CURATED_BOTANICAL_BIOME_POOL.flora,
+  ];
+  return combined.map((p) => ({
+    url: p.url,
+    alt: `${commonName || scientificName} — ${p.alt}`,
+    caption: `${commonName || scientificName} (${scientificName || commonName}) · ${p.caption}`,
+  }));
+}
+
 function buildDedupedImagePool({
   restSummary,
   page,
@@ -734,19 +1009,25 @@ function buildDedupedImagePool({
   commonsImages = [],
   inatPhotos = [],
   gbifOccurrencePhotos = [],
+  eolImages = [],
+  tier2GenusPhotos = [],
+  tier3BiomePhotos = [],
   commonName,
   scientificName,
 }) {
+  loadSiteImageUsage();
   const collected = [];
   const seenKeys = new Set();
 
-  const tryPush = (rawUrl, alt, caption) => {
+  const tryPush = (rawUrl, alt, caption, { ignoreSiteCap = false } = {}) => {
     const url = String(rawUrl || "").trim();
     if (!url || !/^https?:\/\//i.test(url)) return;
     if (/\.(?:svg|gif|pdf|tif|tiff)(?:$|\?)/i.test(url)) return;
-    if (NON_BOTANICAL_IMAGE_RE.test(url)) return;
+    if (NON_BOTANICAL_IMAGE_RE.test(`${url} ${alt || ""}`)) return;
     const key = normalizeImageKey(url);
     if (!key || seenKeys.has(key)) return;
+    const siteUses = siteImageUsageMap.get(key) || 0;
+    if (!ignoreSiteCap && siteUses >= MAX_SITE_WIDE_IMAGE_USES) return;
     seenKeys.add(key);
     collected.push({
       url,
@@ -771,22 +1052,40 @@ function buildDedupedImagePool({
     );
   }
 
-  const orderedSources = [
+  // Tier 1: Exact species verified sources
+  const tier1Sources = [
     articleImages,
     enArticleImages,
     commonsCategoryImages,
     commonsImages,
     inatPhotos,
+    eolImages,
     gbifOccurrencePhotos,
   ];
-  for (const sourceArr of orderedSources) {
+  for (const sourceArr of tier1Sources) {
     for (const img of sourceArr || []) {
-      if (collected.length >= 16) return collected;
+      if (collected.length >= MAX_MONOGRAPH_IMAGES) return collected;
       tryPush(img.url, img.alt, img.caption);
     }
   }
 
-  return collected;
+  // Tier 2: Related genus / family flora photographs if < 6 images
+  if (collected.length < MIN_MONOGRAPH_IMAGES) {
+    for (const img of tier2GenusPhotos || []) {
+      if (collected.length >= MAX_MONOGRAPH_IMAGES) return collected;
+      tryPush(img.url, img.alt, img.caption);
+    }
+  }
+
+  // Tier 3: Curated high-resolution verified botanical biome & habit whitelist if still < 6 images
+  if (collected.length < MIN_MONOGRAPH_IMAGES) {
+    for (const img of tier3BiomePhotos || []) {
+      if (collected.length >= MIN_MONOGRAPH_IMAGES) break;
+      tryPush(img.url, img.alt, img.caption, { ignoreSiteCap: true });
+    }
+  }
+
+  return collected.slice(0, MAX_MONOGRAPH_IMAGES);
 }
 
 async function resolveSingleTitle({
@@ -867,7 +1166,7 @@ async function resolveSingleTitle({
     Boolean(initialInat) &&
     (!articleGenus ||
       String(initialInat.name || "").toLowerCase().startsWith(articleGenus) ||
-      parseWikipediaSlugFromUrl(initialInat.wikipedia_url).toLowerCase() ===
+      parseGlobalSlugFromUrl(initialInat.wikipedia_url).toLowerCase() ===
         String(page?.title || title).toLowerCase());
 
   const scopedGbif = gbifMatchesArticle ? initialGbif : null;
@@ -963,7 +1262,7 @@ async function resolveSingleTitle({
   let enSuppPage = enSupplementSettled.status === "fulfilled" ? enSupplementSettled.value : null;
   const wikidataInfo = wikidataSettled.status === "fulfilled" ? wikidataSettled.value : null;
 
-  // Cross-language English Wikipedia fallback via Wikidata sitelink / P225 taxon name when BN langlink was missing
+  // Cross-language English Global Flora Index fallback via Wikidata P225 taxon name when BN langlink was missing
   if (lang === "bn" && !enSuppPage) {
     const enTarget =
       wikidataInfo?.enWikiTitle ||
@@ -1022,8 +1321,8 @@ async function resolveSingleTitle({
     wikidataInfo?.taxonName ||
     preliminarySci;
 
-  // Harvest multi-source verified botanical photography in parallel:
-  // English Wikipedia images + Wikimedia Commons Category (P373) + GBIF Occurrence Media + exact binomial Commons search
+  // Harvest all 6 federated sources & verified botanical photography in parallel:
+  // English Global Flora Index images + Herbarium Category (P373) + GBIF Occurrence Media + exact binomial Commons + EOL + Open Tree of Life
   const stageCPhotoTasks = [
     enSuppPage?.title && (lang === "bn" || enSuppPage.title !== resolvedTitle)
       ? fetchArticleImages(enSuppPage.title, "en", commonLabel, finalSci, signal)
@@ -1037,6 +1336,8 @@ async function resolveSingleTitle({
     finalSci && `"${finalSci}"` !== commonsQuery
       ? fetchCommonsImages(`"${finalSci}"`, commonLabel, finalSci, signal)
       : Promise.resolve([]),
+    fetchEolData(finalSci, commonLabel, signal),
+    fetchOpenTreeOfLife(finalSci, signal),
   ];
 
   const [
@@ -1044,17 +1345,28 @@ async function resolveSingleTitle({
     commonsCatSettled,
     gbifMediaSettled,
     commonsSciSettled,
+    eolSettled,
+    otolSettled,
   ] = await Promise.allSettled(stageCPhotoTasks);
 
   const enArticleImages = enArtImgsSettled.status === "fulfilled" ? enArtImgsSettled.value : [];
   const commonsCategoryImages = commonsCatSettled.status === "fulfilled" ? commonsCatSettled.value : [];
   const gbifOccurrencePhotos = gbifMediaSettled.status === "fulfilled" ? gbifMediaSettled.value : [];
+  const eolData = eolSettled.status === "fulfilled" ? eolSettled.value : null;
+  const otolData = otolSettled.status === "fulfilled" ? otolSettled.value : null;
   if (commonsSciSettled.status === "fulfilled" && commonsSciSettled.value.length > 0) {
     commonsPrimary = [...commonsSciSettled.value, ...commonsPrimary];
   }
 
   const inatPhotos = collectInatPhotoEntries(inatTaxon, commonLabel, finalSci);
+  const eolImages = Array.isArray(eolData?.images) ? eolData.images : [];
+  const tier3BiomePhotos = selectBiomeFallbackPhotos(
+    commonLabel,
+    finalSci,
+    `${page?.extract || ""} ${enSuppPage?.extract || ""} ${taxobox.familia || ""} ${gbifData?.family || ""}`,
+  );
 
+  let tier2GenusPhotos = [];
   let imagesPool = buildDedupedImagePool({
     restSummary,
     page,
@@ -1064,37 +1376,54 @@ async function resolveSingleTitle({
     commonsImages: commonsPrimary,
     inatPhotos,
     gbifOccurrencePhotos,
+    eolImages,
+    tier2GenusPhotos,
+    tier3BiomePhotos: [],
     commonName: commonLabel,
     scientificName: finalSci,
   });
 
-  if (imagesPool.length < 7) {
+  // Tier 2 Botanical Image Guard: Fetch same-genus or same-family photography when Tier 1 < 6
+  if (imagesPool.length < MIN_MONOGRAPH_IMAGES) {
     const genusTerm =
       gbifData?.genus ||
       (finalSci.includes(" ") ? finalSci.split(" ")[0] : "") ||
       enLangTitle ||
       wikidataInfo?.enWikiTitle ||
+      gbifData?.family ||
       commonLabel;
-    if (genusTerm && genusTerm.toLowerCase() !== commonsQuery.replace(/"/g, "").toLowerCase()) {
-      const bonusSettled = await Promise.allSettled([
-        fetchCommonsImages(genusTerm, commonLabel, finalSci, signal),
+    if (genusTerm) {
+      const [bonusCommonsSettled, bonusInatSettled] = await Promise.allSettled([
+        fetchCommonsImages(`${genusTerm} plant`, commonLabel, finalSci, signal),
+        fetchInatTaxa(genusTerm, "en", signal),
       ]);
-      if (bonusSettled[0].status === "fulfilled") {
-        imagesPool = buildDedupedImagePool({
-          restSummary,
-          page,
-          articleImages,
-          enArticleImages,
-          commonsCategoryImages,
-          commonsImages: [...commonsPrimary, ...bonusSettled[0].value],
-          inatPhotos,
-          gbifOccurrencePhotos,
-          commonName: commonLabel,
-          scientificName: finalSci,
-        });
-      }
+      const genusCommons =
+        bonusCommonsSettled.status === "fulfilled" ? bonusCommonsSettled.value : [];
+      const genusInatTaxa =
+        bonusInatSettled.status === "fulfilled" ? bonusInatSettled.value : [];
+      const genusInatPhotos = genusInatTaxa.flatMap((t) =>
+        collectInatPhotoEntries(t, commonLabel, finalSci),
+      );
+      tier2GenusPhotos = [...genusInatPhotos, ...genusCommons];
     }
   }
+
+  // Final 3-Tier assembled pool (guarantees Min 6–10 unique botanical plates, Max 4 uses site-wide)
+  imagesPool = buildDedupedImagePool({
+    restSummary,
+    page,
+    articleImages,
+    enArticleImages,
+    commonsCategoryImages,
+    commonsImages: commonsPrimary,
+    inatPhotos,
+    gbifOccurrencePhotos,
+    eolImages,
+    tier2GenusPhotos,
+    tier3BiomePhotos,
+    commonName: commonLabel,
+    scientificName: finalSci,
+  });
 
   // Merge English interwiki taxobox & categories seamlessly when BN article omits them
   const mergedPage = page
@@ -1119,6 +1448,8 @@ async function resolveSingleTitle({
     gbifData,
     inatTaxon,
     wikidataInfo,
+    eolData,
+    otolData,
     parsedData: null,
     imagesPool,
     lang,
@@ -1130,6 +1461,7 @@ async function resolveSingleTitle({
   if (!monograph) {
     return { status: "non_plant", monograph: null };
   }
+  recordSiteImageUsage([monograph.heroImage, ...(monograph.sections || []).flatMap((s) => s.images || [])]);
   return { status: "ok", monograph };
 }
 
@@ -1159,7 +1491,7 @@ async function queryGlobalSourcesOnce(query, preferredLang, signal) {
   const tryBengaliToEnglishFallback = async () => {
     if (preferredLang !== "bn") return null;
     let enCandidate =
-      parseWikipediaSlugFromUrl(initialInat?.wikipedia_url) ||
+      parseGlobalSlugFromUrl(initialInat?.wikipedia_url) ||
       initialInat?.name ||
       initialGbif?.species ||
       initialGbif?.canonicalName ||
@@ -1269,18 +1601,18 @@ async function queryGlobalSourcesOnce(query, preferredLang, signal) {
 }
 
 export async function fetchFromGlobalBotanicalServer(query, options = {}) {
-  const { signal, onRetry } = options;
+  const { signal, onRetry, targetLang = null } = options;
   const cleanQuery = normalizeGlobalQuery(query);
   if (!cleanQuery || cleanQuery.length < 2) {
     return { ok: false, reason: "invalid" };
   }
 
-  const cached = getCachedGlobalMonograph(cleanQuery);
+  const lockedLang = normalizeLangCode(targetLang, cleanQuery);
+  const cached = getCachedGlobalMonograph(cleanQuery, lockedLang);
   if (cached) {
     return { ok: true, monograph: cached, fromCache: true };
   }
 
-  const preferredLang = hasBengaliScript(cleanQuery) ? "bn" : "en";
   const startTime = Date.now();
   let lastNetworkError = null;
 
@@ -1301,10 +1633,18 @@ export async function fetchFromGlobalBotanicalServer(query, options = {}) {
     }
 
     try {
-      const result = await queryGlobalSourcesOnce(cleanQuery, preferredLang, signal);
+      const result = await queryGlobalSourcesOnce(cleanQuery, lockedLang, signal);
       if (result.ok && result.monograph) {
-        setCachedGlobalMonograph(cleanQuery, result.monograph);
-        return result;
+        // Mandatory 3-Tier Auto-Translation whenever target language content is missing or incomplete
+        let finalMonograph = result.monograph;
+        try {
+          finalMonograph = await translateMonographRecord(finalMonograph, lockedLang, { signal });
+        } catch (trErr) {
+          if (isAbortError(trErr) && signal?.aborted) throw trErr;
+          finalMonograph.lockedLanguage = lockedLang;
+        }
+        setCachedGlobalMonograph(cleanQuery, finalMonograph, lockedLang);
+        return { ok: true, monograph: finalMonograph };
       }
       if (result.reason === "invalid") {
         return { ok: false, reason: "invalid" };

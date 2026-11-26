@@ -1,7 +1,7 @@
 /**
  * Dedicated "Sources & Scientific References" Portal (/sources/)
- * 8-Section Open Botanical Infrastructure Reference explaining how 400,000+ Global Taxa
- * and 50 Local Curated 15-Chapter Monographs are indexed, validated, and cited.
+ * 8-Section Open Botanical Infrastructure Reference explaining how 1,600,000+ (1.6M+) Global Taxa
+ * across 6 federated botanical databases and 50 Local Curated 15-Chapter Monographs are indexed, validated, and cited.
  */
 
 import { buildImageElement, createEl } from "../utils/templates.js";
@@ -67,11 +67,11 @@ const SOURCES_SECTIONS = [
     theme: "emerald",
     icon: "🌐",
     eyebrow: "SECTION 01 · UNIFIED QUERY ROUTING",
-    title: "Architecture of the 400,000+ Global Flora Pipeline",
-    subtitle: "Zero-Key Multi-Endpoint Botanical Resolution",
+    title: "Architecture of the 1,600,000+ (1.6M+) Global Flora Pipeline",
+    subtitle: "Zero-Key 6-Source Federated Botanical Resolution",
     desc: "How Plantipedia transforms any English, Latin, or Bengali search into a verified 15-chapter dossier.",
     paragraphs: [
-      "Plantipedia Version 3.1 bridges two complementary botanical knowledge tiers: fifty deeply authored, bilingual local monographs stored as deterministic JSON schemas alongside a real-time Global Botanical Server capable of resolving over 400,000 worldwide vascular plant and tree taxa. Rather than depending on brittle, rate-limited API keys or pre-cached static stubs, the client executes direct, CORS-enabled browser queries against open scientific registries and normalizes incoming records into an identical 15-chapter scholarly template.",
+      "Plantipedia Version 3.2 bridges two complementary botanical knowledge tiers: fifty deeply authored, bilingual local monographs stored as deterministic JSON schemas alongside a federated 6-database Global Botanical Server (GBIF Backbone, MediaWiki, Wikidata, iNaturalist, Encyclopedia of Life, and Open Tree of Life) capable of resolving over 1,600,000+ (1.6M+) worldwide vascular plant and tree taxa. Rather than depending on brittle, rate-limited API keys or pre-cached static stubs, the client executes direct, CORS-enabled browser queries against open scientific registries and normalizes incoming records into an identical 15-chapter scholarly template.",
       "Every live lookup passes through a multi-stage verification funnel before reaching the viewport. Search candidates undergo Kingdom Plantae validation, disambiguation guard checks, taxonomic rank disaggregation from infobox and backbone graphs, strict 80-character prose deduplication, and ecological guild calibration so desert xerophytes, carnivorous bog herbs, epiphytes, and aquatic macrophytes never receive generic temperate garden defaults.",
     ],
     specs: [
@@ -108,7 +108,7 @@ const SOURCES_SECTIONS = [
     ],
     specs: [
       { label: "Primary Endpoint", value: "https://api.gbif.org/v1/species/match" },
-      { label: "Backbone Coverage", value: "400,000+ Vascular & Non-Vascular Plant Taxa" },
+      { label: "Backbone Coverage", value: "1,600,000+ Vascular & Non-Vascular Plant Taxa" },
       { label: "Core Signals", value: "usageKey, acceptedUsageKey, rank, status, authorship" },
       { label: "License Standard", value: "CC0 / CC-BY Open Biodiversity Data" },
     ],
@@ -250,7 +250,7 @@ const SOURCES_SECTIONS = [
     desc: "Internal quality gates governing Plantipedia's 50 curated dossiers and live global records.",
     paragraphs: [
       "Every monograph rendered inside Plantipedia passes deterministic integrity checks at build and runtime. Lead summaries are claimed once against an 80-character normalized key and sentence-level fingerprint registry so no paragraph or statistic echoes redundantly across hero cards or numbered chapters. Unit-aware stature extractors preserve centimetre (`cm`) versus metre (`m`) scale accurately without conflating rosette herbs with canopy trees.",
-      "Visual assets enforce a strict uniqueness quota (`Max 1` occurrence per image URL on any page and `Max 4` across the entire archive), while all textual references inside monograph reading views refer consistently to the Global Botanical Server and Global Flora Index. Built-in APA 7th, MLA 9th, and BibTeX generators produce reproducible canonical URLs anchored to the live Workers production origin.",
+      "Visual assets enforce a strict uniqueness quota (`Max 1` occurrence per image URL on any page and `Max 4` across the entire archive), while all textual references inside monograph reading views refer consistently to the Global Botanical Server and Global Flora Index. Built-in APA 7th, MLA 9th, and BibTeX generators produce reproducible canonical URLs anchored dynamically to the active repository path.",
     ],
     specs: [
       { label: "Prose Deduplication", value: "80-Char Normalized Key + Sentence Fingerprint Registry" },
@@ -533,7 +533,7 @@ function buildSourcesHero(speciesCount) {
     createEl(
       "span",
       "section-eyebrow",
-      "OPEN BOTANICAL INFRASTRUCTURE · 400,000+ INDEXED TAXA",
+      "OPEN BOTANICAL INFRASTRUCTURE · 1,600,000+ (1.6M+) INDEXED TAXA",
     ),
   );
 
@@ -545,13 +545,13 @@ function buildSourcesHero(speciesCount) {
     createEl(
       "p",
       "sources-hero-subcopy",
-      `Plantipedia Version 3.1 unites ${speciesCount || 50} deeply authored bilingual EN / বাংলা monographs with a live open-science flora pipeline covering more than 400,000 vascular plant and tree species. This technical dossier documents the taxonomic registries, phylogenetic frameworks, photographic repositories, and deterministic verification protocols powering every citation and field sheet.`,
+      `Plantipedia Version 3.2 unites ${speciesCount || 50} deeply authored bilingual EN / বাংলা monographs with a federated 6-database open-science flora pipeline covering more than 1,600,000+ (1.6M+) vascular plant and tree species. This technical dossier documents the taxonomic registries, phylogenetic frameworks, photographic repositories, and deterministic verification protocols powering every citation and field sheet.`,
     ),
   );
 
   const metricsRow = createEl("div", "sources-hero-metrics");
   [
-    { val: "400,000+", label: "GLOBAL VASCULAR TAXA" },
+    { val: "1.6M+", label: "GLOBAL VASCULAR TAXA" },
     { val: "08", label: "OPEN DATA PILLARS" },
     { val: String(speciesCount || 50), label: "CURATED MONOGRAPHS" },
     { val: "3", label: "CITATION FORMATS" },
@@ -613,7 +613,7 @@ function buildSourcesHero(speciesCount) {
     createEl(
       "figcaption",
       "sources-hero-caption",
-      "Archival & Live Conservatory Reference · Verified multi-registry botanical synthesis across 400,000+ taxa.",
+      "Archival & Live Conservatory Reference · Verified 6-registry botanical synthesis across 1,600,000+ (1.6M+) taxa.",
     ),
   );
 
@@ -722,14 +722,14 @@ export function renderSourcesPortal(mountEl, { speciesIndex = [] } = {}) {
     applyPageSeo({
       title: "Sources & Scientific References — Open Botanical Infrastructure | Plantipedia v3.1",
       description:
-        "Explore the 8 scientific registries, open-data endpoints, APG IV taxonomic frameworks, and verification standards powering Plantipedia's 400,000+ global flora index and 50 curated 15-chapter monographs.",
+        "Explore the 8 scientific registries, open-data endpoints, APG IV taxonomic frameworks, and verification standards powering Plantipedia's 1,600,000+ (1.6M+) global flora index across 6 federated databases and 50 curated 15-chapter monographs.",
       keywords:
-        "Plantipedia sources, botanical APIs, GBIF backbone taxonomy, POWO Kew, World Flora Online, Wikidata P225, iNaturalist flora, Encyclopedia of Life, APG IV",
+        "Plantipedia sources, botanical APIs, GBIF backbone taxonomy, POWO Kew, World Flora Online, Wikidata P225, iNaturalist flora, Encyclopedia of Life, Open Tree of Life, APG IV",
       canonicalFile: "sources/",
       ogType: "website",
-      ogTitle: "Sources & Scientific References — Open Botanical Infrastructure | Plantipedia v3.1",
+      ogTitle: "Sources & Scientific References — Open Botanical Infrastructure | Plantipedia v3.2",
       ogDescription:
-        "How Plantipedia indexes 400,000+ vascular plants across GBIF, Global Flora Index, Wikidata, iNaturalist, POWO/Kew, WFO, and EOL with zero-key resilience.",
+        "How Plantipedia indexes 1,600,000+ (1.6M+) vascular plants across GBIF, Global Flora Index, Wikidata, iNaturalist, EOL, and Open Tree of Life with zero-key resilience.",
       ogImage: OG_IMAGE_URL,
       ogImageAlt: "Plantipedia Open Botanical Infrastructure and Scientific Sources",
       twitterImage: TWITTER_IMAGE_URL,

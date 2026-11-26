@@ -24,10 +24,20 @@ import {
 } from "../../engines/global-server/global-botanical-server.js";
 import { openComparisonSynthesisOverlay } from "../../engines/comparator/synthesis-overlay.js";
 import { searchSpeciesFuzzy } from "../../engines/search/fuzzy-matcher.js";
+import { fetchSpeciesMonograph } from "../../engines/global-server/api.js";
+import {
+  detectLanguage,
+  normalizeLangCode,
+  translateMonographRecord,
+} from "../utils/translator.js";
 
-function formatSpecimenInputLabel(sp) {
+function formatSpecimenInputLabel(sp, lang = "en") {
   if (!sp) return "";
-  return sp.commonNameBn ? `${sp.commonName} (${sp.commonNameBn})` : sp.commonName;
+  if (lang === "bn") {
+    const bn = String(sp.commonNameBn || "").trim();
+    if (bn && /[\u0980-\u09FF]/.test(bn)) return bn;
+  }
+  return sp.commonName || "";
 }
 
 export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
@@ -39,10 +49,10 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
   const selCfg = pageData.selector || {};
 
-  // Independent specimen states
+  // Independent specimen states with strict per-slot inputLang lock
   const panelState = {
-    left: { mode: "local", slug: "", globalQuery: "", verifiedPlant: null },
-    right: { mode: "local", slug: "", globalQuery: "", verifiedPlant: null },
+    left: { mode: "local", slug: "", globalQuery: "", inputLang: "en", verifiedPlant: null },
+    right: { mode: "local", slug: "", globalQuery: "", inputLang: "en", verifiedPlant: null },
   };
 
   let docClickCleanup = null;
@@ -84,7 +94,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     if (st.mode === "global") {
       if (st.verifiedPlant) return st.verifiedPlant;
       const q = normalizeGlobalQuery(st.globalQuery);
-      const cached = q ? getCachedGlobalMonograph(q) : null;
+      const cached = q ? getCachedGlobalMonograph(q, st.inputLang) : null;
       return (
         cached || {
           isGlobalLive: true,
@@ -107,6 +117,11 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
   function areSidesDuplicate() {
     if (!isPanelReady("left") || !isPanelReady("right")) return false;
+    const langL = normalizeLangCode(panelState.left.inputLang);
+    const langR = normalizeLangCode(panelState.right.inputLang);
+    // Allow comparing even the exact same species when two different languages are locked per slot
+    if (langL !== langR) return false;
+
     const idL = getPanelIdentity("left");
     const idR = getPanelIdentity("right");
     if (idL === idR) return true;
@@ -135,6 +150,8 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         "rightGlobal",
         "leftType",
         "rightType",
+        "leftLang",
+        "rightLang",
         "failedSide",
         "failedQuery",
         "failedReason",
@@ -149,6 +166,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           url.searchParams.set("left", panelState.left.slug);
           url.searchParams.set("leftType", "local");
         }
+        url.searchParams.set("leftLang", normalizeLangCode(panelState.left.inputLang));
       }
       if (isPanelReady("right")) {
         if (panelState.right.mode === "global") {
@@ -158,6 +176,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           url.searchParams.set("right", panelState.right.slug);
           url.searchParams.set("rightType", "local");
         }
+        url.searchParams.set("rightLang", normalizeLangCode(panelState.right.inputLang));
       }
       window.history.replaceState({}, "", url.toString());
     } catch {
@@ -179,6 +198,8 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       params.set("left", panelState.left.slug);
       params.set("leftType", "local");
     }
+    params.set("leftLang", normalizeLangCode(panelState.left.inputLang));
+
     if (panelState.right.mode === "global") {
       const rightVal = normalizeGlobalQuery(
         panelState.right.globalQuery ||
@@ -191,12 +212,17 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       params.set("right", panelState.right.slug);
       params.set("rightType", "local");
     }
+    params.set("rightLang", normalizeLangCode(panelState.right.inputLang));
     window.location.href = resolveRootPath(`./compare/result/?${params.toString()}`);
   }
 
   function resolveSpecimenDisplayName(side) {
     const plant = getPanelDisplayPlant(side);
     const st = panelState[side];
+    const lang = normalizeLangCode(st.inputLang);
+    if (lang === "bn" && plant?.commonNameBn && /[\u0980-\u09FF]/.test(plant.commonNameBn)) {
+      return plant.commonNameBn;
+    }
     return (
       plant?.commonName ||
       plant?.query ||
@@ -206,7 +232,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     );
   }
 
-  function launchComparisonSynthesis(triggerBtn) {
+  function launchComparisonSynthesis(triggerBtn, onSynthesisError) {
     if (typeof activeSynthesisCleanup === "function") {
       return;
     }
@@ -215,12 +241,67 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       leftName: resolveSpecimenDisplayName("left"),
       rightName: resolveSpecimenDisplayName("right"),
       triggerBtn,
+      prepareWork: async ({ signal }) => {
+        for (const side of ["left", "right"]) {
+          const st = panelState[side];
+          const lockedLang = normalizeLangCode(st.inputLang);
+          if (st.mode === "global") {
+            const q = normalizeGlobalQuery(st.globalQuery || st.verifiedPlant?.query || st.verifiedPlant?.commonName);
+            const cached = getCachedGlobalMonograph(q, lockedLang);
+            if (!cached || cached.lockedLanguage !== lockedLang) {
+              const res = await fetchFromGlobalBotanicalServer(q, {
+                signal,
+                targetLang: lockedLang,
+              });
+              if (!res?.ok || !res.monograph) {
+                return {
+                  ok: false,
+                  failedSide: side,
+                  failedQuery: q,
+                  reason: res?.reason || "invalid",
+                };
+              }
+              st.verifiedPlant = res.monograph;
+            }
+          } else if (st.mode === "local" && st.slug) {
+            try {
+              const rawMonograph = await fetchSpeciesMonograph(st.slug);
+              if (lockedLang === "bn") {
+                const translated = await translateMonographRecord(rawMonograph, "bn", { signal });
+                try {
+                  sessionStorage.setItem(
+                    `plantipedia_local_tr_${st.slug}_bn`,
+                    JSON.stringify(translated),
+                  );
+                } catch {
+                  // Non-blocking pre-translation cache
+                }
+              }
+            } catch (err) {
+              if (err?.name === "AbortError") throw err;
+              return {
+                ok: false,
+                failedSide: side,
+                failedQuery: st.slug,
+                reason: "network",
+              };
+            }
+          }
+        }
+        return { ok: true };
+      },
       onComplete: () => {
         activeSynthesisCleanup = null;
         navigateToCompareResult();
       },
       onCancel: () => {
         activeSynthesisCleanup = null;
+      },
+      onError: (errPayload) => {
+        activeSynthesisCleanup = null;
+        if (typeof onSynthesisError === "function") {
+          onSynthesisError(errPayload);
+        }
       },
     });
   }
@@ -230,8 +311,8 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     removeFloatingModeButton();
 
     if (resetUrl) {
-      panelState.left = { mode: "local", slug: "", globalQuery: "", verifiedPlant: null };
-      panelState.right = { mode: "local", slug: "", globalQuery: "", verifiedPlant: null };
+      panelState.left = { mode: "local", slug: "", globalQuery: "", inputLang: "en", verifiedPlant: null };
+      panelState.right = { mode: "local", slug: "", globalQuery: "", inputLang: "en", verifiedPlant: null };
       syncCompareUrlParams();
     }
 
@@ -276,7 +357,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     previewCap.appendChild(createEl("span", "figcaption-fig", "Fig. CM-01"));
     previewCap.appendChild(
       document.createTextNode(
-        " Cattleya labiata field photograph — Dual-pane specimen comparator aligning curated 15-chapter monographs and 400,000+ live Global Flora Index taxa.",
+        " Cattleya labiata field photograph — Dual-pane specimen comparator aligning curated 15-chapter monographs and 1,600,000+ live Global Flora Index taxa.",
       ),
     );
     previewPlate.appendChild(previewCap);
@@ -390,9 +471,11 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
       function syncStatusBadge() {
         statusEl.replaceChildren();
+        const lockedLang = normalizeLangCode(st.inputLang);
+        const langTag = lockedLang === "bn" ? "LANG: বাংলা" : "LANG: EN";
         if (st.mode === "local" && st.slug && speciesBySlug.has(st.slug)) {
           const sp = speciesBySlug.get(st.slug);
-          statusEl.appendChild(createEl("span", "compare-badge compare-badge--curated", "CURATED MONOGRAPH"));
+          statusEl.appendChild(createEl("span", "compare-badge compare-badge--curated", `CURATED · ${langTag}`));
           if (sp.scientificName) {
             statusEl.appendChild(createEl("span", "compare-global-verified-name", sp.scientificName));
           }
@@ -401,12 +484,12 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         }
         if (st.mode === "global" && st.verifiedPlant) {
           statusEl.appendChild(
-            createEl("span", "compare-badge compare-badge--global", "🌐 GLOBAL BOTANICAL SERVER"),
+            createEl("span", "compare-badge compare-badge--global", `🌐 GLOBAL SERVER · ${langTag}`),
           );
           if (
             st.verifiedPlant.scientificName &&
             st.verifiedPlant.scientificName.toLowerCase() !==
-              st.verifiedPlant.commonName.toLowerCase()
+              (st.verifiedPlant.commonName || "").toLowerCase()
           ) {
             statusEl.appendChild(
               createEl("span", "compare-global-verified-name", st.verifiedPlant.scientificName),
@@ -419,10 +502,14 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       }
 
       function hydrateLockedInputText() {
+        const lockedLang = normalizeLangCode(st.inputLang);
         if (st.mode === "local" && st.slug && speciesBySlug.has(st.slug)) {
-          inputEl.value = formatSpecimenInputLabel(speciesBySlug.get(st.slug));
+          inputEl.value = formatSpecimenInputLabel(speciesBySlug.get(st.slug), lockedLang);
         } else if (st.mode === "global" && st.verifiedPlant) {
-          inputEl.value = st.verifiedPlant.commonName || st.globalQuery || "";
+          inputEl.value =
+            lockedLang === "bn" && st.verifiedPlant.commonNameBn
+              ? st.verifiedPlant.commonNameBn
+              : st.verifiedPlant.commonName || st.globalQuery || "";
         } else if (st.mode === "global" && st.globalQuery) {
           inputEl.value = st.globalQuery;
         }
@@ -467,11 +554,13 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
       function lockLocalSpecies(sp) {
         if (!sp) return;
+        const lockedLang = detectLanguage(inputEl.value);
         st.mode = "local";
         st.slug = sp.slug.toLowerCase();
         st.globalQuery = "";
+        st.inputLang = lockedLang;
         st.verifiedPlant = null;
-        inputEl.value = formatSpecimenInputLabel(sp);
+        inputEl.value = formatSpecimenInputLabel(sp, lockedLang);
         syncClearButton();
         syncStatusBadge();
         closeMenu();
@@ -552,21 +641,26 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           return;
         }
 
+        const lockedLang = detectLanguage(query);
         closeAllMenus();
         warningEl.hidden = true;
         warningEl.textContent = "";
         st.mode = "global";
         st.slug = "";
         st.globalQuery = query;
+        st.inputLang = lockedLang;
         st.verifiedPlant = null;
         inputEl.value = query;
         syncClearButton();
         syncStatusBadge();
 
-        const cached = getCachedGlobalMonograph(query);
+        const cached = getCachedGlobalMonograph(query, lockedLang);
         if (cached) {
           st.verifiedPlant = cached;
-          inputEl.value = cached.commonName || query;
+          inputEl.value =
+            lockedLang === "bn" && cached.commonNameBn
+              ? cached.commonNameBn
+              : cached.commonName || query;
           syncClearButton();
           syncStatusBadge();
           validateSelection();
@@ -590,7 +684,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           container: telemetrySlot,
           queryLabel: query,
           work: ({ signal, onRetry }) =>
-            fetchFromGlobalBotanicalServer(query, { signal, onRetry }),
+            fetchFromGlobalBotanicalServer(query, { signal, onRetry, targetLang: lockedLang }),
           onAbort: () => {
             telemetrySlot.replaceChildren();
             telemetrySlot.hidden = true;
@@ -619,8 +713,12 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           searchWrap.hidden = false;
           st.mode = "global";
           st.globalQuery = query;
+          st.inputLang = lockedLang;
           st.verifiedPlant = res.monograph;
-          inputEl.value = res.monograph.commonName || query;
+          inputEl.value =
+            lockedLang === "bn" && res.monograph.commonNameBn
+              ? res.monograph.commonNameBn
+              : res.monograph.commonName || query;
           syncClearButton();
           syncStatusBadge();
           validateSelection();
@@ -692,8 +790,9 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
             const textCol = createEl("div", "compare-autocomplete-text");
             const titleRow = createEl("div", "compare-option-title-row");
+            const displayLabel = sp.commonNameBn ? `${sp.commonName} (${sp.commonNameBn})` : sp.commonName;
             titleRow.appendChild(
-              createEl("span", "compare-option-common", formatSpecimenInputLabel(sp)),
+              createEl("span", "compare-option-common", displayLabel),
             );
             if (isFuzzy) {
               titleRow.appendChild(
@@ -848,6 +947,16 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       panelControllers[side] = {
         triggerInlineGlobalFetch,
         renderInlineRecoveryNotice,
+        restoreFailedInput: (reason, queryText) => {
+          const stObj = panelState[side];
+          const textToKeep = queryText || inputEl.value || stObj.globalQuery || stObj.slug || "";
+          stObj.verifiedPlant = null;
+          inputEl.value = textToKeep;
+          syncClearButton();
+          renderInlineRecoveryNotice(reason || "invalid", textToKeep);
+          validateSelection();
+          requestAnimationFrame(() => inputEl.focus({ preventScroll: true }));
+        },
         closeMenu,
         focusInput: () => inputEl.focus({ preventScroll: true }),
       };
@@ -900,7 +1009,13 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
     submitBtn.addEventListener("click", () => {
       if (!validateSelection()) return;
-      launchComparisonSynthesis(submitBtn);
+      launchComparisonSynthesis(submitBtn, (errPayload) => {
+        const failedSide = errPayload?.failedSide === "left" ? "left" : "right";
+        panelControllers[failedSide]?.restoreFailedInput(
+          errPayload?.reason || "invalid",
+          errPayload?.failedQuery || "",
+        );
+      });
     });
 
     const handleDocClick = (e) => {
@@ -934,7 +1049,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     }
   }
 
-  // Hydrate initial URL parameters (?left=, ?right=, ?a=, ?b=, ?leftGlobal=, ?rightGlobal=, ?leftType=, ?rightType=, ?failedSide=)
+  // Hydrate initial URL parameters (?left=, ?right=, ?a=, ?b=, ?leftGlobal=, ?rightGlobal=, ?leftType=, ?rightType=, ?leftLang=, ?rightLang=, ?failedSide=)
   const urlParams = new URLSearchParams(window.location.search);
   const leftTypeParam = urlParams.get("leftType");
   const rightTypeParam = urlParams.get("rightType");
@@ -955,11 +1070,15 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
   const initialA = leftTypeParam === "global" ? "" : rawLeftParam.trim().toLowerCase();
   const initialB = rightTypeParam === "global" ? "" : rawRightParam.trim().toLowerCase();
 
+  const initialLeftLang = normalizeLangCode(urlParams.get("leftLang"), initialLeftGlobal || rawLeftParam);
+  const initialRightLang = normalizeLangCode(urlParams.get("rightLang"), initialRightGlobal || rawRightParam);
+
   if (failedSideParam === "left" && (failedQueryParam || rawLeftParam)) {
     panelState.left = {
       mode: "global",
       slug: "",
       globalQuery: failedQueryParam || normalizeGlobalQuery(rawLeftParam),
+      inputLang: initialLeftLang,
       verifiedPlant: null,
       failedReason: failedReasonParam || "invalid",
     };
@@ -968,13 +1087,15 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       mode: "global",
       slug: "",
       globalQuery: initialLeftGlobal,
-      verifiedPlant: getCachedGlobalMonograph(initialLeftGlobal),
+      inputLang: initialLeftLang,
+      verifiedPlant: getCachedGlobalMonograph(initialLeftGlobal, initialLeftLang),
     };
   } else if (initialA && speciesBySlug.has(initialA)) {
     panelState.left = {
       mode: "local",
       slug: initialA,
       globalQuery: "",
+      inputLang: initialLeftLang,
       verifiedPlant: null,
     };
   }
@@ -984,6 +1105,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       mode: "global",
       slug: "",
       globalQuery: failedQueryParam || normalizeGlobalQuery(rawRightParam),
+      inputLang: initialRightLang,
       verifiedPlant: null,
       failedReason: failedReasonParam || "invalid",
     };
@@ -992,13 +1114,19 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       mode: "global",
       slug: "",
       globalQuery: initialRightGlobal,
-      verifiedPlant: getCachedGlobalMonograph(initialRightGlobal),
+      inputLang: initialRightLang,
+      verifiedPlant: getCachedGlobalMonograph(initialRightGlobal, initialRightLang),
     };
-  } else if (initialB && speciesBySlug.has(initialB) && initialB !== panelState.left.slug) {
+  } else if (
+    initialB &&
+    speciesBySlug.has(initialB) &&
+    (initialB !== panelState.left.slug || initialRightLang !== panelState.left.inputLang)
+  ) {
     panelState.right = {
       mode: "local",
       slug: initialB,
       globalQuery: "",
+      inputLang: initialRightLang,
       verifiedPlant: null,
     };
   }

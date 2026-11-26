@@ -1,32 +1,39 @@
 /**
  * Multi-Stage Comparison Synthesis Labor Illusion Engine
- * - Displays the 3-second, 3-stage emerald-cyan glassmorphism modal (#compare-synthesis-overlay)
- *   for Taxonomy alignment, Telemetry normalization, and Split Matrix synthesis
- * - Supports Escape key & tactile Cancel button aborting timers cleanly
+ * - Displays the 10-second, 4-stage emerald-cyan glassmorphism modal (#compare-synthesis-overlay)
+ *   for Federated Taxon Resolution, 6-Source Synthesis, Cross-Language Translation & Visual Guard
+ * - Executes concurrent `prepareWork` alongside the 10s progress track
+ * - Supports Escape key & tactile Cancel button aborting timers & network fetches cleanly
  */
 
 import { createEl } from "../../modules/utils/templates.js";
 
-export const SYNTHESIS_DURATION_MS = 3000;
+export const SYNTHESIS_DURATION_MS = 10000;
 
 export const SYNTHESIS_STAGES = Object.freeze([
   {
     num: "01",
-    shortLabel: "Taxonomy",
-    badge: "STAGE 01 / 03 · TAXONOMY",
-    status: "Aligning taxonomic ranks & binomial nomenclature...",
+    shortLabel: "Taxon Resolution",
+    badge: "STAGE 01 / 04 · TAXON RESOLUTION",
+    status: "01 Federated Taxon Resolution — Resolving Linnaean binomials & input scripts...",
   },
   {
     num: "02",
-    shortLabel: "Telemetry",
-    badge: "STAGE 02 / 03 · TELEMETRY",
-    status: "Normalizing morphology, soil pH & thermal telemetry...",
+    shortLabel: "6-Source Synthesis",
+    badge: "STAGE 02 / 04 · 6-SOURCE SYNTHESIS",
+    status: "02 6-Source Ecological & Morphological Synthesis — Aggregating GBIF, MediaWiki, Wikidata, iNaturalist, EOL & Open Tree of Life...",
   },
   {
     num: "03",
-    shortLabel: "Matrix",
-    badge: "STAGE 03 / 03 · MATRIX",
-    status: "Synthesizing side-by-side comparison matrix...",
+    shortLabel: "Language Alignment",
+    badge: "STAGE 03 / 04 · LANGUAGE ALIGNMENT",
+    status: "03 Cross-Language Translation & Telemetry Alignment — Locking Left & Right slot languages...",
+  },
+  {
+    num: "04",
+    shortLabel: "Visual Guard",
+    badge: "STAGE 04 / 04 · VISUAL GUARD",
+    status: "04 Dual-Plate Visual Verification — Enforcing 3-tier botanical photography guard...",
   },
 ]);
 
@@ -34,8 +41,10 @@ export function openComparisonSynthesisOverlay({
   leftName,
   rightName,
   triggerBtn,
+  prepareWork,
   onComplete,
   onCancel,
+  onError,
 }) {
   const existingOverlay = document.getElementById("compare-synthesis-overlay");
   if (existingOverlay) {
@@ -110,7 +119,7 @@ export function openComparisonSynthesisOverlay({
     createEl(
       "span",
       "compare-synthesis-meta-label",
-      "Plantipedia Archive · Comparative Matrix Engine",
+      "Plantipedia 6-Source Engine · 10s Synthesis Window",
     ),
   );
   const pctEl = createEl("span", "compare-synthesis-pct", "0%");
@@ -136,11 +145,15 @@ export function openComparisonSynthesisOverlay({
   document.body.appendChild(overlay);
   requestAnimationFrame(() => cancelBtn.focus({ preventScroll: true }));
 
+  const workAbortController = new AbortController();
   let cancelled = false;
   let completed = false;
   let rafId = 0;
   let fallbackTimerId = 0;
   let activeStageIdx = -1;
+  let timerFinished = false;
+  let workDone = typeof prepareWork !== "function";
+  let workResultPayload = null;
 
   function syncStageUi(stageIdx, allComplete = false) {
     if (!allComplete && stageIdx === activeStageIdx) return;
@@ -159,9 +172,7 @@ export function openComparisonSynthesisOverlay({
     });
   }
 
-  function cleanup({ restoreFocus = true } = {}) {
-    if (cancelled) return;
-    cancelled = true;
+  function teardownModal({ restoreFocus = true } = {}) {
     if (rafId) {
       cancelAnimationFrame(rafId);
       rafId = 0;
@@ -173,11 +184,18 @@ export function openComparisonSynthesisOverlay({
     document.removeEventListener("keydown", handleKeydown);
     overlay.remove();
     document.body.style.overflow = previousOverflow;
-    if (typeof onCancel === "function") {
-      onCancel();
-    }
     if (restoreFocus && triggerBtn && document.body.contains(triggerBtn)) {
       triggerBtn.focus({ preventScroll: true });
+    }
+  }
+
+  function cleanup({ restoreFocus = true } = {}) {
+    if (cancelled) return;
+    cancelled = true;
+    workAbortController.abort();
+    teardownModal({ restoreFocus });
+    if (typeof onCancel === "function") {
+      onCancel();
     }
   }
 
@@ -189,8 +207,8 @@ export function openComparisonSynthesisOverlay({
     }
   }
 
-  function finishSynthesis() {
-    if (cancelled || completed) return;
+  function tryCompleteSynthesis() {
+    if (cancelled || completed || !timerFinished || !workDone) return;
     completed = true;
     if (rafId) {
       cancelAnimationFrame(rafId);
@@ -200,13 +218,50 @@ export function openComparisonSynthesisOverlay({
       clearTimeout(fallbackTimerId);
       fallbackTimerId = 0;
     }
+
+    if (workResultPayload && workResultPayload.ok === false) {
+      teardownModal({ restoreFocus: true });
+      if (typeof onError === "function") {
+        onError(workResultPayload);
+      }
+      return;
+    }
+
     progressFill.style.width = "100%";
     progressTrack.setAttribute("aria-valuenow", "100");
     pctEl.textContent = "100%";
-    syncStageUi(2, true);
+    syncStageUi(SYNTHESIS_STAGES.length - 1, true);
     if (typeof onComplete === "function") {
-      onComplete();
+      onComplete(workResultPayload);
     }
+  }
+
+  if (typeof prepareWork === "function") {
+    Promise.resolve()
+      .then(() => prepareWork({ signal: workAbortController.signal }))
+      .then((res) => {
+        if (cancelled) return;
+        workResultPayload = res || { ok: true };
+        workDone = true;
+        if (workResultPayload.ok === false) {
+          timerFinished = true;
+          tryCompleteSynthesis();
+        } else {
+          tryCompleteSynthesis();
+        }
+      })
+      .catch((err) => {
+        if (cancelled || err?.name === "AbortError") return;
+        workResultPayload = {
+          ok: false,
+          reason: "network",
+          failedSide: "right",
+          error: err?.message || "Synthesis interrupted.",
+        };
+        workDone = true;
+        timerFinished = true;
+        tryCompleteSynthesis();
+      });
   }
 
   cancelBtn.addEventListener("click", (e) => {
@@ -221,27 +276,36 @@ export function openComparisonSynthesisOverlay({
   function tick(now) {
     if (cancelled || completed) return;
     const elapsed = Math.max(0, now - startMs);
-    const progress = Math.min(1, elapsed / SYNTHESIS_DURATION_MS);
-    const pct = Math.round(progress * 100);
+    const rawProgress = Math.min(1, elapsed / SYNTHESIS_DURATION_MS);
+    const displayProgress = !workDone && rawProgress >= 0.96 ? 0.96 : rawProgress;
+    const pct = Math.round(displayProgress * 100);
 
-    progressFill.style.width = `${(progress * 100).toFixed(2)}%`;
+    progressFill.style.width = `${(displayProgress * 100).toFixed(2)}%`;
     progressTrack.setAttribute("aria-valuenow", String(pct));
     pctEl.textContent = `${pct}%`;
 
     if (elapsed >= SYNTHESIS_DURATION_MS) {
-      finishSynthesis();
+      timerFinished = true;
+      if (workDone) {
+        tryCompleteSynthesis();
+        return;
+      }
+      statusEl.textContent = "04 Dual-Plate Visual Verification — Finalizing translation & verified media...";
+      rafId = requestAnimationFrame(tick);
       return;
     }
 
-    const stageIdx = elapsed < 1000 ? 0 : elapsed < 2000 ? 1 : 2;
+    const stageIdx =
+      elapsed < 2500 ? 0 : elapsed < 5000 ? 1 : elapsed < 7500 ? 2 : 3;
     syncStageUi(stageIdx, false);
     rafId = requestAnimationFrame(tick);
   }
 
   rafId = requestAnimationFrame(tick);
   fallbackTimerId = setTimeout(() => {
-    finishSynthesis();
-  }, SYNTHESIS_DURATION_MS + 40);
+    timerFinished = true;
+    tryCompleteSynthesis();
+  }, SYNTHESIS_DURATION_MS + 60);
 
   return cleanup;
 }

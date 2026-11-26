@@ -4,7 +4,7 @@
  * resolved safely against self.location (compatible with both / and /plantipedia/ subpath mounts).
  */
 
-const CACHE_VERSION = "plantipedia-v5.3.5";
+const CACHE_VERSION = "plantipedia-v5.4.0";
 
 const CORE_SHELL_PATHS = [
   "./",
@@ -72,6 +72,7 @@ const CORE_SHELL_PATHS = [
   "./src/modules/utils/templates.js",
   "./src/modules/utils/herbarium.js",
   "./src/modules/utils/seo.js",
+  "./src/modules/utils/translator.js",
   "./config/navbar.json?v=51",
   "./config/footer.json?v=51",
   "./config/environment.json",

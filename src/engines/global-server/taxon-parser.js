@@ -34,20 +34,20 @@ export function normalizeImageKey(url) {
       return `pexels:${pexelsMatch[1]}`;
     }
 
-    // Normalize Wikimedia /thumb/.../<Original_File.jpg>/<N>px-<Original_File.jpg> across ALL widths
+    // Normalize Global Herbarium /thumb/.../<Original_File.jpg>/<N>px-<Original_File.jpg> across ALL widths
     const decodedPath = decodeURIComponent(u.pathname);
     if (/wikimedia\.org|wikipedia\.org/i.test(u.hostname)) {
       const thumbMatch = decodedPath.match(/\/thumb\/(?:[0-9a-f]+\/[0-9a-f]+\/)?([^/]+)\/[^/]+$/i);
       if (thumbMatch && thumbMatch[1]) {
         const canonical = thumbMatch[1].replace(/\s+/g, "_").toLowerCase();
-        return `wikimedia:${canonical}`;
+        return `herbarium:${canonical}`;
       }
       const rawSeg = (decodedPath.split("/").pop() || "")
         .replace(/^(?:lossy-)?(?:page\d+-)?(?:\d+px-|lang[a-z-]+-\d+px-)/i, "")
         .replace(/\s+/g, "_")
         .toLowerCase();
       if (rawSeg) {
-        return `wikimedia:${rawSeg}`;
+        return `herbarium:${rawSeg}`;
       }
     }
 
@@ -1910,6 +1910,8 @@ export function buildPlantipediaMonograph({
   gbifData,
   inatTaxon,
   wikidataInfo = null,
+  eolData = null,
+  otolData = null,
   parsedData,
   imagesPool = [],
   lang = "en",
@@ -1929,12 +1931,13 @@ export function buildPlantipediaMonograph({
     page?.title ||
       restSummary?.title ||
       inatTaxon?.preferred_common_name ||
+      eolData?.commonNameEn ||
       wikidataInfo?.labelEn ||
       gbifData?.canonicalName ||
       originalQuery,
   );
 
-  // Merge primary & cross-language Wikipedia extracts + REST/iNat summaries safely without junk headings
+  // Merge primary & cross-language Global Flora Index extracts + REST/iNat/EOL summaries safely without junk headings
   const primaryExtract = page?.extract || "";
   const primarySplit = splitSectionsFromExtract(primaryExtract);
   const secondarySplit = secondaryExtract
@@ -1945,6 +1948,9 @@ export function buildPlantipediaMonograph({
   const inatLead = inatTaxon?.wikipedia_summary
     ? sanitizeBotanicalText(stripWikitextMarkup(inatTaxon.wikipedia_summary))
     : "";
+  const eolLeads = Array.isArray(eolData?.descriptions)
+    ? eolData.descriptions.map((d) => sanitizeBotanicalText(d)).filter((d) => d.length >= 40)
+    : [];
 
   const candidateLeads = [
     ...(parsedData?.leadParagraphs || []),
@@ -1952,6 +1958,7 @@ export function buildPlantipediaMonograph({
     ...(lang === "bn" ? secondarySplit.leadParagraphs : []),
     ...(restLead && restLead.length > 24 ? [restLead] : []),
     ...(inatLead && inatLead.length > 24 ? [inatLead] : []),
+    ...eolLeads,
     ...(lang !== "bn" ? secondarySplit.leadParagraphs : []),
   ];
 
@@ -2099,8 +2106,11 @@ export function buildPlantipediaMonograph({
     });
   };
 
-  // Prefer the cleanest informative overview (English scientific lead if primary BN lead is very short)
+  // Prefer rich native-language lead if complete, otherwise full English scientific lead for mandatory translation
   const bestLeadPara =
+    (lang === "bn"
+      ? rawLeadParagraphs.find((p) => hasBengaliScript(p) && p.length >= 120)
+      : null) ||
     rawLeadParagraphs.find((p) => !hasBengaliScript(p) && p.length >= 90) ||
     rawLeadParagraphs[0] ||
     "";
@@ -2330,15 +2340,27 @@ export function buildPlantipediaMonograph({
     };
   });
 
-  const idSeed = page?.pageid || gbifData?.usageKey || inatTaxon?.id || "LIVE";
+  const idSeed = page?.pageid || gbifData?.usageKey || inatTaxon?.id || eolData?.pageId || otolData?.ottId || "LIVE";
   const monograph = {
     isGlobalLive: true,
     query: normalizeGlobalQuery(originalQuery),
     slug: "",
     specimenId: `GBS-${String(idSeed).slice(-5)}`,
-    commonName,
-    commonNameBn,
-    scientificName: scientificName || commonName,
+    commonName: commonName || eolData?.commonNameEn || scientificName || originalQuery,
+    commonNameBn: (eolData?.commonNameBn && hasBengaliScript(eolData.commonNameBn) && commonNameBn === "বৈশ্বিক উদ্ভিদ নমুনা")
+      ? eolData.commonNameBn
+      : commonNameBn,
+    scientificName: scientificName || otolData?.uniqueName || commonName,
+    synonyms: Array.isArray(otolData?.synonyms) ? otolData.synonyms.slice(0, 6) : [],
+    otolLineage: Array.isArray(otolData?.lineage) ? otolData.lineage.slice(0, 8) : [],
+    sourceRegistries: [
+      gbifData ? "GBIF Backbone" : null,
+      page ? "MediaWiki" : null,
+      wikidataInfo ? "Wikidata" : null,
+      inatTaxon ? "iNaturalist" : null,
+      eolData ? "Encyclopedia of Life" : null,
+      otolData ? "Open Tree of Life" : null,
+    ].filter(Boolean),
     familyBn: hasBengaliScript(taxobox.গোত্র || "") ? sanitizeBotanicalText(taxobox.গোত্র) : "",
     category,
     featured: false,

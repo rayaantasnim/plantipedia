@@ -363,11 +363,11 @@ export function buildHomeTelemetryStats(speciesIndex = []) {
       subtext: "Peer-verified local botanical records",
     },
     {
-      value: 400000,
+      value: 1600000,
       useLocale: true,
       suffix: "+",
       label: "GLOBAL BOTANICAL TAXA",
-      subtext: "Live Worldwide Botanical Server flora & tree index",
+      subtext: "6-source federated Global Botanical Server flora & tree index",
     },
     {
       value: 15,

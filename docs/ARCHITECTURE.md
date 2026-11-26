@@ -17,8 +17,8 @@ Plantipedia is a zero-bundler, multi-page ES6+ static web platform engineered wi
   - `src/core/telemetry/` — GSAP + ScrollTrigger scroll choreography, numerical biome-aware telemetry extraction, and cultivation gauge meters.
 - **`src/engines/`** — Domain-specific processing engines:
   - `src/engines/search/` — Bilingual (`EN / বাংলা / Latin`) instant autocomplete and navigation handlers.
-  - `src/engines/global-server/` — Centralized validated dataset fetcher and the zero-key parallel **Global Botanical Server** client (`GBIF + MediaWiki + Wikidata + iNaturalist + Wikimedia Commons`) featuring automated cross-script taxon alignment, junk-section filtering, strict normalized image deduplication, retry resilience, and manual abort support across 400,000+ flora taxa.
-  - `src/engines/comparator/` — Three-stage Comparison Synthesis pipeline and progress telemetry overlay.
+  - `src/engines/global-server/` — Centralized validated dataset fetcher and the zero-key parallel **Global Botanical Server** client (`GBIF Backbone + MediaWiki + Wikidata + iNaturalist + EOL + Open Tree of Life`) featuring automated cross-script taxon alignment, mandatory 3-tier translation fallback, junk-section filtering, 3-tier Botanical Image Guard, retry resilience, and manual abort support across 1,600,000+ (`1.6M+`) flora taxa.
+  - `src/engines/comparator/` — 10-second 4-stage Comparison Synthesis pipeline and progress telemetry overlay with strict per-slot input-language locking.
   - `src/engines/citation/` — APA / MLA / BibTeX citation generator and interactive botanical glossary auto-tooltip engine.
 - **`src/modules/`** — Dedicated route controllers (`src/modules/pages/`) and shared helpers (`src/modules/utils/`).
 - **`styles/`** — Layered CSS design system split into `base/`, `components/`, `pages/`, `print/`, and `tailwind/` runtime utilities.
@@ -36,7 +36,7 @@ All public routes use clean extensionless directory entry points (`./`, `./speci
 
 1. **Navbar & Shell Bootstrap:** The navbar and footer compilers load `./config/navbar.json`, `./config/footer.json`, and `./data/index/species-index.json` concurrently with `sessionStorage` caching and inline structural fallbacks.
 2. **On-Demand Monograph Streaming:** Individual plant views download only the active specimen JSON from `./data/monographs/`, keeping initial page payloads lightweight.
-3. **Federated Global Botanical Server Pipeline:** Queries outside the 50 curated monographs invoke the parallel Global Botanical Server (`GBIF + MediaWiki + Wikidata + iNaturalist + Wikimedia Commons`), synthesizing bilingual names, taxonomic ranks, ecological telemetry, and deduplicated photographs into Plantipedia's unified 15-chapter monograph format.
+3. **Federated Global Botanical Server Pipeline:** Queries outside the 50 curated monographs invoke the parallel 6-database Global Botanical Server (`GBIF Backbone + MediaWiki + Wikidata + iNaturalist + EOL + Open Tree of Life`), synthesizing bilingual names, taxonomic ranks, ecological telemetry, and deduplicated photographs into Plantipedia's unified 15-chapter monograph format.
 4. **Offline PWA Cache:** `sw.js` and `manifest.webmanifest` cache core shells, modular stylesheets, ES6+ modules, and configuration manifests using network-first strategies for dynamic data and cache-first strategies for static media.
 
 ---

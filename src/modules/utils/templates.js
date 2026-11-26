@@ -788,9 +788,14 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
           detail: "Supplies research-grade field specimen plates covering floral structures, foliage, bark, and natural habitats.",
         },
         {
-          id: "kew-powo",
-          label: "Kew POWO",
-          detail: "Cross-verifies APG IV family placements, native biogeographic distributions, and botanical synonymy.",
+          id: "eol",
+          label: "EOL TraitBank",
+          detail: "Contributes functional trait records, ecological habit descriptions, and vernacular biodiversity synonyms.",
+        },
+        {
+          id: "otol",
+          label: "Open Tree of Life",
+          detail: "Cross-verifies evolutionary clade hierarchies, phylogenetic lineage nodes, and synthetic taxon ancestry.",
         },
       ];
   const expeditions = Array.isArray(gateway.expeditions) && gateway.expeditions.length > 0
@@ -799,13 +804,13 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
   const paragraphs = Array.isArray(gateway.paragraphs) && gateway.paragraphs.length > 0
     ? gateway.paragraphs
     : [
-        "While Plantipedia's core archive curates 50 deeply authored 15-chapter botanical monographs, the living plant kingdom encompasses more than 400,000 vascular plant and tree taxa worldwide. This federated lookup console links directly to the Global Botanical Server so every search resolves accepted Linnaean binomials, hierarchical classifications, and verified field photography on demand.",
-        "Every query bypasses the local 50-species index without API keys or paywalls—aggregating multi-source taxonomic graphs, cross-script English and বাংলা vernacular matching, and biome-calibrated cultivation telemetry ready for full-page reading or split-screen comparison.",
+        "While Plantipedia's core archive curates 50 deeply authored 15-chapter botanical monographs, the living plant kingdom spans more than 1,600,000+ (1.6M+) worldwide plant and tree taxa indexed across 6 federated botanical databases (GBIF Backbone, MediaWiki, Wikidata, iNaturalist, EOL, and Open Tree of Life). This lookup console links directly to the Global Botanical Server so every search resolves accepted Linnaean binomials, hierarchical classifications, and verified field photography on demand.",
+        "Every query bypasses the local 50-species index without API keys or paywalls—aggregating 6-source taxonomic graphs, cross-script English and বাংলা vernacular matching with zero-key auto-translation, and biome-calibrated cultivation telemetry ready for full-page reading or split-screen comparison.",
       ];
   const imgCfg = gateway.image || {
     url: "https://inaturalist-open-data.s3.amazonaws.com/photos/625322666/original.jpg",
-    alt: "Welwitschia mirabilis field specimen representing the 400,000+ Worldwide Flora Registry",
-    caption: "Fig. GW-01 — Endemic arid gymnosperm Welwitschia mirabilis indexed on demand through the 400K+ Global Botanical Server.",
+    alt: "Welwitschia mirabilis field specimen representing the 1,600,000+ Worldwide Flora Registry",
+    caption: "Fig. GW-01 — Endemic arid gymnosperm Welwitschia mirabilis indexed on demand through the 1.6M+ Global Botanical Server.",
   };
   const ctas = Array.isArray(gateway.ctas) && gateway.ctas.length > 0
     ? gateway.ctas
@@ -828,7 +833,7 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
     createEl(
       "span",
       "global-gateway-eyebrow",
-      gateway.eyebrow || "WORLDWIDE FLORA REGISTRY · 400K+ INDEXED TAXA",
+      gateway.eyebrow || "WORLDWIDE FLORA REGISTRY · 1.6M+ INDEXED TAXA",
     ),
   );
   topMeta.appendChild(
@@ -1145,7 +1150,7 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
       "p",
       "justified-prose next-milestone-overview",
       milestone.description ||
-        "Immediately following Version 3.1, Plantipedia Version 3.2 upgrades the live lookup stack into a parallel multi-source botanical engine uniting GBIF, the Global Flora Index, Wikidata, iNaturalist, and Kew POWO. Alongside concurrent resolution across 400,000+ vascular taxa, v3.2 introduces automated cross-script EN / বাংলা alignment and typo-tolerant Levenshtein fuzzy search bound to the global '/' shortcut.",
+        "Immediately following Version 3.1, Plantipedia Version 3.2 upgrades the live lookup stack into a parallel 6-source botanical engine uniting GBIF, the Global Flora Index, Wikidata, iNaturalist, EOL, and Open Tree of Life. Alongside concurrent resolution across 1,600,000+ (1.6M+) vascular taxa, v3.2 introduces automated cross-script EN / বাংলা alignment and typo-tolerant Levenshtein fuzzy search bound to the global '/' shortcut.",
     ),
   );
   head.appendChild(copyCol);

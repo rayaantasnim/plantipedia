@@ -9,6 +9,10 @@ import {
 } from "../../engines/global-server/global-botanical-server.js";
 import { applyPageSeo } from "../utils/seo.js";
 import {
+  detectLanguage,
+  normalizeLangCode,
+} from "../utils/translator.js";
+import {
   initGlobalAnimations,
   refreshScrollTriggers,
 } from "../../core/telemetry/animations.js";
@@ -17,7 +21,7 @@ function renderLiveQueryPrompt(mountEl, { initialQuery = "", aborted = false } =
   try {
     applyPageSeo({
       title: "Global Botanical Server — Live Taxon Query | Plantipedia",
-      description: "Query any worldwide plant species from the Global Botanical Server and render a live 15-chapter Plantipedia monograph across 400,000+ vascular taxa.",
+      description: "Query any worldwide plant species from the Global Botanical Server and render a live 15-chapter Plantipedia monograph across 1,600,000+ vascular taxa.",
       canonicalFile: "plant/live/",
       ogImage: "https://inaturalist-open-data.s3.amazonaws.com/photos/614444901/original.jpg",
       twitterImage: "https://inaturalist-open-data.s3.amazonaws.com/photos/606425430/original.jpg",
@@ -82,7 +86,10 @@ function renderLiveQueryPrompt(mountEl, { initialQuery = "", aborted = false } =
       input.focus();
       return;
     }
-    const targetUrl = resolveRootPath(`./plant/live/?q=${encodeURIComponent(nextQ)}`);
+    const lang = detectLanguage(nextQ);
+    const targetUrl = resolveRootPath(
+      `./plant/live/?q=${encodeURIComponent(nextQ)}&lang=${encodeURIComponent(lang)}`,
+    );
     window.location.href = targetUrl;
   });
 
@@ -134,6 +141,7 @@ export async function renderLiveMonographView(mountEl, { pageData, speciesIndex,
 
   const params = new URLSearchParams(window.location.search);
   const rawQuery = normalizeGlobalQuery(params.get("q") || params.get("species") || "");
+  const preferredLang = normalizeLangCode(params.get("lang"), rawQuery);
   const isEmbed =
     params.get("embed") === "true" ||
     document.body.classList.contains("is-embed");
@@ -145,7 +153,7 @@ export async function renderLiveMonographView(mountEl, { pageData, speciesIndex,
   }
 
   // If pre-fetched & validated by Compare View (or already cached in sessionStorage), render immediately
-  const cachedPlant = getCachedGlobalMonograph(rawQuery);
+  const cachedPlant = getCachedGlobalMonograph(rawQuery, preferredLang);
   if (cachedPlant && isCachedFlag) {
     renderPlantMonograph(mountEl, {
       pageData,
@@ -166,7 +174,7 @@ export async function renderLiveMonographView(mountEl, { pageData, speciesIndex,
     container: hostShell,
     queryLabel: rawQuery,
     work: ({ signal, onRetry }) =>
-      fetchFromGlobalBotanicalServer(rawQuery, { signal, onRetry }),
+      fetchFromGlobalBotanicalServer(rawQuery, { signal, onRetry, targetLang: preferredLang }),
     onAbort: () => {
       renderLiveQueryPrompt(mountEl, { initialQuery: rawQuery, aborted: true });
     },

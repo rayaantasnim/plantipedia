@@ -2,14 +2,14 @@
   "schemaVersion": "1.1.0",
   "page": "home",
   "seo": {
-    "title": "Plantipedia v3.1 — Digital Botanical Encyclopedia & Worldwide Flora Archive",
-    "description": "Explore Plantipedia Version 3.1: 50 deeply curated 15-chapter local monographs paired with a live Global Botanical Server uplink connecting 400,000+ worldwide vascular plants and tree species, bilingual (EN / বাংলা) telemetry, dynamic taxonomic lineage, and print-ready field sheets.",
-    "keywords": "plantipedia, plant encyclopedia, botanical archive, 50 curated plant species, 15 botanical chapters, 400000 global flora, taxonomy, South Asian flora, bilingual EN বাংলা",
+    "title": "Plantipedia v3.2 — Digital Botanical Encyclopedia & Worldwide Flora Archive",
+    "description": "Explore Plantipedia Version 3.2: 50 deeply curated 15-chapter local monographs paired with a 6-source federated Global Botanical Server uplink connecting 1,600,000+ (1.6M+) worldwide vascular plants and tree species, bilingual (EN / বাংলা) telemetry, dynamic taxonomic lineage, and print-ready field sheets.",
+    "keywords": "plantipedia, plant encyclopedia, botanical archive, 50 curated plant species, 15 botanical chapters, 1600000 global flora, 1.6M taxa, taxonomy, South Asian flora, bilingual EN বাংলা",
     "author": "Jalees Habib, Rayaan Tasnim",
     "canonicalFile": "",
     "ogType": "website",
-    "ogTitle": "Plantipedia v3.1 — 50 Curated 15-Chapter Monographs & 400,000+ Global Flora Archive",
-    "ogDescription": "Discover 50 deeply curated 15-chapter monographs and a live Global Botanical Server uplink spanning 400,000+ worldwide vascular plants and trees with bilingual EN / বাংলা telemetry.",
+    "ogTitle": "Plantipedia v3.2 — 50 Curated 15-Chapter Monographs & 1.6M+ Global Flora Archive",
+    "ogDescription": "Discover 50 deeply curated 15-chapter monographs and a 6-source federated Global Botanical Server uplink spanning 1,600,000+ (1.6M+) worldwide vascular plants and trees with bilingual EN / বাংলা telemetry.",
     "ogImage": "https://inaturalist-open-data.s3.amazonaws.com/photos/605480894/original.jpg",
     "ogImageAlt": "Curated vascular plant conservatory collection in the Plantipedia Flora Archive",
     "twitterImage": "https://static.inaturalist.org/photos/61295436/large.jpeg",
@@ -19,10 +19,10 @@
       "@graph": [
         {
           "@type": "EducationalOrganization",
-          "@id": "https://plantipedia.rayaantasnim.workers.dev/#organization",
+          "@id": "./#organization",
           "name": "Plantipedia",
-          "description": "An open-access digital botanical encyclopedia documenting 50 curated 15-chapter plant monographs alongside a live Global Botanical Server uplink covering 400,000+ worldwide vascular plants and trees.",
-          "url": "https://plantipedia.rayaantasnim.workers.dev/",
+          "description": "An open-access digital botanical encyclopedia documenting 50 curated 15-chapter plant monographs alongside a 6-source federated Global Botanical Server uplink covering 1,600,000+ (1.6M+) worldwide vascular plants and trees.",
+          "url": "./",
           "founder": [
             { "@type": "Person", "name": "Jalees Habib" },
             { "@type": "Person", "name": "Rayaan Tasnim" }
@@ -30,11 +30,11 @@
         },
         {
           "@type": "WebSite",
-          "@id": "https://plantipedia.rayaantasnim.workers.dev/#website",
+          "@id": "./#website",
           "name": "Plantipedia",
-          "url": "https://plantipedia.rayaantasnim.workers.dev/",
-          "description": "Plantipedia Version 3.1 unites 50 curated 15-chapter botanical monographs with a live Global Botanical Server uplink covering 400,000+ worldwide vascular plants and trees, bilingual EN / বাংলা search, taxonomic lineage, and print-ready field sheets.",
-          "publisher": { "@id": "https://plantipedia.rayaantasnim.workers.dev/#organization" },
+          "url": "./",
+          "description": "Plantipedia Version 3.2 unites 50 curated 15-chapter botanical monographs with a 6-source federated Global Botanical Server uplink covering 1,600,000+ (1.6M+) worldwide vascular plants and trees, bilingual EN / বাংলা search, taxonomic lineage, and print-ready field sheets.",
+          "publisher": { "@id": "./#organization" },
           "author": [
             { "@type": "Person", "name": "Jalees Habib" },
             { "@type": "Person", "name": "Rayaan Tasnim" }
@@ -43,7 +43,7 @@
             "@type": "SearchAction",
             "target": {
               "@type": "EntryPoint",
-              "urlTemplate": "https://plantipedia.rayaantasnim.workers.dev/species/?q={search_term_string}"
+              "urlTemplate": "./species/?q={search_term_string}"
             },
             "query-input": "required name=search_term_string"
           }
@@ -53,9 +53,9 @@
   },
   "hero": {
     "anchorId": "hero-search",
-    "kicker": "Botanical Encyclopedia & Flora Archive · v3.1",
+    "kicker": "Botanical Encyclopedia & Flora Archive · v3.2",
     "headline": "Discover The Living Architecture of the Plant Kingdom.",
-    "subcopy": "Explore 50 deeply curated 15-chapter botanical monographs paired with a live Global Botanical Server uplink connecting 400,000+ worldwide vascular plants and tree species—engineered with bilingual EN / বাংলা telemetry, dynamic taxonomic lineage, and print-ready field sheets.",
+    "subcopy": "Explore 50 deeply curated 15-chapter botanical monographs paired with a 6-source federated Global Botanical Server uplink connecting 1,600,000+ (1.6M+) worldwide vascular plants and tree species—engineered with bilingual EN / বাংলা telemetry, dynamic taxonomic lineage, and print-ready field sheets.",
     "search": {
       "placeholder": "Search species (EN / বাংলা / Latin / Family)...",
       "ariaLabel": "Search botanical species",
@@ -66,7 +66,7 @@
     "summaryBadges": [
       "50 Curated Monographs",
       "15 Botanical Chapters",
-      "400,000+ Global Flora & Trees"
+      "1.6M+ Global Flora & Trees"
     ],
     "backdropImage": {
       "imageUrl": "https://static.inaturalist.org/photos/248430040/large.jpg",
@@ -79,7 +79,7 @@
     "heading": "An Academic Reference Built for Curious Botanists and Growers",
     "paragraphs": [
       "Plantipedia transforms botanical reference literature into a structured, high-contrast digital museum. Every entry pairs classical taxonomic rigor—from family lineage and floral morphology to pollination syndromes—with practical agronomic guidance rooted in South Asian, tropical, and global growing traditions.",
-      "Curated cleanly across 50 documented plant species with 15 Botanical Chapters per Plant and connected via a zero-key uplink to a 400,000+ Global Flora & Tree Collection, the archive delivers context-matched monographs backed by verified photography, bilingual EN / বাংলা nomenclature, and print-ready field sheets."
+      "Curated cleanly across 50 documented plant species with 15 Botanical Chapters per Plant and connected via a 6-source zero-key uplink to a 1,600,000+ (1.6M+) Global Flora & Tree Collection, the archive delivers context-matched monographs backed by verified photography, bilingual EN / বাংলা nomenclature, and print-ready field sheets."
     ],
     "stats": [
       {
@@ -97,23 +97,23 @@
       },
       {
         "id": "stat-global-taxa",
-        "value": "400K+",
+        "value": "1.6M+",
         "themeColor": "emerald",
         "title": "Global Flora & Tree Collection",
-        "description": "Live Global Botanical Server uplink connecting over 400,000 worldwide vascular plant and tree taxa on demand."
+        "description": "Live Global Botanical Server uplink federating 6 databases across over 1,600,000+ worldwide vascular plant and tree taxa."
       }
     ]
   },
   "globalGateway": {
     "anchorId": "worldwide-gateway",
-    "eyebrow": "WORLDWIDE FLORA REGISTRY · 400K+ INDEXED TAXA",
-    "statusTag": "ZERO-KEY LIVE UPLINK · STRICT LOCAL BYPASS",
+    "eyebrow": "WORLDWIDE FLORA REGISTRY · 1.6M+ INDEXED TAXA",
+    "statusTag": "ZERO-KEY LIVE UPLINK · 6 FEDERATED DATABASES",
     "heading": "Global Botanical Server Gateway",
     "paragraphs": [
-      "While Plantipedia's core archive curates 50 deeply authored 15-chapter botanical monographs, the living plant kingdom encompasses more than 400,000 vascular plant and tree taxa worldwide. This federated lookup console links directly to the Global Botanical Server so every search resolves accepted Linnaean binomials, hierarchical classifications, and verified field photography on demand.",
-      "Every query bypasses the local 50-species index without API keys or paywalls—aggregating multi-source taxonomic graphs, cross-script English and বাংলা vernacular matching, and biome-calibrated cultivation telemetry ready for full-page reading or split-screen comparison."
+      "While Plantipedia's core archive curates 50 deeply authored 15-chapter botanical monographs, the living plant kingdom spans more than 1,600,000+ (1.6M+) plant and tree taxa indexed across 6 federated botanical databases (GBIF Backbone, MediaWiki, Wikidata, iNaturalist, EOL, and Open Tree of Life). This lookup console links directly to the Global Botanical Server so every search resolves accepted Linnaean binomials, hierarchical classifications, and verified field photography on demand.",
+      "Every query bypasses the local 50-species index without API keys or paywalls—aggregating 6-source taxonomic graphs, cross-script English and বাংলা vernacular matching with zero-key auto-translation, and biome-calibrated cultivation telemetry ready for full-page reading or split-screen comparison."
     ],
-    "backboneLabel": "Federated Botanical Backbone",
+    "backboneLabel": "6-Database Federated Botanical Backbone",
     "backbones": [
       {
         "id": "gbif",
@@ -136,15 +136,20 @@
         "detail": "Supplies research-grade field specimen plates covering floral structures, foliage, bark, and natural habitats."
       },
       {
-        "id": "kew-powo",
-        "label": "Kew POWO",
-        "detail": "Cross-verifies APG IV family placements, native biogeographic distributions, and botanical synonymy."
+        "id": "eol",
+        "label": "EOL TraitBank",
+        "detail": "Contributes functional trait records, ecological habit descriptions, and vernacular biodiversity synonyms."
+      },
+      {
+        "id": "otol",
+        "label": "Open Tree of Life",
+        "detail": "Cross-verifies evolutionary clade hierarchies, phylogenetic lineage nodes, and synthetic taxon ancestry."
       }
     ],
     "image": {
       "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/625322666/original.jpg",
-      "alt": "Welwitschia mirabilis field specimen representing the 400,000+ Worldwide Flora Registry",
-      "caption": "Fig. GW-01 — Endemic arid gymnosperm Welwitschia mirabilis indexed on demand through the 400K+ Global Botanical Server."
+      "alt": "Welwitschia mirabilis field specimen representing the 1,600,000+ Worldwide Flora Registry",
+      "caption": "Fig. GW-01 — Endemic arid gymnosperm Welwitschia mirabilis indexed on demand through the 1.6M+ Global Botanical Server."
     },
     "search": {
       "placeholder": "Query any worldwide species (e.g., Welwitschia mirabilis, Adansonia digitata, Ginkgo biloba)...",
@@ -178,22 +183,22 @@
     "eyebrow": "NEXT MILESTONE · VERSION 3.2 SPOTLIGHT",
     "statusTag": "IN ACTIVE ARCHITECTURE · SCHEDULED NEXT RELEASE",
     "heading": "Next Up: Version 3.2 — Multi-Source Parallel Botanical Engine",
-    "description": "Immediately following Version 3.1, Plantipedia Version 3.2 upgrades the live lookup stack into a parallel multi-source botanical engine uniting GBIF, the Global Flora Index, Wikidata, iNaturalist, and Kew POWO. Alongside concurrent resolution across 400,000+ vascular taxa, v3.2 introduces automated cross-script EN / বাংলা alignment and typo-tolerant Levenshtein fuzzy search bound to the global '/' shortcut.",
+    "description": "Immediately following Version 3.1, Plantipedia Version 3.2 upgrades the live lookup stack into a parallel 6-source botanical engine uniting GBIF, the Global Flora Index, Wikidata, iNaturalist, EOL, and Open Tree of Life. Alongside concurrent resolution across 1,600,000+ (1.6M+) vascular taxa, v3.2 introduces automated cross-script EN / বাংলা alignment and typo-tolerant Levenshtein fuzzy search bound to the global '/' shortcut.",
     "readiness": {
       "label": "Version 3.2 Core Architecture Readiness",
-      "percent": 72,
-      "statusText": "72% Spec Locked · Next After v3.1"
+      "percent": 100,
+      "statusText": "6-Source Federated Engine Active"
     },
     "ctaLabel": "🚀 View Full Release Roadmap (v3.1 → v4.3)",
     "ctaHref": "./roadmap/",
-    "secondaryCtaLabel": "🧭 Explore Current v3.1 Capabilities",
+    "secondaryCtaLabel": "🧭 Explore Current Capabilities",
     "secondaryCtaHref": "./services/",
     "pillars": [
       {
         "number": "1",
         "kicker": "CONCURRENT RESOLUTION",
-        "title": "⚡ 5-Source Parallel Aggregation",
-        "description": "Executes simultaneous browser requests across GBIF Backbone, Global Flora Index, Wikidata P225, iNaturalist Taxa, and Kew POWO to assemble unified botanical dossiers without single-endpoint bottlenecks."
+        "title": "⚡ 6-Source Parallel Aggregation",
+        "description": "Executes simultaneous browser requests across GBIF Backbone, Global Flora Index, Wikidata P225, iNaturalist Taxa, EOL TraitBank, and Open Tree of Life to assemble unified botanical dossiers without single-endpoint bottlenecks."
       },
       {
         "number": "2",

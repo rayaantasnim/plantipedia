@@ -2,14 +2,14 @@
   "schemaVersion": "1.0.0",
   "page": "services",
   "seo": {
-    "title": "Digital Botanical Research Suite & Services v3.1 | Plantipedia",
-    "description": "Explore Plantipedia Version 3.1's 11-section botanical research suite: 50 deeply curated 15-chapter monographs paired with a live Global Botanical Server uplink connecting 400,000+ worldwide vascular plants and tree species, bilingual EN / বাংলা telemetry, and print-ready field sheets.",
-    "keywords": "Plantipedia services, botanical research suite, Global Botanical Server, 400000 flora, 15 chapters, bilingual plant search, species comparison tool, Bengali 6-season calendar, plant citation generator",
+    "title": "Digital Botanical Research Suite & Services v3.2 | Plantipedia",
+    "description": "Explore Plantipedia Version 3.2's 11-section botanical research suite: 50 deeply curated 15-chapter monographs paired with a 6-source federated Global Botanical Server uplink connecting 1,600,000+ (1.6M+) worldwide vascular plants and tree species, bilingual EN / বাংলা telemetry, and print-ready field sheets.",
+    "keywords": "Plantipedia services, botanical research suite, Global Botanical Server, 1600000 flora, 1.6M taxa, 15 chapters, bilingual plant search, species comparison tool, Bengali 6-season calendar, plant citation generator",
     "author": "Jalees Habib, Rayaan Tasnim",
     "canonicalFile": "services/",
     "ogType": "website",
-    "ogTitle": "Digital Botanical Research Suite & Services v3.1 | Plantipedia",
-    "ogDescription": "Explore Plantipedia Version 3.1's 11-section botanical research suite uniting 50 curated 15-chapter monographs, 400,000+ live Global Server taxa, interactive SVG analytics, and citation sandboxes.",
+    "ogTitle": "Digital Botanical Research Suite & Services v3.2 | Plantipedia",
+    "ogDescription": "Explore Plantipedia Version 3.2's 11-section botanical research suite uniting 50 curated 15-chapter monographs, 1,600,000+ (1.6M+) live Global Server taxa, interactive SVG analytics, and citation sandboxes.",
     "ogImage": "https://inaturalist-open-data.s3.amazonaws.com/photos/604527138/original.jpg",
     "ogImageAlt": "Plantipedia Digital Botanical Research Suite",
     "twitterImage": "https://inaturalist-open-data.s3.amazonaws.com/photos/343545534/large.jpg",
@@ -19,16 +19,16 @@
       "@graph": [
         {
           "@type": ["WebApplication", "SoftwareApplication"],
-          "@id": "https://plantipedia.rayaantasnim.workers.dev/services/#webapp",
+          "@id": "./#webapp",
           "name": "Plantipedia Digital Botanical Research Suite",
           "applicationCategory": "EducationalApplication",
           "operatingSystem": "All",
           "browserRequirements": "Requires modern ES6+ web browser",
-          "url": "https://plantipedia.rayaantasnim.workers.dev/services/",
+          "url": "./",
           "inLanguage": ["en", "bn"],
-          "description": "11-section botanical research suite combining 50 curated 15-chapter local monographs, a live Global Botanical Server uplink connecting 400,000+ worldwide vascular plants and tree species, bilingual EN / বাংলা telemetry, split comparator, and academic citation tools.",
+          "description": "11-section botanical research suite combining 50 curated 15-chapter local monographs, a 6-source federated Global Botanical Server uplink connecting 1,600,000+ (1.6M+) worldwide vascular plants and tree species, bilingual EN / বাংলা telemetry, split comparator, and academic citation tools.",
           "featureList": [
-            "Zero-Key Global Botanical Server Engine (400,000+ Taxa)",
+            "Zero-Key 6-Source Global Botanical Server Engine (1,600,000+ Taxa)",
             "50 Curated 15-Chapter Local Monographs",
             "Bilingual EN / বাংলা Instant Search",
             "Side-by-Side Split Specimen Comparator",
@@ -48,19 +48,19 @@
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://plantipedia.rayaantasnim.workers.dev/services/#breadcrumb",
+          "@id": "./#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://plantipedia.rayaantasnim.workers.dev/"
+              "item": "../"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "Services & Tools",
-              "item": "https://plantipedia.rayaantasnim.workers.dev/services/"
+              "item": "./"
             }
           ]
         }
@@ -74,7 +74,7 @@
     ],
     "eyebrow": "01. Digital Botanical Research Suite · ডিজিটাল উদ্ভিদবিজ্ঞান সেবা",
     "headline": "Open-Access Botanical Tools Built for Field & Scholarship",
-    "subcopy": "Plantipedia pairs peer-structured 15-chapter species monographs with a live Global Botanical Server indexing 400,000+ worldwide vascular species, real-time bilingual search, seasonal delta phenology, soil telemetry meters, and instant academic citations—zero logins, zero paywalls.",
+    "subcopy": "Plantipedia pairs peer-structured 15-chapter species monographs with a 6-source federated Global Botanical Server indexing 1,600,000+ (1.6M+) worldwide vascular species, real-time bilingual search, seasonal delta phenology, soil telemetry meters, and instant academic citations—zero logins, zero paywalls.",
     "heroImage": {
       "imageUrl": "https://static.inaturalist.org/photos/94705908/large.jpg",
       "imageAlt": "Sequoia sempervirens evergreen canopy representing Plantipedia's digital botanical research suite"
@@ -286,7 +286,7 @@
   "globalArchitecture": {
     "eyebrow": "07. Global Botanical Server Architecture",
     "heading": "Zero-Key Worldwide Flora Uplink & Botanical Validation",
-    "lead": "Beyond the 50 curated monographs, Plantipedia's Zero-Key Global Server Engine resolves 400,000+ worldwide vascular species and trees on demand with automated taxonomic verification.",
+    "lead": "Beyond the 50 curated monographs, Plantipedia's Zero-Key 6-Source Global Server Engine resolves 1,600,000+ (1.6M+) worldwide vascular species and trees on demand with automated taxonomic verification.",
     "pillars": [
       {
         "id": "taxonomic-resolution",
@@ -424,17 +424,17 @@
     }
   },
   "worldwideScale": {
-    "eyebrow": "11 · Worldwide Botanical Scale — 400,000+ Indexed Taxa",
+    "eyebrow": "11 · Worldwide Botanical Scale — 1.6M+ (1,600,000+) Indexed Taxa",
     "heading": "Dual-Layer Scale: Curated Depth Meets Global Vascular Breadth",
-    "lead": "Plantipedia Version 3.1 bridges peer-structured local South Asian & tropical monographs with live, zero-key querying across Earth's global plant and tree diversity.",
+    "lead": "Plantipedia Version 3.2 bridges peer-structured local South Asian & tropical monographs with live, zero-key querying across 6 federated botanical databases covering Earth's plant and tree diversity.",
     "localLabel": "Curated Local Monographs",
     "localNote": "15-chapter scholarly dossiers · EN & বাংলা verified",
-    "globalValue": "400,000+",
-    "globalLabel": "Live Global Server Flora & Tree Taxa",
-    "globalNote": "Zero-key on-demand Global Flora Index uplink",
+    "globalValue": "1.6M+",
+    "globalLabel": "1,600,000+ Global Flora & Tree Taxa",
+    "globalNote": "6-source zero-key on-demand Global Flora Index uplink",
     "paragraphs": [
       "Every curated specimen inside Plantipedia opens into a 15-chapter monograph covering Linnaean classification, vegetative anatomy, phenology, ethnobotany, soil pH telemetry, and cultivation protocols.",
-      "Whenever your study moves beyond the 50-species core archive—spanning boreal conifers, desert caudiciforms, or 400,000+ worldwide vascular flora and trees—the Global Botanical Server renders a structured live dossier ready for split comparison and field export."
+      "Whenever your study moves beyond the 50-species core archive—spanning boreal conifers, desert caudiciforms, or 1,600,000+ (1.6M+) worldwide vascular flora and trees across 6 federated botanical databases—the Global Botanical Server renders a structured live dossier ready for split comparison and field export."
     ],
     "primaryCta": { "label": "Launch Worldwide Gateway →", "href": "./plant/live/" },
     "secondaryCta": { "label": "Inspect v3.2 Roadmap →", "href": "./roadmap/" },

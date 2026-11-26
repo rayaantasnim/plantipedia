@@ -11,7 +11,7 @@
  *  08. Interactive Data Synthesis Pipeline (Clickable 4-Step Node Diagram + Inspector)
  *  09. Offline PWA & Academic PDF Field-Sheet Studio (Dark Screen vs. Print Mode Toggle)
  *  10. Open Botanical Standards & Ecosystem Dual-CTA
- *  11. Worldwide Botanical Scale — 400,000+ Indexed Taxa
+ *  11. Worldwide Botanical Scale — 1,600,000+ (1.6M+) Indexed Taxa
  */
 
 import {
@@ -922,7 +922,7 @@ const DEFAULT_SERVICES_MATRIX = [
     num: "11",
     targetId: "services-worldwide-scale",
     title: "11. Worldwide Botanical Scale",
-    desc: "50 15-chapter local monographs paired with 400,000+ live Global Server taxa.",
+    desc: "50 15-chapter local monographs paired with 1,600,000+ (1.6M+) live Global Server taxa.",
     theme: "teal",
   },
 ];
@@ -1782,10 +1782,10 @@ function renderWorldwideScaleSection(scaleCfg = {}, metrics = {}) {
 
   container.appendChild(
     buildSectionHeader(
-      scaleCfg.eyebrow || "11 · Worldwide Botanical Scale — 400,000+ Indexed Taxa",
+      scaleCfg.eyebrow || "11 · Worldwide Botanical Scale — 1.6M+ (1,600,000+) Indexed Taxa",
       scaleCfg.heading || "Dual-Layer Scale: Curated Depth Meets Global Vascular Breadth",
       scaleCfg.lead ||
-        "Plantipedia Version 3.1 bridges peer-structured local South Asian & tropical monographs with live, zero-key querying across Earth's global plant and tree diversity.",
+        "Plantipedia Version 3.2 bridges peer-structured local South Asian & tropical monographs with live, zero-key querying across 6 federated botanical databases covering Earth's plant and tree diversity.",
     ),
   );
 
@@ -1814,20 +1814,20 @@ function renderWorldwideScaleSection(scaleCfg = {}, metrics = {}) {
 
   const globalBox = createEl("div", "services-scale-metric-box services-scale-metric-box--global");
   globalBox.appendChild(
-    createEl("span", "services-scale-metric-num", scaleCfg.globalValue || "400,000+"),
+    createEl("span", "services-scale-metric-num", scaleCfg.globalValue || "1.6M+"),
   );
   globalBox.appendChild(
     createEl(
       "span",
       "services-scale-metric-label",
-      scaleCfg.globalLabel || "Live Global Server Flora & Tree Taxa",
+      scaleCfg.globalLabel || "1,600,000+ Global Flora & Tree Taxa",
     ),
   );
   globalBox.appendChild(
     createEl(
       "span",
       "services-scale-metric-note",
-      scaleCfg.globalNote || "Zero-key on-demand Global Flora Index uplink",
+      scaleCfg.globalNote || "6-source zero-key on-demand Global Flora Index uplink",
     ),
   );
 
@@ -1840,7 +1840,7 @@ function renderWorldwideScaleSection(scaleCfg = {}, metrics = {}) {
       ? scaleCfg.paragraphs
       : [
           "Every curated specimen inside Plantipedia opens into a 15-chapter monograph covering Linnaean classification, vegetative anatomy, phenology, ethnobotany, soil pH telemetry, and cultivation protocols.",
-          "Whenever your study moves beyond the 50-species core archive—spanning boreal conifers, desert caudiciforms, or 400,000+ worldwide vascular flora and trees—the Global Botanical Server renders a structured live dossier ready for split comparison and field export.",
+          "Whenever your study moves beyond the 50-species core archive—spanning boreal conifers, desert caudiciforms, or 1,600,000+ (1.6M+) worldwide vascular flora and trees indexed across 6 federated botanical databases—the Global Botanical Server renders a structured live dossier ready for split comparison and field export.",
         ];
   proseList.forEach((pText) => {
     content.appendChild(createEl("p", "services-scale-prose", pText));

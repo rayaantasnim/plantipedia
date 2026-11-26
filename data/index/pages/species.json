@@ -3,25 +3,25 @@
   "page": "species",
   "seo": {
     "title": "Available Species Directory — 50 Curated 15-Chapter Monographs | Plantipedia",
-    "description": "Browse Plantipedia Version 3.1's directory of 50 curated 15-chapter local monographs alongside a live Global Botanical Server uplink indexing 400,000+ worldwide vascular plants and trees, bilingual EN / বাংলা search, and field sheets.",
-    "keywords": "plant directory, 50 plant species, 15 botanical chapters, 400000 global taxa, A-Z plant list, botanical atlas, Plantipedia species, taxonomy search, medicinal flora",
+    "description": "Browse Plantipedia Version 3.2's directory of 50 curated 15-chapter local monographs alongside a 6-source federated Global Botanical Server uplink indexing 1,600,000+ (1.6M+) worldwide vascular plants and trees, bilingual EN / বাংলা search, and field sheets.",
+    "keywords": "plant directory, 50 plant species, 15 botanical chapters, 1600000 global taxa, 1.6M flora, A-Z plant list, botanical atlas, Plantipedia species, taxonomy search, medicinal flora",
     "author": "Jalees Habib, Rayaan Tasnim",
     "canonicalFile": "species/",
     "ogType": "website",
     "ogTitle": "Available Species Directory — 50 Curated 15-Chapter Monographs | Plantipedia",
-    "ogDescription": "Search and filter 50 curated 15-chapter monographs in English and বাংলা alongside a live Global Botanical Server uplink indexing 400,000+ worldwide species.",
+    "ogDescription": "Search and filter 50 curated 15-chapter monographs in English and বাংলা alongside a 6-source Global Botanical Server uplink indexing 1,600,000+ (1.6M+) worldwide species.",
     "ogImage": "https://images.pexels.com/photos/40222323/pexels-photo-40222323.jpeg?auto=compress&cs=tinysrgb&w=1200",
     "ogImageAlt": "Plantipedia Botanical Species Directory",
     "jsonLd": {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       "name": "Plantipedia Available Species Directory",
-      "description": "Searchable and filterable atlas of 50 curated 15-chapter botanical monographs paired with 400,000+ worldwide taxa via Global Botanical Server on Plantipedia Version 3.1.",
-      "url": "https://plantipedia.rayaantasnim.workers.dev/species/",
+      "description": "Searchable and filterable atlas of 50 curated 15-chapter botanical monographs paired with 1,600,000+ (1.6M+) worldwide taxa via Global Botanical Server on Plantipedia Version 3.2.",
+      "url": "./",
       "isPartOf": {
         "@type": "WebSite",
         "name": "Plantipedia",
-        "url": "https://plantipedia.rayaantasnim.workers.dev/"
+        "url": "../"
       },
       "author": [
         { "@type": "Person", "name": "Jalees Habib" },

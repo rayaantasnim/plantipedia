@@ -4,7 +4,6 @@
  * across all Clean-URL folder routes (/, /species/, /plant/, /taxonomy/, /seasons/, /compare/, & 404).
  */
 
-const PRODUCTION_SITE_URL = "https://plantipedia.rayaantasnim.workers.dev/";
 const DEFAULT_OG_IMAGE =
   "https://static.inaturalist.org/photos/490150039/large.jpg";
 const DEFAULT_TWITTER_IMAGE =
@@ -16,7 +15,19 @@ const AUTHOR_ENTITIES = [
 ];
 
 export function getCanonicalSiteBase() {
-  return PRODUCTION_SITE_URL;
+  if (typeof window !== "undefined" && window.location) {
+    try {
+      const origin = window.location.origin;
+      if (origin && origin !== "null") {
+        const pathname = window.location.pathname || "/";
+        const subMatch = pathname.match(/^(\/plantipedia\/)/i);
+        return subMatch ? `${origin}${subMatch[1]}` : `${origin}/`;
+      }
+    } catch {
+      // Fallback to repository-relative root
+    }
+  }
+  return "./";
 }
 
 function resolveCanonicalPageUrl(routePath = "", queryString = "") {
