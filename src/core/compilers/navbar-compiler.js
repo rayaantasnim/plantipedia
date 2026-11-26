@@ -1431,7 +1431,10 @@ function closeAllActiveOverlaysOnEscape() {
     glossaryTip.hidden = true;
   }
 
-  // 7. Unlock document scroll unless Compare Synthesis modal is active
+  // 7. Active Surprise Specimen discovery overlay
+  cancelSurpriseDiscovery();
+
+  // 8. Unlock document scroll unless Compare Synthesis modal is active
   const synthesisOverlay = document.getElementById("compare-synthesis-overlay");
   if (!synthesisOverlay || synthesisOverlay.hidden) {
     document.documentElement.classList.remove("overlay-locked");
@@ -1556,13 +1559,277 @@ async function resolveCuratedSpeciesList() {
   }
 }
 
-async function handleSurpriseSpecimen() {
-  const list = await resolveCuratedSpeciesList();
-  const slugs = list
-    .map((entry) => String(entry?.slug || "").trim().toLowerCase())
-    .filter(Boolean);
+let activeSurpriseSession = null;
 
-  if (slugs.length === 0) return;
+function createDiscoveryCompassSvg() {
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", "24");
+  svg.setAttribute("height", "24");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "1.9");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+
+  const ring = document.createElementNS(svgNS, "circle");
+  ring.setAttribute("cx", "12");
+  ring.setAttribute("cy", "12");
+  ring.setAttribute("r", "9.5");
+
+  const needle = document.createElementNS(svgNS, "polygon");
+  needle.setAttribute("points", "15.8 8.2 13.7 13.7 8.2 15.8 10.3 10.3 15.8 8.2");
+  needle.setAttribute("fill", "currentColor");
+  needle.setAttribute("fill-opacity", "0.22");
+
+  const center = document.createElementNS(svgNS, "circle");
+  center.setAttribute("cx", "12");
+  center.setAttribute("cy", "12");
+  center.setAttribute("r", "1.3");
+  center.setAttribute("fill", "currentColor");
+
+  svg.appendChild(ring);
+  svg.appendChild(needle);
+  svg.appendChild(center);
+  return svg;
+}
+
+function getOrCreateSurpriseOverlayDom() {
+  let backdrop = document.getElementById("surpriseDiscoveryOverlay");
+  if (backdrop) {
+    return {
+      backdrop,
+      card: backdrop.querySelector(".surprise-discovery-card"),
+      cancelBtn: backdrop.querySelector("#surpriseCancelBtn"),
+      phaseTag: backdrop.querySelector("#surprisePhaseTag"),
+      specimenName: backdrop.querySelector("#surpriseSpecimenName"),
+      specimenBn: backdrop.querySelector("#surpriseSpecimenBn"),
+      specimenSci: backdrop.querySelector("#surpriseSpecimenSci"),
+      specimenFamily: backdrop.querySelector("#surpriseSpecimenFamily"),
+      tumblerBox: backdrop.querySelector("#surpriseTumblerBox"),
+      statusText: backdrop.querySelector("#surpriseStatusText"),
+      percentText: backdrop.querySelector("#surprisePercentText"),
+      progressFill: backdrop.querySelector("#surpriseProgressFill"),
+      progressBar: backdrop.querySelector('[role="progressbar"]'),
+    };
+  }
+
+  backdrop = document.createElement("div");
+  backdrop.id = "surpriseDiscoveryOverlay";
+  backdrop.className = "surprise-discovery-backdrop";
+  backdrop.setAttribute("role", "dialog");
+  backdrop.setAttribute("aria-modal", "true");
+  backdrop.setAttribute("aria-labelledby", "surpriseModalTitle");
+  backdrop.hidden = true;
+
+  const card = document.createElement("div");
+  card.className = "surprise-discovery-card";
+
+  // Header
+  const header = document.createElement("div");
+  header.className = "surprise-discovery-header";
+
+  const brandGroup = document.createElement("div");
+  brandGroup.className = "surprise-discovery-brand";
+
+  const emblem = document.createElement("div");
+  emblem.className = "surprise-discovery-emblem";
+  emblem.setAttribute("aria-hidden", "true");
+  emblem.appendChild(createDiscoveryCompassSvg());
+
+  const titleWrap = document.createElement("div");
+  titleWrap.className = "surprise-discovery-title-wrap";
+
+  const kicker = document.createElement("span");
+  kicker.className = "surprise-discovery-kicker";
+  kicker.textContent = "Botanical Discovery";
+
+  const title = document.createElement("h2");
+  title.id = "surpriseModalTitle";
+  title.className = "surprise-discovery-title";
+  title.textContent = "Curating Surprise Specimen";
+
+  titleWrap.appendChild(kicker);
+  titleWrap.appendChild(title);
+  brandGroup.appendChild(emblem);
+  brandGroup.appendChild(titleWrap);
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.type = "button";
+  cancelBtn.id = "surpriseCancelBtn";
+  cancelBtn.className = "surprise-cancel-btn";
+  cancelBtn.setAttribute("aria-label", "Cancel surprise specimen discovery");
+  cancelBtn.textContent = "✕ Cancel";
+
+  header.appendChild(brandGroup);
+  header.appendChild(cancelBtn);
+  card.appendChild(header);
+
+  // Specimen Tumbler Preview Card
+  const tumblerBox = document.createElement("div");
+  tumblerBox.id = "surpriseTumblerBox";
+  tumblerBox.className = "surprise-tumbler-box";
+
+  const phaseTag = document.createElement("span");
+  phaseTag.id = "surprisePhaseTag";
+  phaseTag.className = "surprise-phase-tag";
+  phaseTag.textContent = "PHASE 01 · ARCHIVE SCAN";
+
+  const nameRow = document.createElement("div");
+  nameRow.className = "surprise-specimen-heading-row";
+
+  const specimenName = document.createElement("div");
+  specimenName.id = "surpriseSpecimenName";
+  specimenName.className = "surprise-specimen-name";
+  specimenName.textContent = "Initializing Global Flora Index...";
+
+  const specimenBn = document.createElement("span");
+  specimenBn.id = "surpriseSpecimenBn";
+  specimenBn.className = "surprise-specimen-bn";
+  specimenBn.hidden = true;
+
+  nameRow.appendChild(specimenName);
+  nameRow.appendChild(specimenBn);
+
+  const metaRow = document.createElement("div");
+  metaRow.className = "surprise-specimen-meta-row";
+
+  const specimenSci = document.createElement("span");
+  specimenSci.id = "surpriseSpecimenSci";
+  specimenSci.className = "surprise-specimen-sci";
+  specimenSci.textContent = "Taxonomic clades · Bilingual monographs";
+
+  const specimenFamily = document.createElement("span");
+  specimenFamily.id = "surpriseSpecimenFamily";
+  specimenFamily.className = "surprise-specimen-family";
+  specimenFamily.hidden = true;
+
+  metaRow.appendChild(specimenSci);
+  metaRow.appendChild(specimenFamily);
+
+  tumblerBox.appendChild(phaseTag);
+  tumblerBox.appendChild(nameRow);
+  tumblerBox.appendChild(metaRow);
+  card.appendChild(tumblerBox);
+
+  // Status + Luminous Emerald Progress Bar
+  const progressSection = document.createElement("div");
+  progressSection.className = "surprise-progress-section";
+
+  const statusRow = document.createElement("div");
+  statusRow.className = "surprise-status-row";
+
+  const statusText = document.createElement("span");
+  statusText.id = "surpriseStatusText";
+  statusText.className = "surprise-status-text";
+  statusText.setAttribute("aria-live", "polite");
+  statusText.textContent = "Scanning 50 Curated Monographs & Taxonomic Clades...";
+
+  const percentText = document.createElement("span");
+  percentText.id = "surprisePercentText";
+  percentText.className = "surprise-percent-text";
+  percentText.textContent = "0%";
+
+  statusRow.appendChild(statusText);
+  statusRow.appendChild(percentText);
+
+  const progressTrack = document.createElement("div");
+  progressTrack.className = "surprise-progress-track";
+  progressTrack.setAttribute("role", "progressbar");
+  progressTrack.setAttribute("aria-valuemin", "0");
+  progressTrack.setAttribute("aria-valuemax", "100");
+  progressTrack.setAttribute("aria-valuenow", "0");
+  progressTrack.setAttribute("aria-label", "Specimen curation progress");
+
+  const progressFill = document.createElement("div");
+  progressFill.id = "surpriseProgressFill";
+  progressFill.className = "surprise-progress-fill";
+
+  progressTrack.appendChild(progressFill);
+  progressSection.appendChild(statusRow);
+  progressSection.appendChild(progressTrack);
+  card.appendChild(progressSection);
+
+  backdrop.appendChild(card);
+  document.body.appendChild(backdrop);
+
+  cancelBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    cancelSurpriseDiscovery();
+  });
+
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) {
+      cancelSurpriseDiscovery();
+    }
+  });
+
+  return {
+    backdrop,
+    card,
+    cancelBtn,
+    phaseTag,
+    specimenName,
+    specimenBn,
+    specimenSci,
+    specimenFamily,
+    tumblerBox,
+    statusText,
+    percentText,
+    progressFill,
+    progressBar: progressTrack,
+  };
+}
+
+function cancelSurpriseDiscovery() {
+  if (activeSurpriseSession) {
+    activeSurpriseSession.cancelled = true;
+    if (activeSurpriseSession.rafId) {
+      cancelAnimationFrame(activeSurpriseSession.rafId);
+    }
+    activeSurpriseSession = null;
+  }
+
+  const backdrop = document.getElementById("surpriseDiscoveryOverlay");
+  if (backdrop && !backdrop.hidden) {
+    backdrop.hidden = true;
+    backdrop.classList.remove("is-locked");
+    const synthesisOverlay = document.getElementById("compare-synthesis-overlay");
+    if (!synthesisOverlay || synthesisOverlay.hidden) {
+      document.documentElement.classList.remove("overlay-locked");
+      document.body.classList.remove("overlay-locked");
+    }
+  }
+}
+
+function pickTumblerCandidates(list, chosenSlug, count = 5) {
+  const pool = list.filter((item) => {
+    const slug = String(item?.slug || "").trim().toLowerCase();
+    return slug && slug !== chosenSlug;
+  });
+  const copy = [...pool];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = copy[i];
+    copy[i] = copy[j];
+    copy[j] = tmp;
+  }
+  const picked = copy.slice(0, Math.min(count, copy.length));
+  if (picked.length > 0) return picked;
+  return list.slice(0, Math.min(count, list.length));
+}
+
+async function handleSurpriseSpecimen() {
+  cancelSurpriseDiscovery();
+  closeAllDesktopDropdowns();
+  closeMobileOverlayIfOpen();
+
+  const list = await resolveCuratedSpeciesList();
+  const validEntries = list.filter((entry) => String(entry?.slug || "").trim());
+
+  if (validEntries.length === 0) return;
 
   let currentSlug = "";
   try {
@@ -1580,17 +1847,151 @@ async function handleSurpriseSpecimen() {
   }
 
   const pool =
-    currentSlug && slugs.length > 1
-      ? slugs.filter((s) => s !== currentSlug)
-      : slugs;
-  const randomSlug = pool[Math.floor(Math.random() * pool.length)];
-  if (!randomSlug) return;
+    currentSlug && validEntries.length > 1
+      ? validEntries.filter(
+          (entry) => String(entry.slug || "").trim().toLowerCase() !== currentSlug,
+        )
+      : validEntries;
 
-  closeAllDesktopDropdowns();
-  closeMobileOverlayIfOpen();
-  window.location.href = resolveSitePath(
-    `./plant/?slug=${encodeURIComponent(randomSlug)}`,
-  );
+  const chosenEntry = pool[Math.floor(Math.random() * pool.length)];
+  const chosenSlug = String(chosenEntry?.slug || "").trim().toLowerCase();
+  if (!chosenSlug) return;
+
+  const totalCount = validEntries.length || 50;
+  const tumblerCandidates = pickTumblerCandidates(validEntries, chosenSlug, 5);
+  const ui = getOrCreateSurpriseOverlayDom();
+
+  const formatEntryMeta = (entry) => {
+    const common = String(entry?.commonName || "Botanical Specimen").trim();
+    const bn = String(entry?.commonNameBn || entry?.bengaliName || "").trim();
+    const sci = String(entry?.scientificName || "").trim();
+    const family = String(entry?.family || entry?.overview?.family || "").trim();
+    return { common, bn, sci, family };
+  };
+
+  const renderSpecimenPreview = (entry, phaseMode) => {
+    if (!entry) {
+      ui.specimenName.textContent = `Indexing ${totalCount} Curated Monographs`;
+      ui.specimenBn.textContent = "";
+      ui.specimenBn.hidden = true;
+      ui.specimenSci.textContent = "Resolving clades · Bilingual taxonomy (EN / বাংলা)";
+      ui.specimenFamily.textContent = "Global Flora Index";
+      ui.specimenFamily.hidden = false;
+      ui.tumblerBox.classList.remove("is-cycling", "is-locked");
+      return;
+    }
+
+    const { common, bn, sci, family } = formatEntryMeta(entry);
+    ui.specimenName.textContent = common;
+    if (bn) {
+      ui.specimenBn.textContent = `(${bn})`;
+      ui.specimenBn.hidden = false;
+    } else {
+      ui.specimenBn.textContent = "";
+      ui.specimenBn.hidden = true;
+    }
+    ui.specimenSci.textContent = sci || "Vascular flora record";
+    if (family) {
+      ui.specimenFamily.textContent = family;
+      ui.specimenFamily.hidden = false;
+    } else {
+      ui.specimenFamily.textContent = "";
+      ui.specimenFamily.hidden = true;
+    }
+    ui.tumblerBox.classList.toggle("is-cycling", phaseMode === "cycling");
+    ui.tumblerBox.classList.toggle("is-locked", phaseMode === "locked");
+  };
+
+  // Reset UI & open modal
+  ui.backdrop.classList.remove("is-locked");
+  ui.backdrop.hidden = false;
+  ui.progressFill.style.width = "0%";
+  ui.percentText.textContent = "0%";
+  ui.progressBar.setAttribute("aria-valuenow", "0");
+  ui.phaseTag.textContent = "PHASE 01 · ARCHIVE SCAN";
+  ui.statusText.textContent = `Scanning ${totalCount} Curated Monographs & Taxonomic Clades...`;
+  renderSpecimenPreview(null, "scan");
+
+  document.documentElement.classList.add("overlay-locked");
+  document.body.classList.add("overlay-locked");
+  ui.cancelBtn.focus({ preventScroll: true });
+
+  const session = {
+    cancelled: false,
+    rafId: 0,
+  };
+  activeSurpriseSession = session;
+
+  const TOTAL_MS = 3000;
+  const PHASE_1_END = 1000;
+  const PHASE_2_END = 2200;
+  const startTime = performance.now();
+  let lastPhase = 0;
+  let lastTumblerIdx = -1;
+
+  const tick = (now) => {
+    if (session.cancelled) return;
+
+    const elapsed = Math.min(TOTAL_MS, now - startTime);
+    let progress = 0;
+
+    if (elapsed < PHASE_1_END) {
+      // 0.0s - 1.0s: 0% -> 35%
+      progress = (elapsed / PHASE_1_END) * 35;
+      if (lastPhase !== 1) {
+        lastPhase = 1;
+        ui.phaseTag.textContent = "PHASE 01 · ARCHIVE SCAN";
+        ui.statusText.textContent = `Scanning ${totalCount} Curated Monographs & Taxonomic Clades...`;
+        renderSpecimenPreview(null, "scan");
+      }
+    } else if (elapsed < PHASE_2_END) {
+      // 1.0s - 2.2s: 35% -> 75% (tumbler cycles across 5 real species)
+      progress = 35 + ((elapsed - PHASE_1_END) / (PHASE_2_END - PHASE_1_END)) * 40;
+      if (lastPhase !== 2) {
+        lastPhase = 2;
+        ui.phaseTag.textContent = "PHASE 02 · SPECIMEN TUMBLER";
+        ui.statusText.textContent = "Filtering Phenology & Botanical Lineage...";
+      }
+      const stepMs = (PHASE_2_END - PHASE_1_END) / tumblerCandidates.length;
+      const idx = Math.min(
+        tumblerCandidates.length - 1,
+        Math.floor((elapsed - PHASE_1_END) / stepMs),
+      );
+      if (idx !== lastTumblerIdx) {
+        lastTumblerIdx = idx;
+        renderSpecimenPreview(tumblerCandidates[idx], "cycling");
+      }
+    } else {
+      // 2.2s - 3.0s: 75% -> 100% (locked onto chosen species)
+      progress = 75 + ((elapsed - PHASE_2_END) / (TOTAL_MS - PHASE_2_END)) * 25;
+      if (lastPhase !== 3) {
+        lastPhase = 3;
+        const { common, bn, sci } = formatEntryMeta(chosenEntry);
+        const bnLabel = bn ? ` (${bn})` : "";
+        ui.phaseTag.textContent = "PHASE 03 · SPECIMEN LOCKED";
+        ui.statusText.textContent = `Specimen Locked: ${common}${bnLabel}${sci ? ` · ${sci}` : ""}`;
+        ui.backdrop.classList.add("is-locked");
+        renderSpecimenPreview(chosenEntry, "locked");
+      }
+    }
+
+    const roundedPct = Math.min(100, Math.round(progress));
+    ui.progressFill.style.width = `${progress.toFixed(2)}%`;
+    ui.percentText.textContent = `${roundedPct}%`;
+    ui.progressBar.setAttribute("aria-valuenow", String(roundedPct));
+
+    if (elapsed >= TOTAL_MS) {
+      activeSurpriseSession = null;
+      window.location.href = resolveSitePath(
+        `./plant/?slug=${encodeURIComponent(chosenSlug)}`,
+      );
+      return;
+    }
+
+    session.rafId = requestAnimationFrame(tick);
+  };
+
+  session.rafId = requestAnimationFrame(tick);
 }
 
 function bindSurpriseSpecimenAction() {

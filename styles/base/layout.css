@@ -1625,3 +1625,321 @@ body.is-embed #plantipedia-back-to-top {
 .herbarium-clear-btn:hover {
   background: rgba(244, 63, 94, 0.24);
 }
+
+/* ================= SURPRISE SPECIMEN BOTANICAL DISCOVERY OVERLAY ================= */
+.surprise-discovery-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(4, 14, 10, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: surpriseFadeIn 0.22s ease;
+}
+
+.surprise-discovery-backdrop[hidden] {
+  display: none;
+}
+
+@keyframes surpriseFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.surprise-discovery-card {
+  width: min(92vw, 520px);
+  max-width: 100%;
+  padding: clamp(18px, 4vw, 32px);
+  box-sizing: border-box;
+  background: rgba(8, 26, 18, 0.92);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: 22px;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.7),
+    0 0 32px rgba(16, 185, 129, 0.16);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: var(--ink-primary);
+  overflow: hidden;
+  transition:
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.surprise-discovery-backdrop.is-locked .surprise-discovery-card {
+  border-color: rgba(110, 231, 183, 0.62);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.75),
+    0 0 42px rgba(52, 211, 153, 0.26);
+}
+
+.surprise-discovery-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.surprise-discovery-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.surprise-discovery-emblem {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    rgba(52, 211, 153, 0.28),
+    rgba(6, 78, 59, 0.45)
+  );
+  border: 1px solid rgba(110, 231, 183, 0.42);
+  color: #6ee7b7;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 22px rgba(16, 185, 129, 0.24);
+  animation: surpriseEmblemPulse 1.8s ease-in-out infinite;
+}
+
+.surprise-discovery-emblem svg {
+  animation: surpriseCompassSpin 3.6s linear infinite;
+}
+
+.surprise-discovery-backdrop.is-locked .surprise-discovery-emblem svg {
+  animation: none;
+  transform: scale(1.06);
+}
+
+@keyframes surpriseEmblemPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.22);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(52, 211, 153, 0.42);
+    transform: scale(1.04);
+  }
+}
+
+@keyframes surpriseCompassSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.surprise-discovery-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.surprise-discovery-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-mint);
+}
+
+.surprise-discovery-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 3.2vw, 1.55rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink-primary);
+  overflow-wrap: anywhere;
+}
+
+.surprise-cancel-btn {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 231, 183, 0.28);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.15s ease;
+}
+
+.surprise-cancel-btn:hover,
+.surprise-cancel-btn:focus-visible {
+  background: rgba(244, 63, 94, 0.18);
+  border-color: rgba(251, 113, 133, 0.55);
+  color: #ffe4e6;
+}
+
+.surprise-cancel-btn:active {
+  transform: scale(0.96);
+}
+
+.surprise-tumbler-box {
+  padding: 18px 18px;
+  border-radius: 16px;
+  background: rgba(3, 16, 11, 0.72);
+  border: 1px solid rgba(52, 211, 153, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 112px;
+  justify-content: center;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.surprise-tumbler-box.is-cycling {
+  border-color: rgba(52, 211, 153, 0.4);
+  background: rgba(5, 22, 15, 0.85);
+}
+
+.surprise-tumbler-box.is-locked {
+  border-color: rgba(110, 231, 183, 0.6);
+  background: linear-gradient(
+    135deg,
+    rgba(6, 40, 26, 0.88),
+    rgba(16, 185, 129, 0.14)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.surprise-phase-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6ee7b7;
+}
+
+.surprise-specimen-heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.surprise-specimen-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 3vw, 1.48rem);
+  font-weight: 700;
+  line-height: 1.24;
+  color: var(--ink-primary);
+  overflow-wrap: anywhere;
+}
+
+.surprise-specimen-bn {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #6ee7b7;
+  overflow-wrap: anywhere;
+}
+
+.surprise-specimen-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+  min-width: 0;
+}
+
+.surprise-specimen-sci {
+  font-size: 0.86rem;
+  font-style: italic;
+  color: var(--ink-secondary);
+  overflow-wrap: anywhere;
+}
+
+.surprise-specimen-family {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-gold-soft);
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  padding: 2px 8px;
+  border-radius: 6px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.surprise-progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.surprise-status-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.surprise-status-text {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--ink-secondary);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.surprise-percent-text {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #6ee7b7;
+  flex-shrink: 0;
+}
+
+.surprise-progress-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(110, 231, 183, 0.2);
+  overflow: hidden;
+}
+
+.surprise-progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #059669, #34d399, #6ee7b7);
+  box-shadow: 0 0 14px rgba(52, 211, 153, 0.65);
+  transition: width 0.06s linear;
+}
+
