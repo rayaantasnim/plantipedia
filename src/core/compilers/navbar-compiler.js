@@ -33,6 +33,7 @@ import {
   searchSpeciesFuzzy,
   setHighlightedContent,
 } from "../../engines/search/fuzzy-matcher.js";
+import { fetchGlobalFuzzySuggestions } from "../../engines/search/global-fuzzy.js";
 
 const SITE_ROOT_URL = new URL("../../../", import.meta.url);
 const PLACEHOLDER_SVG_PATH = "./assets/images/placeholder-botanical.svg";
@@ -1120,15 +1121,82 @@ function createNavGlobalServerCta(query) {
   return cta;
 }
 
-function renderNavSuggestionNodes(container, matches, query) {
+function createGlobalFuzzySuggestionNode(item, query, idx) {
+  const targetQuery = item.scientificName || item.commonName;
+  const link = document.createElement("a");
+  link.href = resolveSitePath(`./plant/live/?q=${encodeURIComponent(targetQuery)}`);
+  link.className = "nav-suggestion-item is-global-fuzzy-item";
+  link.setAttribute("role", "option");
+  link.setAttribute("data-nav-global-idx", String(idx));
+
+  const leftWrap = document.createElement("div");
+  leftWrap.className = "nav-suggestion-left";
+
+  const iconBox = document.createElement("span");
+  iconBox.className = "nav-suggestion-global-icon";
+  iconBox.setAttribute("aria-hidden", "true");
+  iconBox.textContent = "🌐";
+
+  const textCol = document.createElement("div");
+  const title = document.createElement("span");
+  title.className = "nav-suggestion-title";
+  setHighlightedContent(title, item.commonName || targetQuery, query);
+
+  const sciWrap = document.createElement("span");
+  sciWrap.className = "nav-suggestion-sci";
+  const sciEm = document.createElement("em");
+  setHighlightedContent(sciEm, item.scientificName || item.commonName, query);
+  sciWrap.appendChild(sciEm);
+
+  textCol.appendChild(title);
+  textCol.appendChild(sciWrap);
+  leftWrap.appendChild(iconBox);
+  leftWrap.appendChild(textCol);
+
+  const rightCol = document.createElement("div");
+  rightCol.className = "nav-suggestion-right";
+
+  if (item.family) {
+    const fam = document.createElement("span");
+    fam.className = "nav-suggestion-family";
+    setHighlightedContent(fam, item.family, query);
+    rightCol.appendChild(fam);
+  }
+
+  const badge = document.createElement("span");
+  badge.className = "global-fuzzy-badge";
+  badge.textContent = "🌐 GLOBAL FUZZY MATCH";
+  rightCol.appendChild(badge);
+
+  link.appendChild(leftWrap);
+  link.appendChild(rightCol);
+  return link;
+}
+
+function renderNavSuggestionNodes(
+  container,
+  matches,
+  query,
+  globalSuggestions = [],
+  { isCheckingGlobal = false } = {},
+) {
   const frag = document.createDocumentFragment();
   const trimmedQuery = String(query || "").trim();
+  const hasGlobal = Array.isArray(globalSuggestions) && globalSuggestions.length > 0;
 
-  if (matches.length === 0) {
+  if (matches.length === 0 && !hasGlobal) {
     const emptyEl = document.createElement("div");
     emptyEl.className = "nav-suggestion-empty";
     emptyEl.textContent = `No local species matched "${trimmedQuery}"`;
     frag.appendChild(emptyEl);
+
+    if (isCheckingGlobal && trimmedQuery.length >= 3) {
+      const loadingEl = document.createElement("div");
+      loadingEl.className = "nav-suggestion-global-loading";
+      loadingEl.textContent = "🌐 Querying Global Flora Index fuzzy taxa...";
+      frag.appendChild(loadingEl);
+    }
+
     if (trimmedQuery.length >= 2) {
       frag.appendChild(createNavGlobalServerCta(trimmedQuery));
     }
@@ -1201,6 +1269,24 @@ function renderNavSuggestionNodes(container, matches, query) {
     frag.appendChild(link);
   });
 
+  if (trimmedQuery.length >= 3 && matches.length < 3) {
+    if (hasGlobal) {
+      const globalHeader = document.createElement("div");
+      globalHeader.className = "nav-suggestion-global-header";
+      globalHeader.textContent = "Global Flora Index · Worldwide Fuzzy Matches";
+      frag.appendChild(globalHeader);
+
+      globalSuggestions.slice(0, 3).forEach((item, idx) => {
+        frag.appendChild(createGlobalFuzzySuggestionNode(item, trimmedQuery, idx));
+      });
+    } else if (isCheckingGlobal) {
+      const loadingEl = document.createElement("div");
+      loadingEl.className = "nav-suggestion-global-loading";
+      loadingEl.textContent = "🌐 Querying Global Flora Index fuzzy taxa...";
+      frag.appendChild(loadingEl);
+    }
+  }
+
   if (trimmedQuery.length >= 2 && matches.length < 3) {
     frag.appendChild(createNavGlobalServerCta(trimmedQuery));
   }
@@ -1220,8 +1306,24 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
 
   let activeIndex = -1;
   let currentMatches = [];
+  let globalDebounceTimer = null;
+  let globalAbortController = null;
+  let activeLookupSeq = 0;
+
+  const cancelPendingGlobalFuzzy = () => {
+    if (globalDebounceTimer) {
+      clearTimeout(globalDebounceTimer);
+      globalDebounceTimer = null;
+    }
+    if (globalAbortController) {
+      globalAbortController.abort();
+      globalAbortController = null;
+    }
+  };
 
   const hideSuggestions = () => {
+    cancelPendingGlobalFuzzy();
+    activeLookupSeq += 1;
     suggestionsEl.hidden = true;
     suggestionsEl.replaceChildren();
     activeIndex = -1;
@@ -1235,6 +1337,10 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
   const renderSuggestions = (query) => {
     const q = query.trim();
     syncInputState();
+    cancelPendingGlobalFuzzy();
+    activeLookupSeq += 1;
+    const seq = activeLookupSeq;
+
     if (!q || q.length < minLength) {
       currentMatches = [];
       hideSuggestions();
@@ -1243,7 +1349,47 @@ function bindNavbarAutocomplete({ formId, inputId, clearId, suggestionsId, wrapS
 
     currentMatches = searchSpeciesFuzzy(getSpeciesIndex(), q, { limit: 8 });
     activeIndex = -1;
-    renderNavSuggestionNodes(suggestionsEl, currentMatches, q);
+
+    const shouldFetchGlobal = q.length >= 3 && currentMatches.length < 3;
+    renderNavSuggestionNodes(suggestionsEl, currentMatches, q, [], {
+      isCheckingGlobal: shouldFetchGlobal,
+    });
+
+    if (shouldFetchGlobal) {
+      globalDebounceTimer = setTimeout(async () => {
+        if (seq !== activeLookupSeq || input.value.trim() !== q) return;
+        const controller = new AbortController();
+        globalAbortController = controller;
+        try {
+          const res = await fetchGlobalFuzzySuggestions(q, {
+            signal: controller.signal,
+            limit: 3,
+          });
+          if (
+            controller.signal.aborted ||
+            seq !== activeLookupSeq ||
+            input.value.trim() !== q ||
+            suggestionsEl.hidden
+          ) {
+            return;
+          }
+          const globalItems = Array.isArray(res?.suggestions) ? res.suggestions : [];
+          renderNavSuggestionNodes(suggestionsEl, currentMatches, q, globalItems, {
+            isCheckingGlobal: false,
+          });
+        } catch {
+          if (
+            seq === activeLookupSeq &&
+            input.value.trim() === q &&
+            !suggestionsEl.hidden
+          ) {
+            renderNavSuggestionNodes(suggestionsEl, currentMatches, q, [], {
+              isCheckingGlobal: false,
+            });
+          }
+        }
+      }, 320);
+    }
   };
 
   const getOptionItems = () =>

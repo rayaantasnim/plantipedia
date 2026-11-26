@@ -3278,6 +3278,37 @@ body.is-embed .plant-floating-compare-btn {
   text-transform: uppercase;
 }
 
+.gbs-autocorrect-pill {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 12px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(110, 231, 183, 0.36);
+  color: #d1fae5;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.4;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.gbs-autocorrect-pill.is-compare-pill {
+  margin: 6px 0 0;
+  border-radius: 10px;
+  padding: 6px 11px;
+  font-size: 0.74rem;
+}
+
+.gbs-autocorrect-taxon {
+  font-style: italic;
+  font-weight: 700;
+  color: #6ee7b7;
+}
+
 .monograph-compare-btn {
   border-color: rgba(52, 211, 153, 0.45);
   background: rgba(16, 185, 129, 0.14);

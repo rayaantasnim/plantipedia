@@ -14,6 +14,10 @@ import {
   normalizeLangCode,
   translateMonographRecord,
 } from "../../modules/utils/translator.js";
+import {
+  isNormalizedTaxonMatch,
+  resolveFuzzyGlobalTaxon,
+} from "../search/global-fuzzy.js";
 
 const RETRY_SCHEDULE_MS = [0, 1200, 2600];
 const DEFAULT_TIMEOUT_MS = 6000;
@@ -1641,7 +1645,70 @@ export async function fetchFromGlobalBotanicalServer(query, options = {}) {
     }
 
     try {
-      const result = await queryGlobalSourcesOnce(cleanQuery, lockedLang, signal);
+      let result = await queryGlobalSourcesOnce(cleanQuery, lockedLang, signal);
+      let autoCorrectionMeta = null;
+
+      // Typo-Tolerant Global Fuzzy Taxon Auto-Correction:
+      // If direct lookup misses OR matched an unrelated subject (not closely matching user's query),
+      // resolve the intended canonical Plantae taxon across iNaturalist + GBIF + MediaWiki.
+      const needsFuzzyCorrection =
+        result.reason === "invalid" ||
+        (result.ok &&
+          result.monograph &&
+          !isNormalizedTaxonMatch(cleanQuery, result.monograph));
+
+      if (needsFuzzyCorrection && cleanQuery.length >= 3) {
+        const fuzzyResolved = await resolveFuzzyGlobalTaxon(cleanQuery, {
+          signal,
+          lang: lockedLang,
+          timeoutMs: 4000,
+        }).catch((fErr) => {
+          if (isAbortError(fErr) && signal?.aborted) throw fErr;
+          return null;
+        });
+
+        if (fuzzyResolved?.targetQuery) {
+          const alreadyResolvedSame =
+            result.ok &&
+            result.monograph &&
+            isNormalizedTaxonMatch(fuzzyResolved.targetQuery, result.monograph);
+
+          if (alreadyResolvedSame) {
+            if (fuzzyResolved.didCorrect) {
+              autoCorrectionMeta = {
+                from: cleanQuery,
+                label:
+                  result.monograph.scientificName ||
+                  fuzzyResolved.scientificName ||
+                  fuzzyResolved.targetQuery,
+              };
+            }
+          } else {
+            const retryLang = normalizeLangCode(targetLang, fuzzyResolved.targetQuery);
+            const fuzzyOutcome = await queryGlobalSourcesOnce(
+              fuzzyResolved.targetQuery,
+              retryLang,
+              signal,
+            );
+            if (fuzzyOutcome.ok && fuzzyOutcome.monograph) {
+              result = fuzzyOutcome;
+              if (
+                fuzzyResolved.didCorrect ||
+                !isNormalizedTaxonMatch(cleanQuery, fuzzyOutcome.monograph)
+              ) {
+                autoCorrectionMeta = {
+                  from: cleanQuery,
+                  label:
+                    fuzzyOutcome.monograph.scientificName ||
+                    fuzzyResolved.scientificName ||
+                    fuzzyResolved.targetQuery,
+                };
+              }
+            }
+          }
+        }
+      }
+
       if (result.ok && result.monograph) {
         // Mandatory 3-Tier Auto-Translation whenever target language content is missing or incomplete
         let finalMonograph = result.monograph;
@@ -1650,6 +1717,13 @@ export async function fetchFromGlobalBotanicalServer(query, options = {}) {
         } catch (trErr) {
           if (isAbortError(trErr) && signal?.aborted) throw trErr;
           finalMonograph.lockedLanguage = lockedLang;
+        }
+        if (autoCorrectionMeta) {
+          finalMonograph = {
+            ...finalMonograph,
+            autoCorrectedFrom: autoCorrectionMeta.from,
+            correctedTaxonLabel: autoCorrectionMeta.label,
+          };
         }
         setCachedGlobalMonograph(cleanQuery, finalMonograph, lockedLang);
         return { ok: true, monograph: finalMonograph };

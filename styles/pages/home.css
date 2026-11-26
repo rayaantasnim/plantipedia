@@ -23,6 +23,13 @@
   white-space: nowrap;
 }
 
+#stat-global-taxa {
+  font-size: clamp(1.4rem, 2.15vw, 1.78rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  padding-top: 4px;
+}
+
 .mission-copy-col p,
 .mission-stat-desc {
   text-align: justify;
@@ -486,6 +493,11 @@
 }
 
 @media (max-width: 768px) {
+  #stat-global-taxa {
+    font-size: clamp(1.45rem, 4.8vw, 1.75rem);
+    padding-top: 0;
+  }
+
   .global-gateway-cta-row {
     grid-template-columns: 1fr;
   }

@@ -27,6 +27,7 @@ import {
   searchSpeciesFuzzy,
   setHighlightedContent,
 } from "../../engines/search/fuzzy-matcher.js";
+import { fetchGlobalFuzzySuggestions } from "../../engines/search/global-fuzzy.js";
 import { fetchSpeciesMonograph } from "../../engines/global-server/api.js";
 import {
   detectLanguage,
@@ -538,6 +539,20 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       let highlightedIndex = -1;
       let isInlineFetching = false;
       let activeGlobalQuery = "";
+      let globalFuzzyTimer = null;
+      let globalFuzzyController = null;
+      let globalFuzzySeq = 0;
+
+      function cancelGlobalFuzzyLookup() {
+        if (globalFuzzyTimer) {
+          clearTimeout(globalFuzzyTimer);
+          globalFuzzyTimer = null;
+        }
+        if (globalFuzzyController) {
+          globalFuzzyController.abort();
+          globalFuzzyController = null;
+        }
+      }
 
       function syncClearButton() {
         clearBtn.hidden = inputEl.value.length === 0;
@@ -569,6 +584,22 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
             badge.appendChild(createEl("em", "compare-badge-sci", st.verifiedPlant.scientificName));
           }
           statusEl.appendChild(badge);
+
+          if (st.verifiedPlant.autoCorrectedFrom) {
+            const correctedLabel =
+              st.verifiedPlant.correctedTaxonLabel ||
+              st.verifiedPlant.scientificName ||
+              st.verifiedPlant.commonName ||
+              "";
+            const pill = createEl("div", "gbs-autocorrect-pill is-compare-pill");
+            pill.setAttribute("role", "status");
+            pill.appendChild(
+              document.createTextNode("✨ Showing results for corrected taxon: "),
+            );
+            pill.appendChild(createEl("em", "gbs-autocorrect-taxon", correctedLabel));
+            statusEl.appendChild(pill);
+          }
+
           statusEl.hidden = false;
           return;
         }
@@ -592,6 +623,8 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       }
 
       function closeMenu() {
+        cancelGlobalFuzzyLookup();
+        globalFuzzySeq += 1;
         menu.hidden = true;
         highlightedIndex = -1;
         inputEl.setAttribute("aria-expanded", "false");
@@ -792,23 +825,11 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         renderInlineRecoveryNotice(failureReason, query);
       }
 
-      function renderAutocomplete(rawQuery) {
-        const trimmed = String(rawQuery || "").trim().replace(/\s+/g, " ");
-        syncClearButton();
-
-        if (trimmed.length < 1) {
-          currentMatches = [];
-          activeGlobalQuery = "";
-          closeMenu();
-          return;
-        }
-
-        closeAllMenus(side);
-        currentMatches = filterCuratedSpecies(trimmed);
-        highlightedIndex = -1;
+      function populateAutocompleteList(trimmed, globalSuggestions = [], isCheckingGlobal = false) {
         listBox.replaceChildren();
+        const hasGlobal = Array.isArray(globalSuggestions) && globalSuggestions.length > 0;
 
-        if (currentMatches.length === 0) {
+        if (currentMatches.length === 0 && !hasGlobal) {
           listBox.appendChild(
             createEl(
               "div",
@@ -876,6 +897,89 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           });
         }
 
+        if (trimmed.length >= 3 && currentMatches.length < 3) {
+          if (hasGlobal) {
+            listBox.appendChild(
+              createEl(
+                "div",
+                "nav-suggestion-global-header",
+                "Global Flora Index · Worldwide Fuzzy Matches",
+              ),
+            );
+            globalSuggestions.slice(0, 3).forEach((item, gIdx) => {
+              const targetQuery = item.scientificName || item.commonName;
+              const gBtn = createEl(
+                "button",
+                "compare-autocomplete-option is-global-fuzzy-option",
+              );
+              gBtn.type = "button";
+              gBtn.setAttribute("role", "option");
+              gBtn.dataset.globalTarget = targetQuery;
+              gBtn.dataset.idx = String(currentMatches.length + gIdx);
+
+              const gIcon = createEl("span", "nav-suggestion-global-icon", "🌐");
+              gIcon.setAttribute("aria-hidden", "true");
+              gBtn.appendChild(gIcon);
+
+              const textCol = createEl("div", "compare-autocomplete-text");
+              const titleRow = createEl("div", "compare-option-title-row");
+              const commonEl = createEl("span", "compare-option-common");
+              setHighlightedContent(commonEl, item.commonName || targetQuery, trimmed);
+              titleRow.appendChild(commonEl);
+              titleRow.appendChild(
+                createEl("span", "global-fuzzy-badge", "🌐 GLOBAL FUZZY MATCH"),
+              );
+              textCol.appendChild(titleRow);
+
+              const sciSub = item.family && item.family !== "Plantae"
+                ? `${item.scientificName} · ${item.family}`
+                : item.scientificName;
+              const sciEl = createEl("span", "compare-option-sci");
+              setHighlightedContent(sciEl, sciSub, trimmed);
+              textCol.appendChild(sciEl);
+              gBtn.appendChild(textCol);
+
+              gBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                triggerInlineGlobalFetch(targetQuery);
+              });
+
+              listBox.appendChild(gBtn);
+            });
+          } else if (isCheckingGlobal) {
+            listBox.appendChild(
+              createEl(
+                "div",
+                "nav-suggestion-global-loading",
+                "🌐 Querying Global Flora Index fuzzy taxa...",
+              ),
+            );
+          }
+        }
+      }
+
+      function renderAutocomplete(rawQuery) {
+        const trimmed = String(rawQuery || "").trim().replace(/\s+/g, " ");
+        syncClearButton();
+        cancelGlobalFuzzyLookup();
+        globalFuzzySeq += 1;
+        const seq = globalFuzzySeq;
+
+        if (trimmed.length < 1) {
+          currentMatches = [];
+          activeGlobalQuery = "";
+          closeMenu();
+          return;
+        }
+
+        closeAllMenus(side);
+        currentMatches = filterCuratedSpecies(trimmed);
+        highlightedIndex = -1;
+
+        const shouldFetchGlobal = trimmed.length >= 3 && currentMatches.length < 3;
+        populateAutocompleteList(trimmed, [], shouldFetchGlobal);
+
         const qLower = trimmed.toLowerCase();
         const hasExactMatch = currentMatches.some((entry) => {
           const sp = entry?.item || entry;
@@ -899,6 +1003,27 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         menu.hidden = false;
         inputEl.setAttribute("aria-expanded", "true");
         field.classList.add("is-open");
+
+        if (shouldFetchGlobal) {
+          globalFuzzyTimer = setTimeout(async () => {
+            if (seq !== globalFuzzySeq || menu.hidden) return;
+            const controller = new AbortController();
+            globalFuzzyController = controller;
+            try {
+              const res = await fetchGlobalFuzzySuggestions(trimmed, {
+                signal: controller.signal,
+                limit: 3,
+              });
+              if (controller.signal.aborted || seq !== globalFuzzySeq || menu.hidden) return;
+              const items = Array.isArray(res?.suggestions) ? res.suggestions : [];
+              populateAutocompleteList(trimmed, items, false);
+            } catch {
+              if (seq === globalFuzzySeq && !menu.hidden) {
+                populateAutocompleteList(trimmed, [], false);
+              }
+            }
+          }, 320);
+        }
       }
 
       inputEl.addEventListener("input", () => {
@@ -957,6 +1082,8 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
             const target = items[highlightedIndex];
             if (target === globalFetchBtn) {
               triggerInlineGlobalFetch(activeGlobalQuery || inputEl.value);
+            } else if (target.dataset.globalTarget) {
+              triggerInlineGlobalFetch(target.dataset.globalTarget);
             } else {
               const slug = target.dataset.slug;
               const sp = speciesBySlug.get(String(slug || "").toLowerCase());

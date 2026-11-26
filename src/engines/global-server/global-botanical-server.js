@@ -25,3 +25,9 @@ export {
   GLOBAL_STATUS_MESSAGES,
   runGlobalServerTelemetry,
 } from "./live-gateway-controller.js";
+
+export {
+  fetchGlobalFuzzySuggestions,
+  resolveFuzzyGlobalTaxon,
+} from "../search/global-fuzzy.js";
+

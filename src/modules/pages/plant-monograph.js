@@ -741,6 +741,18 @@ export function renderPlantMonograph(
       createEl("span", "global-flora-badge", plant.sourceBadge || "GLOBAL FLORA INDEX"),
     );
     titleBlock.appendChild(badgeRow);
+
+    if (plant.autoCorrectedFrom) {
+      const targetTaxon =
+        plant.correctedTaxonLabel || plant.scientificName || plant.commonName || "";
+      const pill = createEl("div", "gbs-autocorrect-pill");
+      pill.setAttribute("role", "status");
+      pill.appendChild(
+        document.createTextNode("✨ Showing results for corrected taxon: "),
+      );
+      pill.appendChild(createEl("em", "gbs-autocorrect-taxon", targetTaxon));
+      titleBlock.appendChild(pill);
+    }
   } else {
     titleBlock.appendChild(
       createEl(

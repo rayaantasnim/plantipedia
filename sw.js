@@ -53,6 +53,8 @@ const CORE_SHELL_PATHS = [
   "./src/core/compilers/specimen-not-found.js",
   "./src/engines/citation/citation-generator.js",
   "./src/engines/citation/glossary-tooltips.js",
+  "./src/engines/search/fuzzy-matcher.js",
+  "./src/engines/search/global-fuzzy.js",
   "./src/engines/search/navigation.js",
   "./src/engines/global-server/api.js",
   "./src/engines/global-server/taxon-parser.js",
