@@ -1435,26 +1435,7 @@
 
 .compare-global-inline-telemetry {
   width: 100%;
-}
-
-.compare-global-inline-telemetry .gbs-loader-card {
-  padding: 16px 16px 14px;
-  border-radius: 14px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
-}
-
-.compare-global-inline-telemetry .gbs-loader-head {
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.compare-global-inline-telemetry .gbs-loader-heading {
-  font-size: 1.05rem;
-}
-
-.compare-global-inline-telemetry .gbs-loader-status {
-  margin-bottom: 10px;
-  font-size: 0.84rem;
+  min-width: 0;
 }
 
 .compare-select-field.is-guided-next {

@@ -21,7 +21,7 @@ export const SYNTHESIS_STAGES = Object.freeze([
     num: "02",
     shortLabel: "6-Source Synthesis",
     badge: "STAGE 02 / 04 · 6-SOURCE SYNTHESIS",
-    status: "02 6-Source Ecological & Morphological Synthesis — Aggregating GBIF, MediaWiki, Wikidata, iNaturalist, EOL & Open Tree of Life...",
+    status: "02 6-Source Ecological & Morphological Synthesis — Aggregating GBIF, Global Flora Index, Wikidata, iNaturalist, EOL & Open Tree of Life...",
   },
   {
     num: "03",

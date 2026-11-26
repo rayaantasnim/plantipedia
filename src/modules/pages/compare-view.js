@@ -2,9 +2,9 @@
  * Compare Split View Controller (/compare/)
  * - Dual Real-Time Search Inputs (#left-specimen-input & #right-specimen-input)
  *   with instant 50-species local autocomplete (EN / বাংলা / Latin / family)
- * - Global Botanical Server lookup trigger whenever query >= 2 chars and local matches < 2
- * - Inline 5-second Global Botanical Server telemetry loader with AbortController & retry loop
- * - Zero-404 inline recovery alerts preserving opposite specimen & typed query
+ * - Global Botanical Server lookup trigger whenever query >= 2 chars
+ * - Direct JS fetch with compact inline % progress bar (0% -> 100%) and Cancel control inside active slot
+ * - Unified full-width notice banner above Compare Specimens preserving opposite slot & failed query text
  * - URL pre-selection support (?left=<slug>, ?right=<slug>, ?leftGlobal=, ?rightGlobal=, ?leftType=, ?rightType=)
  * - Clean handoff to ./result/?left=...&leftType=...&right=...&rightType=...
  */
@@ -364,7 +364,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     card.appendChild(previewPlate);
 
     const selectsRow = createEl("div", "compare-selects-grid");
-    const warningEl = createEl("p", "compare-validation-warning", "");
+    const warningEl = createEl("div", "compare-validation-warning", "");
     warningEl.id = "compareValidationWarning";
     warningEl.setAttribute("role", "alert");
     warningEl.hidden = true;
@@ -385,12 +385,83 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
     );
 
     const panelControllers = {};
+    let activeLookupBanner = null;
 
     function closeAllMenus(exceptSide = null) {
       Object.entries(panelControllers).forEach(([sideKey, ctl]) => {
         if (exceptSide && sideKey === exceptSide) return;
         ctl.closeMenu();
       });
+    }
+
+    function syncUnifiedBanner() {
+      warningEl.replaceChildren();
+      if (areSidesDuplicate()) {
+        warningEl.className = "compare-validation-warning is-warning";
+        warningEl.appendChild(
+          createEl(
+            "p",
+            "compare-warning-msg",
+            selCfg.sameSpeciesWarning ||
+              "Please select two different species to run a side-by-side comparison.",
+          ),
+        );
+        warningEl.hidden = false;
+        return;
+      }
+
+      if (activeLookupBanner) {
+        const { side, reason, query } = activeLookupBanner;
+        const sideLabel =
+          side === "left"
+            ? selCfg.leftLabel || "Left Specimen"
+            : selCfg.rightLabel || "Right Specimen";
+
+        warningEl.className = "compare-validation-warning is-error";
+
+        const headRow = createEl("div", "compare-warning-head");
+        headRow.appendChild(
+          createEl(
+            "span",
+            "compare-warning-title",
+            reason === "network"
+              ? `${sideLabel} · Global Server Connection Failed`
+              : reason === "short"
+                ? `${sideLabel} · Query Too Short`
+                : `${sideLabel} · Unrecognized Botanical Specimen`,
+          ),
+        );
+
+        const msgText =
+          reason === "network"
+            ? `Unable to reach the Global Botanical Server for "${query}". Your opposite slot remains intact—check your connection and retry or edit the ${sideLabel} field above.`
+            : reason === "short"
+              ? `Please enter at least 2 characters (English, বাংলা, or Latin botanical name) in the ${sideLabel} field to search the Global Botanical Server.`
+              : `"${query}" did not match a verified botanical taxon in the Global Flora Index. Edit the spelling in the ${sideLabel} input above, retry the Global Server, or pick from our 50 curated monographs.`;
+
+        const actionsRow = createEl("div", "compare-warning-actions");
+        if (reason !== "short" && query && query.length >= 2) {
+          const retryBtn = createEl("button", "compare-warning-btn", "↻ Retry Global Server");
+          retryBtn.type = "button";
+          retryBtn.addEventListener("click", () => {
+            panelControllers[side]?.triggerInlineGlobalFetch(query);
+          });
+          actionsRow.appendChild(retryBtn);
+        }
+
+        const browseLink = createEl("a", "compare-warning-btn", "Browse 50 Curated Species →");
+        browseLink.href = resolveRootPath("./species/");
+        actionsRow.appendChild(browseLink);
+
+        warningEl.appendChild(headRow);
+        warningEl.appendChild(createEl("p", "compare-warning-msg", msgText));
+        warningEl.appendChild(actionsRow);
+        warningEl.hidden = false;
+        return;
+      }
+
+      warningEl.className = "compare-validation-warning";
+      warningEl.hidden = true;
     }
 
     function buildSpecimenPanel(side, labelText) {
@@ -472,29 +543,29 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       function syncStatusBadge() {
         statusEl.replaceChildren();
         const lockedLang = normalizeLangCode(st.inputLang);
-        const langTag = lockedLang === "bn" ? "LANG: বাংলা" : "LANG: EN";
+        const langShort = lockedLang === "bn" ? "BN" : "EN";
+
         if (st.mode === "local" && st.slug && speciesBySlug.has(st.slug)) {
           const sp = speciesBySlug.get(st.slug);
-          statusEl.appendChild(createEl("span", "compare-badge compare-badge--curated", `CURATED · ${langTag}`));
+          const badge = createEl("span", "compare-badge compare-badge--curated");
+          badge.appendChild(document.createTextNode(`CURATED · LANG: ${langShort}`));
           if (sp.scientificName) {
-            statusEl.appendChild(createEl("span", "compare-global-verified-name", sp.scientificName));
+            badge.appendChild(document.createTextNode(" · "));
+            badge.appendChild(createEl("em", "compare-badge-sci", sp.scientificName));
           }
+          statusEl.appendChild(badge);
           statusEl.hidden = false;
           return;
         }
+
         if (st.mode === "global" && st.verifiedPlant) {
-          statusEl.appendChild(
-            createEl("span", "compare-badge compare-badge--global", `🌐 GLOBAL SERVER · ${langTag}`),
-          );
-          if (
-            st.verifiedPlant.scientificName &&
-            st.verifiedPlant.scientificName.toLowerCase() !==
-              (st.verifiedPlant.commonName || "").toLowerCase()
-          ) {
-            statusEl.appendChild(
-              createEl("span", "compare-global-verified-name", st.verifiedPlant.scientificName),
-            );
+          const badge = createEl("span", "compare-badge compare-badge--global");
+          badge.appendChild(document.createTextNode(`🌐 GLOBAL SERVER · LANG: ${langShort}`));
+          if (st.verifiedPlant.scientificName) {
+            badge.appendChild(document.createTextNode(" · "));
+            badge.appendChild(createEl("em", "compare-badge-sci", st.verifiedPlant.scientificName));
           }
+          statusEl.appendChild(badge);
           statusEl.hidden = false;
           return;
         }
@@ -555,6 +626,10 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       function lockLocalSpecies(sp) {
         if (!sp) return;
         const lockedLang = detectLanguage(inputEl.value);
+        field.classList.remove("is-error");
+        if (activeLookupBanner?.side === side) {
+          activeLookupBanner = null;
+        }
         st.mode = "local";
         st.slug = sp.slug.toLowerCase();
         st.globalQuery = "";
@@ -577,59 +652,24 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
       function renderInlineRecoveryNotice(failureReason, queryText) {
         const qDisplay = String(queryText || inputEl.value || "").trim();
-        searchWrap.hidden = false;
-        statusEl.hidden = true;
         telemetrySlot.replaceChildren();
-        telemetrySlot.hidden = false;
-
-        const recovery = createEl("div", "compare-inline-recovery");
-        recovery.setAttribute("role", "alert");
-        recovery.appendChild(
-          createEl(
-            "p",
-            "compare-inline-recovery-title",
-            failureReason === "network"
-              ? "GLOBAL SERVER CONNECTION FAILED"
-              : failureReason === "short"
-                ? "QUERY TOO SHORT FOR LOOKUP"
-                : "UNRECOGNIZED BOTANICAL SPECIMEN",
-          ),
-        );
-        recovery.appendChild(
-          createEl(
-            "p",
-            "compare-inline-recovery-msg",
-            failureReason === "network"
-              ? `Unable to reach the Global Botanical Server for "${qDisplay}". Your other specimen slot remains intact—check your connection and retry below or choose from our curated index.`
-              : failureReason === "short"
-                ? "Please enter at least 2 characters (English, বাংলা, or Latin botanical name) to search the archive or Global Botanical Server."
-                : `"${qDisplay}" did not match a verified botanical taxon in the Global Flora Index. Please check the spelling above, retry the Global Server, or choose one of our 50 curated monographs.`,
-          ),
-        );
-
-        const recoveryActions = createEl("div", "compare-inline-recovery-actions");
-        if (failureReason !== "short" && qDisplay.length >= 2) {
-          const retryBtn = createEl(
-            "button",
-            "compare-inline-recovery-btn",
-            "↻ Retry Global Server",
-          );
-          retryBtn.type = "button";
-          retryBtn.addEventListener("click", () => {
-            triggerInlineGlobalFetch(qDisplay);
-          });
-          recoveryActions.appendChild(retryBtn);
-        }
-        const browseLink = createEl(
-          "a",
-          "compare-inline-recovery-btn",
-          "Browse 50 Curated Species →",
-        );
-        browseLink.href = resolveRootPath("./species/");
-
-        recoveryActions.appendChild(browseLink);
-        recovery.appendChild(recoveryActions);
-        telemetrySlot.appendChild(recovery);
+        telemetrySlot.hidden = true;
+        searchWrap.hidden = false;
+        st.mode = "local";
+        st.slug = "";
+        st.globalQuery = "";
+        st.verifiedPlant = null;
+        inputEl.value = qDisplay;
+        syncClearButton();
+        syncStatusBadge();
+        field.classList.add("is-error");
+        activeLookupBanner = {
+          side,
+          reason: failureReason || "invalid",
+          query: qDisplay,
+        };
+        validateSelection();
+        syncCompareUrlParams();
       }
 
       async function triggerInlineGlobalFetch(rawQueryValue) {
@@ -643,8 +683,11 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
 
         const lockedLang = detectLanguage(query);
         closeAllMenus();
-        warningEl.hidden = true;
-        warningEl.textContent = "";
+        field.classList.remove("is-error");
+        if (activeLookupBanner?.side === side) {
+          activeLookupBanner = null;
+        }
+        syncUnifiedBanner();
         st.mode = "global";
         st.slug = "";
         st.globalQuery = query;
@@ -683,6 +726,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         const telemetryOutcome = await runGlobalServerTelemetry({
           container: telemetrySlot,
           queryLabel: query,
+          compact: true,
           work: ({ signal, onRetry }) =>
             fetchFromGlobalBotanicalServer(query, { signal, onRetry, targetLang: lockedLang }),
           onAbort: () => {
@@ -699,9 +743,14 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           telemetrySlot.replaceChildren();
           telemetrySlot.hidden = true;
           searchWrap.hidden = false;
+          st.mode = "local";
+          st.globalQuery = "";
           st.verifiedPlant = null;
+          inputEl.value = query;
+          syncClearButton();
           syncStatusBadge();
           validateSelection();
+          syncCompareUrlParams();
           requestAnimationFrame(() => inputEl.focus());
           return;
         }
@@ -711,6 +760,10 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           telemetrySlot.replaceChildren();
           telemetrySlot.hidden = true;
           searchWrap.hidden = false;
+          field.classList.remove("is-error");
+          if (activeLookupBanner?.side === side) {
+            activeLookupBanner = null;
+          }
           st.mode = "global";
           st.globalQuery = query;
           st.inputLang = lockedLang;
@@ -733,11 +786,7 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         }
 
         const failureReason = res?.reason || "invalid";
-        st.verifiedPlant = null;
-        inputEl.value = query;
-        syncClearButton();
         renderInlineRecoveryNotice(failureReason, query);
-        validateSelection();
       }
 
       function renderAutocomplete(rawQuery) {
@@ -821,9 +870,20 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           });
         }
 
-        if (trimmed.length >= 2 && currentMatches.length < 3) {
+        const qLower = trimmed.toLowerCase();
+        const hasExactMatch = currentMatches.some((entry) => {
+          const sp = entry?.item || entry;
+          return (
+            String(sp.commonName || "").toLowerCase() === qLower ||
+            String(sp.commonNameBn || "").toLowerCase() === qLower ||
+            String(sp.scientificName || "").toLowerCase() === qLower ||
+            String(sp.slug || "").toLowerCase() === qLower
+          );
+        });
+
+        if (trimmed.length >= 2 && (currentMatches.length < 3 || !hasExactMatch)) {
           activeGlobalQuery = trimmed;
-          globalFetchBtn.textContent = `🌐 Search Global Botanical Server for "${trimmed}" →`;
+          globalFetchBtn.textContent = `🌐 Fetch from Global Botanical Server · "${trimmed}"`;
           globalFooter.hidden = false;
         } else {
           activeGlobalQuery = "";
@@ -840,6 +900,10 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
         if (!isInlineFetching && telemetrySlot.firstChild) {
           telemetrySlot.replaceChildren();
           telemetrySlot.hidden = true;
+        }
+        field.classList.remove("is-error");
+        if (activeLookupBanner?.side === side) {
+          activeLookupBanner = null;
         }
         st.mode = "local";
         st.slug = "";
@@ -926,6 +990,10 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
           telemetrySlot.replaceChildren();
           telemetrySlot.hidden = true;
         }
+        field.classList.remove("is-error");
+        if (activeLookupBanner?.side === side) {
+          activeLookupBanner = null;
+        }
         st.mode = "local";
         st.slug = "";
         st.globalQuery = "";
@@ -992,17 +1060,12 @@ export function renderCompareWorkspace(mountEl, { pageData, speciesIndex }) {
       rightField.classList.toggle("is-guided-next", guideRight);
       rightHint.hidden = !guideRight;
 
+      syncUnifiedBanner();
       if (areSidesDuplicate()) {
         submitBtn.disabled = true;
-        warningEl.textContent =
-          selCfg.sameSpeciesWarning ||
-          "Please select two different species to run a side-by-side comparison.";
-        warningEl.hidden = false;
         return false;
       }
 
-      warningEl.hidden = true;
-      warningEl.textContent = "";
       submitBtn.disabled = !(leftReady && rightReady);
       return !submitBtn.disabled;
     }

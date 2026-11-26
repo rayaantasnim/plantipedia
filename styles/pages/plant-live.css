@@ -128,4 +128,14 @@
   :is([data-page="plant-live"], [data-page="plant"]) .chapter-card {
     padding: 18px 14px;
   }
+
+  :is([data-page="plant-live"], [data-page="plant"]) .gbs-live-telemetry-host {
+    padding: 24px 10px;
+  }
+
+  :is([data-page="plant-live"], [data-page="plant"]) .gbs-loader-card {
+    width: min(94vw, 640px);
+    padding: 18px 15px;
+    border-radius: 18px;
+  }
 }
