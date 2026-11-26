@@ -21,20 +21,21 @@
           "@type": ["WebApplication", "SoftwareApplication"],
           "@id": "./#webapp",
           "name": "Plantipedia Digital Botanical Research Suite",
+          "softwareVersion": "3.2",
+          "version": "3.2",
           "applicationCategory": "EducationalApplication",
           "operatingSystem": "All",
           "browserRequirements": "Requires modern ES6+ web browser",
           "url": "./",
           "inLanguage": ["en", "bn"],
-          "description": "11-section botanical research suite combining 50 curated 15-chapter local monographs, a 6-source federated Global Botanical Server uplink connecting 1,600,000+ (1.6M+) worldwide vascular plants and tree species, bilingual EN / বাংলা telemetry, split comparator, and academic citation tools.",
+          "description": "11-section botanical research suite combining 50 curated 15-chapter local monographs, a Version 3.2 6-source federated Global Botanical Server uplink connecting 1,600,000+ (1.6M+) worldwide vascular plants and tree species, 3-tier zero-key EN / বাংলা translation, global fuzzy search, Surprise Specimen discovery, and academic citation tools.",
           "featureList": [
-            "Zero-Key 6-Source Global Botanical Server Engine (1,600,000+ Taxa)",
-            "50 Curated 15-Chapter Local Monographs",
-            "Bilingual EN / বাংলা Instant Search",
-            "Side-by-Side Split Specimen Comparator",
-            "6-Season Bengali Phenology Calendar",
-            "APA 7th, MLA 9th & BibTeX Citation Generator",
-            "Interactive Data Synthesis Pipeline & Print Field-Sheet Studio"
+            "Version 3.2 Zero-Key 6-Source Global Botanical Server Engine (1,600,000+ Taxa)",
+            "3-Tier Zero-Key English ↔ বাংলা Botanical Auto-Translation",
+            "Federated Global Fuzzy Search & Instant '/' Keyboard Shortcut",
+            "3-Second Botanical Discovery Overlay for 🎲 Surprise Specimen",
+            "50 Curated 15-Chapter Local Monographs & Split Specimen Comparator",
+            "6-Season Bengali Phenology Calendar & APA 7th / MLA 9th / BibTeX Citations"
           ],
           "author": [
             { "@type": "Person", "name": "Jalees Habib" },
@@ -299,10 +300,10 @@
       },
       {
         "id": "bilingual-crossref",
-        "badge": "EN ↔ বাংলা SYNC",
-        "statusLabel": "DUAL-SCRIPT INDEXED",
-        "title": "Bilingual EN / বাংলা Cross-Referencing",
-        "description": "Pairs English scientific records with Bengali vernacular nomenclature and delta ecology cues whenever available, letting students and regional growers bridge academic Latin and local flora terminology seamlessly.",
+        "badge": "3-TIER EN ↔ বাংলা",
+        "statusLabel": "ZERO-KEY TRANSLATION",
+        "title": "3-Tier Zero-Key Translation & Global Fuzzy Search",
+        "description": "Combines Wikidata bilingual sitelinks, deterministic botanical glossary lexicons, and zero-key translation synthesis with 3-source global fuzzy search across English, Latin binomials, and বাংলা Unicode script.",
         "sampleQuery": "Baobab",
         "sampleCta": "Inspect Bilingual Record →"
       },
@@ -350,7 +351,7 @@
         "title": "15-Chapter Schema Structuring",
         "shortLabel": "15-Chapter Structuring",
         "latency": "< 40ms Deterministic Synthesis",
-        "protocol": "Plantipedia Monograph Schema v3.1",
+        "protocol": "Plantipedia Monograph Schema v3.2",
         "description": "Transforms raw global records into Plantipedia's standardized 15-chapter monograph architecture covering Overview, Morphology, Taxonomy, Habitat, Ecology, Ethnobotany, Medicinal Profile, and Horticultural Care—enriched with glossary tooltip parsing.",
         "safeguard": "Missing ecological telemetry fields degrade gracefully to verified family-level defaults without blank UI panels.",
         "output": "Complete 15-Chapter DOM-Safe Dossier"
@@ -424,20 +425,20 @@
     }
   },
   "worldwideScale": {
-    "eyebrow": "11 · Worldwide Botanical Scale — 1.6M+ (1,600,000+) Indexed Taxa",
+    "eyebrow": "11 · Worldwide Botanical Scale — Version 3.2 · 1.6M+ Indexed Taxa",
     "heading": "Dual-Layer Scale: Curated Depth Meets Global Vascular Breadth",
-    "lead": "Plantipedia Version 3.2 bridges peer-structured local South Asian & tropical monographs with live, zero-key querying across 6 federated botanical databases covering Earth's plant and tree diversity.",
+    "lead": "Plantipedia Version 3.2 unites 50 curated local monographs with a 6-Source Federated Engine across 1.6M+ global plant taxa, 3-Tier Zero-Key Translation, Global Fuzzy Search, and 🎲 Surprise Specimen discovery.",
     "localLabel": "Curated Local Monographs",
-    "localNote": "15-chapter scholarly dossiers · EN & বাংলা verified",
+    "localNote": "15-chapter scholarly dossiers · 🎲 Surprise Specimen enabled",
     "globalValue": "1.6M+",
     "globalLabel": "1,600,000+ Global Flora & Tree Taxa",
-    "globalNote": "6-source zero-key on-demand Global Flora Index uplink",
+    "globalNote": "v3.2 6-Source Federated Engine · Global Fuzzy Search & 3-Tier Translation",
     "paragraphs": [
-      "Every curated specimen inside Plantipedia opens into a 15-chapter monograph covering Linnaean classification, vegetative anatomy, phenology, ethnobotany, soil pH telemetry, and cultivation protocols.",
-      "Whenever your study moves beyond the 50-species core archive—spanning boreal conifers, desert caudiciforms, or 1,600,000+ (1.6M+) worldwide vascular flora and trees across 6 federated botanical databases—the Global Botanical Server renders a structured live dossier ready for split comparison and field export."
+      "Every curated specimen inside Plantipedia opens into a 15-chapter monograph covering Linnaean classification, vegetative anatomy, phenology, ethnobotany, soil pH telemetry, and cultivation protocols—also discoverable via our 3-second 🎲 Surprise Specimen botanical tumbler.",
+      "Whenever your study moves beyond the 50-species core archive—spanning boreal conifers, desert caudiciforms, or 1,600,000+ (1.6M+) worldwide vascular flora and trees across 6 federated botanical databases—Version 3.2 resolves misspelled queries via Global Fuzzy Search, applies 3-Tier Zero-Key EN / বাংলা Translation, and renders a live dossier ready for split comparison and field export."
     ],
     "primaryCta": { "label": "Launch Worldwide Gateway →", "href": "./plant/live/" },
-    "secondaryCta": { "label": "Inspect v3.2 Roadmap →", "href": "./roadmap/" },
+    "secondaryCta": { "label": "View Release Roadmap (v3.2 → v4.3) →", "href": "./roadmap/" },
     "image": {
       "imageUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/610636081/original.jpg",
       "imageAlt": "Ginkgo biloba living fossil foliage representing worldwide vascular flora breadth",

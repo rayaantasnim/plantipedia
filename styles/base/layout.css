@@ -1356,6 +1356,32 @@ body.is-embed .detail-container {
   color: #7c9a89;
 }
 
+.footer-version-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.34);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #6ee7b7;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.footer-version-badge:hover,
+.footer-version-badge:focus-visible {
+  background: rgba(16, 185, 129, 0.24);
+  border-color: rgba(110, 231, 183, 0.6);
+  color: #ecfdf5;
+}
+
 /* Offline CSS reveal fallback for GSAP-animated footer */
 .site-footer.footer-css-reveal .footer-top-luminous-line,
 .site-footer.footer-css-reveal .footer-divider {

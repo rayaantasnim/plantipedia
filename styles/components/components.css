@@ -3135,6 +3135,14 @@ body.is-embed .plant-floating-compare-btn {
   background: rgba(6, 30, 32, 0.88);
 }
 
+.roadmap-release-card--completed {
+  grid-column: 1 / -1;
+  border-color: rgba(52, 211, 153, 0.42);
+  background:
+    radial-gradient(ellipse 60% 50% at 92% 14%, rgba(16, 185, 129, 0.14), transparent 62%),
+    rgba(6, 32, 21, 0.88);
+}
+
 .roadmap-release-card:hover {
   transform: translateY(-4px);
   border-color: rgba(110, 231, 183, 0.48);
@@ -3167,11 +3175,58 @@ body.is-embed .plant-floating-compare-btn {
   color: #7dd3fc;
 }
 
+.roadmap-release-card--completed .roadmap-version-badge {
+  background: rgba(16, 185, 129, 0.24);
+  border-color: rgba(52, 211, 153, 0.58);
+  color: #a7f3d0;
+}
+
 .roadmap-status-tag {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 600;
   color: #fde68a;
+}
+
+.roadmap-release-card--completed .roadmap-status-tag {
+  color: #6ee7b7;
+}
+
+.roadmap-completed-ledger {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(110, 231, 183, 0.16);
+}
+
+.roadmap-ledger-item {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: rgba(4, 18, 12, 0.72);
+  border: 1px solid rgba(110, 231, 183, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.roadmap-ledger-ver {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #6ee7b7;
+  letter-spacing: 0.06em;
+}
+
+.roadmap-ledger-desc {
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .roadmap-release-title {

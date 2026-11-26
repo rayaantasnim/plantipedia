@@ -1060,15 +1060,15 @@ export function renderGlobalGatewaySection(mountEl, { pageData } = {}) {
 }
 
 /**
- * 4c. Home "Next Milestone" Spotlight Section (Strictly Version 3.2 preview + Readiness Bar + Dual CTAs)
+ * 4c. Home "Next Milestone" Spotlight Section (Version 4.0 preview + Readiness Bar + Dual CTAs)
  */
 export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
   if (!mountEl) return;
   const milestone = pageData?.nextMilestone || {};
   const readiness = milestone.readiness || {
-    label: "Version 3.2 Core Architecture Readiness",
-    percent: 72,
-    statusText: "72% Spec Locked · Next After v3.1",
+    label: "Version 4.0 Offline PWA Architecture Readiness",
+    percent: 42,
+    statusText: "42% Spec Locked · Next Major Release After v3.2",
   };
 
   const pillars =
@@ -1077,24 +1077,24 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
       : [
           {
             number: "1",
-            kicker: "CONCURRENT RESOLUTION",
-            title: "⚡ 5-Source Parallel Aggregation",
+            kicker: "OFFLINE SERVICE WORKER",
+            title: "📴 True Offline-First Service Worker (sw.js)",
             description:
-              "Executes simultaneous browser requests across GBIF Backbone, Global Flora Index, Wikidata P225, iNaturalist Taxa, and Kew POWO to assemble unified botanical dossiers without single-endpoint bottlenecks.",
+              "Full pre-caching of all 50 monographs, stylesheets, and search indexes for 100% internet-free botanical fieldwork.",
           },
           {
             number: "2",
-            kicker: "BILINGUAL LEXICON",
-            title: "🌐 Cross-Script EN / বাংলা Alignment",
+            kicker: "PLATFORM INSTALLERS",
+            title: "💻 Multi-Device /install/ Hub",
             description:
-              "Expands semantic sitelink mapping between Linnaean binomials, English vernaculars, and Bengali Unicode nomenclature so every global taxon renders accurate bilingual headers and phonetic cues.",
+              "One-Click Windows Official App, portable .exe / .apk packages, iOS Safari 2-step guide, and Smart Board Kiosk mode.",
           },
           {
             number: "3",
-            kicker: "INSTANT NAVIGATION",
-            title: "🔍 Typo-Tolerant Fuzzy Search & Shortcuts",
+            kicker: "SEAMLESS UPDATES",
+            title: "🔄 Background Auto-Update Toast",
             description:
-              "Combines client-side edit-distance matching for misspelled Latin or local plant names with an instant '/' keyboard focus shortcut active across every Plantipedia archive page.",
+              "Automatic cache invalidation with a sleek one-click Update Now notification banner whenever new versions ship.",
           },
         ];
 
@@ -1104,10 +1104,10 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
       : [
           { version: "v1.0", state: "past" },
           { version: "v2.0", state: "past" },
-          { "version": "v3.0", "state": "past" },
-          { version: "v3.1 (Current)", state: "current" },
-          { version: "v3.2 (Next)", state: "next" },
-          { version: "v4.0", state: "future" },
+          { version: "v3.0", state: "past" },
+          { version: "v3.1", state: "past" },
+          { version: "v3.2 (Current)", state: "current" },
+          { version: "v4.0 (Next)", state: "next" },
           { version: "v4.1", state: "future" },
           { version: "v4.2", state: "future" },
           { version: "v4.3", state: "future" },
@@ -1125,14 +1125,14 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
   pulseDot.setAttribute("aria-hidden", "true");
   badge.appendChild(pulseDot);
   badge.appendChild(
-    createEl("span", "", milestone.eyebrow || "NEXT MILESTONE · VERSION 3.2 SPOTLIGHT"),
+    createEl("span", "", milestone.eyebrow || "NEXT MILESTONE · VERSION 4.0 SPOTLIGHT"),
   );
   metaRow.appendChild(badge);
   metaRow.appendChild(
     createEl(
       "span",
       "next-milestone-version-tag",
-      milestone.statusTag || "IN ACTIVE ARCHITECTURE · SCHEDULED NEXT RELEASE",
+      milestone.statusTag || "VERSION 3.2 LIVE · NEXT MAJOR RELEASE IN ARCHITECTURE",
     ),
   );
   card.appendChild(metaRow);
@@ -1143,7 +1143,8 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
     createEl(
       "h2",
       "section-heading",
-      milestone.heading || "Next Up: Version 3.2 — Multi-Source Parallel Botanical Engine",
+      milestone.heading ||
+        "Next Up: Version 4.0 — True Offline-First PWA & Multi-Device /install/ Hub",
     ),
   );
   copyCol.appendChild(
@@ -1151,7 +1152,7 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
       "p",
       "justified-prose next-milestone-overview",
       milestone.description ||
-        "Immediately following Version 3.1, Plantipedia Version 3.2 upgrades the live lookup stack into a parallel 6-source botanical engine uniting GBIF, the Global Flora Index, Wikidata, iNaturalist, EOL, and Open Tree of Life. Alongside concurrent resolution across 1,600,000+ (1.6M+) vascular taxa, v3.2 introduces automated cross-script EN / বাংলা alignment and typo-tolerant Levenshtein fuzzy search bound to the global '/' shortcut.",
+        "With Version 3.2 now live—uniting our 6-Source Federated Global Server across 1,600,000+ (1.6M+) taxa, 3-Tier Zero-Key Translation, Global Fuzzy Search, and 🎲 Surprise Specimen discovery—Plantipedia's next major milestone, Version 4.0, delivers an installable Offline-First Progressive Web App with zero-signal monograph vaulting, dedicated multi-device /install/ packages, and seamless background update notifications.",
     ),
   );
   head.appendChild(copyCol);
@@ -1159,15 +1160,19 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
 
   const readinessBar = createEl("div", "next-milestone-readiness");
   const readinessHead = createEl("div", "next-milestone-readiness-head");
-  readinessHead.appendChild(createEl("span", "", readiness.label || "Version 3.2 Core Architecture Readiness"));
-  readinessHead.appendChild(createEl("span", "", readiness.statusText || `${readiness.percent || 72}% Spec Locked`));
+  readinessHead.appendChild(
+    createEl("span", "", readiness.label || "Version 4.0 Offline PWA Architecture Readiness"),
+  );
+  readinessHead.appendChild(
+    createEl("span", "", readiness.statusText || `${readiness.percent || 42}% Spec Locked`),
+  );
   const readinessTrack = createEl("div", "next-milestone-readiness-track");
   readinessTrack.setAttribute("role", "progressbar");
   readinessTrack.setAttribute("aria-valuemin", "0");
   readinessTrack.setAttribute("aria-valuemax", "100");
-  readinessTrack.setAttribute("aria-valuenow", String(readiness.percent || 72));
+  readinessTrack.setAttribute("aria-valuenow", String(readiness.percent || 42));
   const readinessFill = createEl("div", "next-milestone-readiness-fill");
-  readinessFill.style.width = `${Math.min(100, Math.max(10, Number(readiness.percent) || 72))}%`;
+  readinessFill.style.width = `${Math.min(100, Math.max(10, Number(readiness.percent) || 42))}%`;
   readinessTrack.appendChild(readinessFill);
   readinessBar.appendChild(readinessHead);
   readinessBar.appendChild(readinessTrack);
@@ -1210,7 +1215,7 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
   const primaryBtn = createEl("a", "cta-glow-button");
   primaryBtn.href = sanitizeUrl(milestone.ctaHref || "./roadmap/", "./roadmap/");
   primaryBtn.appendChild(
-    createEl("span", "", milestone.ctaLabel || "🚀 View Full Release Roadmap (v3.1 → v4.3)"),
+    createEl("span", "", milestone.ctaLabel || "🚀 View Full Release Roadmap (v3.2 → v4.3)"),
   );
   const arrow = createEl("span", "cta-glow-arrow", "→");
   arrow.setAttribute("aria-hidden", "true");
@@ -1220,9 +1225,9 @@ export function renderNextMilestoneSection(mountEl, { pageData } = {}) {
   const secBtn = createEl(
     "a",
     "next-milestone-cta-secondary",
-    milestone.secondaryCtaLabel || "🧭 Explore Current v3.1 Capabilities",
+    milestone.secondaryCtaLabel || "📲 Preview /install/ Hub (v4.0)",
   );
-  secBtn.href = sanitizeUrl(milestone.secondaryCtaHref || "./services/", "./services/");
+  secBtn.href = sanitizeUrl(milestone.secondaryCtaHref || "./install/", "./install/");
   ctaRow.appendChild(secBtn);
   card.appendChild(ctaRow);
 

@@ -75,6 +75,7 @@ const FALLBACK_FOOTER_CONFIG = {
     autoYear: true,
     owner: "Plantipedia",
     template: "© {year} Plantipedia. All rights reserved.",
+    versionBadge: "Version 3.2",
   },
 };
 
@@ -344,6 +345,22 @@ function buildFooterDom(host, config) {
   copyrightEl.className = "footer-copyright";
   copyrightEl.textContent = rawTemplate.replace(/\{year\}/g, year);
   bottomRow.appendChild(copyrightEl);
+
+  const versionBadgeText =
+    copyCfg.versionBadge ||
+    config.versionBadge ||
+    FALLBACK_FOOTER_CONFIG.copyright.versionBadge;
+  if (versionBadgeText) {
+    const versionBadge = document.createElement("a");
+    versionBadge.className = "footer-version-badge";
+    versionBadge.href = resolveSitePath("./roadmap/");
+    versionBadge.textContent = versionBadgeText;
+    versionBadge.setAttribute(
+      "aria-label",
+      `Plantipedia ${versionBadgeText} release notes and roadmap`,
+    );
+    bottomRow.appendChild(versionBadge);
+  }
 
   creditsBar.appendChild(bottomRow);
   container.appendChild(creditsBar);

@@ -1786,10 +1786,10 @@ function renderWorldwideScaleSection(scaleCfg = {}, metrics = {}) {
 
   container.appendChild(
     buildSectionHeader(
-      scaleCfg.eyebrow || "11 · Worldwide Botanical Scale — 1.6M+ (1,600,000+) Indexed Taxa",
+      scaleCfg.eyebrow || "11 · Worldwide Botanical Scale — Version 3.2 · 1.6M+ Indexed Taxa",
       scaleCfg.heading || "Dual-Layer Scale: Curated Depth Meets Global Vascular Breadth",
       scaleCfg.lead ||
-        "Plantipedia Version 3.2 bridges peer-structured local South Asian & tropical monographs with live, zero-key querying across 6 federated botanical databases covering Earth's plant and tree diversity.",
+        "Plantipedia Version 3.2 unites 50 curated local monographs with a 6-Source Federated Engine across 1.6M+ global plant taxa, 3-Tier Zero-Key Translation, Global Fuzzy Search, and 🎲 Surprise Specimen discovery.",
     ),
   );
 
@@ -1812,7 +1812,7 @@ function renderWorldwideScaleSection(scaleCfg = {}, metrics = {}) {
     createEl(
       "span",
       "services-scale-metric-note",
-      scaleCfg.localNote || "15-chapter scholarly dossiers · EN & বাংলা verified",
+      scaleCfg.localNote || "15-chapter scholarly dossiers · 🎲 Surprise Specimen enabled",
     ),
   );
 
@@ -1831,7 +1831,8 @@ function renderWorldwideScaleSection(scaleCfg = {}, metrics = {}) {
     createEl(
       "span",
       "services-scale-metric-note",
-      scaleCfg.globalNote || "6-source zero-key on-demand Global Flora Index uplink",
+      scaleCfg.globalNote ||
+        "v3.2 6-Source Federated Engine · Global Fuzzy Search & 3-Tier Translation",
     ),
   );
 
@@ -1843,8 +1844,8 @@ function renderWorldwideScaleSection(scaleCfg = {}, metrics = {}) {
     Array.isArray(scaleCfg.paragraphs) && scaleCfg.paragraphs.length > 0
       ? scaleCfg.paragraphs
       : [
-          "Every curated specimen inside Plantipedia opens into a 15-chapter monograph covering Linnaean classification, vegetative anatomy, phenology, ethnobotany, soil pH telemetry, and cultivation protocols.",
-          "Whenever your study moves beyond the 50-species core archive—spanning boreal conifers, desert caudiciforms, or 1,600,000+ (1.6M+) worldwide vascular flora and trees indexed across 6 federated botanical databases—the Global Botanical Server renders a structured live dossier ready for split comparison and field export.",
+          "Every curated specimen inside Plantipedia opens into a 15-chapter monograph covering Linnaean classification, vegetative anatomy, phenology, ethnobotany, soil pH telemetry, and cultivation protocols—also discoverable via our 3-second 🎲 Surprise Specimen botanical tumbler.",
+          "Whenever your study moves beyond the 50-species core archive—spanning boreal conifers, desert caudiciforms, or 1,600,000+ (1.6M+) worldwide vascular flora and trees across 6 federated botanical databases—Version 3.2 resolves misspelled queries via Global Fuzzy Search, applies 3-Tier Zero-Key EN / বাংলা Translation, and renders a live dossier ready for split comparison and field export.",
         ];
   proseList.forEach((pText) => {
     content.appendChild(createEl("p", "services-scale-prose", pText));
@@ -1860,7 +1861,7 @@ function renderWorldwideScaleSection(scaleCfg = {}, metrics = {}) {
   const secondary = createEl(
     "a",
     "specimen-nf-btn specimen-nf-btn--gateway",
-    scaleCfg.secondaryCta?.label || "Inspect v3.2 Roadmap →",
+    scaleCfg.secondaryCta?.label || "View Release Roadmap (v3.2 → v4.3) →",
   );
   secondary.href = sanitizeUrl(scaleCfg.secondaryCta?.href, "./roadmap/");
   actions.appendChild(primary);

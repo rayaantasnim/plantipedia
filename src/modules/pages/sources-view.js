@@ -68,17 +68,17 @@ const SOURCES_SECTIONS = [
     icon: "🌐",
     eyebrow: "SECTION 01 · UNIFIED QUERY ROUTING",
     title: "Architecture of the 1,600,000+ (1.6M+) Global Flora Pipeline",
-    subtitle: "Zero-Key 6-Source Federated Botanical Resolution",
-    desc: "How Plantipedia transforms any English, Latin, or Bengali search into a verified 15-chapter dossier.",
+    subtitle: "Zero-Key 6-Source Federated Engine · Version 3.2",
+    desc: "How Plantipedia transforms any English, Latin, or Bengali search—even with typos—into a verified 15-chapter dossier.",
     paragraphs: [
-      "Plantipedia Version 3.2 bridges two complementary botanical knowledge tiers: fifty deeply authored, bilingual local monographs stored as deterministic JSON schemas alongside a federated 6-database Global Botanical Server (GBIF Backbone, MediaWiki, Wikidata, iNaturalist, Encyclopedia of Life, and Open Tree of Life) capable of resolving over 1,600,000+ (1.6M+) worldwide vascular plant and tree taxa. Rather than depending on brittle, rate-limited API keys or pre-cached static stubs, the client executes direct, CORS-enabled browser queries against open scientific registries and normalizes incoming records into an identical 15-chapter scholarly template.",
-      "Every live lookup passes through a multi-stage verification funnel before reaching the viewport. Search candidates undergo Kingdom Plantae validation, disambiguation guard checks, taxonomic rank disaggregation from infobox and backbone graphs, strict 80-character prose deduplication, and ecological guild calibration so desert xerophytes, carnivorous bog herbs, epiphytes, and aquatic macrophytes never receive generic temperate garden defaults.",
+      "Plantipedia Version 3.2 bridges fifty deeply authored, bilingual local monographs stored as deterministic JSON schemas alongside a federated 6-Source Global Botanical Server (GBIF Backbone, Global Flora Index, Wikidata, iNaturalist, Encyclopedia of Life, and Open Tree of Life) capable of resolving over 1,600,000+ (1.6M+) worldwide vascular plant and tree taxa. Paired with 3-Tier Zero-Key Translation, federated Global Fuzzy Search, and 🎲 Surprise Specimen discovery, every client query runs CORS-enabled directly in the browser and normalizes into an identical 15-chapter scholarly template.",
+      "Every live lookup passes through a multi-stage verification funnel before reaching the viewport. Search candidates undergo Kingdom Plantae validation, typo-tolerant fuzzy taxon recovery across three global registries, disambiguation guard checks, taxonomic rank disaggregation from infobox and backbone graphs, strict 80-character prose deduplication, and ecological guild calibration so desert xerophytes, carnivorous bog herbs, epiphytes, and aquatic macrophytes never receive generic temperate garden defaults.",
     ],
     specs: [
-      { label: "Query Ingress", value: "EN, Linnaean Binomial, or বাংলা Unicode Script" },
-      { label: "Retry Resilience", value: "Exponential Backoff + 5.0s AbortController Guard" },
+      { label: "Query Ingress", value: "EN, Linnaean Binomial, বাংলা & Global Fuzzy Search" },
+      { label: "Translation Stack", value: "3-Tier Zero-Key English ↔ বাংলা Botanical Engine" },
       { label: "Output Schema", value: "Chapters 00–14 + Biome-Aware Telemetry Matrix" },
-      { label: "Zero-Key Model", value: "100% Client-Side CORS Open Science Endpoints" },
+      { label: "Discovery Modes", value: "Global Server + 🎲 Surprise Specimen Tumbler" },
     ],
     pipelineSteps: [
       { step: "1. Parse Query", detail: "Normalize EN / Latin / বাংলা input" },
@@ -549,7 +549,7 @@ function buildSourcesHero(speciesCount) {
     createEl(
       "p",
       "sources-hero-subcopy",
-      `Plantipedia Version 3.2 unites ${speciesCount || 50} deeply authored bilingual EN / বাংলা monographs with a federated 6-database open-science flora pipeline covering more than 1,600,000+ (1.6M+) vascular plant and tree species. This technical dossier documents the taxonomic registries, phylogenetic frameworks, photographic repositories, and deterministic verification protocols powering every citation and field sheet.`,
+      `Plantipedia Version 3.2 unites ${speciesCount || 50} deeply authored bilingual EN / বাংলা monographs with a 6-Source Federated Engine covering 1,600,000+ (1.6M+) vascular plant taxa, 3-Tier Zero-Key Translation, Global Fuzzy Search, and 🎲 Surprise Specimen discovery. This technical dossier documents the taxonomic registries, phylogenetic frameworks, photographic repositories, and deterministic verification protocols powering every citation and field sheet.`,
     ),
   );
 
@@ -726,14 +726,14 @@ export function renderSourcesPortal(mountEl, { speciesIndex = [] } = {}) {
     applyPageSeo({
       title: "Sources & Scientific References — Open Botanical Infrastructure | Plantipedia v3.2",
       description:
-        "Explore the 8 scientific registries, open-data endpoints, APG IV taxonomic frameworks, and verification standards powering Plantipedia's 1,600,000+ (1.6M+) global flora index across 6 federated databases and 50 curated 15-chapter monographs.",
+        "Explore the 8 scientific registries, open-data endpoints, 3-tier zero-key translation, and global fuzzy search powering Plantipedia Version 3.2's 1,600,000+ (1.6M+) global flora index across 6 federated databases and 50 curated 15-chapter monographs.",
       keywords:
-        "Plantipedia sources, botanical APIs, GBIF backbone taxonomy, POWO Kew, World Flora Online, Wikidata P225, iNaturalist flora, Encyclopedia of Life, Open Tree of Life, APG IV",
+        "Plantipedia sources, Version 3.2, botanical APIs, GBIF backbone taxonomy, POWO Kew, World Flora Online, Wikidata P225, iNaturalist flora, Encyclopedia of Life, Open Tree of Life, APG IV",
       canonicalFile: "sources/",
       ogType: "website",
       ogTitle: "Sources & Scientific References — Open Botanical Infrastructure | Plantipedia v3.2",
       ogDescription:
-        "How Plantipedia indexes 1,600,000+ (1.6M+) vascular plants across GBIF, Global Flora Index, Wikidata, iNaturalist, EOL, and Open Tree of Life with zero-key resilience.",
+        "How Plantipedia Version 3.2 federates 1,600,000+ (1.6M+) vascular plants across 6 databases with 3-tier zero-key translation, global fuzzy search, and 🎲 Surprise Specimen discovery.",
       ogImage: OG_IMAGE_URL,
       ogImageAlt: "Plantipedia Open Botanical Infrastructure and Scientific Sources",
       twitterImage: TWITTER_IMAGE_URL,

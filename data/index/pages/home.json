@@ -32,6 +32,7 @@
           "@type": "WebSite",
           "@id": "./#website",
           "name": "Plantipedia",
+          "version": "3.2",
           "url": "./",
           "description": "Plantipedia Version 3.2 unites 50 curated 15-chapter botanical monographs with a 6-source federated Global Botanical Server uplink covering 1,600,000+ (1.6M+) worldwide vascular plants and trees, bilingual EN / বাংলা search, taxonomic lineage, and print-ready field sheets.",
           "publisher": { "@id": "./#organization" },
@@ -180,46 +181,46 @@
   },
   "nextMilestone": {
     "anchorId": "next-milestone",
-    "eyebrow": "NEXT MILESTONE · VERSION 3.2 SPOTLIGHT",
-    "statusTag": "IN ACTIVE ARCHITECTURE · SCHEDULED NEXT RELEASE",
-    "heading": "Next Up: Version 3.2 — Multi-Source Parallel Botanical Engine",
-    "description": "Immediately following Version 3.1, Plantipedia Version 3.2 upgrades the live lookup stack into a parallel 6-source botanical engine uniting GBIF, the Global Flora Index, Wikidata, iNaturalist, EOL, and Open Tree of Life. Alongside concurrent resolution across 1,600,000+ (1.6M+) vascular taxa, v3.2 introduces automated cross-script EN / বাংলা alignment and typo-tolerant Levenshtein fuzzy search bound to the global '/' shortcut.",
+    "eyebrow": "NEXT MILESTONE · VERSION 4.0 SPOTLIGHT",
+    "statusTag": "VERSION 3.2 LIVE · NEXT MAJOR RELEASE IN ARCHITECTURE",
+    "heading": "Next Up: Version 4.0 — True Offline-First PWA & Multi-Device /install/ Hub",
+    "description": "With Version 3.2 now live—uniting our 6-Source Federated Global Server across 1,600,000+ (1.6M+) taxa, 3-Tier Zero-Key Translation, Global Fuzzy Search, and 🎲 Surprise Specimen discovery—Plantipedia's next major milestone, Version 4.0, delivers an installable Offline-First Progressive Web App with zero-signal monograph vaulting, dedicated multi-device /install/ packages, and seamless background update notifications.",
     "readiness": {
-      "label": "Version 3.2 Core Architecture Readiness",
-      "percent": 100,
-      "statusText": "6-Source Federated Engine Active"
+      "label": "Version 4.0 Offline PWA Architecture Readiness",
+      "percent": 42,
+      "statusText": "42% Spec Locked · Next Major Release After v3.2"
     },
-    "ctaLabel": "🚀 View Full Release Roadmap (v3.1 → v4.3)",
+    "ctaLabel": "🚀 View Full Release Roadmap (v3.2 → v4.3)",
     "ctaHref": "./roadmap/",
-    "secondaryCtaLabel": "🧭 Explore Current Capabilities",
-    "secondaryCtaHref": "./services/",
+    "secondaryCtaLabel": "📲 Preview /install/ Hub (v4.0)",
+    "secondaryCtaHref": "./install/",
     "pillars": [
       {
         "number": "1",
-        "kicker": "CONCURRENT RESOLUTION",
-        "title": "⚡ 6-Source Parallel Aggregation",
-        "description": "Executes simultaneous browser requests across GBIF Backbone, Global Flora Index, Wikidata P225, iNaturalist Taxa, EOL TraitBank, and Open Tree of Life to assemble unified botanical dossiers without single-endpoint bottlenecks."
+        "kicker": "OFFLINE SERVICE WORKER",
+        "title": "📴 True Offline-First Service Worker (sw.js)",
+        "description": "Full pre-caching of all 50 monographs, stylesheets, and search indexes for 100% internet-free botanical fieldwork."
       },
       {
         "number": "2",
-        "kicker": "BILINGUAL LEXICON",
-        "title": "🌐 Cross-Script EN / বাংলা Alignment",
-        "description": "Expands semantic sitelink mapping between Linnaean binomials, English vernaculars, and Bengali Unicode nomenclature so every global taxon renders accurate bilingual headers and phonetic cues."
+        "kicker": "PLATFORM INSTALLERS",
+        "title": "💻 Multi-Device /install/ Hub",
+        "description": "One-Click Windows Official App, portable .exe / .apk packages, iOS Safari 2-step guide, and Smart Board Kiosk mode."
       },
       {
         "number": "3",
-        "kicker": "INSTANT NAVIGATION",
-        "title": "🔍 Typo-Tolerant Fuzzy Search & Shortcuts",
-        "description": "Combines client-side edit-distance matching for misspelled Latin or local plant names with an instant '/' keyboard focus shortcut active across every Plantipedia archive page."
+        "kicker": "SEAMLESS UPDATES",
+        "title": "🔄 Background Auto-Update Toast",
+        "description": "Automatic cache invalidation with a sleek one-click Update Now notification banner whenever new versions ship."
       }
     ],
     "timeline": [
       { "version": "v1.0", "state": "past" },
       { "version": "v2.0", "state": "past" },
       { "version": "v3.0", "state": "past" },
-      { "version": "v3.1 (Current)", "state": "current" },
-      { "version": "v3.2 (Next)", "state": "next" },
-      { "version": "v4.0", "state": "future" },
+      { "version": "v3.1", "state": "past" },
+      { "version": "v3.2 (Current)", "state": "current" },
+      { "version": "v4.0 (Next)", "state": "next" },
       { "version": "v4.1", "state": "future" },
       { "version": "v4.2", "state": "future" },
       { "version": "v4.3", "state": "future" }
